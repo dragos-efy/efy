@@ -1,0 +1,418 @@
+<!--EFY UI 2022.08.19--><!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>EFY UI</title><meta name="description" content="Convergent, responsive, acessible, futuristic, customisable css / javascript framework">
+
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://efy.ooo/ui">
+<meta property="og:title" content="EFY UI">
+<meta property="og:description" content="Convergent, responsive, acessible, futuristic, customisable css / javascript framework">
+
+<link rel="stylesheet" href="./efy_ui/efy.min.css">
+<script src="./efy_ui/efy.min.js"></script>
+
+</head><body>
+
+<noscript><p style="background: #000; color:#fff; border-radius: 16rem; padding: 16rem;">Please enable JavaScript to load the page properly & enjoy extra features.</p><br></noscript>
+
+<header>
+  <h1><a href="https://efy.ooo">EFY</a> UI - Beta Demo</h1><p>See how it works in real time. Keep in mind that it's not fully stable yet and that the size / features will be improved. When you spot issues let me know on <a target="_blank" href="https://matrix.to/#/#efy_ui:matrix.org">Matrix</a> or <a target="_blank" href="https://github.com/dragos-efy/efy_ui">Github</a>. If you need to, include screenshots, code, recordings. Have fun, you cool little bastards 🥳</p>
+</header>
+
+<h3>Documentation</h3>
+
+<details><summary>The logic behind it</summary><ul>
+<li>Minimal code</li>
+<li>The user is in control, everything is modular</li>
+<li>the designer combines patterns & will choose defaults</li>
+<li>It's accessible, touchscreen friendly, convergent</li>
+<li>Transparency friendly: no popups or multilayered elements when possible</li>
+<li>Things are easily searchable like closed <mark>&lt;details&gt;</mark> that open on demand</li>
+</ul></details>
+
+<details><summary>Variables & Classes</summary><ul>
+<li><mark>--efy_color</mark> & <mark>--efy_color2</mark> - these create the main gradient of the design</li>
+<li>Colors use rgb in the <mark>0, 0, 0</mark> format so that they can be reused by other variables & reduce the amount of code</li>
+<li>Attributes: efy_help , efy_tabs , efy_tab, efy_content</li>
+</ul></details>
+
+<details><summary>Can I use it on my own projects?</summary>
+<p>YES! For personal or FOSS projects it's free, for commercial projects you gotta pay $150 once per project. That's it, no monthly fees or limiting your features in exchange for money. You can also donate if you wanna support the project, which will make it cheaper for future users and developers.</p>
+<p>You can find out more about the license here: <a target="_blank" href="https://github.com/dragos-efy/efy_ui/blob/main/LICENSE.md">EFY Free & Open Non-Commercial License</a></p>
+</details>
+
+<details><summary>More coming soon</summary>
+<p>This is just the beginning...</p>
+</details>
+
+<p>Paragraph</p>
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6>Heading 6</h6>
+
+<p><a href="#">Link</a></p>
+<p><button>Button</button></p>
+<p><a href="#"><button>Button inside link</button></a></p>
+<p><button><i class="efy_icon_zoom_in"></i>Button with icon</button></p>
+
+
+
+<p>paragraph , <abbr title="Abbreviations">abbr</abbr> , <del>del</del> , <dfn>dfn</dfn> , <em>em</em> , <ins>ins</ins> , <mark>mark</mark> , <s>strike through</s> , <small>small</small> , <strong>strong</strong> , <sub>sub</sub> , <sup>sup</sup> , <u>underlined</u> , <code>&lt;code&gt;</code> , <kbd>kbd</kbd></p>
+
+<h3 id="lists">Lists</h3>
+
+<ul>
+    <li>List item</li>
+    <ul>
+        <li>Nested list item</li>
+        <li>Nested list item</li>
+    </ul>
+    <li>List item</li>
+</ul>
+<ol>
+    <li>List item</li>
+    <ol>
+        <li>Nested List Item</li>
+        <li>Nested List Item</li>
+    </ol>
+    <li>List item</li>
+ </ol>
+
+<h3 id="blockquotes">Blockquote</h3>
+
+<blockquote>
+  <p>Super cool quote that will make you reconsider your entire life. lol</p>
+  <p><cite>Joe Doe</cite></p>
+</blockquote>
+
+
+<h3>Pre</h3>
+<pre>&lt;div&gt;
+    div element
+    &lt;p&gt;paragraph&lt;/p&gt;
+&lt;/div&gt;</pre>
+
+<h2>Pre > Code</h2>
+<pre><code>body {
+  color: var(--text);
+  background: var(--bg);
+  font-size: 1.15rem;
+}
+</code></pre>
+
+<h3>Article</h3>
+<article>
+    <h3>H3</h3>
+    <p>A lot of boring text. In fact it's so boring that even if you find it funny while reading it, it will stay boring because it's pretty much useless. Reading it is a waste of time.</p>
+</article>
+
+<section>
+    <h3>Section</h3>
+    <p>A lot of boring text. In fact it's so boring that even if you find it funny while reading it, it will stay boring because it's pretty much useless. Reading it is a waste of time.</p>
+</section>
+
+<h3>Navigation</h3>
+<nav>
+  <a href="">Home</a>
+  <a href="">About</a>
+  <a href="">Blog</a>
+  <a href="">Notes</a>
+  <a href="">Contact</a>
+</nav>
+
+<h3>Image + Caption</h3>
+<figure>
+  <img src="./efy_ui/demo/image.webp" alt="image">
+  <figcaption>Figcaption describing what pics are about</figcaption>
+</figure>
+
+<h3>Video</h3>
+<video src="./efy_ui/demo/efy_video.mp4" controls></video>
+
+<h3>Audio</h3>
+<audio src="./efy_ui/demo/efy_audio.mp4" controls></audio>
+
+<h3>Other language</h3><p>กาญจน์ ซังเตผลักดันม้ง แฟนซีอิ่มแปร้ นายพรานยูโร เมคอัพ</p>
+
+<h3>Definition list</h3>
+        <dl>
+            <dt>Definition list</dt>
+            <dd>Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+                aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                commodo consequat.</dd>
+            <dt>Lorem ipsum dolor sit amet</dt>
+            <dd>Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+                aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                commodo consequat.</dd>
+        </dl>
+        <h3>Details &amp; Summary</h3>
+        <details>
+            <summary>Details</summary>
+            <p>A lot of boring text. In fact it's so boring that even if you find it funny while reading it, it will stay boring because it's pretty much useless. Reading it is a waste of time.</p>
+            <details>
+                <summary>Summary of a details element inside another with a list</summary>
+                <ul>
+                    <li>list item 1</li>
+                    <li>list item 2</li>
+                </ul>
+            </details>
+        </details>
+        <details>
+            <summary>Details 2</summary>
+            <p>A lot of boring text. In fact it's so boring that even if you find it funny while reading it, it will stay boring because it's pretty much useless. Reading it is a waste of time.</p>
+        </details>
+
+
+        <h2>Table</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Table heading</th>
+                    <th>Table heading</th>
+                    <th>Table heading</th>
+                    <th>Table heading</th>
+                    <th>Table heading</th>
+                    <th>Table heading</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>Table footer</th>
+                    <th>Table footer</th>
+                    <th>Table footer</th>
+                    <th>Table footer</th>
+                    <th>Table footer</th>
+                    <th>Table footer</th>
+                </tr>
+            </tfoot>
+            <tbody>
+                <tr>
+                    <td>Table data</td>
+                    <td>Table data</td>
+                    <td>Table data</td>
+                    <td>Table data</td>
+                    <td>Table data</td>
+                    <td>Table data</td>
+                </tr>
+                <tr>
+                    <td>Table data</td>
+                    <td>Table data</td>
+                    <td>Table data</td>
+                    <td>Table data</td>
+                    <td>Table data</td>
+                    <td>Table data</td>
+                </tr>
+                <tr>
+                    <td>Table data</td>
+                    <td>Table data</td>
+                    <td>Table data</td>
+                    <td>Table data</td>
+                    <td>Table data</td>
+                    <td>Table data</td>
+                </tr>
+                <tr>
+                    <td>Table data</td>
+                    <td>Table data</td>
+                    <td>Table data</td>
+                    <td>Table data</td>
+                    <td>Table data</td>
+                    <td>Table data</td>
+                </tr>
+                <tr>
+                    <td>Table data</td>
+                    <td>Table data</td>
+                    <td>Table data</td>
+                    <td>Table data</td>
+                    <td>Table data</td>
+                    <td>Table data</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Form elements</h2>
+        <form>
+            <fieldset>
+                <legend>Input types</legend>
+                    <p>
+                        <label for="input-type-color">Input Color</label><br>
+                        <input id="input-type-color" type="color">
+                    </p>
+                    <p>
+                        <label for="input-type-date">Input Date</label><br>
+                        <input id="input-type-date" type="date">
+                    </p>
+                    <p>
+                        <label for="input-type-datetime-local">Input Datetime-local</label><br>
+                        <input id="input-type-datetime-local" type="datetime-local">
+                    </p>
+                    <p>
+                        <label for="input-type-email">Input Email</label><br>
+                        <input id="input-type-email" type="email">
+                    </p>
+                    <p>
+                        <label for="input-type-file">Input File</label><br>
+                        <input id="input-type-file" type="file">
+                    </p>
+                    <p>
+                        <label for="input-type-hidden">Input Hidden</label><br>
+                        <input id="input-type-hidden" type="hidden">
+                    </p>
+                    <p>
+                        <label for="input-type-month">Input Month</label><br>
+                        <input id="input-type-month" type="month">
+                    </p>
+                    <p>
+                        <label for="input-type-number">Input Number</label><br>
+                        <input id="input-type-number" type="number">
+                    </p>
+                    <p>
+                        <label for="input-type-password">Input Password</label><br>
+                        <input id="input-type-password" type="password">
+                    </p>
+                    <p>
+                        <label for="input-type-range">Input Range</label><br>
+                        <input id="input-type-range" type="range">
+                    </p>
+                    <p>
+                        <label for="input-type-search">Input Search</label><br>
+                        <input id="input-type-search" type="search">
+                    </p>
+                    <p>
+                        <label for="input-type-tel">Input Tel</label><br>
+                        <input id="input-type-tel" type="tel">
+                    </p>
+                    <p>
+                        <label for="input-type-text">Input Text</label><br>
+                        <input id="input-type-text" type="text">
+                    </p>
+                    <p>
+                        <label for="input-type-time">Input Time</label><br>
+                        <input id="input-type-time" type="time">
+                    </p>
+                    <p>
+                        <label for="input-type-url">Input Url</label><br>
+                        <input id="input-type-url" type="url">
+                    </p>
+                    <p>
+                        <label for="input-type-week">Input Week</label><br>
+                        <input id="input-type-week" type="week">
+                    </p>
+
+            </fieldset>
+
+                <label>Input text - Read only</label><br>
+                <input id="input-type-text-readonly" type="text" readonly="">
+
+                <label><input type="radio" name="input-radio" value="1"> Radio 1</label>
+                <label><input type="radio" name="input-radio" value="2"> Radio 2</label>
+                <label><input type="checkbox"> Checkbox 1</label>
+                <label><input type="checkbox"> Checkbox 2</label>
+                <label><input type="radio" disabled=""> Disabled radio</label>
+                <label><input type="checkbox" disabled=""> Disabled checkbox</label>
+
+                <label for="input-textarea">Textarea</label><br>
+                <textarea id="input-textarea"></textarea>
+            <p>
+                <label for="input-textarea-disabled">Textarea disabled</label><br>
+                <textarea id="input-textarea-disabled" disabled=""></textarea>
+            </p>
+            <p>
+                <label for="input-textarea-readonly">Textarea readonly</label><br>
+                <textarea id="input-textarea-readonly" readonly=""></textarea>
+            </p>
+            <p>
+                <label for="input-select">Select box</label><br>
+                <select id="input-select">
+                    <optgroup label="Group1">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                    </optgroup>
+                    <optgroup label="Group2">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                    </optgroup>
+                    <option>out of optgroup</option>
+                </select>
+            </p>
+            <p>
+                <label for="input-select-multiple">Select multiple</label><br>
+                <select id="input-select-multiple" multiple="">
+                    <option>Use Ctrl+click to select multiple options</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                </select>
+            </p>
+            <p>
+                <label for="input-select-disabled">Select disabled</label><br>
+                <select id="input-select-disabled" disabled="">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                </select>
+            </p>
+            <p>
+                <button type="button">Normal button</button>
+                <button type="submit" onclick="return false;">Submit button</button>
+                <button type="reset" onclick="return false;">Reset button</button>
+                <button type="button" disabled="">Disabled button</button>
+            </p>
+            <p>
+                <input type="button" value="Input normal button">
+                <input type="submit" value="Input submit button" onclick="return false;">
+                <input type="reset" value="Input reset button" onclick="return false;">
+                <input type="button" value="Input disabled button" disabled="">
+            </p>
+        </form>
+
+<h3>Progress</h3>
+<progress value="40" max="100">40%</progress>
+
+<h3>Meter</h3>
+<meter value="5" min="0" max="10">5 / 10</meter>
+
+<h3>Custom Components</h3>
+
+<details class="efy_el_select"><summary>Select menu</summary>
+
+    <p>Radio</p>
+    <input type="radio" name="efy_example_radio" id="efy_example_select1"><label for="efy_example_select1">Option 1</label>
+    <input type="radio" name="efy_example_radio" id="efy_example_select2" checked><label for="efy_example_select2">Option 2</label>
+    <input type="radio" name="efy_example_radio" id="efy_example_select3"><label for="efy_example_select3">Option 3</label>
+
+    <p>Checkbox</p>
+    <input type="checkbox" name="efy_example_checkbox" id="efy_example_select4" checked><label for="efy_example_select4">Option 4</label>
+    <input type="checkbox" name="efy_example_checkbox" id="efy_example_select5"><label for="efy_example_select5">Option 5</label>
+    <input type="checkbox" name="efy_example_checkbox" id="efy_example_select6" checked><label for="efy_example_select6">Option 6</label>
+</details>
+
+<details efy_help><summary>Tabs</summary><p>learn how it works</p></details>
+
+<div efy_tabs="demo">
+    <button efy_tab="1">1</button>
+    <button efy_tab="2" efy_active>2</button>
+    <button efy_tab="3">3</button>
+
+    <div efy_content="1">1</div>
+    <div efy_content="2" efy_active>2</div>
+    <div efy_content="3">3</div>
+</div>
+
+<h3>Clock</h3>
+<div efy_clock></div>
+
+<h3>Timer</h3>
+
+<div efy_timer="efy_demo">
+    <div efy_text>00:00:00</div>
+    <button efy_start></button>
+    <button efy_reset></button>
+</div>
+
+<footer><p>EFY UI is made by <a href="https://efy.ooo">EFY</a> and is licensed under the <a target="_blank" href="https://github.com/dragos-efy/efy_ui/blob/main/LICENSE.md">EFY Free & Open Non-Commercial License</a></p></footer>
+
+</body></html>
