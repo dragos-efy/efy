@@ -5,8 +5,8 @@ Customisable, convergent, transparent, modular, futuristic css / js framework th
 Add the `efy_ui` folder in your project & the following html lines:
 
 ```
-<link rel="stylesheet" href="./efy_ui/efy.css">
-<script src="./efy_ui/efy.js"></script>
+<link rel="stylesheet" href="./efy/efy.css">
+<script src="./efy/efy.js"></script>
 ```
 
 Live demo & Documentation at: https://efy.ooo/ui
