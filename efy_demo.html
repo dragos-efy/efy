@@ -1,4 +1,4 @@
-<!--EFY UI 2022.08.19--><!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>EFY UI</title><meta name="description" content="Convergent, responsive, acessible, futuristic, customisable css / javascript framework">
+<!--EFY UI 2022.08.27--><!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>EFY UI</title><meta name="description" content="Convergent, responsive, acessible, futuristic, customisable css / javascript framework">
 
 <meta name="robots" content="noindex, nofollow">
 <meta property="og:type" content="website">
@@ -6,61 +6,45 @@
 <meta property="og:title" content="EFY UI">
 <meta property="og:description" content="Convergent, responsive, acessible, futuristic, customisable css / javascript framework">
 
-<link rel="stylesheet" href="./efy_ui/efy.min.css">
-<script src="./efy_ui/efy.min.js"></script>
+<link rel="stylesheet" href="./efy/efy.css">
+<link rel="stylesheet" href="./efy/demo/demo.css">
+<script src="./efy/efy.js"></script>
 
 </head><body>
 
 <noscript><p style="background: #000; color:#fff; border-radius: 16rem; padding: 16rem;">Please enable JavaScript to load the page properly & enjoy extra features.</p><br></noscript>
 
-<header>
-  <h1><a href="https://efy.ooo">EFY</a> UI - Beta Demo</h1><p>See how it works in real time. Keep in mind that it's not fully stable yet and that the size / features will be improved. When you spot issues let me know on <a target="_blank" href="https://matrix.to/#/#efy_ui:matrix.org">Matrix</a> or <a target="_blank" href="https://github.com/dragos-efy/efy_ui">Github</a>. If you need to, include screenshots, code, recordings. Have fun, you cool little bastards 🥳</p>
+<header><h1><a href="https://efy.ooo">EFY</a> UI - Beta Demo</h1><p>Customisable, convergent, transparent, modular, futuristic css / js framework that can be added to your own web / local apps & websites. Tap the menu button to see it in action! When you spot issues let me know on <a target="_blank" href="https://matrix.to/#/#efy_ui:matrix.org">Matrix</a> or <a target="_blank" href="https://github.com/dragos-efy/efy_ui">Github</a>. Have fun, you cool sexy bastards 🥳</p>
 </header>
 
-<h3>Documentation</h3>
+<div id="efy_docs" efy_search="details, #efy_docs [efy_searchable]">
 
-<details><summary>The logic behind it</summary><ul>
-<li>Minimal code</li>
-<li>The user is in control, everything is modular</li>
-<li>the designer combines patterns & will choose defaults</li>
-<li>It's accessible, touchscreen friendly, convergent</li>
-<li>Transparency friendly: no popups or multilayered elements when possible</li>
-<li>Things are easily searchable like closed <mark>&lt;details&gt;</mark> that open on demand</li>
-</ul></details>
+<div efy_tabs="demo"><input type="text" efy_search_input placeholder="Search through info..." />
+    <button efy_tab="0" efy_active>Default HTML</button>
+    <button efy_tab="1">Questions</button>
+    <button efy_tab="2">EFY Attributes</button>
+    <button efy_tab="3">Components</button>
 
-<details><summary>Variables & Classes</summary><ul>
-<li><mark>--efy_color</mark> & <mark>--efy_color2</mark> - these create the main gradient of the design</li>
-<li>Colors use rgb in the <mark>0, 0, 0</mark> format so that they can be reused by other variables & reduce the amount of code</li>
-<li>Attributes: efy_help , efy_tabs , efy_tab, efy_content</li>
-</ul></details>
+<div efy_content="0" efy_active>
 
-<details><summary>Can I use it on my own projects?</summary>
-<p>YES! For personal or FOSS projects it's free, for commercial projects you gotta pay $150 once per project. That's it, no monthly fees or limiting your features in exchange for money. You can also donate if you wanna support the project, which will make it cheaper for future users and developers.</p>
-<p>You can find out more about the license here: <a target="_blank" href="https://github.com/dragos-efy/efy_ui/blob/main/LICENSE.md">EFY Free & Open Non-Commercial License</a></p>
-</details>
+<div efy_searchable><p>Paragraph</p></div>
+<div efy_searchable><h1>Heading 1</h1></div>
+<div efy_searchable><h2>Heading 2</h2></div>
+<div efy_searchable><h3>Heading 3</h3></div>
+<div efy_searchable><h4>Heading 4</h4></div>
+<div efy_searchable><h5>Heading 5</h5></div>
+<div efy_searchable><h6>Heading 6</h6></div>
 
-<details><summary>More coming soon</summary>
-<p>This is just the beginning...</p>
-</details>
-
-<p>Paragraph</p>
-<h1>Heading 1</h1>
-<h2>Heading 2</h2>
-<h3>Heading 3</h3>
-<h4>Heading 4</h4>
-<h5>Heading 5</h5>
-<h6>Heading 6</h6>
-
-<p><a href="#">Link</a></p>
-<p><button>Button</button></p>
-<p><a href="#"><button>Button inside link</button></a></p>
-<p><button><i class="efy_icon_zoom_in"></i>Button with icon</button></p>
+<div efy_searchable><p><a href="#">Link</a></p></div>
+<div efy_searchable><p><button>Button</button></p></div>
+<div efy_searchable><p><a href="#"><button>Button inside link</button></a></p></div>
+<div efy_searchable><p><button><i efy_icon="zoom_in"></i>Button with icon</button></div>
 
 
 
-<p>paragraph , <abbr title="Abbreviations">abbr</abbr> , <del>del</del> , <dfn>dfn</dfn> , <em>em</em> , <ins>ins</ins> , <mark>mark</mark> , <s>strike through</s> , <small>small</small> , <strong>strong</strong> , <sub>sub</sub> , <sup>sup</sup> , <u>underlined</u> , <code>&lt;code&gt;</code> , <kbd>kbd</kbd></p>
+<div efy_searchable><p>paragraph , <abbr title="Abbreviations">abbr</abbr> , <del>del</del> , <dfn>dfn</dfn> , <em>em</em> , <ins>ins</ins> , <mark>mark</mark> , <s>strike through</s> , <small>small</small> , <strong>strong</strong> , <sub>sub</sub> , <sup>sup</sup> , <u>underlined</u> , <code>&lt;code&gt;</code> , <kbd>kbd</kbd></p></div>
 
-<h3 id="lists">Lists</h3>
+<div efy_searchable><h3 id="lists">Lists</h3>
 
 <ul>
     <li>List item</li>
@@ -77,65 +61,65 @@
         <li>Nested List Item</li>
     </ol>
     <li>List item</li>
- </ol>
+ </ol></div>
 
-<h3 id="blockquotes">Blockquote</h3>
+<div efy_searchable><h3 id="blockquotes">Blockquote</h3>
 
 <blockquote>
   <p>Super cool quote that will make you reconsider your entire life. lol</p>
   <p><cite>Joe Doe</cite></p>
-</blockquote>
+</blockquote></div>
 
 
-<h3>Pre</h3>
+<div efy_searchable><h3>Pre</h3>
 <pre>&lt;div&gt;
     div element
     &lt;p&gt;paragraph&lt;/p&gt;
-&lt;/div&gt;</pre>
+&lt;/div&gt;</pre></div>
 
-<h2>Pre > Code</h2>
+<div efy_searchable><h2>Pre > Code</h2>
 <pre><code>body {
   color: var(--text);
   background: var(--bg);
   font-size: 1.15rem;
 }
-</code></pre>
+</code></pre></div>
 
-<h3>Article</h3>
+<div efy_searchable><h3>Article</h3>
 <article>
     <h3>H3</h3>
     <p>A lot of boring text. In fact it's so boring that even if you find it funny while reading it, it will stay boring because it's pretty much useless. Reading it is a waste of time.</p>
-</article>
+</article></div>
 
-<section>
+<div efy_searchable><section>
     <h3>Section</h3>
     <p>A lot of boring text. In fact it's so boring that even if you find it funny while reading it, it will stay boring because it's pretty much useless. Reading it is a waste of time.</p>
-</section>
+</section></div>
 
-<h3>Navigation</h3>
+<div efy_searchable><h3>Navigation</h3>
 <nav>
   <a href="">Home</a>
   <a href="">About</a>
   <a href="">Blog</a>
   <a href="">Notes</a>
   <a href="">Contact</a>
-</nav>
+</nav></div>
 
-<h3>Image + Caption</h3>
+<div efy_searchable><h3>Image + Caption</h3>
 <figure>
-  <img src="./efy_ui/demo/image.webp" alt="image">
+  <img src="./efy/demo/image.webp" alt="image">
   <figcaption>Figcaption describing what pics are about</figcaption>
-</figure>
+</figure></div>
 
-<h3>Video</h3>
-<video src="./efy_ui/demo/efy_video.mp4" controls></video>
+<div efy_searchable><h3>Video</h3>
+<video src="./efy/demo/efy_video.mp4" controls></video></div>
 
-<h3>Audio</h3>
-<audio src="./efy_ui/demo/efy_audio.mp4" controls></audio>
+<div efy_searchable><h3>Audio</h3>
+<audio src="./efy/demo/efy_audio.mp4" controls></audio></div>
 
-<h3>Other language</h3><p>กาญจน์ ซังเตผลักดันม้ง แฟนซีอิ่มแปร้ นายพรานยูโร เมคอัพ</p>
+<div efy_searchable><h3>Other language</h3><p>กาญจน์ ซังเตผลักดันม้ง แฟนซีอิ่มแปร้ นายพรานยูโร เมคอัพ</p></div>
 
-<h3>Definition list</h3>
+<div efy_searchable><h3>Definition list</h3>
         <dl>
             <dt>Definition list</dt>
             <dd>Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
@@ -145,8 +129,9 @@
             <dd>Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
                 aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
                 commodo consequat.</dd>
-        </dl>
-        <h3>Details &amp; Summary</h3>
+        </dl></div>
+
+<div efy_searchable><h3>Details &amp; Summary</h3>
         <details>
             <summary>Details</summary>
             <p>A lot of boring text. In fact it's so boring that even if you find it funny while reading it, it will stay boring because it's pretty much useless. Reading it is a waste of time.</p>
@@ -161,10 +146,10 @@
         <details>
             <summary>Details 2</summary>
             <p>A lot of boring text. In fact it's so boring that even if you find it funny while reading it, it will stay boring because it's pretty much useless. Reading it is a waste of time.</p>
-        </details>
+</details></div>
 
 
-        <h2>Table</h2>
+<div efy_searchable><h2>Table</h2>
         <table>
             <thead>
                 <tr>
@@ -228,9 +213,9 @@
                     <td>Table data</td>
                 </tr>
             </tbody>
-        </table>
+</table></div>
 
-        <h2>Form elements</h2>
+<div efy_searchable><h2>Form elements</h2>
         <form>
             <fieldset>
                 <legend>Input types</legend>
@@ -367,51 +352,116 @@
                 <input type="reset" value="Input reset button" onclick="return false;">
                 <input type="button" value="Input disabled button" disabled="">
             </p>
-        </form>
+</form></div>
 
-<h3>Progress</h3>
-<progress value="40" max="100">40%</progress>
+<div efy_searchable><h3>Progress</h3>
+<progress value="40" max="100">40%</progress></div>
 
-<h3>Meter</h3>
-<meter value="5" min="0" max="10">5 / 10</meter>
+<div efy_searchable><h3>Meter</h3>
+<meter value="5" min="0" max="10">5 / 10</meter></div>
 
-<h3>Custom Components</h3>
+</div><div efy_content="1">
+        <details><summary>What's the logic behind it</summary><ul>
+        <li>Minimal efficient code</li>
+        <li>The user is in control, everything is modular</li>
+        <li>Developers & designers save a ton of time, and only need to combine patterns & choose defaults, but the rest doesn't need to be rebuilt each time like with traditional frameworks</li>
+        <li>It's accessible (not fully yet)</li>
+        <li>Sound effects - for a more cinematic & immersive experience</li>
+        <li>Touchscreen friendly & convergent - which is why hovering or using a cursor are not requirements for interracting with the ui, something that is usually not fully taken into consideration by devs / frameworks. Here it is!</li>
+        <li>Transparency friendly: no popups or multilayered elements when possible. Almost close to 0 projects support this currently, so now you can, with a fallback to solid / image backgrounds as well.</li>
+        <li>Things are easily searchable & open on demand when possible to reduce physical space and help you focus</li>
+        </ul></details>
 
-<details class="efy_el_select"><summary>Select menu</summary>
+        <details><summary>Can I use it on my own projects?</summary>
+        <p>Yes, but please donate if you want to support the project and can afford it, that would help a lot! <a target="_blank" href="https://github.com/dragos-efy/efy_ui/blob/main/LICENSE">Read the license</a> for more details.</p>
+        </details>
 
-    <p>Radio</p>
-    <input type="radio" name="efy_example_radio" id="efy_example_select1"><label for="efy_example_select1">Option 1</label>
-    <input type="radio" name="efy_example_radio" id="efy_example_select2" checked><label for="efy_example_select2">Option 2</label>
-    <input type="radio" name="efy_example_radio" id="efy_example_select3"><label for="efy_example_select3">Option 3</label>
+        <details><summary>What does the name <code>EFY</code> stand for?</summary>
+        <p>Honestly? I just picked the shortest name I could find that sorta sounds like a cute girl's name, while mysterious and easy to pronounce internationally lol.</p><br />
+        <p>But hey, use your own imagination to pretend it means something cool, like saving the world from evil forces or something 😂</p>
+        </details>
 
-    <p>Checkbox</p>
-    <input type="checkbox" name="efy_example_checkbox" id="efy_example_select4" checked><label for="efy_example_select4">Option 4</label>
-    <input type="checkbox" name="efy_example_checkbox" id="efy_example_select5"><label for="efy_example_select5">Option 5</label>
-    <input type="checkbox" name="efy_example_checkbox" id="efy_example_select6" checked><label for="efy_example_select6">Option 6</label>
-</details>
+        <details><summary>How to change the background image?</summary>
+        <p><mark>EFY Menu</mark> <i efy_icon="chevron"></i><mark>Theme</mark> <i efy_icon="chevron"></i><mark>Images</mark> <i efy_icon="chevron"></i>Upload your images <i efy_icon="chevron"></i>Set the <mark>Mode</mark> to <code>Light</code> or <code>Dark</code> under <mark>Transparency</mark></p>
+        </details>
 
-<details efy_help><summary>Tabs</summary><p>learn how it works</p></details>
+        <details><summary>More coming soon...</summary><p>This is just the beginning...</p></details>
+    </div>
+    <div efy_content="2">
+        <details><summary><mark>efy_theme</mark></summary><ul>
+        <li>It sets the theme, the default value is <code>light_light</code></li>
 
-<div efy_tabs="demo">
-    <button efy_tab="1">1</button>
-    <button efy_tab="2" efy_active>2</button>
-    <button efy_tab="3">3</button>
+        <li>Options: <mark>light_light</mark> <mark>light_grey</mark> <mark>light_sepia</mark> <mark>light_trans</mark> <mark>dark_dark</mark> <mark>dark_nord</mark> <mark>dark_black</mark> <mark>dark_trans</mark></li>
 
-    <div efy_content="1">1</div>
-    <div efy_content="2" efy_active>2</div>
-    <div efy_content="3">3</div>
+        <h3>Structure</h3>
+
+        <li>1st part: can be <mark>light</mark> or <mark>dark</mark> to indicate the general mode</li>
+
+        <li>2nd part: indicates the specific type of light / dark mode: <mark>light</mark> <mark>grey</mark> <mark>sepia</mark> <mark>trans</mark> <mark>dark</mark> <mark>nord</mark> <mark>black</mark></li>
+
+        <li><mark>trans</mark> = Transparent - it makes the background invisible so that you can see behind the window (if your web engine, browser or operating system supports it) or the image you choose from the sidebar menu</li></ul>
+
+        <h3>Examples</h3><div style="display:grid; gap: 10rem;">
+        <p>Specific theme:</p><pre><code>[efy_theme=light_sepia] { your css }</code></pre>
+        <p>All light themes:</p><pre><code>[efy_theme*=light] { your css }</code></pre>
+        <p>Not this specific theme:</p><pre><code>:not([efy_theme=light_grey]) { your css }</code></pre>
+        <p>Remove selector if any light theme is on, in JS</p><pre><code>e$('[efy_theme*=light] #your_selector').remove()</code></pre>
+        </details>
+
+        <details><summary>Accessibility</summary><div style="display:grid; gap: 10rem;">
+
+        <p><mark>efy_outline</mark> - adds an outline around elements for accessibility with the color set by <code>--efy_text</code> . On touchscreen it becomes invisible (since without a mouse there's no point in making it visible)</p>
+        <p><mark>efy_cursor_on</mark> - adds a custom cursor, which takes colours from <code>--efy_color</code> & <code>--efy_color2</code></p>
+
+        </div></details>
+
+        <details><summary>More coming soon...</summary><p>This is just the beginning...</p></details>
+    </div>
+    <div efy_content="3">
+        <details class="efy_el_select"><summary>Select menu</summary>
+
+        <p>Radio</p>
+        <input type="radio" name="efy_example_radio" id="efy_example_select1"><label for="efy_example_select1">Option 1</label>
+        <input type="radio" name="efy_example_radio" id="efy_example_select2" checked><label for="efy_example_select2">Option 2</label>
+        <input type="radio" name="efy_example_radio" id="efy_example_select3"><label for="efy_example_select3">Option 3</label>
+
+        <p>Checkbox</p>
+        <input type="checkbox" name="efy_example_checkbox" id="efy_example_select4" checked><label for="efy_example_select4">Option 4</label>
+        <input type="checkbox" name="efy_example_checkbox" id="efy_example_select5"><label for="efy_example_select5">Option 5</label>
+        <input type="checkbox" name="efy_example_checkbox" id="efy_example_select6" checked><label for="efy_example_select6">Option 6</label>
+    </details>
+
+    <div efy_searchable><details efy_help><summary>Tabs</summary><p>learn how it works</p></details>
+
+    <div efy_tabs="demo2">
+        <button efy_tab="1">1</button>
+        <button efy_tab="2" efy_active>2</button>
+        <button efy_tab="3">3</button>
+
+        <div efy_content="1">1</div>
+        <div efy_content="2" efy_active>2</div>
+        <div efy_content="3">3</div>
+    </div></div>
+
+    <div efy_searchable><h3>Clock</h3>
+    <div efy_clock></div></div>
+
+    <div efy_searchable><h3>Timer</h3>
+    <div efy_timer="efy_demo"></div></div>
+
+    <div efy_searchable><h3>Alert</h3>
+    <div efy_alert>
+        <div><h4>Notification</h4><p>Content of the notification</p></div>
+        <button efy_btn_square><i efy_icon="remove"></i></button>
+    </div></div>
+
+    <div efy_searchable><h3>Searchable elements (soon)</h3></div>
+
+    </div>
 </div>
 
-<h3>Clock</h3>
-<div efy_clock></div>
-
-<h3>Timer</h3>
-
-<div efy_timer="efy_demo">
-    <div efy_text>00:00:00</div>
-    <button efy_start></button>
-    <button efy_reset></button>
 </div>
+
 
 <footer><p>EFY UI is made by <a href="https://efy.ooo">EFY</a> and is licensed under the <a target="_blank" href="https://github.com/dragos-efy/efy_ui/blob/main/LICENSE.md">EFY Free & Open Non-Commercial License</a></p></footer>
 
