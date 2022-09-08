@@ -1,6 +1,8 @@
 # EFY UI
 Customisable, convergent, transparent, modular, futuristic css / js framework that can be added to your own web / local apps & websites
 
+## IMPORTANT! There's a problem with uploading files, ignore the current structure until the problem gets fixed, which is when you won't see this disclaimer anymore
+
 ## How to use it
 Add the `efy_ui` folder in your project & the following html lines:
 
