@@ -1,4 +1,4 @@
-/*EFY UI 2022.08.27*/ let e$ = document.querySelector.bind(document), e$all = document.querySelectorAll.bind(document), e$create = document.createElement.bind(document), e$body, e$root; window.onload =()=>{ e$root = e$(":root"), e$body = e$("body");
+/*EFY UI 2022.09.04*/ let e$ = document.querySelector.bind(document), e$all = document.querySelectorAll.bind(document), e$create = document.createElement.bind(document), e$body, e$root; window.onload =()=>{ e$root = e$(":root"), e$body = e$("body");
 
 /*Check LocalStorage*/ try {let x = 'LS'; localStorage.setItem(x, x); let y = localStorage.getItem(x); localStorage.removeItem(x); if (x !== y) {throw new Error();}} catch (exception) {e$('body').innerHTML = `<div efy_alert style="background: #eee"><div><h6><a>EFY</a> - Your browser blocks LocalStorage</h6><p>You can block 3rd party cookies, no worries, Privacy matters! But please allow 1st party cookies in your browser's settings.  EFY<b>doesn't</b> use cookies or track you, but the settings related to LocalStorage are grouped as "cookies", although different. Have fun! 🥳</p></div></div>`}
 
@@ -7,7 +7,7 @@
 
     <details class="efy_quick_shortcuts"><summary><i efy_icon="star"></i>Quick Shortcuts</summary>
         <div class="efy_quick_buttons">
-            <button class="efy_quick_search"><i efy_icon="zoom_in"></i></button>
+            <button class="efy_quick_search"><i efy_icon="search"></i></button>
             <button class="efy_quick_reload"><i efy_icon="reload"></i></button>
             <button class="efy_quick_fullscreen"><i efy_icon="fullscreen"></i></button>
             <button class="efy_quick_back"><i efy_icon="chevron"></i></button>
@@ -27,9 +27,9 @@
             <button efy_tab="images">Images</button>
             <button efy_tab="border">Border</button>
 
-            <div efy_content="mode" efy_active class="efy_el_select" id="efy_theme">
+            <div efy_content="mode" efy_active efy_select id="efy_theme">
+                <input type="radio" name="efy_theme" id="default_mode"><label for="default_mode">Default</label>
                 <input type="radio" name="efy_theme" id="light_light"><label for="light_light">Light</label>
-                <input type="radio" name="efy_theme" id="light_grey"><label for="light_grey">Grey</label>
                 <input type="radio" name="efy_theme" id="light_sepia"><label for="light_sepia">Sepia</label>
                 <input type="radio" name="efy_theme" id="dark_dark"><label for="dark_dark">Dark</label>
                 <input type="radio" name="efy_theme" id="dark_nord"><label for="dark_nord">Nord</label>
@@ -38,12 +38,14 @@
                 <input type="radio" name="efy_theme" id="light_trans"><label for="light_trans">Light</label>
                 <input type="radio" name="efy_theme" id="dark_trans"><label for="dark_trans">Dark</label>
             </div>
-            <div efy_content="colors" class="efy_el_select">
+            <div efy_content="colors" efy_select>
                 <label for="efy_color1">Color 1<input id="efy_color1" type="color" value="#77aa00"></label>
                 <label for="efy_color2">Color 2<input id="efy_color2" type="color" value="#ffcc00"></label>
                 <details efy_help><summary>Custom Colors</summary>These colors override the default ones</details>
                 <label for="efy_color_text">Text<input id="efy_color_text" type="color" value="#555555"></label>
-                <input name="efy_text_color_status" id="efy_text_status" type="checkbox"><label for="efy_text_status">On / Off</label>
+                <input name="efy_text_color_status" id="efy_text_status" type="checkbox"><label for="efy_text_status">On / Off</label><br />
+                <label for="efy_color_bgcol">Background<input id="efy_color_bgcol" type="color" value="#555555"></label>
+                <input name="efy_bgcol_color_status" id="efy_bgcol_status" type="checkbox"><label for="efy_bgcol_status">On / Off</label>
             </div>
             <div efy_content="images" class="efy_custom_bgimage">
                 <input type="file" id="pictureTest" accept="image/*">
@@ -51,21 +53,21 @@
                 <details efy_help><summary>Warning! Bigger = Slower</summary>Keep them bellow 1MB per image, unless your device has a powerful CPU / GPU. You can also convert png, jpg etc to webp to reduce the size</details>
                 <button class="efy_idb_reset" type="reset"><i efy_icon="reload"></i>Reset</button>
             </div>
-            <div efy_content="border" class="efy_el_select">
+            <div efy_content="border" efy_select>
                 <p>Radius</p><div class="efy_sidebar_range"></div>
                 <input class="efy_sidebar_selectRadius" type="range" min="0" max="25" value="12" step="1">
             </div>
         </div>
     </details>
 
-    <details class="efy_el_select"><summary><i efy_icon="dots"></i>Visual Filters</summary>
+    <details efy_select><summary><i efy_icon="dots"></i>Visual Filters</summary>
         <div efy_tabs="efyui_filters">
             <button efy_tab="bg" efy_active>Background</button>
             <button efy_tab="content">Content</button>
             <button efy_tab="trans">Trans Elements</button>
-            <div efy_content="bg" efy_active class="efy_el_select" id="efy_theme"></div>
-            <div efy_content="content" class="efy_el_select" id="efy_theme"></div>
-            <div efy_content="trans" class="efy_el_select" id="efy_theme"></div>
+            <div efy_content="bg" efy_active efy_select id="efy_theme"></div>
+            <div efy_content="content" efy_select id="efy_theme"></div>
+            <div efy_content="trans" efy_select id="efy_theme"></div>
     </details>
 
     <details><summary><i efy_icon="arrow_down"></i>Save & Restore</summary>
@@ -79,11 +81,11 @@
         <input type="file" class="efy_idb_import" accept=".json" />
     </details>
 
-    <details class="efy_el_select" id="efy_accessibility"><summary><i efy_icon="accessibility"></i>Accessibility</summary>
+    <details efy_select id="efy_accessibility"><summary><i efy_icon="accessibility"></i>Accessibility (Beta)</summary>
 
-        <details class="efy_el_select" id="efy_btn_align"><summary>Menu Button Position</summary><div></div></details>
+        <details efy_select id="efy_btn_align"><summary>Menu Button Position</summary><div></div></details>
 
-        <details class="efy_el_select"><summary>Text Size</summary>
+        <details efy_select><summary>Text Size</summary>
             <form class="efy_text_accessibility"><button type="reset"><i efy_icon="reload"></i>Reset</button>
                 <p>Zoom</p><input class="efy_ui_zoom" type="range" min="1" max="2" value="1" step="0.01">
                 <p>Text Spacing</p><input class="efy_text_spacing" type="range" min="0" max="15" value="0" step="1">
@@ -95,7 +97,7 @@
 
     </details>
 
-    <details class="efy_el_select" id="efy_audio"><summary><i efy_icon="audio"></i>Audio Effects</summary>
+    <details efy_select id="efy_audio"><summary><i efy_icon="audio"></i>Audio Effects (Beta)</summary>
         <input type="checkbox" name="efy_audio" id="efy_audio_status"><label for="efy_audio_status">On / Off</label>
         <input type="checkbox" name="efy_audio" id="efy_audio_click"><label for="efy_audio_click">Click & Tap</label>
         <input type="checkbox" name="efy_audio" id="efy_audio_hover"><label for="efy_audio_hover">Mouse Hover</label>
@@ -122,10 +124,10 @@
 
 
 /*Theme*/ if (localStorage.efy_theme) {e$root.setAttribute("efy_theme", localStorage.efy_theme); e$("#" + localStorage.efy_theme).setAttribute("checked", "1")}
-else {e$root.setAttribute('efy_theme', 'light_light'); e$("#light_light").setAttribute("checked", "1")}
+else {e$root.setAttribute('efy_theme', 'default_mode'); e$("#default_mode").setAttribute("checked", "1")}
 e$all("[name=efy_theme]").forEach(x => { x.onclick = () => { e$root.setAttribute("efy_theme", x.id); localStorage.efy_theme = x.id; }; });
 
-/*Colors*/ let efy_color = {'color1': 'efy_color', 'color2': 'efy_color2', 'color_text': 'efy_text'}, rgb2hex = c => "#" + c.match(/\d+/g).map(x => (+x).toString(16).padStart(2, 0)).join``;
+/*Colors*/ let efy_color = {'color1': 'efy_color', 'color2': 'efy_color2', 'color_text': 'efy_text', 'color_bgcol': 'efy_bgcol'}, rgb2hex = c => "#" + c.match(/\d+/g).map(x => (+x).toString(16).padStart(2, 0)).join``;
 Object.keys(efy_color).forEach(z =>{ e$(`#efy_${z}`).oninput = ev => {
 let x = ev.target.value, r = parseInt(x.substr(1, 2), 16), g = parseInt(x.substr(3, 2), 16), b = parseInt(x.substr(5, 2), 16); x = `${r},${g},${b}`; localStorage.setItem(efy_color[z], x); e$root.style.setProperty(`--efy_${z}_var`, x); }
 let y = getComputedStyle(e$root).getPropertyValue(`--efy_${z}_var`);
@@ -143,8 +145,9 @@ efy_radius_input.oninput = () => { let za = e$('.efy_sidebar_selectRadius'), z =
 /*Radius: Window Resize*/ window.addEventListener('resize', () => { let za = e$('.efy_sidebar_selectRadius'), z = getComputedStyle(za).getPropertyValue('width').replace('px',''), x = efy_radius_input.value; efy_sidebar_range.style.left = (x * (z - 32) / efy_radius_input.max) + 'rem'; });
 
 
-/*EFY Button Position*/ if (localStorage.efy_btn_align) { e$("#" + localStorage.efy_btn_align).setAttribute("checked", "1"); } else { e$("#right_top").setAttribute("checked", "1");}
-e$("[efy_sidebar_btn_open]").setAttribute("efy_btn_align", localStorage.efy_btn_align); e$all("[name=efy_btn_align]").forEach(x => { x.onclick = () => { e$("[efy_sidebar_btn_open]").setAttribute("efy_btn_align", x.id); localStorage.efy_btn_align = x.id; }; });
+/*EFY Button Position*/ if (localStorage.efy_btn_align) { e$("#" + localStorage.efy_btn_align).setAttribute("checked", "1"); e$("[efy_sidebar_btn_open]").setAttribute("efy_btn_align", localStorage.efy_btn_align); } else { let y = getComputedStyle(e$root).getPropertyValue('--efy_sidebar_button').replace(' ','');
+e$('#'+y).setAttribute("checked", "1"); e$('[efy_sidebar_btn_open]').setAttribute('efy_btn_align', y);}
+e$all("[name=efy_btn_align]").forEach(x => { x.onclick = () => { e$("[efy_sidebar_btn_open]").setAttribute("efy_btn_align", x.id); localStorage.efy_btn_align = x.id; }; });
 
 /*BgImg Filter*/ let efy_bg_filter = {}, efy_css_bg_filter = e$create("style"); efy_css_bg_filter.classList.add("efy_css_bg_filter"); document.head.appendChild(efy_css_bg_filter); async function efy_bg_filter_fn(){
     ['blur','brightness','saturate','contrast','hue-rotate','sepia'].forEach(x => { efy_bg_filter[x] = e$(`.efy_bg_${x}`).value; if (x == 'blur') { efy_bg_filter[x] = efy_bg_filter[x] + 'px' } else if (x == 'hue-rotate') { efy_bg_filter[x] = efy_bg_filter[x] + 'deg' } });
@@ -181,15 +184,21 @@ e$all('.efy_trans_filter [type=reset]').forEach(x =>{ x.addEventListener("pointe
 
 /* Text Size*/ let efy_text_accessibility = e$create("style"); efy_text_accessibility.classList.add("efy_text_accessibility"); document.head.appendChild(efy_text_accessibility); e$all('.efy_text_accessibility input').forEach(x => x.oninput =()=>{ efy_text_accessibility.innerHTML = `:root {--efy_font_size: ${e$('.efy_ui_zoom').value}px!important;} html {letter-spacing: ${e$('.efy_text_spacing').value}px!important;}`; });
 
-/*Checkbox Toggles*/  ["efy_audio_status", "efy_audio_click", "efy_audio_hover", "efy_outline", 'efy_cursor','efy_text_status'].forEach(x => { if (localStorage.getItem(x) == "on") {e$("#" + x).setAttribute("checked", "1");} e$("#" + x).onclick = () => { if (localStorage.getItem(x) == "on") { localStorage.setItem(x, "off"); } else { localStorage.setItem(x, "on"); } };});
+/*Checkbox Toggles*/  ["efy_audio_status", "efy_audio_click", "efy_audio_hover", "efy_outline", 'efy_cursor','efy_text_status', 'efy_bgcol_status'].forEach(x => { if (localStorage.getItem(x) == "on") {e$("#" + x).setAttribute("checked", "1");} e$("#" + x).onclick = () => { if (localStorage.getItem(x) == "on") { localStorage.setItem(x, "off"); } else { localStorage.setItem(x, "on"); } };});
 
 /*Focus Outline*/ if (localStorage.efy_outline == 'on') {e$root.setAttribute('efy_outline', '1');}  e$('#efy_outline').onchange = () => {e$root.toggleAttribute('efy_outline')}
 /*Cursor*/ if (localStorage.efy_cursor == 'on') {e$root.setAttribute('efy_cursor_on', '1');}  e$('#efy_cursor').onchange = () => {e$root.toggleAttribute('efy_cursor_on')}
 /*Custom Text Color*/ if (localStorage.efy_text_status == 'on') {e$root.setAttribute('efy_color_text', '1')}  e$('#efy_text_status').onchange = () => {e$root.toggleAttribute('efy_color_text')}
+/*Custom BG Color*/ if (localStorage.efy_bgcol_status == 'on') {e$root.setAttribute('efy_color_bgcol', '1')}  e$('#efy_bgcol_status').onchange = () => {e$root.toggleAttribute('efy_color_bgcol')}
 
 
-/*EFY Menu Toggles*/ e$("[efy_sidebar_btn_open]").onclick = () => { e$("[efy_sidebar_btn_open]").style.display = "none"; e$("[efy_sidebar_btn_close]").style.display = "block"; e$(".efy_sidebar").classList.toggle("efy_toggle_efy_sidebar_panel"); e$("body").classList.toggle("efy_toggle_efy_sidebar"); };
-/*Close*/ e$("[efy_sidebar_btn_close]").onclick = () => { e$(".efy_sidebar").classList.toggle("efy_toggle_efy_sidebar_panel"); e$("body").classList.toggle("efy_toggle_efy_sidebar"); e$("[efy_sidebar_btn_open]").style.display = "block"; e$("[efy_sidebar_btn_close]").style.display = "none"; };
+/*EFY Menu Toggles*/ e$body.addEventListener("click", ()=>{ if (event.target.matches('[efy_sidebar_btn_open]')) {
+    e$("[efy_sidebar_btn_open]:not([efy_sidebar_btn_open=relative])").style.display = "none";
+    e$("[efy_sidebar_btn_close]").style.display = "block";
+    e$(".efy_sidebar").classList.toggle("efy_toggle_efy_sidebar_panel");
+    e$("body").classList.toggle("efy_toggle_efy_sidebar");
+}});
+/*Close*/ e$("[efy_sidebar_btn_close]").onclick = () => { e$(".efy_sidebar").classList.toggle("efy_toggle_efy_sidebar_panel"); e$("body").classList.toggle("efy_toggle_efy_sidebar"); e$("[efy_sidebar_btn_open]:not([efy_sidebar_btn_open=relative])").style.display = "block"; e$("[efy_sidebar_btn_close]").style.display = "none"; };
 
 
 
