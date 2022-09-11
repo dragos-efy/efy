@@ -1,4 +1,4 @@
-/*EFY UI 2022.09.08*/ let e$ = document.querySelector.bind(document), e$all = document.querySelectorAll.bind(document), e$create = document.createElement.bind(document), e$body, e$root; window.onload =async ()=>{ e$root = e$(":root"), e$body = e$("body");
+/*EFY UI 2022.09.11*/ let e$ = document.querySelector.bind(document), e$all = document.querySelectorAll.bind(document), e$create = document.createElement.bind(document), e$body, e$root; window.onload =async ()=>{ e$root = e$(":root"), e$body = e$("body");
 
 /*Check LocalStorage*/ try {let x = 'LS'; localStorage.setItem(x, x); let y = localStorage.getItem(x); localStorage.removeItem(x); if (x !== y) {throw new Error();}} catch (exception) {e$('body').innerHTML = `<div efy_alert style="background: #eee"><div><h6><a>EFY</a> - Your browser blocks LocalStorage</h6><p>You can block 3rd party cookies, no worries, Privacy matters! But please allow 1st party cookies in your browser's settings.  EFY<b>doesn't</b> use cookies or track you, but the settings related to LocalStorage are grouped as "cookies", although different. Have fun! 🥳</p></div></div>`}
 
@@ -315,7 +315,7 @@ e$(".efy_quick_back").onclick =()=> window.history.go(-1);
 e$(".efy_quick_forward").addEventListener('pointerup', async ()=> window.history.go(1));
 
 /*Tabs*/ e$all('[efy_tabs]').forEach(z => { let x = '[efy_tabs='+z.getAttribute('efy_tabs')+'] > ';
-    e$all(x+'[efy_tab]').forEach(y => { y.onclick = e => { let efy_tab = e.target.getAttribute('efy_tab');
+    e$all(x+'[efy_tab]').forEach(y => { let cld = e$create('code'); cld.textContent = y.textContent; y.textContent = ''; y.appendChild(cld); y.onclick = e => { let efy_tab = e.target.getAttribute('efy_tab');
         e$all(x+'[efy_tab]').forEach(y => y.removeAttribute('efy_active') ); e.target.setAttribute('efy_active', '1');
         e$all(x+'[efy_content]').forEach(y => y.removeAttribute('efy_active') ); e$(x+' [efy_content="'+efy_tab+'"]').setAttribute('efy_active', '1');
 } }); });
