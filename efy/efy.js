@@ -144,7 +144,7 @@ efy_radius_input.oninput = () => { let za = e$('.efy_sidebar_selectRadius'), z =
 /*Radius: Window Resize*/ window.addEventListener('resize', () => { let za = e$('.efy_sidebar_selectRadius'), z = getComputedStyle(za).getPropertyValue('width').replace('px',''), x = efy_radius_input.value; efy_sidebar_range.style.left = (x * (z - 32) / efy_radius_input.max) + 'rem'; });
 
 
-/*EFY Button Position*/ if (localStorage.efy_btn_align) { e$("#" + localStorage.efy_btn_align).setAttribute("checked", "1"); e$("[efy_sidebar_btn_open]").setAttribute("efy_btn_align", localStorage.efy_btn_align); } else { let y = getComputedStyle(e$root).getPropertyValue('--efy_sidebar_button').replace(' ','');
+/*EFY Button Position*/ if (localStorage.efy_btn_align) { e$("#" + localStorage.efy_btn_align).setAttribute("checked", "1"); e$("[efy_sidebar_btn_open]").setAttribute("efy_btn_align", localStorage.efy_btn_align); } else { let y = getComputedStyle(e$root).getPropertyValue('--efy_sidebar_button').replaceAll(' ','');
 e$('#'+y).setAttribute("checked", "1"); e$('[efy_sidebar_btn_open]').setAttribute('efy_btn_align', y);}
 e$all("[name=efy_btn_align]").forEach(x => { x.onclick = () => { e$("[efy_sidebar_btn_open]").setAttribute("efy_btn_align", x.id); localStorage.efy_btn_align = x.id; }; });
 
@@ -290,7 +290,8 @@ await importIDB(); }; reader.readAsText(file); });
 
 /*Reset Settings*/ e$all(".efy_localstorage_reset").forEach(x =>{ x.onclick = () => { Object.entries(localStorage).forEach(([k])=>{ if (k.includes('efy')){ localStorage.removeItem(k)} }); location.reload() }});
 
-/*Determine Audio Path*/ let audioPath; await fetch('./audio/ok.mp3').then((response) => { audioPath = response.ok ? './audio' : '/audio'; });
+/*Determine Audio Path*/ let audioPath = getComputedStyle(e$root).getPropertyValue('--efy_audio_path').replaceAll(' ','');
+
 /*Audio*/ let efyaudio = {}; ['pop','ok','ok2','ok3','ok4','hover','slide','squish','step','error','disabled'].forEach(x => { efyaudio[x] = new Audio(`${audioPath}/${x}.mp3`) }); e$body.addEventListener("pointerdown", efyaudio_fn, {once: true});
 
 async function efyaudio_fn() { if (localStorage.efy_audio_status == 'on' ){ if (localStorage.efy_audio_click == 'on') {
