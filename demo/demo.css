@@ -5,6 +5,7 @@
     --efy_radius: 12rem;
     --efy_sidebar_button: right_top;
     --efy_font_family: 'nunito', sans-serif,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+    --efy_audio_path: ./efy/audio;
 }
 /*Default Mode*/ [efy_theme=default_mode] {
     color-scheme: light;
