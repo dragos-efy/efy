@@ -1,4 +1,4 @@
-<!--EFY UI 2022.09.08--><!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>EFY UI</title><meta name="description" content="Convergent, responsive, acessible, futuristic, customisable css / javascript framework">
+<!--EFY UI 2022.09.28--><!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>EFY UI</title><meta name="description" content="Convergent, responsive, acessible, futuristic, customisable css / javascript framework">
 
 <meta name="robots" content="noindex, nofollow">
 <meta property="og:type" content="website">
@@ -12,9 +12,9 @@
 
 </head><body>
 
-<noscript><p style="background: #000; color:#fff; border-radius: 16rem; padding: 16rem;">Please enable JavaScript to load the page properly & enjoy extra features.</p><br></noscript>
+<noscript><p style="background: #000; color:#fff; border-radius: 16rem; padding: 16rem;">Please enable JavaScript to load the page properly &amp; enjoy extra features.</p><br></noscript>
 
-<header><h1><a href="https://efy.ooo">EFY</a> UI - Beta Demo</h1><p>Customisable, convergent, transparent, modular, futuristic css / js framework that can be added to your own web / local apps & websites. Tap the menu button to see it in action! When you spot issues let me know on <a target="_blank" href="https://matrix.to/#/#efy_ui:matrix.org">Matrix</a> or <a target="_blank" href="https://github.com/dragos-efy/efy">Github</a>. Have fun, you cool sexy bastards 🥳</p>
+<header><h1><a href="https://efy.ooo">EFY</a> UI - Beta Demo</h1><p>Customisable, convergent, transparent, modular, futuristic css / js framework that can be added to your own web / local apps &amp; websites. Tap the menu button to see it in action! When you spot issues let me know on <a target="_blank" href="https://matrix.to/#/#efy_ui:matrix.org">Matrix</a> or <a target="_blank" href="https://github.com/dragos-efy/efy">Github</a>. Have fun, you cool sexy bastards 🥳</p>
 </header>
 
 <div id="efy_docs" efy_search="details, #efy_docs [efy_searchable]">
@@ -98,11 +98,11 @@
 
 <div efy_searchable><h3>Navigation</h3>
 <nav>
-  <a href="">Home</a>
-  <a href="">About</a>
-  <a href="">Blog</a>
-  <a href="">Notes</a>
-  <a href="">Contact</a>
+  <a href="#">Home</a>
+  <a href="#">About</a>
+  <a href="#">Blog</a>
+  <a href="#">Notes</a>
+  <a href="#">Contact</a>
 </nav></div>
 
 <div efy_searchable><h3>Image + Caption</h3>
@@ -364,12 +364,12 @@
         <details><summary>What's the logic behind it</summary><ul>
         <li>Minimal efficient code</li>
         <li>The user is in control, everything is modular</li>
-        <li>Developers & designers save a ton of time, and only need to combine patterns & choose defaults, but the rest doesn't need to be rebuilt each time like with traditional frameworks</li>
+        <li>Developers &amp; designers save a ton of time, and only need to combine patterns &amp; choose defaults, but the rest doesn't need to be rebuilt each time like with traditional frameworks</li>
         <li>It's accessible (not fully yet)</li>
-        <li>Sound effects - for a more cinematic & immersive experience</li>
-        <li>Touchscreen friendly & convergent - which is why hovering or using a cursor are not requirements for interracting with the ui, something that is usually not fully taken into consideration by devs / frameworks. Here it is!</li>
+        <li>Sound effects - for a more cinematic &amp; immersive experience</li>
+        <li>Touchscreen friendly &amp; convergent - which is why hovering or using a cursor are not requirements for interracting with the ui, something that is usually not fully taken into consideration by devs / frameworks. Here it is!</li>
         <li>Transparency friendly: no popups or multilayered elements when possible. Almost close to 0 projects support this currently, so now you can, with a fallback to solid / image backgrounds as well.</li>
-        <li>Things are easily searchable & open on demand when possible to reduce physical space and help you focus</li>
+        <li>Things are easily searchable &amp; open on demand when possible to reduce physical space and help you focus</li>
         </ul></details>
 
         <details><summary>Can I use it on my own projects?</summary>
@@ -391,27 +391,27 @@
         <details><summary><mark>efy_theme</mark></summary><ul>
         <li>It sets the theme, the default value is <code>light_light</code></li>
 
-        <li>Options: <mark>light_light</mark> <mark>light_grey</mark> <mark>light_sepia</mark> <mark>light_trans</mark> <mark>dark_dark</mark> <mark>dark_nord</mark> <mark>dark_black</mark> <mark>dark_trans</mark></li>
+        <li>Options: <mark>light_light</mark> <mark>light_sepia</mark> <mark>light_trans</mark> <mark>dark_dark</mark> <mark>dark_nord</mark> <mark>dark_black</mark> <mark>dark_trans</mark></li>
 
         <h3>Structure</h3>
 
         <li>1st part: can be <mark>light</mark> or <mark>dark</mark> to indicate the general mode</li>
 
-        <li>2nd part: indicates the specific type of light / dark mode: <mark>light</mark> <mark>grey</mark> <mark>sepia</mark> <mark>trans</mark> <mark>dark</mark> <mark>nord</mark> <mark>black</mark></li>
+        <li>2nd part: indicates the specific type of light / dark mode: <mark>light</mark> <mark>sepia</mark> <mark>trans</mark> <mark>dark</mark> <mark>nord</mark> <mark>black</mark></li>
 
         <li><mark>trans</mark> = Transparent - it makes the background invisible so that you can see behind the window (if your web engine, browser or operating system supports it) or the image you choose from the sidebar menu</li></ul>
 
         <h3>Examples</h3><div style="display:grid; gap: 10rem;">
         <p>Specific theme:</p><pre><code>[efy_theme=light_sepia] { your css }</code></pre>
         <p>All light themes:</p><pre><code>[efy_theme*=light] { your css }</code></pre>
-        <p>Not this specific theme:</p><pre><code>:not([efy_theme=light_grey]) { your css }</code></pre>
-        <p>Remove selector if any light theme is on, in JS</p><pre><code>e$('[efy_theme*=light] #your_selector').remove()</code></pre>
+        <p>Not this specific theme:</p><pre><code>:not([efy_theme=light_sepia]) { your css }</code></pre>
+        <p>Remove selector if any light theme is on, in JS</p><pre><code>$('[efy_theme*=light] #your_selector').remove()</code></pre>
         </details>
 
         <details><summary>Accessibility</summary><div style="display:grid; gap: 10rem;">
 
         <p><mark>efy_outline</mark> - adds an outline around elements for accessibility with the color set by <code>--efy_text</code> . On touchscreen it becomes invisible (since without a mouse there's no point in making it visible)</p>
-        <p><mark>efy_cursor_on</mark> - adds a custom cursor, which takes colours from <code>--efy_color</code> & <code>--efy_color2</code></p>
+        <p><mark>efy_cursor_on</mark> - adds a custom cursor, which takes colours from <code>--efy_color</code> &amp; <code>--efy_color2</code></p>
 
         </div></details>
 
