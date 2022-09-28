@@ -6,12 +6,13 @@
     --efy_sidebar_button: right_top;
     --efy_font_family: 'nunito', sans-serif,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
     --efy_audio_path: ./efy/audio;
+    --efy_modules: efy_quick, efy_mode, efy_filters, efy_backup, efy_accessibility, efy_audio;
 }
-/*Default Mode*/ [efy_theme=default_mode] {
+/*Default Mode*/ [efy_mode=default_mode] {
     color-scheme: light;
     --efy_bg_var: 0,0,0;
     --efy_bg: rgb(255,255,255);
     --efy_text: rgb(0,0,0);
 }
 
-[efy_tabs=demo] > [efy_content][efy_active] {background: transparent; border: 0; padding: 0; backdrop-filter: none!important}
+[efy_tabs=demo] > [efy_content][efy_active] {background: transparent; border: 0; padding: 0; backdrop-filter: none!important; -webkit-backdrop-filter: none!important}
