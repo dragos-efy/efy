@@ -1,4 +1,4 @@
-/*EFY UI 2022.09.28*/ let $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document), $create = document.createElement.bind(document), $body, $root, $efy_module,
+/*EFY UI 2022.09.29*/ let $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document), $create = document.createElement.bind(document), $body, $root, $efy_module,
 /*Append: Where, Element*/ $append = (where, el) =>{ where.appendChild(el)},
 /*Insert: Where, Position, Element*/ $insert = (where, pos, el) =>{ where.insertAdjacentElement(pos,el)},
 /*Get CSS Property*/ $css_prop = (a) =>{ return getComputedStyle($root).getPropertyValue(a).replaceAll(' ','')},
@@ -8,7 +8,7 @@
 return x},
 /*Cursor FN*/ cursor_fn = (e) =>{let x = $('[efy_cursor]'); x.style.left = e.pageX + 'px'; x.style.top = e.pageY + 'px'};
 
-window.onload = async ()=>{ $root = $(":root"), $body = $("body"); $efy_module = (a) =>{ let b = $css_prop('--efy_modules').split(',').includes(a) ? true : false; return b}; let a;
+window.onload = async ()=>{ $root = $(":root"), $body = $("body"); $efy_module = (a) =>{ let b = $css_prop('--efy_modules').split(',').includes(a) ? true : false; return b}; let a, b;
 
 /*Check LocalStorage*/ try {let x = 'LS'; localStorage.setItem(x, x); let y = localStorage.getItem(x); localStorage.removeItem(x); if (x !== y) {throw new Error()}} catch (exception) {$append($body, $add('div', {class: 'efy_no_ls', efy_alert: '', style: 'background: #eee; grid-template-columns: 1fr; gap: 0'}, [$add('h6', {}, ['EFY - Your browser blocks LocalStorage']), $add('p', {}, ["Privacy matters! So block 3rd party cookies if you want, no worries, but please allow 1st party cookies in your browser's settings, to be able to save your EFY preferences locally. Have fun!"])]))}
 
@@ -90,7 +90,8 @@ for (let a = ['localstorage', 'idb'], b = ['Settings', 'Images'], c = '#efy_back
 
 /*Accessibility*/ if ($efy_module('efy_accessibility')){ $append($('.efy_sidebar'), $add('details', {id: 'efy_accessibility', efy_select: ''}, [$add('summary', {}, [ $add('i', {efy_icon: 'accessibility'}), 'Accessibility (Beta)']),
   $add('details', {id: 'efy_btn_align', efy_select: ''}, [$add('summary', {}, ['Menu Button Position']), $add('div', {})]),
-  $add('details', {id: 'efy_accessibility_outline', efy_select: ''}, [$add('summary', {}, ['Outline']), $add('p', {}, ["Safari & Webkit don't support custom outline radius yet, so it's not up to efy, but the outline itself works and the radius as well on other browsers."]), $add('input', {id: 'efy_outline', type: 'checkbox', name: 'efy_accessibility'}), $add('label', {for: 'efy_outline'}, ['Focus Outline'])]),
+  $add('details', {id: 'efy_accessibility_outline', efy_select: ''}, [$add('summary', {}, ['Outline']), $add('p', {}, ["Safari & Webkit don't support custom outline radius yet, so it's not up to efy, but the outline itself works & the radius as well on other browsers."]), $add('input', {id: 'efy_outline', type: 'checkbox', name: 'efy_accessibility'}), $add('label', {for: 'efy_outline'}, ['Focus Outline'])]),
+  $add('details', {id: 'efy_accessibility_animations', efy_select: ''}, [$add('summary', {}, ['Animations']), $add('input', {id: 'efy_anim_status', type: 'checkbox', name: 'efy_anim_status'}), $add('label', {for: 'efy_anim_status'}, ['On / Off'])]),
   $add('details', {id: 'efy_accessibility_text', efy_select: ''}, [$add('summary', {}, ['Text Size']), $add('form', {class: 'efy_text_accessibility'}, [
     $add('button', {type: 'reset'}, [$add('i', {efy_icon: 'reload'}), 'Reset']),
     $add('p', {}, ['Zoom']), $add('input', {class: 'efy_ui_zoom', type: 'range', min: '1', max: '2', value: '1', step: '0.01'}),
@@ -112,6 +113,9 @@ for (let a = ['efy_cursor_default', 'efy_cursor_custom', 'efy_cursor_none'], b =
 /*None*/ $('#efy_cursor_none').addEventListener('change', ()=>{ if ($('#efy_cursor_none').checked) {$root.removeAttribute('efy_cursor_custom'); $root.setAttribute('efy_cursor_none',''); document.removeEventListener('pointermove', cursor_fn); localStorage.efy_cursor = 'none'}});
 
 /*Default*/ $('#efy_cursor_default').addEventListener('change', ()=>{ if ($('#efy_cursor_default').checked) {$root.removeAttribute('efy_cursor_custom'); $root.removeAttribute('efy_cursor_none'); document.removeEventListener('pointermove', cursor_fn); localStorage.removeItem('efy_cursor')}});
+
+/*Animations*/ a = 'efy_anim_status', b = '--efy_anim_state'; if (localStorage.efy_anim_status == 'off') {$body.style.setProperty('--'+a, '0'); $body.style.setProperty(b, 'paused')} else {$('#'+a).setAttribute('checked', '')}
+$('#'+a).onchange = () =>{ if (localStorage.getItem(a) == 'on') { localStorage.setItem(a, 'off'); $body.style.setProperty('--'+a, '0'); $body.style.setProperty(b, 'paused')} else {localStorage.setItem(a, 'on'); $body.style.setProperty('--'+a, '1'); $body.style.setProperty(b, 'running')}}
 }
 
 /*Audio*/ if ($efy_module('efy_audio')){ $append($('.efy_sidebar'), $add('details', {efy_select: '', id: 'efy_audio'}, [
