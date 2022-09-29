@@ -1,4 +1,4 @@
-/*EFY UI 2022.09.28*/:root { --efy_font_size: 1px;
+/*EFY UI 2022.09.29*/:root { --efy_font_size: 1px;
 --efy_radius0: calc(var(--efy_radius) / 1.25); --efy_radius2: calc(var(--efy_radius) * 1.5); --efy_radius00: calc(var(--efy_radius) / 3);
 --efy_padding:  8rem  12rem; --efy_padding2: 3rem  6rem; --efy_gap:  15rem; --efy_body_width: 1120rem;
 --efy_color: rgb(var(--efy_color1_var)); --efy_color_trans: rgba(var(--efy_color1_var), 0.3);
@@ -7,7 +7,9 @@
 --efy_color_text_var: 0,0,0; --efy_color_bgcol_var: 100,100,100;
 --efy_bg1: rgba(var(--efy_bg_var), 0.07); --efy_bg2: rgba(var(--efy_bg_var), 0.13);
 --efy_text: rgb(var(--efy_bg_var)); --efy_text_trans: rgba(var(--efy_bg_var), 0.3); --efy_text_trans2: rgba(var(--efy_bg_var), 0.45); --efy_text2: var(--efy_bg);
---efy_color_border: rgba(var(--efy_bg_var), 0.07);}
+--efy_color_border: rgba(var(--efy_bg_var), 0.07);
+--efy_anim_status: 1; --efy_anim_state: running;
+}
 
 /*Light: All*/ [efy_mode*=light] {--efy_bg: rgb(255,255,255); --efy_bg_var: 0,0,0; color-scheme: light}
 /*Dark: All*/ [efy_mode*=dark] {--efy_bg: rgb(0,0,0); --efy_bg_var: 255,255,255; color-scheme: dark}
@@ -98,16 +100,15 @@
 /*Scrollbar*/ ::-webkit-scrollbar {width:20rem; min-height:20rem; background: transparent!important} ::-webkit-scrollbar-thumb{background: transparent!important; border-radius: var(--efy_radius0); border: 6rem solid transparent; box-shadow: inset 0 0 0 6rem var(--efy_bg2), inset 0 0 0  1.5rem var(--efy_bg1)} ::-webkit-scrollbar-thumb:hover{box-shadow: inset 0 0 0 6rem var(--efy_text)} ::-webkit-scrollbar-corner {background: transparent!important}
 
 
-/*Animation: None*/ [efy_tabs] [efy_tab]:active {-webkit-animation: none;animation: none}
+/*Animation: None*/ [efy_tabs] [efy_tab]:active {-webkit-animation: none; animation: none}
 /*Animation: FadeIn*/ .xzy {animation: efy_animation_fadein2 0.3s}
-/*Animation: Pulse*/  button:focus, button:active, [efy_tabs] [efy_tab]:focus, .efy_img_previews [efy_bg_nr], .efy_img_previews [efy_bg_nr]:active, .efy_img_previews [efy_bg_nr]:focus, .efy_anim_pulse:active  {animation: pulse 0.1s ease-in-out backwards}
-/*Animation: Pulse2*/ details:active, details:focus, input:focus, input:active, textarea:focus, textarea:active, select:focus, select:active, a:focus, a:active, label:active, label:focus, [efy_timer]:active,  [efy_clock]:active, .efy_anim_pulse:hover {animation: pulse2 0.1s ease-in-out backwards}
+/*Animation: Pulse*/  button:focus, button:active, [efy_tabs] [efy_tab]:focus, .efy_img_previews [efy_bg_nr], .efy_img_previews [efy_bg_nr]:active, .efy_img_previews [efy_bg_nr]:focus, .efy_anim_pulse:active  {animation: pulse calc(var(--efy_anim_status) * 0.1s) ease-in-out backwards; animation-play-state: var(--efy_anim_state)}
+/*Animation: Pulse2*/ details:active, details:focus, input:focus, input:active, textarea:focus, textarea:active, select:focus, select:active, a:focus, a:active, label:active, label:focus, [efy_timer]:active,  [efy_clock]:active, .efy_anim_pulse:hover {animation: pulse2 calc(var(--efy_anim_status) * 0.1s) ease-in-out backwards; animation-play-state: var(--efy_anim_state)}
 
 /*Animations*/ @keyframes efy_animation_fadein {0%{opacity: 0.01; transform: translatex(200rem)} 50%{opacity: 0.2; transform: scale(0.5)} 90%{transform: scale(1.1)} 100%{}}
 @keyframes efy_animation_fadein2 {0%{opacity: 0; filter: blur(50rem); transform: translate(500rem 500rem)} 90%{opacity: 0.2; transform: scale(0.5); filter: blur(30rem)} 100%{}}
 @keyframes pulse {0% {transform: scale(0.8)} 70% {transform: scale(1)} 100% {transform: scale(0.98); box-shadow: none}}
 @keyframes pulse2 {0% {transform: scale(0.98)} 100% {transform: scale(1); box-shadow: none}}
-
 
 /*Convergent body*/ * {margin: 0; padding: 0; box-sizing: border-box}
 html, body {margin: 0 auto}
@@ -253,7 +254,7 @@ details[open]:not([efy_help]) > summary:before {transform: rotate(90deg); right:
 
 /*Card*/ [efy_card] {background: var(--efy_bg1); border-radius: var(--efy_radius); border: 1.5rem solid var(--efy_color_border); padding: 15rem; display: grid; gap: 5rem; width: 100%; align-content: baseline}
 
-/*Sidebar*/ .efy_sidebar{padding:  16rem 14rem 16rem 16rem; width: 100vw; max-width: 450rem; height: 100vh; z-index: 9999; position: fixed; right: -450rem; top: 0; box-shadow: 0 0 30rem #0005; border-radius: var(--efy_radius2) 0 0 var(--efy_radius2); transition: right .3s; overflow-y: auto; backdrop-filter: blur( 48rem); -webkit-backdrop-filter: blur( 48rem)}
+/*Sidebar*/ .efy_sidebar{padding:  16rem 14rem 16rem 16rem; width: 100vw; max-width: 450rem; height: 100vh; z-index: 9999; position: fixed; right: -450rem; top: 0; box-shadow: 0 0 30rem #0005; border-radius: var(--efy_radius2) 0 0 var(--efy_radius2); transition: right calc(var(--efy_anim_status) * 0.3s); overflow-y: auto; backdrop-filter: blur( 48rem); -webkit-backdrop-filter: blur( 48rem)}
 
 [efy_sidebar_btn_open] {z-index: 9999; color: var(--efy_color); font-size: 20rem; padding: 4rem 10rem; position: fixed; text-align: center; top:  15rem; right:  15rem}
 [efy_sidebar_btn_open=relative] {position: relative; top:0; right:0}
