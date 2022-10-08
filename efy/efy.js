@@ -1,4 +1,4 @@
-/*EFY UI 2022.09.29*/ let $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document), $create = document.createElement.bind(document), $body, $root, $efy_module,
+/*EFY UI 2022.10.08*/ let $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document), $create = document.createElement.bind(document), $body, $root, $efy_module,  efyaudio = {}, efyaudio_volume = 1,
 /*Append: Where, Element*/ $append = (where, el) =>{ where.appendChild(el)},
 /*Insert: Where, Position, Element*/ $insert = (where, pos, el) =>{ where.insertAdjacentElement(pos,el)},
 /*Get CSS Property*/ $css_prop = (a) =>{ return getComputedStyle($root).getPropertyValue(a).replaceAll(' ','')},
@@ -6,9 +6,15 @@
   for (let a = Object.keys(atb), b= Object.values(atb), i = 0; i < a.length; i++){ x.setAttribute(a[i], b[i])}
   cld.forEach(c => { if(!c) return; const cd = (typeof c === 'string') ? document.createTextNode(c) : c; x.appendChild(cd) })
 return x},
-/*Cursor FN*/ cursor_fn = (e) =>{let x = $('[efy_cursor]'); x.style.left = e.pageX + 'px'; x.style.top = e.pageY + 'px'};
+/*Text*/ $text = (a,b)=>{a.textContent = b},
+/*Cursor FN*/ cursor_fn =(e)=>{let x = $('[efy_cursor]'); x.style.left = e.pageX + 'px'; x.style.top = e.pageY + 'px'},
+/*Ready: Selector*/ $ready =(a)=>{ return new Promise((res) =>{ let b = $(a); if (b) {res(b); return}
+new MutationObserver((mutationRecords, d) =>{ Array.from($all(a)).forEach((c) =>{ res(c); d.disconnect() })}).observe(document.documentElement, { childList: true, subtree: true })})},
+/*Audio Play*/ $audio_play = async (a)=>{ a.pause(); a.currentTime = 0; a.play()},
+/*Wait: Seconds, FN*/ $wait =(a,b)=> setTimeout(b,a*1000),
+/*Custom QuerySelectors*/ $$ =(a,b)=> a.querySelector(b), $$all =(a,b)=> a.querySelectorAll(b);
 
-window.onload = async ()=>{ $root = $(":root"), $body = $("body"); $efy_module = (a) =>{ let b = $css_prop('--efy_modules').split(',').includes(a) ? true : false; return b}; let a, b;
+/*After Page Loads*/ window.onload = async ()=>{ $root = $(":root"), $body = $("body"); $efy_module = (a) =>{ let b = $css_prop('--efy_modules').split(',').includes(a) ? true : false; return b}; let a, b;
 
 /*Check LocalStorage*/ try {let x = 'LS'; localStorage.setItem(x, x); let y = localStorage.getItem(x); localStorage.removeItem(x); if (x !== y) {throw new Error()}} catch (exception) {$append($body, $add('div', {class: 'efy_no_ls', efy_alert: '', style: 'background: #eee; grid-template-columns: 1fr; gap: 0'}, [$add('h6', {}, ['EFY - Your browser blocks LocalStorage']), $add('p', {}, ["Privacy matters! So block 3rd party cookies if you want, no worries, but please allow 1st party cookies in your browser's settings, to be able to save your EFY preferences locally. Have fun!"])]))}
 
@@ -17,7 +23,7 @@ window.onload = async ()=>{ $root = $(":root"), $body = $("body"); $efy_module =
     $add('summary', {}, [$add('code', {}, ['EFY']), $add('code', {}, [' UI']) ]),
     $add('div', {}, ['This page uses ', $add('code', {}, ['EFY']), ', a customisable, convergent, transparent, modular, futuristic css / js framework that can be added to your own web / local apps & websites.', $add('br', {}), $add('a', {href: 'https://efy.ooo/ui'}, [$add('button', {tabindex: '-1'}, ['Learn more'])]), $add('a', {href: 'https://matrix.to/#/#efy_ui:matrix.org'}, [$add('button', {tabindex: '-1'}, ['Matrix Chat'])]) ])
   ]), $add('button', {efy_sidebar_btn_close: ''}, [$add('i',{efy_icon: 'remove'})])
-])
+]), $add('div', {id: 'efy_modules'})
 ])); $append($body, $add('div', {efy_sidebar_btn_open: ''}));
 
 /*Quick Shortcuts*/ if ($efy_module('efy_quick')){ $append($('.efy_sidebar'), $add('details', {id: 'efy_quick', class: 'efy_quick_shortcuts'}, [$add('summary', {}, [ $add('i', {efy_icon: 'star'}), 'Quick Shortcuts']),
@@ -42,10 +48,6 @@ $(".efy_quick_forward").addEventListener('pointerup', async ()=> window.history.
 for (let a = ['mode', 'colors', 'images', 'border'], c = $('[efy_tabs=efyui_0]'), i = 0; i < a.length; i++) { $append(c, $add('div', {efy_content: a[i], efy_select: '', id: `efy_${a[i]}`})) }
 /*Active*/ for (let a = ['[efy_tab=mode]', '[efy_content=mode]'], b = '[efy_tabs=efyui_0] > ', i = 0; i < a.length; i++){$(b + a[i]).setAttribute('efy_active', '')}
 
-/*Mode*/ for (let a = ['default_mode', 'light_light', 'light_sepia', 'dark_dark', 'dark_nord', 'dark_black', 'light_trans', 'dark_trans'], b = ['Default', 'Light', 'Sepia', 'Dark', 'Nord', 'Black', 'Light', 'Dark'], c = $('#efy_sbtheme [efy_content=mode]'), i = 0; i < a.length; i++) { $append(c, $add('input', {type: 'radio', name: 'efy_mode', id: a[i]})); $append(c, $add('label', {for: a[i]}, [b[i]]))}
-
-$insert($('#efy_sbtheme [efy_content=mode] #light_trans'), 'beforebegin', $add('details', {efy_help: ''}, [$add('summary', {}, ['Transparency']), $add('div', {}, ['If your operating system or window manager supports transparency, the background becomes transparent. Otherwise just import your own images and turn this on.'])]));
-
 /*Colors*/ for (let a = ['efy_color1', 'efy_color2', 'efy_color_text', 'efy_color_bgcol'], b = ['Color 1', 'Color 2', 'Text', 'Background'], c = $('#efy_sbtheme [efy_content=colors]'), i = 0; i < a.length; i++) { $append(c, $add('label', {for: a[i]}, [b[i], $add('input', {id: a[i], type: 'color', value: '#555555'})]))}
 
 for (let a = ['text', 'bgcol'], c = 'afterend', i = 0; i < a.length; i++){ let b = $(`#efy_sbtheme [efy_content=colors] [for=efy_color_${a[i]}]`); $insert(b, c, $add('label', {for: `efy_${a[i]}_status`}, ['On / Off'])); $insert(b, c, $add('input', {type: 'checkbox', name: `efy_${a[i]}_color_status`, id: `efy_${a[i]}_status`}))}
@@ -53,11 +55,28 @@ $insert($('#efy_sbtheme [efy_content=colors] [for=efy_text_status]'), 'afterend'
 
 $insert($('#efy_sbtheme [efy_content=colors] [for=efy_color_text]'), 'beforebegin', $add('details', {efy_help: ''}, [$add('summary', {}, ['Custom Colors']), $add('div', {}, ['These colors override the default ones'])]));
 
-/*Images*/ a = $('#efy_sbtheme [efy_content=images]'); $append(a, $add('input', {type: 'file', accept: 'image/*', id: 'pictureTest'})); $append(a, $add('div', {class: 'efy_img_previews'})); $append(a, $add('button', {class: 'efy_idb_reset'}, [$add('i', {efy_icon: 'reload'}), 'Reset']));
+/*Colors - Old*/ let efy_color = {'color1': 'efy_color', 'color2': 'efy_color2', 'color_text': 'efy_text', 'color_bgcol': 'efy_bgcol'}, rgb2hex = c => "#" + c.match(/\d+/g).map(x => (+x).toString(16).padStart(2, 0)).join``;
+Object.keys(efy_color).forEach(z =>{ let y = $css_prop(`--efy_${z}_var`); $(`#efy_${z}`).oninput = ev => {
+let x = ev.target.value, r = parseInt(x.substr(1, 2), 16), g = parseInt(x.substr(3, 2), 16), b = parseInt(x.substr(5, 2), 16); x = `${r},${g},${b}`; localStorage.setItem(efy_color[z], x); $root.style.setProperty(`--efy_${z}_var`, x) }
+if (localStorage.getItem(efy_color[z])) {y = localStorage.getItem(efy_color[z]); $root.style.setProperty(`--efy_${z}_var`, y)}
+$(`#efy_${z}`).value = rgb2hex(`rgb(${y})`) });
+
+/*Mode*/ for (let a = ['default_mode', 'light_light', 'light_sepia', 'dark_dark', 'dark_nord', 'dark_black', 'light_trans', 'dark_trans'], b = ['Default', 'Light', 'Sepia', 'Dark', 'Nord', 'Black', 'Light', 'Dark'], c = $('#efy_sbtheme [efy_content=mode]'), i = 0; i < a.length; i++) { $append(c, $add('input', {type: 'radio', name: 'efy_mode', id: a[i]})); $append(c, $add('label', {for: a[i]}, [b[i]]))}
+
+$insert($('#efy_sbtheme [efy_content=mode] #light_trans'), 'beforebegin', $add('details', {efy_help: ''}, [$add('summary', {}, ['Transparency']), $add('div', {}, ['If your operating system or window manager supports transparency, the background becomes transparent. Otherwise just import your own images and turn this on.'])]));
+
+/*Theme - Old*/ if (localStorage.efy_mode) {a = localStorage.efy_mode; $root.setAttribute('efy_mode', a); $('#'+a).setAttribute('checked', '')}
+else {$root.setAttribute('efy_mode', 'default_mode'); $('#default_mode').setAttribute('checked', '')}
+$all("[name=efy_mode]").forEach(x => { x.onclick = () => { $root.setAttribute('efy_mode', x.id); localStorage.efy_mode = x.id }});
+
+/*Images*/ a = $('#efy_sbtheme [efy_content=images]'); $append(a, $add('input', {type: 'file', accept: 'image/*', id: 'idb_addimg'})); $append(a, $add('div', {class: 'efy_img_previews'})); $append(a, $add('button', {class: 'efy_idb_reset'}, [$add('i', {efy_icon: 'reload'}), 'Reset']));
 
 /*Help*/ $insert($('#efy_sbtheme [efy_content=images] .efy_img_previews'), 'afterend', $add('details', {efy_help: ''}, [$add('summary', {}, ['Warning! Bigger = Slower']), $add('div', {}, ['Keep them bellow 1MB per image, unless your device has a powerful CPU / GPU. You can also convert png, jpg etc to webp to reduce the size'])]));
 
-/*Radius*/ a = $('#efy_sbtheme [efy_content=border]'); $append(a, $add('p', {}, ['Radius'])); $append(a, $add('div', {class: 'efy_sidebar_range'})); $append(a, $add('input', {class: 'efy_sidebar_selectRadius', type: 'range', min: '0', max: '25', value: '12', step: '1'}))
+/*Radius*/ a = $('#efy_sbtheme [efy_content=border]'); $append(a, $add('div', {efy_range_text: 'Radius'}, [ $add('input', {class: 'efy_radius_input', type: 'range', min: '0', max: '25', value: '12', step: '1'}) ]));
+let input = $('.efy_radius_input'), x, radius = localStorage.efy_radius;
+if (radius) { x = radius.replace('rem', ''); input.value = x; $root.style.setProperty('--efy_radius', radius) } else {x = 12}
+input.oninput = () => { let x = input.value; $root.style.setProperty('--efy_radius', x + 'rem'); localStorage.efy_radius = x + 'rem'}
 }
 
 /*Visual Filters*/ if ($efy_module('efy_filters')){ $append($('.efy_sidebar'), $add('details', {id: 'efy_vfilters', efy_select: ''}, [$add('summary', {}, [ $add('i', {efy_icon: 'dots'}), 'Visual Filters (Beta)']), $add('div', {efy_tabs: 'efyui_filters'})]));
@@ -68,16 +87,21 @@ for (let a = ['bg', 'content', 'trans'], c = $('[efy_tabs=efyui_filters]'), i = 
 
 $all('[efy_tabs=efyui_filters] form').forEach(y =>{ let z = y.getAttribute('efy_content');
   $append(y, $add('button', {type: 'reset'}, [$add('i', {efy_icon: 'reload'}), 'Reset']));
-  $append(y, $add('input', {class: `efy_${z}_brightness`, type: 'range', min: '0', max: '3', value: '1', step: '0.1'}));
-  $append(y, $add('input', {class: `efy_${z}_blur`, type: 'range', min: '0', max: '100', value: '0', step: '1'}));
-  $append(y, $add('input', {class: `efy_${z}_saturate`, type: 'range', min: '0', max: '3', value: '1', step: '0.1'}));
-  $append(y, $add('input', {class: `efy_${z}_contrast`, type: 'range', min: '0.1', max: '3', value: '1', step: '0.1'}));
-  $append(y, $add('input', {class: `efy_${z}_hue-rotate`, type: 'range', min: '0', max: '360', value: '0', step: '1'}));
-  $append(y, $add('input', {class: `efy_${z}_sepia`, type: 'range', min: '0', max: '1', value: '0', step: '0.1'}));
+  for (let a = ['Brightness', 'Blur', 'Saturation', 'Contrast', 'Hue', 'Sepia', 'Invert'], b = ['brightness', 'blur', 'saturate', 'contrast', 'hue-rotate', 'sepia', 'invert'], c = ['0', '0', '0', '0.1', '0', '0', '0'], d = ['3', '100', '3', '3', '360', '1', '1'], e = ['1', '0', '1', '1', '0', '0', '0'], f = ['0.1', '1', '0.1', '0.1', '1', '0.1', '0.1'], i = 0; i < a.length; i++){ $append(y, $add('div', {efy_range_text: `${a[i]}`}, [ $add('input', {class: `efy_${z}_${b[i]}`, type: 'range', min: c[i], max: d[i], value: e[i], step: f[i]}) ] ))}
+})
+for (let a = ['bg', 'content', 'trans'], j = ['html:before, html:after {filter: ', 'img, video {filter: ', 'details:not([efy_help]), select, input, textarea, blockquote, pre, article, table, [efy_tabs] [efy_content], [efy_timer], [efy_clock] {backdrop-filter: '], k = ['!important}', '!important}', '!important; -webkit-backdrop-filter: '], l = ['', '', '!important}'], i = 0; i < a.length; i++){
 
-  for (let a = ['Brightness', 'Blur', 'Saturation', 'Contrast', 'Hue', 'Sepia'], i = 0; i < a.length; i++){
-    $insert($(`[efy_tabs=efyui_filters] [efy_content=${z}] input:nth-of-type(${i+1})`), 'beforebegin', $add('p', {}, [a[i]]))}
-})}
+$append(document.head, $add('style', {class: `efy_css_${a[i]}_filter`})); let css = $(`.efy_css_${a[i]}_filter`), f = {}, g = `efy_${a[i]}_filter`, h = `${g}_css`,  fn = async ()=>{
+    ['blur','brightness','saturate','contrast','hue-rotate','sepia','invert'].forEach(x => { f[x] = $(`.efy_${a[i]}_${x}`).value; if (x == 'blur') { f[x] = f[x] + 'px' } else if (x == 'hue-rotate') { f[x] = f[x] + 'deg' } });
+
+    let string = ''; Object.keys(f).forEach(x =>{ string = string + ` ${x}(${f[x]})` });
+    let y; if (a[i] == 'trans'){ y = j[i] + string + k[i] + string + l[i]} else {y= y = j[i] + string + k[i]}
+    $text(css, y); localStorage.setItem(g, JSON.stringify(f)); localStorage.setItem(h, y) };
+
+if (localStorage.getItem(g)) { $text(css, localStorage.getItem(h)); let f = JSON.parse(localStorage.getItem(g)); Object.keys(f).forEach(x => $(`.efy_${a[i]}_${x}`).value = f[x].replace('px','').replace('deg','') ) }
+$all(`.efy_${a[i]}_filter input`).forEach(x =>{ x.addEventListener("input", fn )});
+$all(`.efy_${a[i]}_filter [type=reset]`).forEach(x =>{ x.addEventListener("pointerup", ()=>{ localStorage.removeItem(g); localStorage.removeItem(h); $text(css, ''); x.click() }) })
+}}
 
 /*Backup*/ if ($efy_module('efy_backup')){ $append($('.efy_sidebar'), $add('details', {id: 'efy_backup'}, [$add('summary', {}, [ $add('i', {efy_icon: 'arrow_down'}), 'Save & Restore'])]));
 for (let a = ['localstorage', 'idb'], b = ['Settings', 'Images'], c = '#efy_backup', i = 0; i < a.length; i++) {
@@ -91,11 +115,13 @@ for (let a = ['localstorage', 'idb'], b = ['Settings', 'Images'], c = '#efy_back
 /*Accessibility*/ if ($efy_module('efy_accessibility')){ $append($('.efy_sidebar'), $add('details', {id: 'efy_accessibility', efy_select: ''}, [$add('summary', {}, [ $add('i', {efy_icon: 'accessibility'}), 'Accessibility (Beta)']),
   $add('details', {id: 'efy_btn_align', efy_select: ''}, [$add('summary', {}, ['Menu Button Position']), $add('div', {})]),
   $add('details', {id: 'efy_accessibility_outline', efy_select: ''}, [$add('summary', {}, ['Outline']), $add('p', {}, ["Safari & Webkit don't support custom outline radius yet, so it's not up to efy, but the outline itself works & the radius as well on other browsers."]), $add('input', {id: 'efy_outline', type: 'checkbox', name: 'efy_accessibility'}), $add('label', {for: 'efy_outline'}, ['Focus Outline'])]),
-  $add('details', {id: 'efy_accessibility_animations', efy_select: ''}, [$add('summary', {}, ['Animations']), $add('input', {id: 'efy_anim_status', type: 'checkbox', name: 'efy_anim_status'}), $add('label', {for: 'efy_anim_status'}, ['On / Off'])]),
+  $add('details', {id: 'efy_accessibility_animations', efy_select: ''}, [$add('summary', {}, ['Animations']), $add('input', {id: 'efy_anim_status', type: 'checkbox', name: 'efy_anim_status'}), $add('label', {for: 'efy_anim_status'}, ['On / Off']),
+       $add('div', {efy_range_text: 'Speed'}, [ $add('input', {class: 'efy_anim_speed', type: 'range', min: '0', max: '20', value: '1', step: '0.1'})]), $add('button', {type: 'reset'}, [$add('i', {efy_icon: 'reload'}), 'Reset'])
+  ]),
   $add('details', {id: 'efy_accessibility_text', efy_select: ''}, [$add('summary', {}, ['Text Size']), $add('form', {class: 'efy_text_accessibility'}, [
     $add('button', {type: 'reset'}, [$add('i', {efy_icon: 'reload'}), 'Reset']),
-    $add('p', {}, ['Zoom']), $add('input', {class: 'efy_ui_zoom', type: 'range', min: '1', max: '2', value: '1', step: '0.01'}),
-    $add('p', {}, ['Text Spacing']), $add('input', {class: 'efy_text_spacing', type: 'range', min: '0', max: '15', value: '0', step: '1'})
+    $add('div', {efy_range_text: 'Zoom'}, [ $add('input', {class: 'efy_ui_zoom', type: 'range', min: '1', max: '2', value: '1', step: '0.01'})]),
+    $add('div', {efy_range_text: 'Text Spacing'}, [ $add('input', {class: 'efy_text_spacing', type: 'range', min: '0', max: '15', value: '0', step: '1'})])
   ])]),
   $add('details', {id: 'efy_accessibility_cursor', efy_select: ''}, [$add('summary', {}, ['Cursor']), $add('p', {}, ['WARNING! Only hide it on touchscreen devices!'])])
 ]));
@@ -114,88 +140,45 @@ for (let a = ['efy_cursor_default', 'efy_cursor_custom', 'efy_cursor_none'], b =
 
 /*Default*/ $('#efy_cursor_default').addEventListener('change', ()=>{ if ($('#efy_cursor_default').checked) {$root.removeAttribute('efy_cursor_custom'); $root.removeAttribute('efy_cursor_none'); document.removeEventListener('pointermove', cursor_fn); localStorage.removeItem('efy_cursor')}});
 
+
 /*Animations*/ a = 'efy_anim_status', b = '--efy_anim_state'; if (localStorage.efy_anim_status == 'off') {$body.style.setProperty('--'+a, '0'); $body.style.setProperty(b, 'paused')} else {$('#'+a).setAttribute('checked', '')}
 $('#'+a).onchange = () =>{ if (localStorage.getItem(a) == 'on') { localStorage.setItem(a, 'off'); $body.style.setProperty('--'+a, '0'); $body.style.setProperty(b, 'paused')} else {localStorage.setItem(a, 'on'); $body.style.setProperty('--'+a, '1'); $body.style.setProperty(b, 'running')}}
+
+/* Text Size*/ $append(document.head, $add('style', {class: 'efy_text_accessibility'})); let efy_text_accessibility = $('.efy_text_accessibility'); $all('.efy_text_accessibility input').forEach(x => x.oninput =()=>{ $text(efy_text_accessibility, `:root {--efy_font_size: ${$('.efy_ui_zoom').value}px!important;} html {letter-spacing: ${$('.efy_text_spacing').value}px!important;}`) });
+/* Animation Speed*/ $append(document.head, $add('style', {class: 'efy_anim_accessibility'})); let efy_anim_accessibility = $('.efy_anim_accessibility'); $all('#efy_accessibility_animations input').forEach(x => x.oninput =()=>{ $text(efy_anim_accessibility, `:root {--efy_anim_speed: ${$('.efy_anim_speed').value}!important;}`) });
 }
 
 /*Audio*/ if ($efy_module('efy_audio')){ $append($('.efy_sidebar'), $add('details', {efy_select: '', id: 'efy_audio'}, [
     $add('summary', {}, [ $add('i', {efy_icon: 'audio'}), 'Audio Effects (Beta)']),
-    $add('p', {}, ['You might have to click / tap on the ssl / lock icon on your browser & allow sounds, to hear them automatically.'])]));
-for (let a = ['status', 'click', 'hover'], b = ['On / Off', 'Click & Tap', 'Mouse Hover'], c = '#efy_audio > p', d = 'beforebegin', i = 0; i < a.length; i++) {
-    $insert($(c), d, $add('input', {type: 'checkbox', name: 'efy_audio', id:`efy_audio_${a[i]}`}));
-    $insert($(c), d, $add('label', {for: `efy_audio_${a[i]}`}, [b[i]]))
-}}
+    $add('div', {efy_range_text: 'EFY Volume'}, [ $add('input', {class: 'efy_audio_volume', type: 'range', min: '0', max: '1', value: '1', step: '0.01'}) ]),
+    $add('div', {efy_range_text: 'Page Volume'}, [ $add('input', {class: 'efy_audio_volume_page', type: 'range', min: '0', max: '1', value: '1', step: '0.01'}) ]),
+    $add('p', {}, ['You might have to click / tap on the ssl / lock icon on your browser & allow sounds, to hear them automatically.'])
+]));
+for (let a = ['status', 'click', 'hover'], b = ['On / Off', 'Click & Tap', 'Mouse Hover'], c = '#efy_audio > summary', d = 'beforebegin', i = 0; i < a.length; i++) {
+    $insert($(c), d, $add('input', {type: 'checkbox', name: 'efy_audio', id:`efy_audio_${a[i]}`})); $insert($(c), d, $add('label', {for: `efy_audio_${a[i]}`}, [b[i]]))
+}
+/*Effects*/ let audioPath = $css_prop('--efy_audio_path'); ['pop','ok','ok2','ok3','ok4','hover','slide','squish','step','error','disabled'].forEach(x => { efyaudio[x] = new Audio(`${audioPath}/${x}.mp3`); efyaudio[x].volume = efyaudio_volume }); $body.addEventListener("pointerdown", ()=>{ if (localStorage.efy_audio_status == 'on' ){ if (localStorage.efy_audio_click == 'on') {
+    for (let a = ['ok', 'ok' /*change*/, 'ok2', 'ok4', 'pop', 'slide', 'error', 'disabled', 'step'], b = ['pointerup', 'change', 'pointerup', 'pointerup', 'pointerup', 'pointerup', 'pointerup', 'pointerup', 'pointerdown'], c = ['button:not([disabled], [type=submit], [type=reset], [efy_tab], .shaka-overflow-menu button, .shaka-overflow-menu-button, .shaka-back-to-overflow-button), .video-grid>div', 'input, textarea', '.efy_img_previews [efy_bg_nr]', '[type=submit]', 'summary, select:not([multiple], [disabled]), [efy_tabs] [efy_tab], [efy_alert], [efy_alert] *, .shaka-overflow-menu button, .shaka-overflow-menu-button, .shaka-back-to-overflow-button', '[efy_sidebar_btn_open], [efy_sidebar_btn_close]', '[type=reset]', '[disabled]', 'input:not([type=radio], [type=checkbox], [type=reset], [disabled]), textarea:not([disabled])'], i = 0; i < a.length; i++){ $body.addEventListener(b[i], ()=>{ if (event.target.matches(c[i])) { $audio_play(efyaudio[a[i]]) }})}}
+    /*Hover*/ if (localStorage.efy_audio_hover == "on") { $all("summary, select:not([multiple], [disabled]), [type=submit], [type=reset], [efy_sidebar_btn_open], [efy_sidebar_btn_close], .video-grid>div").forEach(x => x.addEventListener("mouseenter",()=> $audio_play(efyaudio.hover) ))}
+    /*Online Status*/ for (let a = ['online', 'offline'], b = ['ok', 'error'], i = 0; i < a.length; i++){ window.addEventListener(a[i], ()=>{ $audio_play(efyaudio[b[i]])})}
+}}, {once: true});
 
-/*Sidebar Modules - End*/
+/*Volume*/ $all('.efy_audio_volume').forEach(a => a.oninput =()=>{ for (let b = Object.keys(efyaudio), i = 0; i < b.length; i++){ efyaudio[b[i]].volume = a.value }});
+$all('.efy_audio_volume_page').forEach(a => a.oninput =()=>{ $all('audio, video').forEach(b => b.volume = a.value) })
 
-
-/*Theme*/ if (localStorage.efy_mode) {$root.setAttribute("efy_mode", localStorage.efy_mode); $("#" + localStorage.efy_mode).setAttribute("checked", "1")}
-else {$root.setAttribute('efy_mode', 'default_mode'); $("#default_mode").setAttribute("checked", "1")}
-$all("[name=efy_mode]").forEach(x => { x.onclick = () => { $root.setAttribute("efy_mode", x.id); localStorage.efy_mode = x.id; }; });
-
-/*Colors*/ let efy_color = {'color1': 'efy_color', 'color2': 'efy_color2', 'color_text': 'efy_text', 'color_bgcol': 'efy_bgcol'}, rgb2hex = c => "#" + c.match(/\d+/g).map(x => (+x).toString(16).padStart(2, 0)).join``;
-Object.keys(efy_color).forEach(z =>{ $(`#efy_${z}`).oninput = ev => {
-let x = ev.target.value, r = parseInt(x.substr(1, 2), 16), g = parseInt(x.substr(3, 2), 16), b = parseInt(x.substr(5, 2), 16); x = `${r},${g},${b}`; localStorage.setItem(efy_color[z], x); $root.style.setProperty(`--efy_${z}_var`, x); }
-let y = $css_prop(`--efy_${z}_var`);
-if (localStorage.getItem(efy_color[z])) {y = localStorage.getItem(efy_color[z]); $root.style.setProperty(`--efy_${z}_var`, y)}
-$(`#efy_${z}`).value = rgb2hex("rgb(" + y + ")"); });
-
-/*Radius*/ let efy_radius_input = $(".efy_sidebar_selectRadius"), efy_sidebar_range = $(".efy_sidebar_range");
-// efy_radius_steps = (efy_radius_input.max - efy_radius_input.min) , - use this instead of width // efy_radius = localStorage.efy_radius;
-
-async function efy_radius_fn(){ let x, radius = localStorage.efy_radius; if (radius) { x = radius.replace('rem', ''); efy_radius_input.value = x; $root.style.setProperty("--efy_radius", radius); } else {x = 12;}
-
-/*Radius: Input*/ $('[efy_tabs=efyui_0] [efy_tab="border"]').addEventListener('pointerup', ()=>{ setTimeout( ()=>{ let za = $('.efy_sidebar_selectRadius'), z = getComputedStyle(za).getPropertyValue('width').replace('px','');  efy_sidebar_range.innerText = x; efy_sidebar_range.style.left = (x * (z - 32) / efy_radius_input.max) + 'rem'; }, 100); }, {once: true}); } efy_radius_fn();
-
-efy_radius_input.oninput = () => { let za = $('.efy_sidebar_selectRadius'), z = getComputedStyle(za).getPropertyValue('width').replace('px',''), x = efy_radius_input.value; $root.style.setProperty("--efy_radius", x + "rem"); localStorage.efy_radius = x + "rem"; efy_sidebar_range.style.left = (x * (z - 32) / efy_radius_input.max) + 'rem'; efy_sidebar_range.innerText = x; };
-/*Radius: Window Resize*/ window.addEventListener('resize', () => { let za = $('.efy_sidebar_selectRadius'), z = getComputedStyle(za).getPropertyValue('width').replace('px',''), x = efy_radius_input.value; efy_sidebar_range.style.left = (x * (z - 32) / efy_radius_input.max) + 'rem'; });
+} /*Sidebar Modules - End*/
 
 
-/*EFY Button Position*/ if (localStorage.efy_btn_align) { $("#" + localStorage.efy_btn_align).setAttribute("checked", "1"); $("[efy_sidebar_btn_open]").setAttribute("efy_btn_align", localStorage.efy_btn_align); } else { let y = $css_prop('--efy_sidebar_button');
-$('#'+y).setAttribute("checked", "1"); $('[efy_sidebar_btn_open]').setAttribute('efy_btn_align', y);}
+/*EFY Button Position*/ if (localStorage.efy_btn_align) { $("#" + localStorage.efy_btn_align).setAttribute('checked', ''); $("[efy_sidebar_btn_open]").setAttribute("efy_btn_align", localStorage.efy_btn_align); } else { let y = $css_prop('--efy_sidebar_button');
+$('#'+y).setAttribute('checked', ''); $('[efy_sidebar_btn_open]').setAttribute('efy_btn_align', y);}
 $all("[name=efy_btn_align]").forEach(x => { x.onclick = () => { $("[efy_sidebar_btn_open]").setAttribute("efy_btn_align", x.id); localStorage.efy_btn_align = x.id; }; });
 
-/*BgImg Filter*/ let efy_bg_filter = {}, efy_css_bg_filter = $create("style"); efy_css_bg_filter.classList.add("efy_css_bg_filter"); document.head.appendChild(efy_css_bg_filter); async function efy_bg_filter_fn(){
-    ['blur','brightness','saturate','contrast','hue-rotate','sepia'].forEach(x => { efy_bg_filter[x] = $(`.efy_bg_${x}`).value; if (x == 'blur') { efy_bg_filter[x] = efy_bg_filter[x] + 'px' } else if (x == 'hue-rotate') { efy_bg_filter[x] = efy_bg_filter[x] + 'deg' } });
 
-    let string = ''; Object.keys(efy_bg_filter).forEach(x =>{ string = string + ` ${x}(${efy_bg_filter[x]})` });
-    let y = `html:before, html:after {filter: ${string} !important}`;
-    efy_css_bg_filter.textContent = y; localStorage.efy_bg_filter = JSON.stringify(efy_bg_filter); localStorage.efy_bg_filter_css = y }
+/*Checkbox Toggles*/  ["efy_audio_status", "efy_audio_click", "efy_audio_hover", "efy_outline", 'efy_text_status', 'efy_bgcol_status'].forEach(x => { if (localStorage.getItem(x) == "on") {$("#" + x).setAttribute('checked', '');} $("#" + x).onclick = () => { if (localStorage.getItem(x) == "on") { localStorage.setItem(x, "off"); } else { localStorage.setItem(x, "on"); } };});
 
-if (localStorage.efy_bg_filter) { efy_css_bg_filter.textContent = localStorage.efy_bg_filter_css; let efy_bg_filter = JSON.parse(localStorage.efy_bg_filter); Object.keys(efy_bg_filter).forEach(x => $(`.efy_bg_${x}`).value = efy_bg_filter[x].replace('px','').replace('deg','') ) }
-$all('.efy_bg_filter input').forEach(x =>{ x.addEventListener("input", ()=>{ efy_bg_filter_fn() })  });
-$all('.efy_bg_filter [type=reset]').forEach(x =>{ x.addEventListener("pointerup", ()=>{ efy_bg_filter_fn(); localStorage.removeItem('efy_bg_filter'); localStorage.removeItem('efy_bg_filter_css'); efy_css_bg_filter.textContent = '' })  });
-
-/*Content Filter*/ let efy_content_filter = {}, efy_css_content_filter = $create("style"); efy_css_content_filter.classList.add("efy_css_content_filter"); document.head.appendChild(efy_css_content_filter); async function efy_content_filter_fn(){
-    ['blur','brightness','saturate','contrast','hue-rotate','sepia'].forEach(x => { efy_content_filter[x] = $(`.efy_content_${x}`).value; if (x == 'blur') { efy_content_filter[x] = efy_content_filter[x] + 'px' } else if (x == 'hue-rotate') { efy_content_filter[x] = efy_content_filter[x] + 'deg' } });
-
-    let string = ''; Object.keys(efy_content_filter).forEach(x =>{ string = string + ` ${x}(${efy_content_filter[x]})` });
-    let y = `img, video {filter: ${string} !important}`;
-    efy_css_content_filter.textContent = y; localStorage.efy_content_filter = JSON.stringify(efy_content_filter); localStorage.efy_content_filter_css = y }
-
-if (localStorage.efy_content_filter) { efy_css_content_filter.textContent = localStorage.efy_content_filter_css; let efy_content_filter = JSON.parse(localStorage.efy_content_filter); Object.keys(efy_content_filter).forEach(x => $(`.efy_content_${x}`).value = efy_content_filter[x].replace('px','').replace('deg','') ) }
-$all('.efy_content_filter input').forEach(x =>{ x.addEventListener("input", ()=>{ efy_content_filter_fn() })  });
-$all('.efy_content_filter [type=reset]').forEach(x =>{ x.addEventListener("pointerup", ()=>{ efy_content_filter_fn(); localStorage.removeItem('efy_content_filter'); localStorage.removeItem('efy_content_filter_css'); efy_css_content_filter.textContent = '' })  });
-
-/*Trans Filter*/ let efy_trans_filter = {}, efy_css_trans_filter = $create("style"); efy_css_trans_filter.classList.add("efy_css_trans_filter"); document.head.appendChild(efy_css_trans_filter); async function efy_trans_filter_fn(){
-    ['blur','brightness','saturate','contrast','hue-rotate','sepia'].forEach(x => { efy_trans_filter[x] = $(`.efy_trans_${x}`).value; if (x == 'blur') { efy_trans_filter[x] = efy_trans_filter[x] + 'px' } else if (x == 'hue-rotate') { efy_trans_filter[x] = efy_trans_filter[x] + 'deg' } });
-
-    let string = ''; Object.keys(efy_trans_filter).forEach(x =>{ string = string + ` ${x}(${efy_trans_filter[x]})` });
-    let y = `details:not([efy_help]), select, input, textarea, blockquote, pre, article, table, [efy_tabs] [efy_content], [efy_timer], [efy_clock] {backdrop-filter: ${string} !important; -webkit-backdrop-filter: ${string} !important}`;
-    efy_css_trans_filter.textContent = y; localStorage.efy_trans_filter = JSON.stringify(efy_trans_filter); localStorage.efy_trans_filter_css = y }
-
-if (localStorage.efy_trans_filter) { efy_css_trans_filter.textContent = localStorage.efy_trans_filter_css; let efy_trans_filter = JSON.parse(localStorage.efy_trans_filter); Object.keys(efy_trans_filter).forEach(x => $(`.efy_trans_${x}`).value = efy_trans_filter[x].replace('px','').replace('deg','') ) }
-$all('.efy_trans_filter input').forEach(x =>{ x.addEventListener("input", ()=>{ efy_trans_filter_fn() })  });
-$all('.efy_trans_filter [type=reset]').forEach(x =>{ x.addEventListener("pointerup", ()=>{ efy_trans_filter_fn(); localStorage.removeItem('efy_trans_filter'); localStorage.removeItem('efy_trans_filter_css'); efy_css_trans_filter.textContent = '' })  });
-
-/* Text Size*/ let efy_text_accessibility = $create("style"); efy_text_accessibility.classList.add("efy_text_accessibility"); document.head.appendChild(efy_text_accessibility); $all('.efy_text_accessibility input').forEach(x => x.oninput =()=>{ efy_text_accessibility.textContent = `:root {--efy_font_size: ${$('.efy_ui_zoom').value}px!important;} html {letter-spacing: ${$('.efy_text_spacing').value}px!important;}`; });
-
-/*Checkbox Toggles*/  ["efy_audio_status", "efy_audio_click", "efy_audio_hover", "efy_outline", 'efy_text_status', 'efy_bgcol_status'].forEach(x => { if (localStorage.getItem(x) == "on") {$("#" + x).setAttribute("checked", "1");} $("#" + x).onclick = () => { if (localStorage.getItem(x) == "on") { localStorage.setItem(x, "off"); } else { localStorage.setItem(x, "on"); } };});
-
-/*Focus Outline*/ if (localStorage.efy_outline == 'on') {$root.setAttribute('efy_outline', '1');}  $('#efy_outline').onchange = () => {$root.toggleAttribute('efy_outline')}
-/*Custom Text Color*/ if (localStorage.efy_text_status == 'on') {$root.setAttribute('efy_color_text', '1')}  $('#efy_text_status').onchange = () => {$root.toggleAttribute('efy_color_text')}
-/*Custom BG Color*/ if (localStorage.efy_bgcol_status == 'on') {$root.setAttribute('efy_color_bgcol', '1')}  $('#efy_bgcol_status').onchange = () => {$root.toggleAttribute('efy_color_bgcol')}
-
+/*Focus Outline*/ if (localStorage.efy_outline == 'on') {$root.setAttribute('efy_outline', '');}  $('#efy_outline').onchange = () => {$root.toggleAttribute('efy_outline')}
+/*Custom Text Color*/ if (localStorage.efy_text_status == 'on') {$root.setAttribute('efy_color_text', '')}  $('#efy_text_status').onchange = () => {$root.toggleAttribute('efy_color_text')}
+/*Custom BG Color*/ if (localStorage.efy_bgcol_status == 'on') {$root.setAttribute('efy_color_bgcol', '')}  $('#efy_bgcol_status').onchange = () => {$root.toggleAttribute('efy_color_bgcol')}
 
 /*EFY Menu Toggles*/ $body.addEventListener("click", ()=>{ if (event.target.matches('[efy_sidebar_btn_open]')) {
     $("[efy_sidebar_btn_open]:not([efy_sidebar_btn_open=relative])").style.display = "none";
@@ -206,17 +189,16 @@ $all('.efy_trans_filter [type=reset]').forEach(x =>{ x.addEventListener("pointer
 /*Close*/ $("[efy_sidebar_btn_close]").onclick = () => { $(".efy_sidebar").classList.toggle("efy_toggle_efy_sidebar_panel"); $("body").classList.toggle("efy_toggle_efy_sidebar"); $("[efy_sidebar_btn_open]:not([efy_sidebar_btn_open=relative])").style.display = "block"; $("[efy_sidebar_btn_close]").style.display = "none"; };
 
 
+/*Change bg image*/ $append(document.head, $add('style', {class: 'efy_css_bgimg'})); let efy_css_bgimg = $('.efy_css_bgimg');
 
-/*Change bg image*/ let efy_css_bgimg = $create("style"); efy_css_bgimg.classList.add("efy_css_bgimg"); document.head.appendChild(efy_css_bgimg);
-
-/*Background image*/ let db; $("#pictureTest").addEventListener("change", efy_add_bgimg);
+/*Background image*/ let db; $("#idb_addimg").addEventListener("change", efy_add_bgimg);
 let request = indexedDB.open('efy');
 request.onerror = () => console.error("efy: Can't open db");
 request.onsuccess = e => (db = e.target.result);
 request.onupgradeneeded = e => { let db = e.target.result; db.createObjectStore("images", { keyPath: "id", autoIncrement: true }); db.createObjectStore("settings", { keyPath: "id", autoIncrement: true }); };
 
-async function efy_add_bgimg(e) { let reader = new FileReader(); reader.readAsDataURL(e.target.files[0]); reader.onload = e => { let ob = { data: e.target.result };
-    db.transaction(["images"], "readwrite").objectStore("images").add(ob).onerror = e => { console.error(e); };
+async function efy_add_bgimg(e) { let read = new FileReader(); read.readAsDataURL(e.target.files[0]); read.onload = e => { let ob = { data: e.target.result };
+    db.transaction(["images"], "readwrite").objectStore("images").add(ob).onerror = e =>{ console.error(e)};
 
 async function efy_bg_update_fn2(){ let request2 = indexedDB.open('efy');
 request2.onsuccess = () => { let efy_count_img2 = 0, transaction2 = request2.result.transaction(["images"], "readonly"), invoiceStore2 = transaction2.objectStore("images"), getCursorRequest2 = invoiceStore2.openCursor();
@@ -224,9 +206,9 @@ request2.onsuccess = () => { let efy_count_img2 = 0, transaction2 = request2.res
     getCursorRequest2.onsuccess = e => { let cursor2 = e.target.result;
         if (cursor2) { efy_count_img2++; cursor2.continue(); }
         else { /*Set bgimg nr*/ localStorage.efy_bg_nr = efy_count_img2;
-            /*Add Preview*/ let efy_bg_item2 = $create("div"); efy_bg_item2.style.background = 'url('+reader.result+')'; efy_bg_item2.setAttribute("efy_bg_nr", efy_count_img2); $(".efy_img_previews").appendChild(efy_bg_item2); $all('.efy_img_previews [efy_bg_nr]').forEach(z => z.removeAttribute('efy_active'));
-            /*Restore Background*/ efy_css_bgimg.textContent = `html:before, html:after {background: url(${reader.result})!important; background-size: cover!important} html {background: var(--efy_text2)!important}`; $('.efy_img_previews [efy_bg_nr="'+efy_count_img2+'"]').setAttribute('efy_active',1);
-             /*Preview Click*/ let y = $('.efy_img_previews [efy_bg_nr="'+efy_count_img2+'"]'); y.onclick = () => { efy_css_bgimg.textContent = `html:before, html:after {background: url(${reader.result})!important; background-size: cover!important} html {background: var(--efy_text2)!important}`; localStorage.efy_bg_nr = efy_count_img2; $all('.efy_img_previews [efy_bg_nr]').forEach(z => z.removeAttribute('efy_active')); y.setAttribute('efy_active',1); };
+             /*Restore Background*/ $text(efy_css_bgimg, `html:before, html:after {background: url(${read.result})!important; background-size: cover!important} html {background: var(--efy_text2)!important}`);
+            /*Add Preview*/ $append($('.efy_img_previews'), $add('div', {efy_bg_nr: efy_count_img2, style: `background: url(${read.result})`})); $all('.efy_img_previews [efy_bg_nr]').forEach(z => z.removeAttribute('efy_active')); $('.efy_img_previews [efy_bg_nr="'+efy_count_img2+'"]').setAttribute('efy_active','');
+             /*Preview Click*/ let y = $('.efy_img_previews [efy_bg_nr="'+efy_count_img2+'"]'); y.onclick = () => { $text(efy_css_bgimg, `html:before, html:after {background: url(${read.result})!important; background-size: cover!important} html {background: var(--efy_text2)!important}`); localStorage.efy_bg_nr = efy_count_img2; $all('.efy_img_previews [efy_bg_nr]').forEach(z => z.removeAttribute('efy_active')); y.setAttribute('efy_active',''); };
         }
     };};
 } efy_bg_update_fn2();
@@ -239,22 +221,18 @@ request.onsuccess = () => { let efy_count_img = 0, transaction = request.result.
     getCursorRequest.onsuccess = e => { let cursor = e.target.result;
         if (cursor) { efy_count_img++; let req = invoiceStore.get(efy_count_img);
             req.onsuccess = e => { let x = e.target.result.data;
-                /*Preview Click*/ let efy_bg_item = $create("div"); efy_bg_item.style.background = 'url('+x+')'; efy_bg_item.setAttribute("efy_bg_nr", efy_count_img); $(".efy_img_previews").appendChild(efy_bg_item); let y = $('.efy_img_previews [efy_bg_nr="'+efy_count_img+'"]'); y.onclick = () => { efy_css_bgimg.textContent = `html:before, html:after {background: url(${x})!important; background-size: cover!important} html {background: var(--efy_text2)!important; background-size: cover!important}`; localStorage.efy_bg_nr = e.target.result.id; $all('.efy_img_previews [efy_bg_nr]').forEach(z => z.removeAttribute('efy_active')); y.setAttribute('efy_active',1); };
+                /*Preview Click*/ $append($('.efy_img_previews'), $add('div', {efy_bg_nr: efy_count_img, style: `background: url(${x})`})); let y = $('.efy_img_previews [efy_bg_nr="'+efy_count_img+'"]'); y.onclick = () => { $text(efy_css_bgimg, `html:before, html:after {background: url(${x})!important; background-size: cover!important} html {background: var(--efy_text2)!important; background-size: cover!important}`); localStorage.efy_bg_nr = e.target.result.id; $all('.efy_img_previews [efy_bg_nr]').forEach(z => z.removeAttribute('efy_active')); y.setAttribute('efy_active','')};
             }; cursor.continue();
         } else { /*Check bgimg number*/ let bgnr; if (localStorage.efy_bg_nr) { bgnr = JSON.parse(localStorage.efy_bg_nr); } else { bgnr = 1; }
-
-            /*Restore Background*/ if (efy_count_img > 0) { invoiceStore.get(bgnr).onsuccess = e => { let x = e.target.result.data, y = e.target.result.id; efy_css_bgimg.textContent = `html:before, html:after {background: url(${x})!important; background-size: cover!important}`; $('.efy_img_previews [efy_bg_nr="'+y+'"]').setAttribute('efy_active',1); }; }
-
+            /*Restore Background*/ if (efy_count_img > 0) { invoiceStore.get(bgnr).onsuccess = e => { let x = e.target.result.data, y = e.target.result.id; $text(efy_css_bgimg, `html:before, html:after {background: url(${x})!important; background-size: cover!important}`); $('.efy_img_previews [efy_bg_nr="'+y+'"]').setAttribute('efy_active','')}}
             /*Remove BG - Button*/ $all(".efy_idb_reset").forEach(z =>{ z.onclick = () => { indexedDB.deleteDatabase("efy"); location.reload()}});
-        }
-    };};
-} efy_bg_update_fn();
+}};};} efy_bg_update_fn();
 
 /*Export IndexedDB*/ (async () => { try {
     let dbExists = await new Promise(resolve => { let request = window.indexedDB.open('efy');
         request.onupgradeneeded = e => { e.target.transaction.abort(); resolve(false); };
         request.onerror = () => resolve(true); request.onsuccess = () => resolve(true); });
-    if (!dbExists) { throw new Error("efy: db doesn't exist"); }
+    if (!dbExists) { throw new Error("efy: db doesn't exist")}
 
     let idbDatabase = await new Promise((resolve, reject) => { let request = window.indexedDB.open('efy');
         request.onerror = () => reject("efy: Can't open db");
@@ -270,60 +248,46 @@ request.onsuccess = () => { let efy_count_img = 0, transaction = request.result.
                     else { /*Store completed*/ exportObject[storeName] = allObjects;
                         if (idbDatabase.objectStoreNames.length === Object.keys(exportObject).length) { resolve(JSON.stringify(exportObject)); } } }); } } });
 
-    $(".efy_idb_export").onclick = () => { efyaudio.ok4.cloneNode().play(); $(".efy_idb_export").href = "data:application/json," + json; };
-} catch (error) { console.error(error); } })();
+    $(".efy_idb_export").addEventListener('click', async () => { efyaudio.ok4.cloneNode().play(); event.target.href = "data:application/json," + json });
+} catch (err) { console.error(err) } })();
 
 /*Import indexedDB*/ let efy_idb_import = $(".efy_idb_import");
-efy_idb_import.addEventListener("change", () => { let file = efy_idb_import.files[0], reader = new FileReader();
-    reader.onload = async () => { let data = JSON.parse(reader.result);
+efy_idb_import.addEventListener("change", () => { let file = efy_idb_import.files[0], read = new FileReader();
+    read.onload = async () => { let data = JSON.parse(read.result);
         function importIDB(storename = "images", storename2 = "settings", arr = data["images"], arr2 = data["settings"]) {
             return new Promise(resolve => { let r = window.indexedDB.open("efy");
                 r.onupgradeneeded = () => { let idb = r.result; idb.createObjectStore(storename, { keyPath: "id", autoIncrement: true }); idb.createObjectStore(storename2, { keyPath: "id", autoIncrement: true }); };
                 r.onsuccess = () => { let idb = r.result, store = idb.transaction(storename, "readwrite").objectStore(storename), store2 = idb.transaction(storename2, "readwrite").objectStore(storename2);
-                    for (let obj of arr) { store.put(obj); }
-                    for (let obj of arr2) { store2.put(obj); }
-                    resolve(idb);
-                }; r.onerror = e => console.log(e.target.errorCode); }); }
-await importIDB(); }; reader.readAsText(file); });
+                    for (let obj of arr) { store.put(obj)} for (let obj of arr2) { store2.put(obj)} resolve(idb);
+                }; r.onerror = e => console.log(e.target.errorCode) })}
+await importIDB() }; read.readAsText(file) });
 
 
 /*Save & Restore Preferences*/ $('.efy_localstorage_export').onclick =()=>{ let x=''; Object.entries(localStorage).forEach(([k,v])=>{ if (k.includes('efy')){ x=x+ JSON.stringify(k, null, 2)+' :'+JSON.stringify(v, null, 2) +',\n'; } }); $('.efy_localstorage_export').href = "data:application/json," + '{\n'+x.slice(0,-2)+'\n}'};
 
 /*Import Settings*/ let efy_localstorage_import = $('.efy_localstorage_import'); efy_localstorage_import.addEventListener('change', function() {
-	let file = efy_localstorage_import.files[0], reader = new FileReader();
-	reader.onload = function() { Object.entries(JSON.parse(reader.result)).forEach(([k,v])=>localStorage.setItem(k,v)); location.reload() }
-	reader.readAsText(file); });
+	let file = efy_localstorage_import.files[0], read = new FileReader();
+	read.onload = function() { Object.entries(JSON.parse(read.result)).forEach(([k,v])=>localStorage.setItem(k,v)); location.reload() }
+	read.readAsText(file); });
 
 /*Reset Settings*/ $all(".efy_localstorage_reset").forEach(x =>{ x.onclick = () => { Object.entries(localStorage).forEach(([k])=>{ if (k.includes('efy')){ localStorage.removeItem(k)} }); location.reload() }});
 
-/*Determine Audio Path*/ let audioPath = $css_prop('--efy_audio_path');
-
-/*Audio*/ let efyaudio = {}; ['pop','ok','ok2','ok3','ok4','hover','slide','squish','step','error','disabled'].forEach(x => { efyaudio[x] = new Audio(`${audioPath}/${x}.mp3`) }); $body.addEventListener("pointerdown", efyaudio_fn, {once: true});
-
-async function efyaudio_fn() { if (localStorage.efy_audio_status == 'on' ){ if (localStorage.efy_audio_click == 'on') {
-    /*Ok*/ $body.addEventListener("pointerup", ()=>{ if (event.target.matches('button:not([disabled], [type=submit], [type=reset], [efy_tab], .shaka-overflow-menu button, .shaka-overflow-menu-button, .shaka-back-to-overflow-button), .video-grid>div')) { efyaudio.ok.cloneNode().play() }});
-    /*Ok: Online*/ window.addEventListener("online", ()=>{ efyaudio.ok.cloneNode().play()});
-    /*Ok2*/ $body.addEventListener("pointerup", ()=>{ if (event.target.matches('.efy_img_previews [efy_bg_nr]')) { efyaudio.ok2.cloneNode().play() }});
-    /*Ok4*/ $body.addEventListener("pointerup", ()=>{ if (event.target.matches('[type=submit]')) { efyaudio.ok4.cloneNode().play() }});
-    /*Ok: on Change*/ $body.addEventListener("change", ()=>{ if (event.target.matches('input, textarea')) { efyaudio.ok.cloneNode().play() }});
-    /*Pop*/ $body.addEventListener("pointerup", ()=>{ if (event.target.matches('summary, select:not([multiple], [disabled]), [efy_tabs] [efy_tab], [efy_alert], [efy_alert] *, .shaka-overflow-menu button, .shaka-overflow-menu-button, .shaka-back-to-overflow-button')) { efyaudio.pop.cloneNode().play() }});
-    /*Slide*/ $body.addEventListener("pointerup", ()=>{ if (event.target.matches('[efy_sidebar_btn_open], [efy_sidebar_btn_close]')) { efyaudio.slide.cloneNode().play() }});
-    /*Error*/ $body.addEventListener("pointerup", ()=>{ if (event.target.matches('[type=reset]')) { efyaudio.error.cloneNode().play() }});
-    /*Error: Offline*/ window.addEventListener("offline", ()=>{ efyaudio.error.cloneNode().play()});
-    /*Disabled*/ $body.addEventListener("pointerup", ()=>{ if (event.target.matches('[disabled]')) { efyaudio.disabled.cloneNode().play() }});
-    /*Step*/ $body.addEventListener("pointerdown", ()=>{ if (event.target.matches('input:not([type=radio], [type=checkbox], [type=reset], [disabled]), textarea:not([disabled])')) { efyaudio.step.cloneNode().play() }});
-} /*Hover*/ if (localStorage.efy_audio_hover == "on") { $all("summary, select:not([multiple], [disabled]), [type=submit], [type=reset], [efy_sidebar_btn_open], [efy_sidebar_btn_close], .video-grid>div").forEach(x => x.addEventListener("mouseenter",()=> efyaudio.hover.cloneNode().play() ));}}}
-
 /*EFY Tabs*/ $all('[efy_tabs]').forEach(z => { let x = '[efy_tabs='+z.getAttribute('efy_tabs')+'] > ';
-    $all(x+'[efy_tab]').forEach(y => { let cld = $create('code'); cld.textContent = y.textContent; y.textContent = ''; y.appendChild(cld); y.onclick = e => { let efy_tab = e.target.getAttribute('efy_tab');
-        $all(x+'[efy_tab]').forEach(y => y.removeAttribute('efy_active') ); e.target.setAttribute('efy_active', '1');
-        $all(x+'[efy_content]').forEach(y => y.removeAttribute('efy_active') ); $(x+' [efy_content="'+efy_tab+'"]').setAttribute('efy_active', '1');
+    $all(x+'[efy_tab]').forEach(y => { let txt = y.textContent; $text(y, ''); $append(y, $add('code', {}, [txt])); y.onclick = e => { let efy_tab = e.target.getAttribute('efy_tab');
+        $all(x+'[efy_tab]').forEach(y => y.removeAttribute('efy_active') ); e.target.setAttribute('efy_active', '');
+        $all(x+'[efy_content]').forEach(y => y.removeAttribute('efy_active') ); $(x+' [efy_content="'+efy_tab+'"]').setAttribute('efy_active', '');
 } }); });
 
-/*Clock & Timer*/ function efy_time_0(i) { if (i < 10) {i = '0' + i} return i; }
+/*EFY Range Text*/ (async ()=>{ $all('[efy_range_text]').forEach(a => { let b = a.getAttribute('efy_range_text'), c = $$(a, '[type=range]');
+    $insert(a, 'afterbegin', $add('p', {}, [`${b}: ${c.value}`]));
+    c.addEventListener('input', ()=>{ $text($$(a, 'p'), `${b}: ${event.target.value}`) });
+}); $all('form[class*=efy]').forEach(x =>{ x.addEventListener('reset', ()=>{
+        $$all(x, '[efy_range_text]').forEach(y =>{ $text($$(y, 'p'), `${y.getAttribute('efy_range_text')}: ${$$(y, '[type=range]').value}`) })
+})})})()
 
-/*Clock*/ function efy_clock() {let t = new Date(), h = t.getHours(), m = t.getMinutes(); m = efy_time_0(m);
-$all('[efy_clock]').forEach(x =>{ x.textContent =  h+':'+m; }); setTimeout(efy_clock, 10000); } efy_clock();
+/*Clock & Timer*/ function efy_time_0(i){ if (i < 10){i = '0' + i} return i}
+
+/*Clock*/ $wait(1, async ()=>{let t = new Date(), h = t.getHours(), m = t.getMinutes(); m = efy_time_0(m); $all('[efy_clock]').forEach(x =>{ $text(x, h+':'+m)}) });
 
 /*Timer*/ $all('[efy_timer]').forEach(y => { $append(y, $add('div', {efy_text: ''}, ['00:00:00'])); $append(y, $add('button', {efy_start: ''})); $append(y, $add('button', {efy_reset: ''}));
 
@@ -332,15 +296,15 @@ play.addEventListener("click", () => {clearInterval(interval); play.toggleAttrib
     s = efy_time_0(second); if (second > 59) {s = '00'; second = 0; minute++;
     m = efy_time_0(minute); if (minute > 59) {m = '00'; minute = 0; hour++;
     h = efy_time_0(hour);
-}} timer_text.textContent = h+':'+m+':'+s; }, 1000); } else { clearInterval(interval); } });
-reset.addEventListener("click", () => {clearInterval(interval); [hour,minute,second,h,m,s] = [0,0,0,'00','00','00']; timer_text.textContent = "00:00:00"; play.removeAttribute('efy_active');}); });
+}} $text(timer_text, h+':'+m+':'+s) }, 1000); } else { clearInterval(interval) } });
+reset.addEventListener("click", () => {clearInterval(interval); [hour,minute,second,h,m,s] = [0,0,0,'00','00','00']; $text(timer_text, "00:00:00"); play.removeAttribute('efy_active')}); });
 
 /*Search Filter */ $all('[efy_search]').forEach(a =>{ let search = a.getAttribute('efy_search'), container = `#${a.id}[efy_search="${search}"]`;
 $all(container +' [efy_search_input]').forEach(z =>{ z.addEventListener('keyup', ()=>{ let val = z.value.toLowerCase();
-$all(container +' '+ search).forEach(x =>{ if (x.innerHTML.toLowerCase().includes(val) == 0) {x.setAttribute('efy_display_none','1')} else {x.removeAttribute('efy_display_none')}})})})});
+$all(container +' '+ search).forEach(x =>{ if (x.innerHTML.toLowerCase().includes(val) == 0) {x.setAttribute('efy_display_none','')} else {x.removeAttribute('efy_display_none')}})})})});
 
-/*Alerts*/ $insert($body, 'afterbegin', $add('div', {efy_alerts: ''})); $body.addEventListener("pointerup", ()=>{ if (event.target.matches('[efy_alert]')) { event.target.remove() }});
+/*Alerts*/ $insert($body, 'afterbegin', $add('div', {efy_alerts: ''})); $body.addEventListener("pointerup", ()=>{ if (event.target.matches('[efy_alert]')) { let a = event.target; a.classList.add('efy_anim_remove'); $wait($css_prop('--efy_anim_speed') * 0.05, ()=>{ a.remove() }) }});
 
-/*Online / Offline*/ for (let a = ['offline', 'online'], b = ["You're OFFLINE", "You're back ONLINE"], c = ['Maybe check your internet connection?', 'Reload the page if needed'], i = 0; i <a.length; i++) { window.addEventListener(a[i], () =>{ $append($('[efy_alerts]'), $add('div', {efy_alert: '', class: `efy_alert_${a[i]}`}, [$add('div', {}, [$add('h6', {}, [b[i]]), $add('p', {}, [c[i]])]), $add('button', {efy_btn_square: ''}, [$add('i', {efy_icon: 'remove'})])]))})}
+/*Online Status*/ for (let a = ['offline', 'online'], b = ["You're OFFLINE", "You're back ONLINE"], c = ['Maybe check your internet connection?', 'Reload the page if needed'], i = 0; i <a.length; i++) { window.addEventListener(a[i], () =>{ $append($('[efy_alerts]'), $add('div', {efy_alert: '', class: `efy_alert_${a[i]}`}, [$add('div', {}, [$add('h6', {}, [b[i]]), $add('p', {}, [c[i]])]), $add('button', {efy_btn_square: ''}, [$add('i', {efy_icon: 'remove'})])]))})}
 
-/*End scope*/}
+}; export {$, $all, $$, $$all, $body, $root, $add, $append, $insert, $create, $css_prop, $efy_module, $ready, $audio_play}
