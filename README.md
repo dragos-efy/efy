@@ -17,9 +17,9 @@ Add the `efy` folder in your project & the following html lines:
 
 `efy_config.css` is where the magic happens, there you can set your own defaults. More info on that will be added in the documentation soon. You can also add your own css inside after the template ends, or make a new file if you prefer to keep things separated. Both ways work, just make sure that `efy_config.css` runs **before** javascript so that it knows what your preferences are.
 
-Live demo & Documentation at: https://efy.ooo/ui
+Live demo & Documentation at: https://demo.efy.ooo
 
-Local demo: just download the files & open `efy_demo.html`.
+Local demo: just download the files & open `index.html`.
 
 ## Can I use it commercially?
 
