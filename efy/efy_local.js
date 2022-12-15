@@ -222,8 +222,8 @@ for (let a = ['efy_cursor_default', 'efy_cursor_custom', 'efy_cursor_none'], b =
 /*Default*/ $('#efy_cursor_default').addEventListener('change', ()=>{ if ($('#efy_cursor_default').checked) {$root.removeAttribute('efy_cursor_custom'); $root.removeAttribute('efy_cursor_none'); document.removeEventListener('pointermove', cursor_fn); localStorage.removeItem('efy_cursor')}});
 
 
-/*Animations*/ a = 'efy_anim_status', b = '--efy_anim_state'; if (localStorage.efy_anim_status == 'off') {$body.style.setProperty('--'+a, '0'); $body.style.setProperty(b, 'paused')} else {$('#'+a).setAttribute('checked', '')}
-$('#'+a).onchange = () =>{ if (localStorage.getItem(a) == 'on') { localStorage.setItem(a, 'off'); $body.style.setProperty('--'+a, '0'); $body.style.setProperty(b, 'paused')} else {localStorage.setItem(a, 'on'); $body.style.setProperty('--'+a, '1'); $body.style.setProperty(b, 'running')}}
+/*Animations*/ (()=>{ let a = 'efy_anim_status', b = '--efy_anim_state'; if (localStorage.efy_anim_status == 'off') {$body.style.setProperty('--'+a, '0'); $body.style.setProperty(b, 'paused')} else {$('#'+a).setAttribute('checked', '')}
+$('#'+a).onchange = () =>{ if (localStorage.getItem(a) == 'on') { localStorage.setItem(a, 'off'); $body.style.setProperty('--'+a, '0'); $body.style.setProperty(b, 'paused')} else {localStorage.setItem(a, 'on'); $body.style.setProperty('--'+a, '1'); $body.style.setProperty(b, 'running')}} })();
 
 /* Text Size*/ $append($head, $add('style', {class: 'efy_text_accessibility'})); let efy_text_accessibility = $('.efy_text_accessibility'); $all('.efy_text_accessibility input').forEach(x => x.oninput =()=>{ $text(efy_text_accessibility, `:root {--efy_font_size: ${$('.efy_ui_zoom').value}px!important;} html {letter-spacing: ${$('.efy_text_spacing').value}px!important;}`) });
 /* Animation Speed*/ $append($head, $add('style', {class: 'efy_anim_accessibility'})); let efy_anim_accessibility = $('.efy_anim_accessibility'); $all('#efy_accessibility_animations input').forEach(x => x.oninput =()=>{ $text(efy_anim_accessibility, `:root {--efy_anim_speed: ${$('.efy_anim_speed').value}!important;}`) });
