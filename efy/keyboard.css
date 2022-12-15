@@ -1,6 +1,0 @@
-[efy_keyboard] {display: none; gap: 10rem; flex-wrap: wrap; padding: 10rem; margin-bottom: 15rem; border: var(--efy_border); border-radius: var(--efy_radius2); box-shadow: 0 0 20rem #0003}
-[efy_kb] [efy_keyboard] {display: flex}
-[efy_keyboard] [efy_key] {background: var(--efy_bg1); color: var(--efy_text!important); -webkit-text-fill-color: var(--efy_text); flex: 1; flex-basis: 6.5%; height: 55rem; margin: 0}
-[efy_keyboard] [efy_key] * {pointer-events: none}
-[efy_outline] [efy_keyboard] [efy_key], [efy_outline] [efy_keyboard] [efy_key]:focus {outline-offset: 0!important}
-[efy_keyboard] [efy_key=space] {flex: 3; flex-basis: 20%;}
