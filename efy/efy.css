@@ -46,7 +46,7 @@
 /*Text-Decoration: None*/ a, a:visited {text-decoration: none}
 
 /*Border*/ textarea, select, input:not([type=color], [type=range]), button, [type=submit], [type=reset], [type=button], [role=button], details, pre, td, th, article, aside, blockquote, [type=file], .efy_sidebar, [efy_tabs] [efy_content], [efy_alert], [efy_timer], [efy_clock] {border:  var(--efy_border)}
-/*Border: None*/ [type=color], hr, fieldset, [type=file] {border: none!important}
+/*Border: None*/ hr {border: none} [type=color], fieldset, [type=file] {border: none!important}
 
 /*Outline: None*/ * {outline: none!important}
 /*Outline: Box-Shadow*/ :is(textarea, select, [type=file]):focus, input:not([type=checkbox], [type=radio], [role=button], [type=submit], [type=reset], [type=button], [type=color], [type=range]):focus, [efy_outline] :is(details:focus-within:not([efy_help])), [efy_card]:focus-within {box-shadow: 0 0 0 3rem var(--efy_text)!important}
