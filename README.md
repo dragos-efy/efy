@@ -37,6 +37,9 @@ Yes, but you gotta keep it open source, the credits and please donate if you wan
 - Feedback: is very important, so the more the better! Take screenshots or record videos too of your issues / ideas if needed. You can do that here or in the matrix room: https://matrix.to/#/#efy_ui:matrix.org where you can also talk to the community.
 
 - Translations: https://translate.codeberg.org/projects/efy/efy/
+
+  [![Translation status](https://translate.codeberg.org/widgets/efy/-/efy/svg-badge.svg)](https://translate.codeberg.org/engage/efy/)
+
 - Donations (links coming soon, or contact me)
 
 ## Future Plans
