@@ -1,9 +1,16 @@
 # EFY UI
-Customisable, convergent, transparent, modular, futuristic css / js framework that can be added to your own web / local apps & websites
+Customizable, convergent, transparent, modular, futuristic css / js framework that can be added to your own html, web, local apps & websites.
 
 ![image](https://user-images.githubusercontent.com/86549690/192852125-ba861a18-a85c-4dd3-8594-7cd758888ec7.png)
 
-## How to use it
+Join the future of design, where the user is in control. Your own colors, gaps, radius, width, backgrounds, sound effects, transparency, translations, accessibility etc on all platforms, browsers and devices, online and offline. Designers can't tell you what to do with your apps and restrict you to a main view, use them how you want and where you want!
+
+And designers / devs / companies? time for a change... building stuff takes time and money... users will never be fully satisfied if you rely on 1 main design... let's multiply it by millions of possible combinations... now you don't have to make things perfect anymore, users will do it themselves based on their individual needs and will love your apps for giving them the freedom to finally be themselves. Your defaults will be highlighted, while their creativity will be individual.
+
+![Screenshot_20230101_155453](https://user-images.githubusercontent.com/86549690/211212230-6f75857b-7a95-4f2d-9b9a-b9c1b48df8b9.png)
+
+
+## How to use it (Documentation coming soon)
 Add the `efy` folder in your project & the following html lines:
 
 ```
@@ -23,18 +30,19 @@ Local demo: just download the files & open `index.html`.
 
 ## Can I use it commercially?
 
-Yes, but please donate if you want to support the project and can afford it, that would help a lot! Read the license for more details.
+Yes, but you gotta keep it open source, the credits and please donate if you want to support the project and can afford it, that would help a lot! Read the license for more details. Otherwise contact me for individual whitelabeling options or business projects.
 
 ## How to help or contact me
 
-Feedback is very important, so the more the better! Take screenshots or record videos too of your issues / ideas if needed. You can do that here or in the matrix room: https://matrix.to/#/#efy_ui:matrix.org where you can also talk to the community.
+- Feedback: is very important, so the more the better! Take screenshots or record videos too of your issues / ideas if needed. You can do that here or in the matrix room: https://matrix.to/#/#efy_ui:matrix.org where you can also talk to the community.
+
+- Translations: https://translate.codeberg.org/projects/efy/efy/
+- Donations (links coming soon, or contact me)
 
 ## Future Plans
 
 - make detailed & reliable documentation
-- reduce the code by 1/3 (minus new features)
-- improve accessibility
+- reduce the code, improve efficiency and accessibility
 - collab with cool FOSS projects
 - make html based apps that incorporate efy (todo list, dashboard, notes, text editor, music / video player etc)
-- standardise transparent ui
-- translate it into multiple languages statically (contact me if you know how)
+- standardise transparent ui, visual filters, 3d layers, sound effects, convergence etc in the design industry
