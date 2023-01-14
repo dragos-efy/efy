@@ -61,6 +61,8 @@
 --matrix:Matrix chat;
 --github:Github;
 --translations:Translations;
+--donate:Donate;
+--unfinished:Unfinished;
 --left:Left;
 --right:Right;
 --custom_colors:Custom Colors;
@@ -85,7 +87,7 @@
 --add_file:Add File;
 --no_notifications:No notifications yet...;
 --sidebar_search_placeholder:Search through menu;
---sidebar_about_text:This page uses EFY, a customisable, convergent, transparent, modular, futuristic css / js framework that can be added to your own web / local apps & websites;
+--sidebar_about_text:This page uses EFY, a customizable, convergent, transparent, modular, futuristic css / js framework that can be added to your own html, web, local apps & websites;
 --sidebar_transparency_help:If your operating system or window manager supports transparency, the background becomes transparent. Otherwise just import your own images and turn this on;
 --sidebar_images_warning:Warning. Bigger = Slower;
 --sidebar_images_warning_help:Keep them bellow 1MB per image, unless your device has a powerful CPU / GPU. You can also convert png, jpg etc to webp to reduce the size;

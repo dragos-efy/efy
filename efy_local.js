@@ -1,4 +1,4 @@
-let efy_version = '23.01.13 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document), $create = document.createElement.bind(document), $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
+let efy_version = '23.01.14 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document), $create = document.createElement.bind(document), $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
 /*Append: Where, Element*/ $append = (a,b) =>{ a.appendChild(b)},
 /*Insert: Where, Position, Element*/ $insert = (a,b,c) =>{ a.insertAdjacentElement(b,c)}, $insert_text = (a,b,c) =>{ a.insertAdjacentText(b,c)},
 /*Get CSS Property*/ $css_prop = (a) =>{ return getComputedStyle($(':root')).getPropertyValue(a).replaceAll(' ','')},
@@ -42,7 +42,8 @@ $append($head, $add('link', {href: `${efy.folder}/lang/${efy.lang_code}.css`, re
     $add('a', {href: 'https://efy.ooo', role: 'button', efy_lang: 'website'}),
     $add('a', {href: 'https://matrix.to/#/#efy_ui:matrix.org', role: 'button', efy_lang: 'matrix'}),
     $add('a', {href: 'https://github.com/dragos-efy/efy', role: 'button', efy_lang: 'github'}),
-    $add('a', {href: 'https://translate.codeberg.org/projects/efy/efy', role: 'button', efy_lang: 'translations'})
+    $add('a', {href: 'https://translate.codeberg.org/projects/efy/efy', role: 'button', efy_lang: 'translations'}),
+    $add('a', {href: 'https://liberapay.com/efy', role: 'button', efy_lang: 'donate'})
 ]) ]) );
 
 
@@ -205,7 +206,7 @@ for (let a = ['localstorage', 'idb'], b = ['settings', 'images'], c = '#efy_back
         $append(c, $add('input', {type: 'radio', name: 'efy_language', id: d})); $append(c, $add('label', {for: d}, [b[i]]));
         $('#' + d).addEventListener('click', ()=>{ efy.lang_code = a; $save(); location.reload()})
     });
-    $append(c, $add('p', {}, ['Unfinished'] )); a2.map((a,i) =>{ let d = `efy_language_${a}`, b = b2[i];
+    $append(c, $add('p', {efy_lang: 'unfinished'})); a2.map((a,i) =>{ let d = `efy_language_${a}`, b = b2[i];
         $append(c, $add('input', {type: 'radio', name: 'efy_language', id: d})); $append(c, $add('label', {for: d}, [b]));
         $('#' + d).addEventListener('click', ()=>{ efy.lang_code = a; $save(); location.reload()})
     });
