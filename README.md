@@ -2,7 +2,7 @@
 Customizable, convergent, transparent, modular, futuristic css / js framework that can be added to your own html, web, local apps & websites.
 
 ![Weblate project translated](https://img.shields.io/weblate/progress/efy?color=%233399ff&server=https%3A%2F%2Ftranslate.codeberg.org)
-![Matrix](https://img.shields.io/matrix/efy_ui:matrix.org?color=%2377aa00&label=matrix)
+![Matrix](https://img.shields.io/matrix/efy_ui:matrix.org?color=%2377aa00&label=matrix_users)
 ![Liberapay goal progress](https://img.shields.io/liberapay/goal/efy?label=donations)
 
 ![image](https://user-images.githubusercontent.com/86549690/192852125-ba861a18-a85c-4dd3-8594-7cd758888ec7.png)
@@ -51,3 +51,7 @@ Yes, but you gotta keep it open source, the credits and please donate if you wan
 - collab with cool FOSS projects
 - make html based apps that incorporate efy (todo list, dashboard, notes, text editor, music / video player etc)
 - standardise transparent ui, visual filters, 3d layers, sound effects, convergence etc in the design industry
+
+## Top Contributors
+
+[Bnyro](https://github.com/Bnyro), [Kavin](https://github.com/FireMasterK), [Linerly](https://github.com/Linerly), [DarkCat09](https://github.com/DarkCat09), Zucc (whatever.social), Diamond_AaronXG, IkelAtomig, ARBoyGo, Hiajen
