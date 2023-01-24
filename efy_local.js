@@ -1,4 +1,4 @@
-let efy_version = '23.01.14 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document), $create = document.createElement.bind(document), $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
+let efy_version = '23.01.24 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document), $create = document.createElement.bind(document), $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
 /*Append: Where, Element*/ $append = (a,b) =>{ a.appendChild(b)},
 /*Insert: Where, Position, Element*/ $insert = (a,b,c) =>{ a.insertAdjacentElement(b,c)}, $insert_text = (a,b,c) =>{ a.insertAdjacentText(b,c)},
 /*Get CSS Property*/ $css_prop = (a) =>{ return getComputedStyle($(':root')).getPropertyValue(a).replaceAll(' ','')},
@@ -283,7 +283,7 @@ $all('.efy_audio_volume_page').forEach(a => a.oninput =()=>{ $all('audio, video'
 
 /*Change bg image*/ $append($head, $add('style', {class: 'efy_css_bgimg'})); let efy_css_bgimg = $('.efy_css_bgimg');
 
-/*Upload Input*/ $ready('[efy_upload]', (a)=>{ let b = a.getAttribute('efy_upload').replaceAll(' ','').split(','), c = b[0], d = b[1]; a.setAttribute('efy_lang', 'add_file'); a.setAttribute('role', 'button'); $append(a, $add('input', {type: 'file', id: c, accept: d})), $append(a, $add('i', {efy_icon: 'plus'}))});
+/*Upload Input*/ $ready('[efy_upload]', (a)=>{ let b = a.getAttribute('efy_upload').replaceAll(' ','').split(','); if (b[2] !== 'small'){ a.setAttribute('efy_lang', 'add_file')}; a.setAttribute('role', 'button'); $append(a, $add('input', {type: 'file', id: b[0], accept: b[1]})), $append(a, $add('i', {efy_icon: 'plus'}))});
 
 /*Background image*/ let db; $wait(3, ()=>{ $('#idb_addimg').addEventListener('change', efy_add_bgimg) });
 let request = indexedDB.open('efy');

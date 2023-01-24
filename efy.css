@@ -105,7 +105,7 @@
 html, body {margin: 0 auto}
 html {font-size: var(--efy_font_size)!important; font-size: var(--efy_font_size)!important}
 html:before {content: ''; display: block; position: fixed; top:0; left:0; z-index: -1; background-size: cover!important; width: 100vw; height: 100vh}
-body {width: 100vw; padding: 32rem; line-height: 1.5; min-height: 100vh; max-width: var(--efy_body_width); overflow: overlay; transition: background calc(var(--efy_anim_status) * var(--efy_anim_speed) * 0.3s), color calc(var(--efy_anim_status) * var(--efy_anim_speed) * 0.3s); scroll-behavior: smooth; -webkit-tap-highlight-color: transparent} body * {font-size: 16rem}
+body {width: 100vw; padding: var(--efy_body_padding); line-height: 1.5; min-height: 100vh; max-width: var(--efy_body_width); overflow: overlay; transition: background calc(var(--efy_anim_status) * var(--efy_anim_speed) * 0.3s), color calc(var(--efy_anim_status) * var(--efy_anim_speed) * 0.3s); scroll-behavior: smooth; -webkit-tap-highlight-color: transparent} body * {font-size: 16rem}
 
 /*Make the header bg full width, but the content inline with body*/
 header {text-align: center; padding: 0  8rem; grid-column: 1 / -1}
@@ -255,6 +255,8 @@ details[open]:not([efy_help]) > summary:before {transform: rotate(90deg); right:
 
 /*Upload Input*/ [efy_upload] {position: relative; width: fit-content; font-weight: bold}
 [efy_upload] > input {position: absolute; inset: 0; margin: 0; padding: 0; border: 0; opacity: 0}
+[efy_upload*=small] {width: 38rem; height: 38rem}
+[efy_upload*=small] i {margin-right: 0}
 
 .efy_backup_div :is(button, [role=button]) {margin: 0}
 .efy_backup_div {margin-top: var(--efy_gap0)}
