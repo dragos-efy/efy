@@ -64,7 +64,7 @@ for (let a = ['reload', 'fullscreen', 'back', 'forward'], b = ['reload', 'fullsc
 }
 
 $(".efy_quick_reload").addEventListener('click', ()=> location.reload());
-$(".efy_quick_fullscreen").addEventListener('click', (event)=>{ if (document.fullscreenElement){ document.exitFullscreen()} else {document.documentElement.requestFullscreen()}});
+$(".efy_quick_fullscreen").addEventListener('click', ()=>{ if (document.fullscreenElement){ document.exitFullscreen()} else {document.documentElement.requestFullscreen()}});
 for (let a = ['back', 'forward'], b = ['-1', '1'], i = 0; i<a.length; i++){ $(`.efy_quick_${a[i]}`).addEventListener('click', ()=> window.history.go(b[i]))}
 }
 
@@ -288,7 +288,7 @@ $all('.efy_audio_volume_page').forEach(a => a.oninput =()=>{ $all('audio, video'
 
 /*Change bg image*/ $append($head, $add('style', {class: 'efy_css_bgimg'})); let efy_css_bgimg = $('.efy_css_bgimg');
 
-/*Upload Input*/ $ready('[efy_upload]', (a)=>{ let b = a.getAttribute('efy_upload').replaceAll(' ','').split(','); if (b[2] !== 'small'){ a.setAttribute('efy_lang', 'add_file')}; a.setAttribute('role', 'button'); $append(a, $add('input', {type: 'file', id: b[0], accept: b[1]})), $append(a, $add('i', {efy_icon: 'plus'}))});
+/*Upload Input*/ $ready('[efy_upload]', (a)=>{ let b = a.getAttribute('efy_upload').replaceAll(' ','').split(','); if (b[2] !== 'small'){ a.setAttribute('efy_lang', 'add_file')} a.setAttribute('role', 'button'); $append(a, $add('input', {type: 'file', id: b[0], accept: b[1]})), $append(a, $add('i', {efy_icon: 'plus'}))});
 
 /*Background image*/ let db; $wait(3, ()=>{ $('#idb_addimg').addEventListener('change', efy_add_bgimg) });
 let request = indexedDB.open('efy');
@@ -384,7 +384,7 @@ await importIDB() }; read.readAsText(file) });
     $insert(a, 'afterbegin', $add('div', {class: 'efy_bar'}, [
         $add('mark', {}, [b[0]]), $add('div', {}, [$add('button', {class: 'efy_code_trans'}, ['transparent']), $add('button', {class: 'efy_fs'}, ['fullscreen']), $add('button', {class: 'efy_copy'}, ['copy'])])
 ]));
-    $$(a,'.efy_fs').addEventListener('click', (event)=>{ if (document.fullscreenElement){ document.exitFullscreen()} else {a.requestFullscreen()}});
+    $$(a,'.efy_fs').addEventListener('click', ()=>{ if (document.fullscreenElement){ document.exitFullscreen()} else {a.requestFullscreen()}});
     $$(a,'.efy_code_trans').addEventListener('click', ()=>{$body.classList.toggle('efy_code_trans_on')});
     $$(a,'.efy_copy').addEventListener('click', ()=>{ let c = a.innerText, d = c.substring(c.indexOf('copy') + 5); navigator.clipboard.writeText(d);
          $notify(5, 'Copied to clipboard');
