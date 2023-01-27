@@ -83,7 +83,7 @@
 --add_file:Tambahkan Berkas;
 --no_notifications:Belum ada notifikasi...;
 --sidebar_search_placeholder:Cari melalui menu;
---sidebar_about_text:Laman ini menggunakan EFY, sebuah kerangka kerja CSS/JS yang dapat diubah, transparan, modular, dan futuristik yang dapat ditambahkan ke aplikasi web/lokal & situs web;
+--sidebar_about_text:Kerangka kerja CSS/JS yang dapat diubah, transparan, modular, dan futuristik yang dapat ditambahkan ke aplikasi & situs web HTML, web, dan lokal;
 --sidebar_transparency_help:Jika sistem operasi atau pengelola jendela Anda mendukung transparansi, latar belakang menjadi transparan. Jika tidak, impor gambar Anda sendiri dan nyalakan ini saja;
 --sidebar_images_warning:Peringatan. Leih besar = lebih lambat;
 --sidebar_images_warning_help:Gambar seharusnya di bawah 1 MB, kecuali jika perangkat Anda memiliki CPU/GPU yang bertenaga. Anda juga dapat mengubah PNG, JPG, dll. ke WebP untuk mengurangi ukurannya;
@@ -99,6 +99,18 @@
 --localstorage_off_text:Anda tidak dapat menyimpan preferensi Anda dan beberapa fitur tidak akan bekerja sampai Anda menyalakannya. Jangan khawatir, data EFY Anda tetap di perangkat lokal ini saja.;
 --website:Situs Web;
 --translations:Terjemahan;
---donate:Donate;
---unfinished:Unfinished;
+--donate:Donasi;
+--unfinished:Belum Selesai;
+--up:Atas;
+--down:Bawah;
+--remove:Hapus;
+--close:Tutup;
+--open:Buka;
+--search:Cari;
+--soon:Segera Datang;
+--start:Mulai;
+--stop:Hentikan;
+--pause:Jeda;
+--notifications:Notifikasi;
+--join_future:Bergabung dengan masa depan perancangan;
 }
