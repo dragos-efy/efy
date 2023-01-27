@@ -1,4 +1,4 @@
-let efy_version = '23.01.24 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document), $create = document.createElement.bind(document), $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
+let efy_version = '23.01.27 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document), $create = document.createElement.bind(document), $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
 /*Append: Where, Element*/ $append = (a,b) =>{ a.appendChild(b)},
 /*Insert: Where, Position, Element*/ $insert = (a,b,c) =>{ a.insertAdjacentElement(b,c)}, $insert_text = (a,b,c) =>{ a.insertAdjacentText(b,c)},
 /*Get CSS Property*/ $css_prop = (a) =>{ return getComputedStyle($(':root')).getPropertyValue(a).replaceAll(' ','')},
@@ -18,6 +18,11 @@ new MutationObserver((mutationRecords, d) =>{ Array.from($all(a)).forEach((c) =>
 /*Audio Play*/ $audio_play = async (a)=>{ a.pause(); a.currentTime = 0; a.play()},
 /*Wait: Seconds, FN*/ $wait =(a,b)=> setTimeout(b,a*1000),
 /*Custom QuerySelectors*/ $$ =(a,b)=> a.querySelector(b), $$all =(a,b)=> a.querySelectorAll(b),
+/*Notify*/ $notify =(a,b,c)=>{ let d = 'alert' + Date.now();
+    ['[efy_alerts]', '.efy_quick_notify_content'].map(e=>{
+        $append($(e), $add('div', {efy_alert: '', class: d}, [$add('div', {}, [$add('h6', {}, [b]), $add('p', {}, [c])]), $add('button', {efy_btn_square: ''}, [$add('i', {efy_icon: 'remove'})])]));
+    });
+$wait(a, ()=>{ $$($('[efy_alerts]'), '.' + d).remove()})},
 /*Language*/ $efy_lang =()=>{ $all('[efy_lang]').forEach(a=>{ let b = a.getAttribute('efy_lang'); efy_lang[b] = getComputedStyle($('[efy_lang]')).getPropertyValue(`--${b}`);
 if ($$(a, '[efy_icon]') !== null){ $insert_text(a, 'beforeend', efy_lang[b])} else {$insert_text(a, 'afterbegin', efy_lang[b])} a.removeAttribute('efy_lang')})};
 
@@ -49,7 +54,7 @@ $append($head, $add('link', {href: `${efy.folder}/lang/${efy.lang_code}.css`, re
 
 /*Quick Shortcuts*/ if ($efy_module('efy_quick')){ let a = $('[efy_about]');
     $insert(a, 'afterend', $add('input', {type: 'text', efy_search_input: '', class: 'efy_hide_i', placeholder: 'Search through menu...'}));
-    $insert(a, 'afterend', $add('div', {class: 'efy_quick_notify_content efy_hide_i', efy_card: ''}, [$add('p', {efy_lang: 'no_notifications'})]));
+    $insert(a, 'afterend', $add('div', {class: 'efy_quick_notify_content efy_hide_i', efy_card: ''}));
 
 $insert(a, 'afterend', $add('div', {id: 'efy_quick', class: 'efy_quick_shortcuts efy_hide_i', efy_card: ''}, [
     $add('div', {class: 'efy_quick_buttons efy_flex'}), $add('div', {efy_clock: ''}), $add('div', {efy_timer: 'efy_ui0'})
@@ -59,7 +64,7 @@ for (let a = ['reload', 'fullscreen', 'back', 'forward'], b = ['reload', 'fullsc
 }
 
 $(".efy_quick_reload").addEventListener('click', ()=> location.reload());
-$(".efy_quick_fullscreen").addEventListener('click', ()=> { document.exitFullscreen(); document.documentElement.requestFullscreen() });
+$(".efy_quick_fullscreen").addEventListener('click', (event)=>{ if (document.fullscreenElement){ document.exitFullscreen()} else {document.documentElement.requestFullscreen()}});
 for (let a = ['back', 'forward'], b = ['-1', '1'], i = 0; i<a.length; i++){ $(`.efy_quick_${a[i]}`).addEventListener('click', ()=> window.history.go(b[i]))}
 }
 
@@ -369,12 +374,22 @@ await importIDB() }; read.readAsText(file) });
 
 /*Reset Settings*/ $all(".efy_localstorage_reset").forEach(x =>{ x.onclick =()=>{ Object.entries(localStorage).forEach(([k])=>{ if (k.includes('efy')){ localStorage.removeItem(k)}}); location.reload()}});
 
-/*EFY Tabs*/ $ready('[efy_tabs]', (a)=>{ let b = '[efy_tabs='+a.getAttribute('efy_tabs')+'] > ';
+/*Tabs*/ $ready('[efy_tabs]', (a)=>{ let f = a.getAttribute('efy_tabs'), b = ':is([efy_tabs='+ f +'], [efy_tabs='+ f +'] > div) > ';
     $all(b+'[efy_tab]').forEach(d => { d.onclick = e => { let c = e.target.getAttribute('efy_tab');
         $all(b+':is([efy_tab], [efy_content])').forEach(d => d.removeAttribute('efy_active'));
         $all(`${b}:is([efy_tab="${c}"], [efy_content="${c}"])`).forEach(d => d.setAttribute('efy_active', ''));
 }})});
 
+/*Code*/ $ready('[efy_code]', (a)=>{ let b = a.getAttribute('efy_code').split(',');
+    $insert(a, 'afterbegin', $add('div', {class: 'efy_bar'}, [
+        $add('mark', {}, [b[0]]), $add('div', {}, [$add('button', {class: 'efy_code_trans'}, ['transparent']), $add('button', {class: 'efy_fs'}, ['fullscreen']), $add('button', {class: 'efy_copy'}, ['copy'])])
+]));
+    $$(a,'.efy_fs').addEventListener('click', (event)=>{ if (document.fullscreenElement){ document.exitFullscreen()} else {a.requestFullscreen()}});
+    $$(a,'.efy_code_trans').addEventListener('click', ()=>{$body.classList.toggle('efy_code_trans_on')});
+    $$(a,'.efy_copy').addEventListener('click', ()=>{ let c = a.innerText, d = c.substring(c.indexOf('copy') + 5); navigator.clipboard.writeText(d);
+         $notify(5, 'Copied to clipboard');
+    });
+});
 
 /*EFY Range Text*/ (async ()=>{ $ready('[efy_range_text]', (a)=>{ let c = $$(a, 'input');
     $insert(a, 'afterbegin', $add('p', {class: 'efy_range_text_p'}, [`: ${c.value}`]));
@@ -418,6 +433,7 @@ $all(container +' '+ search).forEach(x =>{ if (x.textContent.toLowerCase().inclu
 
 /*Online Status*/ for (let a = ['offline', 'online'], i = 0; i <a.length; i++){ window.addEventListener(a[i], () =>{ $append($('[efy_alerts]'), $add('div', {efy_alert: '', class: `efy_alert_${a[i]}`}, [$add('div', {}, [$add('h6', {efy_lang: `${a[i]}_notify`}), $add('p', {efy_lang: `${a[i]}_notify_text`})]), $add('button', {efy_btn_square: ''}, [$add('i', {efy_icon: 'remove'})])]))})}
 
+/*Lang Pseudo Trigger (Temporary)*/ $append($('.efy_sidebar'), $add('i', {efy_lang: 'no_notifications', style: 'opacity: 0; pointer-events: none; position: absolute'}))
 /*Prevent Default*/ $all('input[type="range"], .plus-btn, .minus-btn').forEach(a => a.addEventListener('contextmenu', ()=> event.preventDefault()));
 
 $wait(1, ()=>{/*Translations*/ $ready('[efy_lang]', ()=>{ $efy_lang() });
@@ -425,6 +441,7 @@ $wait(1, ()=>{/*Translations*/ $ready('[efy_lang]', ()=>{ $efy_lang() });
     $insert($('[efy_content=size] [efy_range_text*=Gap] > p'), 'afterend', $add('mark', {efy_lang: 'beta'}));
     /*Alpha*/ for (let a =['"Max Width"'], i=0; i<a.length; i++){ $insert($(`[efy_content=size] [efy_range_text*=${a[i]}] p`), 'afterend', $add('mark', {efy_lang: 'alpha'}))}
     /*Version*/ $insert($('.efy_about_div'), 'afterbegin', $add('mark', {efy_lang: 'version'}, [`: ${efy_version}`]));
+    /*No Notifications*/ $append($head, $add('style', {}, [`.efy_quick_notify_content:empty:before {content: '${efy_lang.no_notifications}'}`]));
     /*Extra Modules*/ for (let a =['extra'], i=0; i<a.length; i++){
         if ($efy_module(`efy_${a[i]}`)){ $append($head, $add('link', {href: `${efy.folder}/${a[i]}.css`, rel: 'stylesheet'}));
             if (document.location.protocol.includes('http')){ $append($head, $add('script', {src: `${efy.folder}/${a[i]}.js`, type: 'module'}))}
