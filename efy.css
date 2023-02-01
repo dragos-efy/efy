@@ -1,32 +1,32 @@
 :root { --efy_font_size: 1px;
 --efy_radius0: calc(var(--efy_radius) / 1.25); --efy_radius2: calc(var(--efy_radius) * 1.5); --efy_radius00: calc(var(--efy_radius) / 3);
 --efy_padding:  8rem  12rem; --efy_padding2: 3rem  6rem; --efy_gap0:  calc(var(--efy_gap) / 1.5);
---efy_color: linear-gradient(var(--efy_color_angle), rgb(var(--efy_color1_var)), rgb(var(--efy_color2_var)));
---efy_color_trans: linear-gradient(var(--efy_color_angle), rgba(var(--efy_color1_var), 0.3), rgba(var(--efy_color2_var), 0.3));
---efy_color_text_var: 0,0,0; --efy_color_bgcol_var: 100,100,100;
---efy_bg1: rgba(var(--efy_bg_var), 0.07); --efy_bg2: rgba(var(--efy_bg_var), 0.13);
---efy_text: rgb(var(--efy_bg_var)); --efy_text_trans: rgba(var(--efy_bg_var), 0.3); --efy_text_trans2: rgba(var(--efy_bg_var), 0.45); --efy_text2: var(--efy_bg);
---efy_border: 1.5rem solid rgba(var(--efy_bg_var), 0.07);
+--efy_color: linear-gradient(var(--efy_color_angle), hsl(var(--efy_color1_var)), hsl(var(--efy_color2_var)));
+--efy_color_trans: linear-gradient(var(--efy_color_angle), hsla(var(--efy_color1_var) / .3), hsla(var(--efy_color2_var) / .3));
+--efy_color_text_var: 0 0% 0%; --efy_color_bgcol_var: 0 0% 39%;
+--efy_bg1: hsla(var(--efy_bg_var) / .07); --efy_bg2: hsla(var(--efy_bg_var) / .13);
+--efy_text: hsl(var(--efy_bg_var)); --efy_text_trans: hsla(var(--efy_bg_var) / .3); --efy_text_trans2: hsla(var(--efy_bg_var) / .45); --efy_text2: var(--efy_bg);
+--efy_border: 1.5rem solid hsla(var(--efy_bg_var) / .07);
 --efy_anim_status: 1; --efy_anim_state: running; --efy_anim_speed: 1;
 }
 /*No White Flash*/ html, body {background: #0f0f0f!important} [efy_mode] body {background: transparent!important}
 /*Scheme*/ input, select, textarea, audio, video {color-scheme: var(--efy_scheme)}
-/*Light: All*/ [efy_mode*=light] {--efy_bg: rgb(255,255,255); --efy_bg_var: 0,0,0; --efy_scheme: light}
-/*Dark: All*/ [efy_mode*=dark] {--efy_bg: rgb(0,0,0); --efy_bg_var: 255,255,255; --efy_scheme: dark}
-/*Sepia*/ [efy_mode=light_sepia] {--efy_bg: rgb(244,236,216); --efy_text: rgb(91,70,54)}
-/*Dark*/ [efy_mode=dark_dark] {--efy_bg: rgb(35,35,35); --efy_text: rgb(220,220,220)}
-/*Nord*/ [efy_mode=dark_nord] {--efy_bg: rgb(35,40,50); --efy_text: rgb(165,175,195)}
-/*Black*/ [efy_mode=dark_black] {--efy_text: rgb(200,200,200)}
-/*Dark Transparent*/ [efy_mode=dark_trans] {--efy_text2: rgb(0,0,0)}
+/*Light: All*/ [efy_mode*=light] {--efy_bg: hsl(0 0% 100%); --efy_bg_var: 0 0% 0%; --efy_scheme: light}
+/*Dark: All*/ [efy_mode*=dark] {--efy_bg: hsl(0 0% 0%); --efy_bg_var: 0 0% 100%; --efy_scheme: dark}
+/*Sepia*/ [efy_mode=light_sepia] {--efy_bg: hsl(43 56% 90%); --efy_text: hsl(26 25% 28%)}
+/*Dark*/ [efy_mode=dark_dark] {--efy_bg: hsl(0 0% 14%); --efy_text: hsl(0 0% 86%)}
+/*Nord*/ [efy_mode=dark_nord] {--efy_bg: hsl(220 17% 17%); --efy_text: hsl(220 20% 70%)}
+/*Black*/ [efy_mode=dark_black] {--efy_text: hsl(0 0% 80%)}
+/*Dark Transparent*/ [efy_mode=dark_trans] {--efy_text2: hsl(0 0% 0%)}
 
-/*Custom Text*/ [efy_color_text][efy_mode] {--efy_text: rgb(var(--efy_color_text_var)); --efy_text_trans2: rgb(var(--efy_color_text_var), 0.45)}
-/*Custom Background*/ [efy_color_bgcol][efy_mode] {--efy_bg: rgb(var(--efy_color_bgcol_var))}
+/*Custom Text*/ [efy_color_text][efy_mode] {--efy_text: hsl(var(--efy_color_text_var)); --efy_text_trans2: hsla(var(--efy_color_text_var) / .45)}
+/*Custom Background*/ [efy_color_bgcol][efy_mode] {--efy_bg: hsl(var(--efy_color_bgcol_var))}
 
 
 /*Display: Block*/ table, .efy_toggle_visible {display: block}
 /*Display: Inline-Block*/ header > nav li, header > nav a, header > nav a:visited, [efy_tabs] [efy_tab], [efy_select] label, [efy_select] label:before, [efy_select] input:checked + label:after {display: inline-block}
 /*Display: None*/ [efy_select] [for*=efy_color]:before, [efy_select] [for*=efy_color]:after, .efy_hide {display: none}
-/*Display: None ! */ .efy_hide_i {opacity: 0!important; position: absolute!important; pointer-events: none; transform: scale(0.3)!important; transition: none!important} .efy_hide_i * {display: none!important}
+/*Display: None ! */ .efy_hide_i {opacity: 0!important; position: absolute!important; pointer-events: none; transform: scale(.3)!important; transition: none!important} .efy_hide_i * {display: none!important}
 
 /*Content: ''*/ [type=radio]:checked:after, [type=checkbox]:checked:after, [efy_select] label:before, [efy_select] [type=radio]:checked + label:after, [efy_select] [type=checkbox]:checked + label:after {content: ''}
 /*Content: None*/ [efy_select] [for*=efy_color]:before, [efy_select] [for*=efy_color]:after {content: none}
@@ -72,7 +72,7 @@
 /*Pointer Events: None*/ [efy_icon], [efy_alert] *, a > button, .efy_about p {pointer-events: none}
 
 
-/*Disabled*/ :is(input, textarea, select):disabled, [role=button][aria-disabled=true], :is([type=submit], [type=reset], [type=button], [type=checkbox], [type=radio], button, select)[disabled] {filter: saturate(0) brightness(0.7); opacity: 1!important; cursor: not-allowed}
+/*Disabled*/ :is(input, textarea, select):disabled, [role=button][aria-disabled=true], :is([type=submit], [type=reset], [type=button], [type=checkbox], [type=radio], button, select)[disabled] {filter: saturate(0) brightness(.7); opacity: 1!important; cursor: not-allowed}
 
 /*Line-Height: 30rem*/ mark, kbd {line-height: 30rem}
 
@@ -97,17 +97,17 @@
 
 
 /*Animation: None*/ [efy_tabs] [efy_tab]:active {-webkit-animation: none; animation: none}
-/*Animation: Hide*/  [efy_alert].efy_anim_remove {animation: remove calc(var(--efy_anim_status) * var(--efy_anim_speed) * 0.05s) ease-in-out backwards; animation-play-state: var(--efy_anim_state)}
-/*Transform: Pulse*/ :is(button, [efy_tab], [efy_bg_nr], .efy_anim_pulse):not([disabled]):active {transform: scale(0.9); transition: calc(var(--efy_anim_status) * var(--efy_anim_speed) * 0.1s)}
-/*Transform: Pulse2*/ :is(details, input, textarea, select, a, label, [efy_timer], [efy_clock], [efy_card], [efy_alert], .efy_anim_pulse2):not([disabled]):active {transform: scale(0.98); transition: calc(var(--efy_anim_status) * var(--efy_anim_speed) * 0.1s)}
+/*Animation: Hide*/  [efy_alert].efy_anim_remove {animation: remove calc(var(--efy_anim_status) * var(--efy_anim_speed) * .05s) ease-in-out backwards; animation-play-state: var(--efy_anim_state)}
+/*Transform: Pulse*/ :is(button, [efy_tab], [efy_bg_nr], .efy_anim_pulse):not([disabled]):active {transform: scale(.9); transition: calc(var(--efy_anim_status) * var(--efy_anim_speed) * .1s)}
+/*Transform: Pulse2*/ :is(details, input, textarea, select, a, label, [efy_timer], [efy_clock], [efy_card], [efy_alert], .efy_anim_pulse2):not([disabled]):active {transform: scale(.98); transition: calc(var(--efy_anim_status) * var(--efy_anim_speed) * .1s)}
 
-/*Animations*/ @keyframes remove {0% {transform: scale(0.98)} 30% {transform: scale(1)} 100% {transform: scale(0.8); box-shadow: none}}
+/*Animations*/ @keyframes remove {0% {transform: scale(.98)} 30% {transform: scale(1)} 100% {transform: scale(.8); box-shadow: none}}
 
 /*Convergent body*/ * {margin: 0; padding: 0; box-sizing: border-box}
 html, body {margin: 0 auto}
 html {font-size: var(--efy_font_size)!important; font-size: var(--efy_font_size)!important}
 html:before {content: ''; display: block; position: fixed; top:0; left:0; z-index: -1; background-size: cover!important; width: 100vw; height: 100vh}
-body {width: 100vw; padding: var(--efy_body_padding); line-height: 1.5; min-height: 100vh; max-width: var(--efy_body_width); overflow: overlay; transition: background calc(var(--efy_anim_status) * var(--efy_anim_speed) * 0.3s), color calc(var(--efy_anim_status) * var(--efy_anim_speed) * 0.3s); scroll-behavior: smooth; -webkit-tap-highlight-color: transparent} body * {font-size: 16rem}
+body {width: 100vw; padding: var(--efy_body_padding); line-height: 1.5; min-height: 100vh; max-width: var(--efy_body_width); overflow: overlay; transition: background calc(var(--efy_anim_status) * var(--efy_anim_speed) * .3s), color calc(var(--efy_anim_status) * var(--efy_anim_speed) * .3s); scroll-behavior: smooth; -webkit-tap-highlight-color: transparent} body * {font-size: 16rem}
 
 /*Make the header bg full width, but the content inline with body*/
 header {text-align: center; padding: 0  8rem; grid-column: 1 / -1}
@@ -139,8 +139,8 @@ article {padding: 15rem}
 section {border-top:  var(--efy_border); border-bottom:  var(--efy_border); padding: 30rem  15rem; margin:  calc(var(--efy_gap) * 3) 0}
 
  [efy_content=menu] {padding: 0 var(--efy_gap)!important}
-details {margin-bottom:  var(--efy_gap)} :is(details, [efy_content=menu]) > details {padding: 0.6rem  15rem 0  15rem}
-details[open] {padding: 0.6rem  15rem 15rem  15rem}
+details {margin-bottom:  var(--efy_gap)} :is(details, [efy_content=menu]) > details {padding: .6rem  15rem 0  15rem}
+details[open] {padding: .6rem  15rem 15rem  15rem}
 details[open] summary + * {margin-top: 0}
 details[open] summary {margin: 8rem 0; padding: 0}
 details[open] > *:last-child {margin-bottom: 0}
@@ -189,23 +189,33 @@ img, video, iframe {width: 100%; max-width: 100%}
 /*EFY Color Input*/ [efy_color] {display: inline}
 [efy_color_preview] {-webkit-text-fill-color: var(--efy_text2)}
 [efy_color]:not(:last-of-type) [efy_color_preview] {margin-right: var(--efy_gap0)}
-[efy_color*=efy_color1] [efy_color_preview] {background: rgb(var(--efy_color1_var))!important}
-[efy_color*=efy_color2] [efy_color_preview] {background: rgb(var(--efy_color2_var))!important}
+/*[efy_color*=efy_color1] [efy_color_preview] {background: hsl(var(--efy_color1_var))!important}
+[efy_color*=efy_color2] [efy_color_preview] {background: hsl(var(--efy_color2_var))!important}*/
 [efy_color*=efy_color_text] [efy_color_preview] {background: var(--efy_text)!important}
 [efy_color*=efy_color_text][efy_active] + br {display: none!important}
 [efy_color*=efy_color_bgcol] [efy_color_preview] {background: var(--efy_bg)!important; -webkit-text-fill-color: var(--efy_text)!important}
 
 [efy_select]#efy_colors label:before, [efy_sidebar_btn] [efy_icon=remove] {margin-right: 0}
 
-[efy_color_picker] {background: var(--efy_bg1); border: var(--efy_border); border-radius: var(--efy_radius); padding: 15rem; margin: 10rem 0; --efy_bs: 0 0 3rem #0005, inset 0 0 0 3rem rgb(var(--efy_bg_var)), inset 0 0 6rem #0005}
-[efy_color_picker] .hue {background: linear-gradient(to right, red 0%, #ff0 16.6%, lime 33.3%, cyan 50%, blue 66.6%, #f0f 83.3%, red 100%)}
-[efy_color_picker] .sat {background: linear-gradient(to right, rgb(128 128 128), #f00)}
-[efy_color_picker] .lgt {background: linear-gradient(to right, #000, hsl(0deg 100% 50%), #fff)}
+[efy_color_picker] {background: var(--efy_bg1); border: var(--efy_border); border-radius: var(--efy_radius); padding: 15rem; margin: 10rem 0; --efy_bs: 0 0 3rem #0005, inset 0 0 0 3rem hsl(var(--efy_bg_var)), inset 0 0 6rem #0005}
+[efy_color_picker] .hue {background: linear-gradient(to right, #f00 0%, #ff0 16.6%, #0f0 33.3%, #0ff 50%, #00f 66.6%, #f0f 83.3%, #f00 100%)}
+[efy_color_picker] .sat {background: linear-gradient(to right, #808080, #f00)}
+[efy_color_picker] .lgt {background: linear-gradient(to right, #000, #f00, #fff)}
 [efy_color_picker] [type=range]::-webkit-slider-thumb {background: transparent; box-shadow: var(--efy_bs)}
 [efy_color_picker] [type=range]::-moz-range-thumb {background: transparent; box-shadow: var(--efy_bs)}
+[efy_color_picker] .efy_cp_switch {display: flex; gap: var(--efy_gap); margin-top: 10rem}
+[efy_color_picker] .efy_cp_switch :is(input, button) {height: fit-content; margin: 0}
+[efy_color_picker] .efy_cp_switch input {width: 100%}
+
+#efy_colors #efy_pickers {display: flex; flex-wrap: wrap; gap: var(--efy_gap0); margin-bottom: var(--efy_gap0)}
+#efy_colors #efy_pickers :is([efy_color_preview], [efy_color]), #efy_colors #efy_pickers > button {margin:0!important; border: 0; height: fit-content}
+#efy_colors #efy_pickers > button, #efy_colors #efy_pickers [efy_color_preview] {width: 38rem; height: 38rem; display: flex; align-items: center; place-content: center}
+#efy_colors #efy_pickers > button i {margin: 0; display: flex; place-content: center}
+#efy_colors #efy_pickers .efy_color_add i:before {margin: -7rem 0 0 0; font-size: 14rem}
+#efy_colors #efy_pickers .efy_color_remove i:before {margin: 0}
 
 
-/*Color input*/ [type=color], [type=color]:focus {background: transparent; width: 40rem; height: 40rem; padding: 0; --efy_bs: inset 0 0 0 2rem #0003; --efy_b: 0!important}
+/*Color input*/ [type=color], [type=color]:focus {background: transparent; width: 38rem; height: 38rem; padding: 0; --efy_bs: inset 0 0 0 2rem #0003; --efy_b: 0!important}
 ::-webkit-color-swatch-wrapper {background: transparent; width: 100%; height: 100%; padding: 0}
 ::-webkit-color-swatch {border-radius: var(--efy_radius); box-shadow: var(--efy_bs); border: var(--efy_b)}
 ::-moz-color-swatch {border-radius: var(--efy_radius); box-shadow: var(--efy_bs); border: var(--efy_b)}
@@ -231,16 +241,16 @@ progress, meter {height:  15rem; border: 0; background: var(--efy_color_trans); 
 ::-internal-media-controls-overflow-menu-list, ::-webkit-internal-media-controls-overflow-menu-list-item {appearance: none; -webkit-appearance: none; background: var(--efy_text2); border-radius: var(--efy_radius2)!important; border:  var(--efy_border)}
 
 /*Details*/ details, summary {list-style: none; position: relative} summary::-webkit-details-marker {display: none}
-details:not([efy_help]) summary:before {position: absolute; right: 8rem; transition: transform calc(var(--efy_anim_status) * var(--efy_anim_speed) * 0.1s) ease}
+details:not([efy_help]) summary:before {position: absolute; right: 8rem; transition: transform calc(var(--efy_anim_status) * var(--efy_anim_speed) * .1s) ease}
 details details {margin-top: var(--efy_gap)} details details:not([efy_help]) > summary:before {right: -6rem}
 details[open]:not([efy_help]) > summary:before {transform: rotate(90deg); right: -2rem}
 
 /*Help Box*/ [efy_help] {background: transparent; border: 0; padding: 0!important; margin: 0}
 [efy_help][open] {padding: 0 0 10rem 0!important}
 [efy_help] summary {pointer-events: none; margin-bottom: 0; padding: 0}
-[efy_help] summary:after {margin-left:  8rem; opacity: 0.5; pointer-events: all}
+[efy_help] summary:after {margin-left:  8rem; opacity: .5; pointer-events: all}
 
-/*Select Menu*/ [efy_select] label:not([efy_upload]):before {width:  16rem; height:  16rem; margin-right:  8rem; margin-top: -0.2rem; position: relative; border-radius: calc(var(--efy_radius) / 1.5); border: 2.5rem solid transparent; background: var(--efy_color) border-box; -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0); -webkit-mask-composite: source-out; mask-composite: exclude}
+/*Select Menu*/ [efy_select] label:not([efy_upload]):before {width:  16rem; height:  16rem; margin-right:  8rem; margin-top: -.2rem; position: relative; border-radius: calc(var(--efy_radius) / 1.5); border: 2.5rem solid transparent; background: var(--efy_color) border-box; -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0); -webkit-mask-composite: source-out; mask-composite: exclude}
 
 [efy_select] [type=radio]:checked + label:after {background: var(--efy_text2); width: 9.6rem; height: 9.6rem; top: 8rem; left: 5.6rem; margin: var(--efy_padding); border-radius: calc(var(--efy_radius) / 3)}
 [efy_select] [type=checkbox]:checked + label:after {top: 13.2rem; left: 18.6rem; width: 4.8rem; height: 9.6rem; border-radius: 2rem; border-right: solid var(--efy_text2) 3.3rem; border-bottom: solid var(--efy_text2) 3.3rem; transform: rotate(45deg)}
@@ -267,7 +277,7 @@ details[open]:not([efy_help]) > summary:before {transform: rotate(90deg); right:
 [efy_range_text] input {margin: 6rem 0 0 0}
 :is([efy_range_text*=alpha], [efy_range_text*=beta]) :is(input, [efy_number]) {margin-top: 5rem}
 
-/*Sidebar*/ .efy_sidebar{background: var(--efy_bg); padding:  var(--efy_gap) calc(var(--efy_gap) - 2rem) var(--efy_gap) var(--efy_gap); width: 100vw; max-width: 450rem; height: 100vh; z-index: 9999; position: fixed; right: -450rem; top: 0; box-shadow: 0 0 30rem #0005; border-radius: var(--efy_radius2) 0 0 var(--efy_radius2); transition-property: left, right; transition-duration: calc(var(--efy_anim_status) * var(--efy_anim_speed) * 0.3s); overflow-y: auto}
+/*Sidebar*/ .efy_sidebar{background: var(--efy_bg); padding:  var(--efy_gap) calc(var(--efy_gap) - 2rem) var(--efy_gap) var(--efy_gap); width: 100vw; max-width: 450rem; height: 100vh; z-index: 9999; position: fixed; right: -450rem; top: 0; box-shadow: 0 0 30rem #0005; border-radius: var(--efy_radius2) 0 0 var(--efy_radius2); transition-property: left, right; transition-duration: calc(var(--efy_anim_status) * var(--efy_anim_speed) * .3s); overflow-y: auto}
 
 [efy_sidebar*=on] body {width: calc(100vw - 450rem); margin-right: 450rem; margin-left: 0; --efy_body_width: 100%}
 [efy_sidebar*=on]:not([efy_sidebar*=left]) body::-webkit-scrollbar {width: 0}
@@ -314,11 +324,11 @@ details[open]:not([efy_help]) > summary:before {transform: rotate(90deg); right:
 
 /*Tabs*/ [efy_tabs] [efy_tab][efy_active] {-webkit-text-fill-color: var(--efy_text2)}
 [efy_tabs] [efy_tab]:last-of-type {margin-right: 0; margin-bottom: var(--efy_gap0)}
-[efy_tabs] [efy_content] {opacity: 0; position: absolute; pointer-events: none; transform: scale(0.3); padding:  15rem; border-radius: var(--efy_radius); background: var(--efy_bg1)}
+[efy_tabs] [efy_content] {opacity: 0; position: absolute; pointer-events: none; transform: scale(.3); padding:  15rem; border-radius: var(--efy_radius); background: var(--efy_bg1)}
 [efy_tabs] [efy_content][efy_active] {opacity: 1; position: relative; pointer-events: all; transform: scale(1)}
 [efy_tabs] [efy_content]:not([efy_active]) * {position: absolute; pointer-events: none; opacity: 0; display: none}
 
-[efy_tabs] [efy_content][efy_active], [efy_card], [efy_search_input] {transition: calc(var(--efy_anim_status) * var(--efy_anim_speed) * 0.1s) linear}
+[efy_tabs] [efy_content][efy_active], [efy_card], [efy_search_input] {transition: calc(var(--efy_anim_status) * var(--efy_anim_speed) * .1s) linear}
 
 /*Timer*/ [efy_timer], [efy_clock] {padding: 0 10rem; display: inline-flex; gap: var(--efy_gap0); flex-wrap: wrap; align-items: center}
 [efy_timer] [efy_text], [efy_clock] {font-size: 36rem; font-weight: bold}
