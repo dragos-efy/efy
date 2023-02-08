@@ -310,7 +310,7 @@ for (let a = ['localstorage', 'idb'], b = ['settings', 'images'], c = '#efy_back
                 $add('label', {efy_upload: `efy_${a[i]}_import, .json`})
 ]))}}
 
-/*Language*/ if ($efy_module('efy_language')){ let a = 'en id ro ru'.split(' '), b = 'English Indonesia Română Русский'.split(' '), a2 = 'de'.split(' '), b2 = 'Deutsch'.split(' ');
+/*Language*/ if ($efy_module('efy_language')){ let a = 'en id ro ru'.split(' '), b = 'English Indonesia Română Русский'.split(' '), a2 = 'de pl sv'.split(' '), b2 = 'Deutsch Polski Svenska'.split(' ');
     $append($('.efy_sidebar'), $add('details', {id: 'efy_language'}, [$add('summary', {efy_lang: 'efy_language'}, [ $add('i', {efy_icon: 'globe'})]), $add('div', {efy_select: ''})] ));
 
     let c = $('#efy_language > div'); a.map((a,i) =>{ let d = `efy_language_${a}`;
