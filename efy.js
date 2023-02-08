@@ -1,4 +1,4 @@
-export let efy_version = '23.02.01 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document), $create = document.createElement.bind(document), $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
+export let efy_version = '23.02.08 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document), $create = document.createElement.bind(document), $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
 /*Append: Where, Element*/ $append = (a,b) =>{ a.appendChild(b)},
 /*Insert: Where, Position, Element*/ $insert = (a,b,c) =>{ a.insertAdjacentElement(b,c)}, $insert_text = (a,b,c) =>{ a.insertAdjacentText(b,c)},
 /*Get CSS Property*/ $css_prop = (a) =>{ return getComputedStyle($(':root')).getPropertyValue(a).replaceAll(' ','')},
@@ -7,6 +7,7 @@ export let efy_version = '23.02.01 Beta', $ = document.querySelector.bind(docume
   cld.forEach(c => { if(!c) return; const cd = (typeof c === 'string') ? document.createTextNode(c) : c; x.appendChild(cd) })
 return x},
 /*Text*/ $text = (a,b)=>{a.textContent = b},
+/*Event*/ $event = (a,b,c) => a.addEventListener(b,c),
 /*Cursor FN*/ cursor_fn =(e)=>{let x = $('[efy_cursor]'); x.style.left = e.pageX + 'px'; x.style.top = e.pageY + 'px'},
 /*Ready_Once: Selector*/ $ready_once =(a)=>{ return new Promise((res) =>{ let b = $(a); if (b){res(b); return}
 new MutationObserver((mutationRecords, d) =>{ Array.from($all(a)).forEach((c) =>{ res(c); d.disconnect() })}).observe(document.documentElement, { childList: true, subtree: true })})},
