@@ -3,11 +3,12 @@
 --efy_padding:  8rem  12rem; --efy_padding2: 3rem  6rem; --efy_gap0:  calc(var(--efy_gap) / 1.5);
 --efy_color: linear-gradient(var(--efy_color_angle), hsl(var(--efy_color1_var)), hsl(var(--efy_color2_var)));
 --efy_color_trans: linear-gradient(var(--efy_color_angle), hsla(var(--efy_color1_var) / .3), hsla(var(--efy_color2_var) / .3));
---efy_color_text_var: 0 0% 0%; --efy_color_bgcol_var: 0 0% 39%;
+--efy_color_text_var: 0 0% 0%; --efy_color_bgcol_var: 0 0% 39%; --efy_color_bordercol_var: var(--efy_bg_var);
 --efy_bg1: hsla(var(--efy_bg_var) / .07); --efy_bg2: hsla(var(--efy_bg_var) / .13);
 --efy_text: hsl(var(--efy_bg_var)); --efy_text_trans: hsla(var(--efy_bg_var) / .3); --efy_text_trans2: hsla(var(--efy_bg_var) / .45); --efy_text2: var(--efy_bg);
---efy_border: 1.5rem solid hsla(var(--efy_bg_var) / .07);
+--efy_border_alpha: .07; --efy_border: var(--efy_border_size) solid hsla(var(--efy_bg_var) / var(--efy_border_alpha));
 --efy_anim_status: 1; --efy_anim_state: running; --efy_anim_speed: 1;
+--efy_ratio_width: calc(36rem + var(--efy_border_size) * 2);
 }
 /*No White Flash*/ html, body {background: #0f0f0f!important} [efy_mode] body {background: transparent!important}
 /*Scheme*/ input, select, textarea, audio, video {color-scheme: var(--efy_scheme)}
@@ -19,8 +20,9 @@
 /*Black*/ [efy_mode=dark_black] {--efy_text: hsl(0 0% 80%)}
 /*Dark Transparent*/ [efy_mode=dark_trans] {--efy_text2: hsl(0 0% 0%)}
 
-/*Custom Text*/ [efy_color_text][efy_mode] {--efy_text: hsl(var(--efy_color_text_var)); --efy_text_trans2: hsla(var(--efy_color_text_var) / .45)}
-/*Custom Background*/ [efy_color_bgcol][efy_mode] {--efy_bg: hsl(var(--efy_color_bgcol_var))}
+/*Custom Text, Border & BG*/ [efy_color_bgcol][efy_mode] {--efy_bg: hsl(var(--efy_color_bgcol_var))}
+[efy_color_text][efy_mode] {--efy_text: hsl(var(--efy_color_text_var)); --efy_text_trans2: hsla(var(--efy_color_text_var) / .45)}
+[efy_color_bordercol][efy_mode] {--efy_border_alpha: 1; --efy_border: var(--efy_border_size) solid hsla(var(--efy_color_bordercol_var) / var(--efy_border_alpha))}
 
 
 /*Display: Block*/ table, .efy_toggle_visible {display: block}
@@ -49,10 +51,13 @@
 /*Border: None*/ hr {border: none} [type=color], fieldset, [type=file] {border: none!important}
 
 /*Outline: None*/ * {outline: none!important}
-/*Outline: Box-Shadow*/ :is(textarea, select, [type=file]):focus, input:not([type=checkbox], [type=radio], [role=button], [type=submit], [type=reset], [type=button], [type=color], [type=range]):focus, [efy_outline] :is(details:focus-within:not([efy_help])), [efy_card]:focus-within {box-shadow: 0 0 0 3rem var(--efy_text)!important}
+/*Outline: Box-Shadow*/ :is(textarea, select, [type=file]):focus, input:not([type=checkbox], [type=radio], [role=button], [type=submit], [type=reset], [type=button], [type=color], [type=range]):focus, [efy_outline] :is(details:focus-within:not([efy_help])), [efy_card]:focus-within {box-shadow: 0 0 0 calc(var(--efy_border_size) + 2rem) var(--efy_text)!important}
 
-/*Outline Offset*/ [efy_outline] :is([type=radio], [type=checkbox], button, [role=button], [type=submit], [type=reset], [type=button], [type=range], [type=color], a, [efy_tabs] [efy_tab]):focus:not([tabindex='-1'], .efy_img_previews [efy_bg_nr]), [efy_outline] [efy_select] input:focus + label, [efy_outline] :is([efy_select] [for*=efy_color], [efy_upload], [efy_help]):focus-within {outline: 3rem solid var(--efy_text)!important; outline-offset: 4rem!important}
+/*Outline Offset*/ [efy_outline] :is([type=radio], [type=checkbox], button, [role=button], [type=submit], [type=reset], [type=button], [type=range], [type=color], a, [efy_tabs] [efy_tab]):focus:not([tabindex='-1'], .efy_img_previews [efy_bg_nr]), [efy_outline] [efy_select] input:focus + label, [efy_outline] :is([efy_select] [for*=efy_color], [efy_upload], [efy_help]):focus-within {outline: calc(var(--efy_border_size) + 2rem) solid var(--efy_text)!important; outline-offset: 4rem!important}
 
+/*Box-Shadow*/ [efy_shadow] :is(details, input, a, [efy_clock], [efy_timer], [efy_about] .efy_flex button, .efy_shadow) {box-shadow: 5rem 5rem 5rem hsl(67deg 85% 20% / 30%), -5rem -5rem 5rem hsl(67deg 100% 90% / 50%)}
+[efy_shadow] :is(button, .efy_shadow_color):not([efy_about] .efy_flex button) {box-shadow: 5rem 5rem 5rem hsla(var(--efy_color1_var) / 0.3), -5rem -5rem 5rem hsl(67deg 100% 75% / 50%)}
+/*Temporary*/ [efy_shadow] {--efy_border_alpha: 0.2!important} [efy_shadow] ::-webkit-slider-thumb {box-shadow: 5rem 5rem 5rem hsla(var(--efy_color1_var) / 0.3), -5rem -5rem 5rem hsl(67deg 100% 75% / 50%)!important}
 
 /*Radius*/ textarea, select, input, img, video, pre, details, summary, blockquote, article, aside, [type=range], button, [role=button], [type=submit], [type=reset], [type=button], img, video, audio, table, [efy_sidebar_btn=absolute], [efy_select] label, [efy_tabs] [efy_tab], .efy_radius {border-radius: var(--efy_radius)}
 /*Radius2*/ [efy_timer], [efy_clock], [efy_alert], .efy_radius2 {border-radius: var(--efy_radius2)}
@@ -209,13 +214,13 @@ img, video, iframe {width: 100%; max-width: 100%}
 
 #efy_colors #efy_pickers {display: flex; flex-wrap: wrap; gap: var(--efy_gap0); margin-bottom: var(--efy_gap0)}
 #efy_colors #efy_pickers :is([efy_color_preview], [efy_color]), #efy_colors #efy_pickers > button {margin:0!important; border: 0; height: fit-content}
-#efy_colors #efy_pickers > button, #efy_colors #efy_pickers [efy_color_preview] {width: 38rem; height: 38rem; display: flex; align-items: center; place-content: center}
+#efy_colors #efy_pickers > button, #efy_colors #efy_pickers [efy_color_preview] {width: var(--efy_ratio_width); height: var(--efy_ratio_width); display: flex; align-items: center; place-content: center}
 #efy_colors #efy_pickers > button i {margin: 0; display: flex; place-content: center}
 #efy_colors #efy_pickers .efy_color_add i:before {margin: -7rem 0 0 0; font-size: 14rem}
 #efy_colors #efy_pickers .efy_color_remove i:before {margin: 0}
 
 
-/*Color input*/ [type=color], [type=color]:focus {background: transparent; width: 38rem; height: 38rem; padding: 0; --efy_bs: inset 0 0 0 2rem #0003; --efy_b: 0!important}
+/*Color input*/ [type=color], [type=color]:focus {background: transparent; width: var(--efy_ratio_width); height: var(--efy_ratio_width); padding: 0; --efy_bs: inset 0 0 0 2rem #0003; --efy_b: 0!important}
 ::-webkit-color-swatch-wrapper {background: transparent; width: 100%; height: 100%; padding: 0}
 ::-webkit-color-swatch {border-radius: var(--efy_radius); box-shadow: var(--efy_bs); border: var(--efy_b)}
 ::-moz-color-swatch {border-radius: var(--efy_radius); box-shadow: var(--efy_bs); border: var(--efy_b)}
@@ -265,9 +270,9 @@ details[open]:not([efy_help]) > summary:before {transform: rotate(90deg); right:
 
 /*Upload Input*/ [efy_upload] {position: relative; width: fit-content; font-weight: bold}
 [efy_upload] > input {position: absolute; inset: 0; margin: 0; padding: 0; border: 0; opacity: 0}
-[efy_upload*=small] {width: 38rem; height: 38rem}
+[efy_upload*=small] {width: var(--efy_ratio_width); height: var(--efy_ratio_width)}
 [efy_upload*=small] i {margin-right: 0; margin-top: -1rem; position: absolute}
-[efy_upload*=small] input::file-selector-button {width: 38rem!important; height: 38rem!important}
+[efy_upload*=small] input::file-selector-button {width: var(--efy_ratio_width)!important; height: var(--efy_ratio_width)!important}
 
 .efy_backup_div :is(button, [role=button]) {margin: 0}
 .efy_backup_div {margin-top: var(--efy_gap0)}
@@ -276,7 +281,6 @@ details[open]:not([efy_help]) > summary:before {transform: rotate(90deg); right:
 .efy_about_div mark {display: block; width: fit-content; margin-bottom: 10rem; padding: 0 10rem}
 [efy_range_text] mark {margin: 0 0 0 6rem}
 [efy_range_text] input {margin: 6rem 0 0 0}
-:is([efy_range_text*=alpha], [efy_range_text*=beta]) :is(input, [efy_number]) {margin-top: 5rem}
 
 /*Sidebar*/ .efy_sidebar{background: var(--efy_bg); padding:  var(--efy_gap) calc(var(--efy_gap) - 2rem) var(--efy_gap) var(--efy_gap); width: 100vw; max-width: 450rem; height: 100vh; z-index: 9999; position: fixed; right: -450rem; top: 0; box-shadow: 0 0 30rem #0005; border-radius: var(--efy_radius2) 0 0 var(--efy_radius2); transition-property: left, right; transition-duration: calc(var(--efy_anim_status) * var(--efy_anim_speed) * .3s); overflow-y: auto}
 
@@ -370,6 +374,10 @@ details[open]:not([efy_help]) > summary:before {transform: rotate(90deg); right:
 [efy_code] .efy_bar mark {padding: 0 8rem}
 
 :not(:root):fullscreen::backdrop {display: none!important}
+
+.efy_max_width_div {display: flex; gap: var(--efy_gap0); justify-content: space-between; margin-top: 10rem}
+.efy_max_width_div * {margin: 0}
+.efy_max_width_div [efy_number] {width: 100%}
 
 /*EFY Icons*/ @font-face {font-family: 'efy_icons'; src: url('efy_icons.woff2') format('truetype'); font-weight: normal; font-style: normal; font-display: block} i, :is([efy_start], [efy_reset], [efy_sidebar_btn], details > summary):before, [efy_help] summary:after {font-family: 'efy_icons' !important; speak: never; font-style: normal; font-weight: normal; font-variant: normal; text-transform: none; vertical-align: middle; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale} i {margin-right: 8rem}
 
