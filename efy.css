@@ -10,7 +10,7 @@
 --efy_anim_status: 1; --efy_anim_state: running; --efy_anim_speed: 1;
 --efy_ratio_width: calc(36rem + var(--efy_border_size) * 2);
 }
-/*No White Flash*/ html, body {background: #0f0f0f!important} [efy_mode] body {background: transparent!important}
+/*No White Flash*/ html, body {background: #0f0f0f!important} [efy_mode] body, html.trans_window, html.trans_window .efy_3d_back {background: transparent!important}
 /*Scheme*/ input, select, textarea, audio, video {color-scheme: var(--efy_scheme)}
 /*Light: All*/ [efy_mode*=light] {--efy_bg: hsl(0 0% 100%); --efy_bg_var: 0 0% 0%; --efy_scheme: light}
 /*Dark: All*/ [efy_mode*=dark] {--efy_bg: hsl(0 0% 0%); --efy_bg_var: 0 0% 100%; --efy_scheme: dark}
@@ -34,7 +34,7 @@
 /*Content: None*/ [efy_select] [for*=efy_color]:before, [efy_select] [for*=efy_color]:after {content: none}
 
 /*BG: Transparent*/ [efy_mode*=trans] .efy_sidebar {background: transparent!important; backdrop-filter: blur(50rem); -webkit-backdrop-filter: blur(50rem)}
-/*BG*/ html:not([efy_mode*=trans]):before, html:not([efy_mode*=trans]):after, .efy_bg {background: var(--efy_bg)!important}
+/*BG*/ html:not([efy_mode*=trans]) .efy_3d_back, .efy_bg {background: var(--efy_bg)!important}
 /*BG1*/ aside, th, [type=file], pre, textarea, select, input, details, blockquote, pre, article, tr:nth-child(even), [efy_alert], [efy_timer], [efy_clock], .efy_bg1 {background: var(--efy_bg1)}
 /*BG: text*/ mark, kbd, .efy_bg_text {background: var(--efy_text)}
 /*BG: Color*/ button, [type=button], [role=button], [type=submit], [type=reset], blockquote:before, [efy_sidebar_btn=absolute]:hover, [type=checkbox]:checked, [type=radio]:checked, option:checked, [efy_select] input:checked + label, [efy_tabs] [efy_tab][efy_active], .efy_img_previews [efy_bg_nr][efy_active]:before, .efy_color {background: var(--efy_color); background-clip: padding-box; -webkit-background-clip: padding-box; -webkit-text-fill-color: var(--efy_text2)}
@@ -111,7 +111,7 @@
 /*Convergent body*/ * {margin: 0; padding: 0; box-sizing: border-box}
 html, body {margin: 0 auto}
 html {font-size: var(--efy_font_size)!important; font-size: var(--efy_font_size)!important}
-html:before {content: ''; display: block; position: fixed; top:0; left:0; z-index: -1; background-size: cover!important; width: 100vw; height: 100vh}
+.efy_3d_back {position: fixed; inset: 0; z-index: -1; object-fit: cover; width: 100vw; height: 100vh; border-radius: 0!important}
 body {width: 100vw; padding: var(--efy_body_padding); line-height: 1.5; min-height: 100vh; max-width: var(--efy_body_width); overflow: overlay; transition: background calc(var(--efy_anim_status) * var(--efy_anim_speed) * .3s), color calc(var(--efy_anim_status) * var(--efy_anim_speed) * .3s); scroll-behavior: smooth; -webkit-tap-highlight-color: transparent} body * {font-size: 16rem}
 
 /*Make the header bg full width, but the content inline with body*/
@@ -284,6 +284,10 @@ details[open]:not([efy_help]) > summary:before {transform: rotate(90deg); right:
 
 /*Sidebar*/ .efy_sidebar{background: var(--efy_bg); padding:  var(--efy_gap) calc(var(--efy_gap) - 2rem) var(--efy_gap) var(--efy_gap); width: 100vw; max-width: 450rem; height: 100vh; z-index: 9999; position: fixed; right: -450rem; top: 0; box-shadow: 0 0 30rem #0005; border-radius: var(--efy_radius2) 0 0 var(--efy_radius2); transition-property: left, right; transition-duration: calc(var(--efy_anim_status) * var(--efy_anim_speed) * .3s); overflow-y: auto}
 
+.efy_sidebar summary {display: flex; align-items: center}
+.efy_sidebar summary > mark {padding: 5px 7rem; line-height: 1} .efy_sidebar summary > p {margin: 0}
+.efy_sidebar summary [efy_icon=arrow_down]:before {margin: -11rem 0 0 -15rem}
+
 [efy_sidebar*=on] body {width: calc(100vw - 450rem); margin-right: 450rem; margin-left: 0; --efy_body_width: 100%}
 [efy_sidebar*=on]:not([efy_sidebar*=left]) body::-webkit-scrollbar {width: 0}
 [efy_sidebar*=on] .efy_sidebar {right: 0}
@@ -341,7 +345,7 @@ details[open]:not([efy_help]) > summary:before {transform: rotate(90deg); right:
 :is([efy_start], [efy_reset]):before {margin-right:0!important}
 .efy_quick_shortcuts [efy_clock] {margin: 0 var(--efy_gap0) 12rem 0}
 
-/*Alert*/ [efy_alerts] {display: grid; gap: var(--efy_gap0); position: fixed; z-index: 99; width: calc(100% - 64rem); max-width: 400rem}
+/*Alert*/ [efy_alerts] {display: grid; gap: var(--efy_gap0); position: fixed; z-index: 99; width: calc(100% - 64rem); max-width: 400rem; margin: var(--efy_gap) 0 0 var(--efy_gap)}
 [efy_alert] {display: grid; grid-template-columns: 1fr auto; gap: var(--efy_gap); padding: 10rem; box-shadow: 0 0 20px var(--efy_text_trans); background: var(--efy_text2);}
 [efy_btn_square] {display: flex; align-items: center; padding: 10rem; height: fit-content; aspect-ratio: 1; margin: 0}
 [efy_btn_square] [efy_icon] {margin:0}
