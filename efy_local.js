@@ -567,6 +567,6 @@ $wait(0.3, ()=>{/*Translations*/ $ready('[efy_lang]', ()=>{ $efy_lang_start() })
     /*No Notifications*/ $add('style', {}, [`.efy_quick_notify_content:empty:before {content: '${efy_lang.no_notifications}'}`], $head);
     /*Extra Modules*/ for (let a =['extra'], i=0; i<a.length; i++){
         if ($efy_module(`efy_${a[i]}`)){ $add('link', {href: `${efy.folder}/${a[i]}.css`, rel: 'stylesheet'}, [], $head);
-            if (document.location.protocol.includes('http')){ $add('script', {src: `${efy.folder}/${a[i]}.js`, type: 'module'}, [], $head)}
+            if ($css_prop('--efy_protocol') == 'http'){ $add('script', {src: `${efy.folder}/${a[i]}.js`, type: 'module'}, [], $head)}
             else { $add('script', {src: `${efy.folder}/${a[i]}_local.js`}, [], $head)}
 }} })}
