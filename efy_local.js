@@ -133,7 +133,7 @@ $$(ba, '.efy_color_add').addEventListener('click', ()=>{ let a = $$all(ba, '[efy
 $$(ba, '.efy_color_remove').addEventListener('click', ()=>{ let a = $$all(ba, '[efy_color]').length; let c = $$(ba, '.efy_color_add'), d = $$(ba, '.efy_color_remove');
     if(a > 2){ $$(ba, `[efy_color*="efy_color${a}"]`).remove(); c.removeAttribute('disabled'); d.removeAttribute('disabled');
 
-        /*Update*/ let x = efy[`color${a}`], hsl = [`hsl(${x})`, `hsla(${x} / .3)`]; console.log(hsl);
+        /*Update*/ let x = efy[`color${a}`], hsl = [`hsl(${x})`, `hsla(${x} / .3)`];
         ['', '_trans'].map((a,i)=>{ efy[`gradient${a}`] = efy[`gradient${a}`].replace(`), ${hsl[i]})`, '))'); $root.style.setProperty(`--efy_color${a}`, efy[`gradient${a}`]) });
         efy.color_nr--; delete efy[`color${a}`];$save();
 
