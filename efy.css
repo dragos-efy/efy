@@ -21,7 +21,7 @@
 /*Dark Transparent*/ [efy_mode=dark_trans] {--efy_text2: hsl(0 0% 0%)}
 
 /*Custom Text, Border & BG*/ [efy_color_bgcol][efy_mode] {--efy_bg: hsl(var(--efy_color_bgcol_var))}
-[efy_color_text][efy_mode] {--efy_text: hsl(var(--efy_color_text_var)); --efy_text_trans2: hsla(var(--efy_color_text_var) / .45)}
+[efy_color_text][efy_mode] {--efy_text: hsl(var(--efy_color_text_var)); --efy_text_trans: hsla(var(--efy_color_text_var) / .3); --efy_text_trans2: hsla(var(--efy_color_text_var) / .45)}
 [efy_color_bordercol][efy_mode] {--efy_border_alpha: 1; --efy_border: var(--efy_border_size) solid hsla(var(--efy_color_bordercol_var) / var(--efy_border_alpha))}
 
 
@@ -282,7 +282,8 @@ details[open]:not([efy_help]) > summary:before {transform: rotate(90deg); right:
 [efy_range_text] mark {margin: 0 0 0 6rem}
 [efy_range_text] input {margin: 6rem 0 0 0}
 
-/*Sidebar*/ .efy_sidebar{background: var(--efy_bg); padding:  var(--efy_gap) calc(var(--efy_gap) - 2rem) var(--efy_gap) var(--efy_gap); width: 100vw; max-width: 450rem; height: 100vh; z-index: 9999; position: fixed; right: -450rem; top: 0; box-shadow: 0 0 30rem #0005; border-radius: var(--efy_radius2) 0 0 var(--efy_radius2); transition-property: left, right; transition-duration: calc(var(--efy_anim_status) * var(--efy_anim_speed) * .3s); overflow-y: auto}
+/*Sidebar*/ .efy_sidebar{background: var(--efy_bg); padding:  var(--efy_gap) calc(var(--efy_gap) - 2rem) var(--efy_gap) var(--efy_gap); width: 100vw; max-width: 450rem; height: 100vh; z-index: 9999; position: fixed; right: -450rem; top: 0; border-radius: var(--efy_radius2) 0 0 var(--efy_radius2); transition-property: left, right; transition-duration: calc(var(--efy_anim_status) * var(--efy_anim_speed) * .3s); overflow-y: auto}
+[efy_sidebar*=on] .efy_sidebar {box-shadow: 0 0 30rem #0005}
 
 .efy_sidebar summary {display: flex; align-items: center}
 .efy_sidebar summary > mark {padding: 5px 7rem; line-height: 1} .efy_sidebar summary > p {margin: 0}
@@ -298,6 +299,9 @@ details[open]:not([efy_help]) > summary:before {transform: rotate(90deg); right:
 [efy_sidebar_btn*=close] {margin: 0 0 15rem 0; height: fit-content}
 [efy_sidebar_btn*=absolute] {z-index: 9999; font-size: 20rem; padding: 4rem 10rem; position: fixed; text-align: center; top:  15rem; right:  15rem}
 
+
+.trans_window_div {width: fit-content; display: inline-flex; flex-wrap: wrap; gap: var(--efy_gap0); margin-top: calc(var(--efy_gap0) / 2)}
+.trans_window_div label {margin: 0}
 
 .efy_flex {display: flex; gap: var(--efy_gap); flex-wrap: wrap}
 

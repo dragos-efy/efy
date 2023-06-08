@@ -19,7 +19,7 @@ let i = 0; b.addEventListener('click', ()=>{ if (i == 0){
 b.map(a => $add('button', {efy_tab: a, efy_lang: a}, [], c));
 b.map(a => $add('div', {efy_content: a, efy_select: '', id: `efy_${a}`}, [], c));
 ['tab', 'content'].map(a => $(`#efy_nature [efy_${a}='front']`).setAttribute('efy_active', ''));
-$add('div', {}, ['Coming soon...'], $('[efy_tabs=efy_nature] [efy_content=back]'));
+$add('div', {efy_lang: 'coming_soon'}, [], $('[efy_tabs=efy_nature] [efy_content=back]'));
 
 let d = 'snow rain leaf flower bubble'.split(' '), e = 'snow rain leaves flowers bubbles'.split(' '); b = 'efy_nature_front'; c = $('#efy_nature [efy_content=front]'); d.map((a,i)=>{let d = e[i];
   $add('input', {type: 'checkbox', name: b, id: `${b}_${a}`}, [], c);
