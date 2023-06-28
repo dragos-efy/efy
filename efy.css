@@ -1,4 +1,4 @@
-:root { --efy_font_size: 1px;
+:root { --efy_font_size: 1px; --efy_bg_size: cover; --efy_bg_x: 0; --efy_bg_y: 0;
 --efy_radius0: calc(var(--efy_radius) / 1.25); --efy_radius2: calc(var(--efy_radius) * 1.5); --efy_radius00: calc(var(--efy_radius) / 3);
 --efy_padding:  8rem  12rem; --efy_padding2: 3rem  6rem; --efy_gap0:  calc(var(--efy_gap) / 1.5);
 --efy_color: linear-gradient(var(--efy_color_angle), hsl(var(--efy_color1_var)), hsl(var(--efy_color2_var)));
@@ -111,7 +111,7 @@
 /*Convergent body*/ * {margin: 0; padding: 0; box-sizing: border-box}
 html, body {margin: 0 auto}
 html {font-size: var(--efy_font_size)!important; font-size: var(--efy_font_size)!important}
-.efy_3d_back {position: fixed; inset: 0; z-index: -1; object-fit: cover; width: 100vw; height: 100vh; border-radius: 0!important}
+html .efy_3d_back {position: fixed; inset: 0; z-index: -1; object-fit: cover; width: 100vw; height: 100vh; border-radius: 0!important; background-position: var(--efy_bg_x) var(--efy_bg_y)!important;}
 body {width: 100vw; padding: var(--efy_body_padding); line-height: 1.5; min-height: 100vh; max-width: var(--efy_body_width); overflow: overlay; transition: background calc(var(--efy_anim_status) * var(--efy_anim_speed) * .3s), color calc(var(--efy_anim_status) * var(--efy_anim_speed) * .3s); scroll-behavior: smooth; -webkit-tap-highlight-color: transparent} body * {font-size: 16rem}
 
 /*Make the header bg full width, but the content inline with body*/
@@ -211,6 +211,10 @@ img, video, iframe {width: 100%; max-width: 100%}
 [efy_color_picker] .efy_cp_switch {display: flex; gap: var(--efy_gap); margin-top: 10rem}
 [efy_color_picker] .efy_cp_switch :is(input, button) {height: fit-content; margin: 0}
 [efy_color_picker] .efy_cp_switch input {width: 100%}
+[efy_color_picker] .copy_btn {display: flex}
+[efy_color_picker] .copy_btn .efy_color_picker_copy {border-radius: var(--efy_radius) 0 0 var(--efy_radius)}
+[efy_color_picker] .copy_btn .efy_color_picker_paste {border-radius: 0 var(--efy_radius) var(--efy_radius) 0}
+[efy_color_picker] .copy_btn i {margin-right: 0}
 
 #efy_colors #efy_pickers {display: flex; flex-wrap: wrap; gap: var(--efy_gap0); margin-bottom: var(--efy_gap0)}
 #efy_colors #efy_pickers :is([efy_color_preview], [efy_color]), #efy_colors #efy_pickers > button {margin:0!important; border: 0; height: fit-content}
@@ -389,29 +393,36 @@ details[open]:not([efy_help]) > summary:before {transform: rotate(90deg); right:
 
 /*EFY Icons*/ @font-face {font-family: 'efy_icons'; src: url('efy_icons.woff2') format('truetype'); font-weight: normal; font-style: normal; font-display: block} i, :is([efy_start], [efy_reset], [efy_sidebar_btn], details > summary):before, [efy_help] summary:after {font-family: 'efy_icons' !important; speak: never; font-style: normal; font-weight: normal; font-variant: normal; text-transform: none; vertical-align: middle; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale} i {margin-right: 8rem}
 
+[efy_icon=accessibility]:before {content: "\e910"}
 [efy_icon=arrow]:before {content: "\e900"}
 [efy_icon=arrow_down]:before {content: "\e900"; position:absolute; margin: 1rem 0 0 -15rem; transform: rotate(180deg)} [efy_icon=arrow_down] {margin-left: 15rem}
-[efy_icon=chevron]:before, details:not([efy_help]) > summary:before {content: "\e907"}
-[efy_icon=dots]:before {content: "\e902"}
-[efy_icon=menu2]:before {content: "\e903"}
-[efy_icon=star]:before {content: "\e904"}
 [efy_icon=audio]:before {content: "\e905"}
-:is([efy_icon=menu], [efy_sidebar_btn=absolute]):before {content: "\e906"}
-[efy_icon=remove]:before {content: "\e909"}
-[efy_icon=plus]:before {content: "\e909"; position:absolute; font-size: 11rem; margin: 4rem 0 0 -13rem; transform: rotate(45deg)} [efy_icon=plus] {margin-left: 13rem}
-[efy_icon=play]:before, [efy_timer] [efy_start]:before {content: "\e90a"}
-[efy_icon=pause]:before, [efy_timer] [efy_start][efy_active]:before {content: "\e90b"}
-[efy_icon=fullscreen]:before {content: "\e90c"}
-:is([efy_icon=reload], [efy_reset]):before {content: "\e90d"}
-[efy_icon=help]:before, [efy_help] summary:after {content: "\e901"}
-[efy_icon=accessibility]:before {content: "\e910"}
-[efy_icon=zoom_out]:before {content: "\e911"}
-[efy_icon=zoom_in]:before {content: "\e912"}
-[efy_icon=search]:before {content: "\e908"}
-[efy_icon=group]:before {content: "\e90e"}
+[efy_icon=check]:before {content: "\e914"}
+[efy_icon=chevron]:before, details:not([efy_help]) > summary:before {content: "\e907"}
+[efy_icon=copy]:before {content: "\e919"}
+[efy_icon=dots]:before {content: "\e902"}
+[efy_icon=edit]:before {content: "\e91b"}
+[efy_icon=fullscreen]:before, [efy_icon=move]:before {content: "\e90c"}
 [efy_icon=globe]:before {content: "\e90f"}
-[efy_icon=user]:before {content: "\e913"}
+[efy_icon=group]:before {content: "\e90e"}
 [efy_icon=heart]:before {content: "\e915"}
-[efy_icon=notify_active]:before {content: "\e916"}
-[efy_icon=notify]:before {content: "\e917"}
+[efy_icon=help]:before, [efy_help] summary:after {content: "\e901"}
 [efy_icon=key]:before {content: "\e918"}
+:is([efy_icon=menu], [efy_sidebar_btn=absolute]):before {content: "\e906"}
+[efy_icon=menu2]:before {content: "\e903"}
+
+[efy_icon=move]:before {display: inline-block; transform: rotate(45deg)}
+
+[efy_icon=notify]:before {content: "\e917"}
+[efy_icon=notify_active]:before {content: "\e916"}
+[efy_icon=paste]:before {content: "\e91a"}
+[efy_icon=pause]:before, [efy_timer] [efy_start][efy_active]:before {content: "\e90b"}
+[efy_icon=play]:before, [efy_timer] [efy_start]:before {content: "\e90a"}
+[efy_icon=plus]:before {content: "\e909"; position:absolute; font-size: 11rem; margin: 4rem 0 0 -13rem; transform: rotate(45deg)} [efy_icon=plus] {margin-left: 13rem}
+:is([efy_icon=reload], [efy_reset]):before {content: "\e90d"}
+[efy_icon=remove]:before {content: "\e909"}
+[efy_icon=star]:before {content: "\e904"}
+[efy_icon=search]:before {content: "\e908"}
+[efy_icon=user]:before {content: "\e913"}
+[efy_icon=zoom_in]:before {content: "\e912"}
+[efy_icon=zoom_out]:before {content: "\e911"}

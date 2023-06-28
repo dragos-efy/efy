@@ -1,6 +1,6 @@
-import {$, $all, $root, $add, $css_prop, $audio_play, efy_audio, $wait, efy} from './efy.js';
+import {$, $all, $add, $css_prop, $audio_play, efy_audio, efy} from './efy.js';
 
-(()=>{/*Audio Nature*/ efy_audio.folder = $css_prop('--efy_audio_folder'); let c = 'efy_audio_nature'; $add('details', {id: c, efy_select: ''}, [$add('summary', {efy_lang: 'nature_effects'}, [$add('i', {efy_icon: 'audio'})])], $('#efy_audio'));
+$ready('#efy_sbtheme', ()=>{/*Audio Nature*/ efy_audio.folder = $css_prop('--efy_audio_folder'); let c = 'efy_audio_nature'; $add('details', {id: c, efy_select: ''}, [$add('summary', {efy_lang: 'nature_effects'}, [$add('i', {efy_icon: 'audio'})])], $('#efy_audio'));
 let b = $('#efy_audio #efy_audio_nature'); 'forest rain waves underwater people fireworks dreamy'.split(' ').forEach(x => {
   $add('input', {type: 'checkbox', name: c, id: `${c}_${x}`}, [], b); $add('label', {for: `${c}_${x}`, efy_lang: x}, [], b);
 });
@@ -84,4 +84,4 @@ b.addEventListener('click', (c)=>{ a.classList.toggle('efy_hide_i');
     if (c.target.checked){ efy.keyboard = 'on'} else {delete efy.keyboard} $save();
 });
 
-})();
+$efy_lang_start()}, 1);
