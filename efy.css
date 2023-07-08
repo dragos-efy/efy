@@ -8,7 +8,7 @@
 --efy_text: hsl(var(--efy_bg_var)); --efy_text_trans: hsla(var(--efy_bg_var) / .3); --efy_text_trans2: hsla(var(--efy_bg_var) / .45); --efy_text2: var(--efy_bg);
 --efy_border_alpha: .07; --efy_border: var(--efy_border_size) solid hsla(var(--efy_bg_var) / var(--efy_border_alpha));
 --efy_anim_status: 1; --efy_anim_state: running; --efy_anim_speed: 1;
---efy_ratio_width: calc(36rem + var(--efy_border_size) * 2);
+--efy_ratio_width: calc(36rem + var(--efy_border_size) * 2); --efy_100vh: 100vh;
 }
 /*No White Flash*/ html, body {background: #0f0f0f!important} [efy_mode] body, html.trans_window, html.trans_window .efy_3d_back {background: transparent!important}
 /*Scheme*/ input, select, textarea, audio, video {color-scheme: var(--efy_scheme)}
@@ -111,8 +111,8 @@
 /*Convergent body*/ * {margin: 0; padding: 0; box-sizing: border-box}
 html, body {margin: 0 auto}
 html {font-size: var(--efy_font_size)!important; font-size: var(--efy_font_size)!important}
-html .efy_3d_back {position: fixed; inset: 0; z-index: -1; object-fit: cover; width: 100vw; height: 100vh; border-radius: 0!important; background-position: var(--efy_bg_x) var(--efy_bg_y)!important;}
-body {width: 100vw; padding: var(--efy_body_padding); line-height: 1.5; min-height: 100vh; max-width: var(--efy_body_width); overflow: overlay; transition: background calc(var(--efy_anim_status) * var(--efy_anim_speed) * .3s), color calc(var(--efy_anim_status) * var(--efy_anim_speed) * .3s); scroll-behavior: smooth; -webkit-tap-highlight-color: transparent} body * {font-size: 16rem}
+html .efy_3d_back {position: fixed; inset: 0; z-index: -1; object-fit: cover; width: 100vw; height: var(--efy_100vh); border-radius: 0!important; background-position: var(--efy_bg_x) var(--efy_bg_y)!important;}
+body {width: 100vw; padding: var(--efy_body_padding); line-height: 1.5; min-height: var(--efy_100vh); max-width: var(--efy_body_width); overflow: overlay; transition: background calc(var(--efy_anim_status) * var(--efy_anim_speed) * .3s), color calc(var(--efy_anim_status) * var(--efy_anim_speed) * .3s); scroll-behavior: smooth; -webkit-tap-highlight-color: transparent} body * {font-size: 16rem}
 
 /*Make the header bg full width, but the content inline with body*/
 header {text-align: center; padding: 0  8rem; grid-column: 1 / -1}
@@ -286,7 +286,7 @@ details[open]:not([efy_help]) > summary:before {transform: rotate(90deg); right:
 [efy_range_text] mark {margin: 0 0 0 6rem}
 [efy_range_text] input {margin: 6rem 0 0 0}
 
-/*Sidebar*/ .efy_sidebar{background: var(--efy_bg); padding:  var(--efy_gap) calc(var(--efy_gap) - 2rem) var(--efy_gap) var(--efy_gap); width: 100vw; max-width: 450rem; height: 100vh; z-index: 9999; position: fixed; right: -450rem; top: 0; border-radius: var(--efy_radius2) 0 0 var(--efy_radius2); transition-property: left, right; transition-duration: calc(var(--efy_anim_status) * var(--efy_anim_speed) * .3s); overflow-y: auto}
+/*Sidebar*/ .efy_sidebar{background: var(--efy_bg); padding:  var(--efy_gap) calc(var(--efy_gap) - 2rem) var(--efy_gap) var(--efy_gap); width: 100vw; max-width: 450rem; height: var(--efy_100vh); z-index: 9999; position: fixed; right: -450rem; top: 0; border-radius: var(--efy_radius2) 0 0 var(--efy_radius2); transition-property: left, right; transition-duration: calc(var(--efy_anim_status) * var(--efy_anim_speed) * .3s); overflow-y: auto}
 [efy_sidebar*=on] .efy_sidebar {box-shadow: 0 0 30rem #0005}
 
 .efy_sidebar summary {display: flex; align-items: center}
