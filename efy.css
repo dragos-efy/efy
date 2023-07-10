@@ -289,15 +289,16 @@ details[open]:not([efy_help]) > summary:before {transform: rotate(90deg); right:
 /*Sidebar*/ .efy_sidebar{background: var(--efy_bg); padding:  var(--efy_gap) calc(var(--efy_gap) - 2rem) var(--efy_gap) var(--efy_gap); width: 100vw; max-width: 450rem; height: var(--efy_100vh); z-index: 9999; position: fixed; right: -450rem; top: 0; border-radius: var(--efy_radius2) 0 0 var(--efy_radius2); transition-property: left, right; transition-duration: calc(var(--efy_anim_status) * var(--efy_anim_speed) * .3s); overflow-y: auto}
 [efy_sidebar*=on] .efy_sidebar {box-shadow: 0 0 30rem #0005}
 
+.efy_sidebar > details:last-of-type {margin: 0}
 .efy_sidebar summary {display: flex; align-items: center}
 .efy_sidebar summary > mark {padding: 5px 7rem; line-height: 1} .efy_sidebar summary > p {margin: 0}
 .efy_sidebar summary [efy_icon=arrow_down]:before {margin: -11rem 0 0 -15rem}
 
-[efy_sidebar*=on] body {width: calc(100vw - 450rem); margin-right: 450rem; margin-left: 0; --efy_body_width: 100%}
-[efy_sidebar*=on]:not([efy_sidebar*=left]) body::-webkit-scrollbar {width: 0}
+[efy_sidebar*=on] :is(body, .efy_sidebar_width) {width: calc(100vw - 450rem); margin-right: 450rem; margin-left: 0; --efy_body_width: 100%}
+[efy_sidebar*=on]:not([efy_sidebar*=left]) :is(body, .efy_sidebar_width)::-webkit-scrollbar {width: 0}
 [efy_sidebar*=on] .efy_sidebar {right: 0}
 [efy_sidebar*=left] .efy_sidebar {right: unset; left: -450rem; border-radius: 0 var(--efy_radius2) var(--efy_radius2) 0}
-[efy_sidebar*=on_left] body {margin-left: 450rem; margin-right: 0}
+[efy_sidebar*=on_left] :is(body, .efy_sidebar_width) {margin-left: 450rem; margin-right: 0}
 [efy_sidebar*=on_left] .efy_sidebar {left: 0}
 
 [efy_sidebar_btn*=close] {margin: 0 0 15rem 0; height: fit-content}
