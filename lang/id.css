@@ -57,8 +57,6 @@
 --custom:Kustom;
 --hide_touchscreen:Sembunyikan (Layar Sentuh);
 --learn_more:Pelajari lebih lanjut;
---matrix:Obrolan Matrix;
---github:GitHub;
 --left:Kiri;
 --right:Kanan;
 --custom_colors:Warna Kustom;
@@ -83,7 +81,7 @@
 --add_file:Tambahkan Berkas;
 --no_notifications:Belum ada notifikasi...;
 --sidebar_search_placeholder:Cari melalui menu;
---sidebar_about_text:Kerangka kerja CSS/JS yang dapat diubah, transparan, modular, dan futuristik yang dapat ditambahkan ke aplikasi & situs web HTML, web, dan lokal;
+--sidebar_about_text:User Customizable CSS / JS framework. Private, modular & convergent apps;
 --sidebar_transparency_help:Jika sistem operasi atau pengelola jendela Anda mendukung transparansi, latar belakang menjadi transparan. Jika tidak, impor gambar Anda sendiri dan nyalakan ini saja;
 --sidebar_images_warning:Peringatan. Leih besar = lebih lambat;
 --sidebar_images_warning_help:Gambar seharusnya di bawah 1 MB, kecuali jika perangkat Anda memiliki CPU/GPU yang bertenaga. Anda juga dapat mengubah PNG, JPG, dll. ke WebP untuk mengurangi ukurannya;
@@ -100,7 +98,7 @@
 --website:Situs Web;
 --translations:Terjemahan;
 --donate:Donasi;
---unfinished:Belum Selesai;
+--lang_info:If your language misses words, you will see the English version. Translate it here: ;
 --up:Atas;
 --down:Bawah;
 --remove:Hapus;
@@ -112,9 +110,10 @@
 --stop:Hentikan;
 --pause:Jeda;
 --notifications:Notifikasi;
---join_future:Bergabung dengan masa depan perancangan;
+--join_future:The future of design is YOU;
 --columns:Kolom;
 --border:Batasan;
 --window:Window;
 --coming_soon:Coming soon...;
+--try_it:Try it;
 }

@@ -58,8 +58,6 @@
 --custom:Individuell;
 --hide_touchscreen:Hide (Touchscreen);
 --learn_more:Erfahre mehr;
---matrix:Matrix Chat;
---github:Github;
 --left:Links;
 --right:Rechts;
 --custom_colors:Benutzerdefinierte Farben;
@@ -83,7 +81,7 @@
 --add_file:Füge Datei hinzu;
 --no_notifications:Bis jetzt keine Benachrichtigungen ...;
 --sidebar_search_placeholder:Search through menu;
---sidebar_about_text:This page uses EFY, a customisable, convergent, transparent, modular, futuristic css / js framework that can be added to your own web / local apps & websites;
+--sidebar_about_text:User Customizable CSS / JS framework. Private, modular & convergent apps;
 --sidebar_transparency_help:Falls ihr Betriebssystem oder Fenstermanager Transparenz unterstützt, wird der Hintergrund durchsichtig werden. Ansonsten fügen sie ihr eigenes Bild ein und aktivieren sie es.;
 --sidebar_images_warning:Warnung. größer = langsamer;
 --sidebar_images_warning_help:Keep them bellow 1MB per image, unless your device has a powerful CPU / GPU. You can also convert png, jpg etc to webp to reduce the size;
@@ -100,7 +98,7 @@
 --website:Website;
 --translations:Übersetzungen;
 --donate:Donate;
---unfinished:Nicht fertig;
+--lang_info:If your language misses words, you will see the English version. Translate it here: ;
 --up:Up;
 --down:Down;
 --remove:Remove;
@@ -112,9 +110,10 @@
 --stop:Stop;
 --pause:Pause;
 --notifications:Notificări;
---join_future:Join the future of design;
+--join_future:The future of design is YOU;
 --columns:Columns;
 --border:Border;
 --window:Window;
 --coming_soon:Coming soon...;
+--try_it:Try it;
 }

@@ -57,8 +57,6 @@
 --custom:Personalizat;
 --hide_touchscreen:Ascunde (Touchscreen);
 --learn_more:Află mai multe;
---matrix:Chat Matrix;
---github:Github;
 --left:Stânga;
 --right:Dreapta;
 --custom_colors:Culori Personalizate;
@@ -83,7 +81,7 @@
 --add_file:Adaugă Fișier;
 --no_notifications:Nicio notificare încă...;
 --sidebar_search_placeholder:Caută prin meniu;
---sidebar_about_text:Framework css / js customizabil, convergent, transparent, modular, privat, futuristic care poate fii adăugat în site-urile și aplicațiile tale web / locale;
+--sidebar_about_text:Framework CSS / JS customizabil. Aplicații private, modulare & convergente;
 --sidebar_transparency_help:Dacă sistemul tău de operare sau window manager-ul suportă transparență, fundalul devine transparent. Dacă nu, importă propriile tale imagini și activează setarea asta;
 --sidebar_images_warning:ATENȚIE. Mai mare = mai lent;
 --sidebar_images_warning_help:Păstrează-le sub 1MB per imagine dacă nu ai un device cu CPU / GPU puternic. Poți și să convertești png, jpg etc în webp ca să reduci mărimea;
@@ -100,7 +98,7 @@
 --website:Website;
 --translations:Traduceri;
 --donate:Donează;
---unfinished:Neterminat;
+--lang_info:Dacă în limba ta lipsesc cuvinte, vei vedea versiunea în engleză. Tradu-o aici: ;
 --up:Sus;
 --down:Jos;
 --remove:Șterge;
@@ -112,9 +110,10 @@
 --stop:Oprește;
 --pause:Pauză;
 --notifications:Notificări;
---join_future:Fă parte din viitorul designului;
+--join_future:TU ești viitorul designului;
 --columns:Coloane;
 --border:Bordură;
 --window:Fereastră;
 --coming_soon:În curând...;
+--try_it:Încearcă;
 }

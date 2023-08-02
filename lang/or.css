@@ -1,5 +1,4 @@
 [efy_lang]{
---translations:Translations;
 --version:Version;
 --theme:Theme;
 --visual_filters:Visual Filters;
@@ -42,6 +41,7 @@
 --menu:Menu;
 --max_width:Max Width;
 --transparency:Transparency;
+--window:Window;
 --efy_settings:EFY Settings;
 --efy_images:EFY Images;
 --save:Save;
@@ -60,10 +60,9 @@
 --hide_touchscreen:Hide (Touchscreen);
 --learn_more:Learn more;
 --website:Website;
---matrix:Matrix chat;
---github:Github;
+--translations:Translations;
 --donate:Donate;
---unfinished:Unfinished;
+--lang_info:If your language misses words, you will see the English version. Translate it here: ;
 --left:Left;
 --right:Right;
 --up:Up;
@@ -98,23 +97,23 @@
 --pause:Pause;
 --columns:Columns;
 --notifications:Notifications;
---no_notifications:No notifications yet..।;
+--no_notifications:No notifications yet...;
+--coming_soon:Coming soon...;
 --sidebar_search_placeholder:Search through menu;
---sidebar_about_text:Customizable, convergent, transparent, modular, futuristic css / js framework that can be added to your own html, web, local apps & websites;
---join_future:Join the future of design;
+--sidebar_about_text:User Customizable CSS / JS framework. Private, modular & convergent apps;
+--join_future:The future of design is YOU;
+--try_it:Try it;
 --sidebar_transparency_help:If your operating system or window manager supports transparency, the background becomes transparent. Otherwise just import your own images and turn this on;
 --sidebar_images_warning:Warning. Bigger = Slower;
 --sidebar_images_warning_help:Keep them bellow 1MB per image, unless your device has a powerful CPU / GPU. You can also convert png, jpg etc to webp to reduce the size;
 --sidebar_cursor_text:WARNING. Only hide it on touchscreen devices;
 --sidebar_audio_text:You might have to click / tap on the ssl / lock icon on your browser & allow sounds, to hear them automatically;
 --custom_colors_help:These colors override the default ones;
---sidebar_outline_text:Safari & Webkit do not support custom outline radius yet, so it is not up to efy, but the outline itself works & the radius as well on other browsers।;
+--sidebar_outline_text:Safari & Webkit do not support custom outline radius yet, so it is not up to efy, but the outline itself works & the radius as well on other browsers.;
 --offline_notify:You are OFFLINE;
 --offline_notify_text:Maybe check your internet connection;
 --online_notify:You are back ONLINE;
 --online_notify_text:Reload the page if needed;
 --localstorage_off:Your browser blocks LocalStorage;
---localstorage_off_text:You cannot save your preferences and some features will not work until you turn it on. No worries, your efy data stays in this local device only।;
---window:Window;
---coming_soon:Coming soon..।;
+--localstorage_off_text:You cannot save your preferences and some features will not work until you turn it on. No worries, your efy data stays in this local device only.;
 }

@@ -34,7 +34,6 @@
 --stop:Zatrzymaj;
 --pause:Zatrzymaj;
 --notifications:Powiadomienia;
---github:GitHub;
 --no_notifications:Brak powiadomień...;
 --visual_filters:Efekty wizualne;
 --backup:Kopia zapasowa;
@@ -93,13 +92,12 @@
 --hide_touchscreen:Ukryj (ekran dotykowy);
 --learn_more:Dowiedz się więcej;
 --website:Strona internetowa;
---matrix:Czat Matrix;
 --translations:Tłumaczenia;
 --donate:Wspomóż;
---unfinished:Nieskończone;
+--lang_info:If your language misses words, you will see the English version. Translate it here: ;
 --sidebar_search_placeholder:Wyszukaj przez menu;
---sidebar_about_text:Customizable, convergent, transparent, modular, futuristic css / js framework that can be added to your own html, web, local apps & websites;
---join_future:Dołącz do przyszłości projektowania;
+--sidebar_about_text:User Customizable CSS / JS framework. Private, modular & convergent apps;
+--join_future:The future of design is YOU;
 --sidebar_transparency_help:If your operating system or window manager supports transparency, the background becomes transparent. Otherwise just import your own images and turn this on;
 --sidebar_images_warning:Uwaga. Większe = Wolniejsze;
 --sidebar_images_warning_help:Utrzymuj je poniżej 1 MB na obraz, chyba, że twoje urządzenia ma wydajny procesor / kartę graficzną. Możesz także przekonwertować png, jpg itd do formatu webp, any zmniejszyć rozmiar;
@@ -117,4 +115,5 @@
 --border:Obramowanie;
 --window:Window;
 --coming_soon:Coming soon...;
+--try_it:Try it;
 }

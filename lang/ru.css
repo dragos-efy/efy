@@ -58,8 +58,6 @@
 --custom:Пользовательский;
 --hide_touchscreen:Скрыть (для сенсорных экранов);
 --learn_more:Узнать больше;
---matrix:Чат в Matrix;
---github:Github;
 --left:Слева;
 --right:Справа;
 --custom_colors:Свои цвета;
@@ -83,7 +81,7 @@
 --add_file:Добавить файл;
 --no_notifications:Нет уведомлений...;
 --sidebar_search_placeholder:Поиск по меню;
---sidebar_about_text:Кастомизируемый, конвергентный, прозрачный, модульный, футуристический CSS/JS фреймворк, который Вы можете добавить в свои веб-приложения и сайты;
+--sidebar_about_text:User Customizable CSS / JS framework. Private, modular & convergent apps;
 --sidebar_transparency_help:Если Ваша операционная система или оконный менеджер поддерживает прозрачность, фон страницы станет прозрачным. В противном случае, импортируйте свои картинки, которые будут заменять фон, и включите эту опцию;
 --sidebar_images_warning:Внимание: больше размер = медленнее;
 --sidebar_images_warning_help:Придерживайтесь ограничения размера картинки в 1 МБ, если на Вашем устройстве недостаточно мощный CPU/GPU. Можете также сконвертировать картинку в формат WEBP для уменьшения объёма;
@@ -100,7 +98,7 @@
 --website:Веб-сайт;
 --translations:Перевести;
 --donate:Поддержать;
---unfinished:Незавершённые;
+--lang_info:If your language misses words, you will see the English version. Translate it here: ;
 --up:Вверх;
 --down:Вниз;
 --remove:Удалить;
@@ -112,9 +110,10 @@
 --stop:Остановка;
 --pause:Пауза;
 --notifications:Уведомления;
---join_future:Присоединяйтесь к будущему дизайна;
+--join_future:The future of design is YOU;
 --columns:Columns;
 --border:Border;
 --window:Window;
 --coming_soon:Coming soon...;
+--try_it:Try it;
 }

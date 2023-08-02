@@ -8,9 +8,9 @@
 --efy_text: hsl(var(--efy_bg_var)); --efy_text_trans: hsla(var(--efy_bg_var) / .3); --efy_text_trans2: hsla(var(--efy_bg_var) / .45); --efy_text2: var(--efy_bg);
 --efy_border_alpha: .07; --efy_border: var(--efy_border_size) solid hsla(var(--efy_bg_var) / var(--efy_border_alpha));
 --efy_anim_status: 1; --efy_anim_state: running; --efy_anim_speed: 1;
---efy_ratio_width: calc(36rem + var(--efy_border_size) * 2); --efy_100vh: 100vh;
+--efy_ratio_width: calc(36rem + var(--efy_border_size) * 2); --efy_100vh: 100vh; --efy_sidebar_width: 450rem; --efy_sidebar_width_n: calc(-1 * var(--efy_sidebar_width)); --efy_bg_width: 100vw;
 }
-/*No White Flash*/ html, body {background: #0f0f0f!important} [efy_mode] body, html.trans_window, html.trans_window .efy_3d_back {background: transparent!important}
+/*No White Flash*/ html, body {background: #0f0f0f} [efy_mode]:not([efy_mode*=trans_dark]) body {background: var(--efy_bg)!important} html[efy_mode], html[efy_mode*=trans].trans_window body, html.trans_window .efy_3d_back {background: transparent!important}
 /*Scheme*/ input, select, textarea, audio, video {color-scheme: var(--efy_scheme)}
 /*Light: All*/ [efy_mode*=light] {--efy_bg: hsl(0 0% 100%); --efy_bg_var: 0 0% 0%; --efy_scheme: light}
 /*Dark: All*/ [efy_mode*=dark] {--efy_bg: hsl(0 0% 0%); --efy_bg_var: 0 0% 100%; --efy_scheme: dark}
@@ -196,6 +196,10 @@ img, video, iframe {width: 100%; max-width: 100%}
 [efy_color]:not(:last-of-type) [efy_color_preview] {margin-right: var(--efy_gap0)}
 /*[efy_color*=efy_color1] [efy_color_preview] {background: hsl(var(--efy_color1_var))!important}
 [efy_color*=efy_color2] [efy_color_preview] {background: hsl(var(--efy_color2_var))!important}*/
+.efy_custom_colors {display: flex; flex-wrap: wrap; gap: var(--efy_gap0)}
+.efy_custom_colors :is(label, [efy_color_preview]) {margin: 0!important; height: 39.2rem}
+.efy_custom_colors label {border-radius: var(--efy_radius) 0 0 var(--efy_radius); width: 43.2rem}
+.efy_custom_colors [efy_color_preview] {border-radius: 0 var(--efy_radius) var(--efy_radius) 0; border: 0}
 [efy_color*=efy_color_text] [efy_color_preview] {background: var(--efy_text)!important}
 [efy_color*=efy_color_text][efy_active] + br {display: none!important}
 [efy_color*=efy_color_bgcol] [efy_color_preview] {background: var(--efy_bg)!important; -webkit-text-fill-color: var(--efy_text)!important}
@@ -283,10 +287,15 @@ details[open]:not([efy_help]) > summary:before {transform: rotate(90deg); right:
 .efy_backup_div:not(:last-of-type) {margin-bottom: var(--efy_gap0)}
 
 .efy_about_div mark {display: block; width: fit-content; margin-bottom: 10rem; padding: 0 10rem}
-[efy_range_text] mark {margin: 0 0 0 6rem}
+[efy_range_text] mark {margin: 0; line-height: 1; padding: 5rem 6rem}
 [efy_range_text] input {margin: 6rem 0 0 0}
 
-/*Sidebar*/ .efy_sidebar{background: var(--efy_bg); padding:  var(--efy_gap) calc(var(--efy_gap) - 2rem) var(--efy_gap) var(--efy_gap); width: 100vw; max-width: 450rem; height: var(--efy_100vh); z-index: 9999; position: fixed; right: -450rem; top: 0; border-radius: var(--efy_radius2) 0 0 var(--efy_radius2); transition-property: left, right; transition-duration: calc(var(--efy_anim_status) * var(--efy_anim_speed) * .3s); overflow-y: auto}
+[efy_range_text="Max Width alpha"] .efy_range_text_p {width: 50rem; margin-right: -8rem!important}
+[efy_range_text="Max Width alpha"] .efy_range_text_p:focus {margin-right: 0!important}
+[efy_range_text="Max Width alpha"] [type=range] {margin: 0}
+[efy_range_text="Max Width alpha"] select {height: 32rem; line-height: 1}
+
+/*Sidebar*/ .efy_sidebar{background: var(--efy_bg); padding:  var(--efy_gap) calc(var(--efy_gap) - 2rem) var(--efy_gap) var(--efy_gap); width: 100vw; max-width: var(--efy_sidebar_width); height: var(--efy_100vh); z-index: 9999; position: fixed; right: var(--efy_sidebar_width_n); top: 0; border-radius: var(--efy_radius2) 0 0 var(--efy_radius2); transition-property: left, right; transition-duration: calc(var(--efy_anim_status) * var(--efy_anim_speed) * .3s); overflow-y: auto}
 [efy_sidebar*=on] .efy_sidebar {box-shadow: 0 0 30rem #0005}
 
 .efy_sidebar > details:last-of-type {margin: 0}
@@ -294,11 +303,11 @@ details[open]:not([efy_help]) > summary:before {transform: rotate(90deg); right:
 .efy_sidebar summary > mark {padding: 5px 7rem; line-height: 1} .efy_sidebar summary > p {margin: 0}
 .efy_sidebar summary [efy_icon=arrow_down]:before {margin: -11rem 0 0 -15rem}
 
-[efy_sidebar*=on] :is(body, .efy_sidebar_width) {width: calc(100vw - 450rem); margin-right: 450rem; margin-left: 0; --efy_body_width: 100%}
+[efy_sidebar*=on] :is(body, .efy_sidebar_width) {--efy_bg_width: calc(100vw - var(--efy_sidebar_width)); width: var(--efy_bg_width); margin-right: var(--efy_sidebar_width); margin-left: 0; --efy_body_width: 100%}
 [efy_sidebar*=on]:not([efy_sidebar*=left]) :is(body, .efy_sidebar_width)::-webkit-scrollbar {width: 0}
 [efy_sidebar*=on] .efy_sidebar {right: 0}
-[efy_sidebar*=left] .efy_sidebar {right: unset; left: -450rem; border-radius: 0 var(--efy_radius2) var(--efy_radius2) 0}
-[efy_sidebar*=on_left] :is(body, .efy_sidebar_width) {margin-left: 450rem; margin-right: 0}
+[efy_sidebar*=left] .efy_sidebar {right: unset; left: var(--efy_sidebar_width_n); border-radius: 0 var(--efy_radius2) var(--efy_radius2) 0}
+[efy_sidebar*=on_left] :is(body, .efy_sidebar_width) {margin-left: var(--efy_sidebar_width); margin-right: 0}
 [efy_sidebar*=on_left] .efy_sidebar {left: 0}
 
 [efy_sidebar_btn*=close] {margin: 0 0 15rem 0; height: fit-content}
@@ -312,15 +321,16 @@ details[open]:not([efy_help]) > summary:before {transform: rotate(90deg); right:
 
 [efy_about], .efy_sidebar [efy_card] {margin-bottom: var(--efy_gap)}
 .efy_about {padding: 0 10rem}
-[efy_about] {display: flex; gap: var(--efy_gap); flex-wrap: wrap; justify-content: space-between; align-items: center}
+[efy_about] {display: flex; gap: var(--efy_gap); justify-content: space-between; align-items: start}
 [efy_about] button {margin: 0; display: flex; align-items: center; gap: 8rem}
 [efy_about] button:not([efy_sidebar_btn*=close]) {background: var(--efy_bg1)}
 [efy_about] button:not([efy_sidebar_btn*=close]) i {-webkit-text-fill-color: var(--efy_text)}
 [efy_logo] p {font-size: 24rem; padding-top: 2.5rem; display: inline-block; -webkit-text-fill-color: var(--efy_text)}
 [efy_logo] i {font-size: 16rem; margin: 0 -2rem 0 0; display: inline-block}
 
-/*Button Align*/ #efy_btn_align div {display: grid; gap: var(--efy_gap); grid-template-columns: 1fr 1fr 1fr; width: fit-content; margin-bottom: var(--efy_gap)}
-#efy_btn_align div input {display: block; position: relative; opacity: 1; margin: 0} #efy_btn_align #middle_middle {opacity: 0!important; pointer-events: none}
+/*Button Align*/ #efy_btn_align div, #efy_notify_align {display: grid; gap: var(--efy_gap); grid-template-columns: 1fr 1fr 1fr; width: fit-content}
+#efy_btn_align div {margin-bottom: var(--efy_gap0)}
+:is(#efy_btn_align div, #efy_notify_align) input {display: block; position: relative; opacity: 1; margin: 0} :is#efy_btn_align, #efy_notify_align) #middle_middle {opacity: 0!important; pointer-events: none}
 
 [efy_btn_align*=left] {left: 15rem; right: unset}
 [efy_btn_align*=right] {right: 15rem; left:unset}
@@ -354,7 +364,11 @@ details[open]:not([efy_help]) > summary:before {transform: rotate(90deg); right:
 :is([efy_start], [efy_reset]):before {margin-right:0!important}
 .efy_quick_shortcuts [efy_clock] {margin: 0 var(--efy_gap0) 12rem 0}
 
-/*Alert*/ [efy_alerts] {display: grid; gap: var(--efy_gap0); position: fixed; z-index: 99; width: calc(100% - 64rem); max-width: 400rem; margin: var(--efy_gap) 0 0 var(--efy_gap)}
+/*Alert*/ [efy_alerts] {display: grid; gap: var(--efy_gap0); position: fixed; top: var(--efy_gap); left: var(--efy_gap); z-index: 99999; width: calc(100% - (var(--efy_gap) * 2)); max-width: 400rem}
+[efy_alerts*=middle] {left: calc((var(--efy_bg_width) / 2) - 200rem)}
+[efy_alerts*=right] {right: var(--efy_gap); left: unset}
+[efy_alerts*=bottom] {bottom: var(--efy_gap); top: unset}
+
 [efy_alert] {display: grid; grid-template-columns: 1fr auto; gap: var(--efy_gap); padding: 10rem; box-shadow: 0 0 20px var(--efy_text_trans); background: var(--efy_text2);}
 [efy_btn_square] {display: flex; align-items: center; padding: 10rem; height: fit-content; aspect-ratio: 1; margin: 0}
 [efy_btn_square] [efy_icon] {margin:0}
@@ -374,23 +388,39 @@ details[open]:not([efy_help]) > summary:before {transform: rotate(90deg); right:
 #custom_sidebar_menu, #demo_sidebar_settings > div {display: flex; flex-wrap: wrap; gap: var(--efy_gap); margin-bottom: var(--efy_gap)}
 #custom_sidebar_menu a, #demo_sidebar_settings > div a {background: var(--efy_bg1); padding: var(--efy_padding); border-radius: var(--efy_radius); border: var(--efy_border); -webkit-text-fill-color: var(--efy_text)}
 
-/*Translations*/ .efy_lang_text, .efy_range_text_p {display: inline; margin: 0!important; pointer-events: none!important; -webkit-text-fill-color: inherit; color: inherit}
+/*Translations*/ .efy_lang_text {display: inline; margin: 0!important; pointer-events: none!important; -webkit-text-fill-color: inherit; color: inherit}
+.efy_range_text_p {background: transparent; border-color: transparent!important; padding: 0 4rem; width: fit-content; border-radius: calc(var(--efy_radius) / 1.5)}
+[efy_range_text] [efy_number]:focus-within {margin: 0 0 0 10rem!important}
+[efy_range_text] [efy_number] {display: inline-flex; margin: 0}
 
 /*Code*/ [efy_code] {position: relative; padding-top: calc(50rem + var(--efy_gap0))} [efy_code]:fullscreen {border-radius: 0; border: none; background: var(--efy_bg)!important}
+[efy_code] .efy_bar {position: absolute; top: 0; left: 0; width: 100%; padding: calc(var(--efy_gap0) / 1.5); display: flex; gap: calc(var(--efy_gap0) / 1.5); justify-content: space-between; border-bottom: var(--efy_border)}
+[efy_code] .efy_bar div {display: flex; gap: calc(var(--efy_gap0) / 1.5)}
+[efy_code] .efy_bar button {margin: 0; padding: var(--efy_padding2); border-radius: var(--efy_radius0)}
+[efy_code] .efy_bar :is(mark, button) {padding: 0 8rem; line-height: 1; display: flex; align-items: center; place-content: center; height: 28rem}
+[efy_code] .efy_bar :is(.efy_copy, .efy_fs) {width: 28rem}
+[efy_code] .efy_bar i {margin: 0 0 -1rem 0; font-size: 14rem}
 
 .efy_code_trans_on  [efy_code]:fullscreen {background: transparent!important; backdrop-filter: blur(50rem)}
- [efy_code] .efy_code_trans {display: none} [efy_code]:fullscreen .efy_code_trans {display: unset}
-
-[efy_code] .efy_bar {position: absolute; top: 0; left: 0; width: 100%; padding: var(--efy_gap0); display: flex; gap: var(--efy_gap); justify-content: space-between; border-bottom: var(--efy_border)}
-[efy_code] .efy_bar div {display: flex; gap: var(--efy_gap0)}
-[efy_code] .efy_bar button {margin: 0; padding: var(--efy_padding2); border-radius: var(--efy_radius0)}
-[efy_code] .efy_bar mark {padding: 0 8rem}
+ [efy_code] .efy_bar .efy_code_trans {display: none} [efy_code]:fullscreen .efy_code_trans {display: unset}
 
 :not(:root):fullscreen::backdrop {display: none!important}
 
 .efy_max_width_div {display: flex; gap: var(--efy_gap0); justify-content: space-between; margin-top: 10rem}
 .efy_max_width_div * {margin: 0}
 .efy_max_width_div [efy_number] {width: 100%}
+
+/*Shadows*/ .efy_shadow :is(details, [efy_card]) {box-shadow: var(--efy_shadow_trans1), var(--efy_shadow_trans2), var(--efy_shadow_trans3), var(--efy_shadow_trans4)}
+
+/*Convergence*/ @media screen and (max-width: 449px) {
+    [efy_alerts] {left: var(--efy_gap)}
+    [efy_sidebar*=on] .efy_sidebar {border-radius: 0; border: 0}
+} @media screen and (max-width: 840px) {
+    [efy_sidebar*=on] [efy_alerts] {--efy_bg_width: 100vw!important; width: calc(100% - (var(--efy_gap) * 2))}
+    [efy_sidebar*=on] [efy_alerts*=right] {right: calc(var(--efy_gap) - var(--efy_sidebar_width)); left: unset}
+    [efy_sidebar*=on_left] [efy_alerts] {margin-left: 0}
+    [efy_sidebar*=on_left] [efy_alerts*=right] {right: var(--efy_gap); left: unset}
+}
 
 /*EFY Icons*/ @font-face {font-family: 'efy_icons'; src: url('efy_icons.woff2') format('truetype'); font-weight: normal; font-style: normal; font-display: block} i, :is([efy_start], [efy_reset], [efy_sidebar_btn], details > summary):before, [efy_help] summary:after {font-family: 'efy_icons' !important; speak: never; font-style: normal; font-weight: normal; font-variant: normal; text-transform: none; vertical-align: middle; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale} i {margin-right: 8rem}
 
