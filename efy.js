@@ -1,9 +1,7 @@
-export let efy_version = '23.08.02 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document), $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
-/*Add: Selector, optional: {Attributes}, [Text, Children], Parent, Position*/ $add = (a, b = {}, c = [], d = document.body, e = 'beforeend')=>{ const f = document.createElement(a); for (const [g, h] of Object.entries(b)){ f.setAttribute(g, h)}; c.forEach(i =>{ (typeof i === 'string') ? f.textContent += i : f.appendChild(i) }); d.insertAdjacentElement(e, f); return f}
-/*Append: Where, Element*/ $append = (a,b) =>{ a.appendChild(b)},
-/*Insert: Where, Position, Element*/ $insert = (a,b,c) =>{ a.insertAdjacentElement(b,c)}, $insert_text = (a,b,c) =>{ a.insertAdjacentText(b,c)},
+export let efy_version = '23.08.13 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document), $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
+/*Add: Selector, optional: {Attributes}, [Text, Children], Parent, Position*/ $add = (a, b = {}, c = [], d = document.body, e = 'beforeend')=>{ const f = document.createElement(a); for (const [g, h] of Object.entries(b)){ f.setAttribute(g, h)} c.forEach(i =>{ (typeof i === 'string') ? f.textContent += i : f.appendChild(i) }); d.insertAdjacentElement(e, f); return f},
+/*Text: Selector, Text, Position (optional)*/ $text = (a, b, c) =>{ c ? a.insertAdjacentText(c,b) : a.textContent = b},
 /*Get CSS Property*/ $css_prop = (a) =>{ return getComputedStyle($(':root')).getPropertyValue(a).replaceAll(' ','')},
-/*Text*/ $text = (a,b)=>{a.textContent = b},
 /*Event*/ $event = (a,b,c,d) =>{ d ? a.addEventListener(b,c,d) : a.addEventListener(b,c) },
 /*Remove Event*/ $event_rm = (a,b,c,d) =>{ d ? a.removeEventListener(b,c,d) : a.removeEventListener(b,c) },
 /*Ready: Selector, Function, 1 (optional)*/ $ready =(sel, fn, once)=>{ let d = document.documentElement; if (once == 1){
@@ -15,16 +13,17 @@ export let efy_version = '23.08.02 Beta', $ = document.querySelector.bind(docume
     }}; if (!o){ o = new MutationObserver(check).observe(d, {childList: true, subtree: true})} check()
 }},
 /*Cursor FN*/ cursor_fn =(e)=>{let x = $('[efy_cursor]'); x.style.left = e.pageX + 'px'; x.style.top = e.pageY + 'px'},
-/*Audio Play*/ $audio_play = async (a,b)=>{ try { a.pause(); a.currentTime = 0; a.play(); if (b == 'loop'){ $event(a, 'ended', ()=>{ a.pause(); a.currentTime = 0; a.play()}, false)}} catch {}},
+/*Audio Play*/ $audio_play = async (a,b)=>{ try { a.pause(); a.currentTime = 0; a.play(); if (b == 'loop'){ $event(a, 'ended', ()=>{ a.pause(); a.currentTime = 0; a.play()}, false)}} catch {/**/}},
 /*Wait: Seconds, FN*/ $wait =(a,b)=> setTimeout(b,a*1000),
 /*Custom QuerySelectors*/ $$ =(a,b)=> a.querySelector(b), $$all =(a,b)=> a.querySelectorAll(b),
 /*Notify*/ $notify =(a,b,c,lang)=>{ let d = 'alert' + Date.now(), i = $('.efy_quick_notify i'), icon_fn =()=>{ if ($all('.efy_quick_notify_content [efy_alert]').length > 0){ i.setAttribute('efy_icon', 'notify_active')} else {i.setAttribute('efy_icon', 'notify')}};
-    if (lang == 'lang'){ b = efy_lang[b]; c = efy_lang[c] }; ['[efy_alerts]', '.efy_quick_notify_content'].map(e=>{
+    if (lang == 'lang'){ b = efy_lang[b]; c = efy_lang[c]}
+    ['[efy_alerts]', '.efy_quick_notify_content'].map(e=>{
         $add('div', {efy_alert: '', class: d}, [$add('div', {}, [$add('h6', {}, [b]), $add('p', {}, [c])]), $add('button', {efy_btn_square: ''}, [$add('i', {efy_icon: 'remove'})])], $(e));
     }); icon_fn();
-$wait(a, ()=>{ try { $$($('[efy_alerts]'), '.' + d).remove()} catch {}; icon_fn() })},
+$wait(a, ()=>{ try { $$($('[efy_alerts]'), '.' + d).remove()} catch {/**/} icon_fn() })},
 /*Language*/ $efy_lang_start =()=>{ $all('[efy_lang]').forEach(a=>{ let b = a.getAttribute('efy_lang'), c = getComputedStyle($('[efy_lang]')).getPropertyValue(`--${b}`), d = (a.hasAttribute('efy_range_text')) ? c+':' : c; efy_lang[b] = c;
-($$(a, '[efy_icon]') !== null) ? $insert_text(a, 'beforeend', d) : $insert_text(a, 'afterbegin', d); a.removeAttribute('efy_lang')})},
+($$(a, '[efy_icon]') !== null) ? $text(a, d, 'beforeend') : $text(a, d, 'afterbegin'); a.removeAttribute('efy_lang')})},
 /*Convert seconds to (hh:mm:ss)*/ $sec_time =(a)=>{ const h = Math.floor(a / 3600).toString().padStart(2,'0'), m = Math.floor(a % 3600 / 60).toString().padStart(2,'0'), s = Math.floor(a % 60).toString().padStart(2,'0'); return `${h}:${m}:${s}`};
 
 /*After Page Loads*/ window.onload = async ()=>{ $root = $(":root"), $head = document.head, $body = document.body; $efy_module = (a) =>{ let b = $css_prop('--efy_modules').split(',').includes(a) ? true : false; return b}; let a, b;
@@ -168,7 +167,7 @@ hsl2hex=((t,n,a)=>{a/=100;const r=n*Math.min(a,1-a)/100,h=n=>{const h=(n+t/30)%1
 hex2hsl=(a=>{let e=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(a),[t,r,s]=[parseInt(e[1],16),parseInt(e[2],16),parseInt(e[3],16)];t/=255,r/=255,s/=255;let h,n,d=Math.max(t,r,s),c=Math.min(t,r,s),l=(d+c)/2;if(d==c)h=n=0;else{let a=d-c;switch(n=l>.5?a/(2-d-c):a/(d+c),d){case t:h=(r-s)/a+(r<s?6:0);break;case r:h=(s-t)/a+2;break;case s:h=(t-r)/a+4}h/=6}return n*=100,n=Math.round(n),l*=100,l=Math.round(l),[h=Math.round(360*h),n,l]}),
 rgb2hsl=(t=>{let[a,h,r]=[t[0]/255,t[1]/255,t[2]/255],n=Math.max(a,h,r),M=Math.min(a,h,r),u=(n+M)/2,d=0,o=0;return n!=M&&(d=u<.5?(n-M)/(n+M):(n-M)/(2-n-M),o=a==n?(h-r)/(n-M):h==n?2+(r-a)/(n-M):4+(a-h)/(n-M)),[u,d,o]=[100*u,100*d,60*o],o<0&&(o+=360),[Math.round(o),Math.round(d),Math.round(u)]});
 
-/*Color Picker: text or lang, hsl, id, lang*/ $ready('[efy_color]', (a)=>{ let g = a.getAttribute('efy_color').replaceAll(', ', ',').split(','), h = '', j = g[0]; if (g[3] == 'lang'){ h = g[0]; j = ''};
+/*Color Picker: text or lang, hsl, id, lang*/ $ready('[efy_color]', (a)=>{ let g = a.getAttribute('efy_color').replaceAll(', ', ',').split(','), h = '', j = g[0]; if (g[3] == 'lang'){ h = g[0]; j = ''}
     $add('button', {efy_color_preview: '', style: `background: hsl(${g[1]})`, efy_lang: h}, [j], a);
     $add('div', {efy_color_picker: '', class: 'efy_hide'}, [$add('div', {class: 'efy_cp_switch'}, [ $add('button', {class: 'efy_color_picker_switch'}, ['HSL']) ])], a);
     $event($$(a, '[efy_color_preview]'), 'click', ()=>{ $$(a, '[efy_color_picker]').classList.toggle('efy_hide'); a.toggleAttribute('efy_active')});
@@ -224,7 +223,7 @@ cs.addEventListener('click', ()=>{ if (efy_swc == 1){ $text(cs, 'RGB')} else if 
     $root.style.setProperty(`--efy_color1_var`, efy.color1); $root.style.setProperty(`--efy_color2_var`, efy.color2);
     });
 
-    /*Lang Text - Temporary Fix*/ $wait(.3, ()=>{ $efy_lang_start(); let t = '[efy_range_text=', y = a.getAttribute('efy_color').replaceAll(', ', ',').split(',')[1].split(' '); h = y[0]; s = y[1].replace('%', ''); l = y[2].replace('%', ''), p = ' .efy_range_text_p';
+    /*Lang Text - Temporary Fix*/ $wait(.3, ()=>{ $efy_lang_start(); let t = '[efy_range_text=', y = a.getAttribute('efy_color').replaceAll(', ', ',').split(',')[1].split(' '), h = y[0], s = y[1].replace('%', ''), l = y[2].replace('%', ''), p = ' .efy_range_text_p';
     $$(a, '.hue').value = h; $$(a, `.sat`).value = s; $$(a, `.lgt`).value = l; $$(a, `.efy_color_picker_hsl`).value = `${h} ${s}% ${l}%`;
     $$(a, t + 'hue]' + p).value = h; $$(a, t + 'saturation]' + p).value = s; $$(a, t + 'brightness]' + p).value = l;
     let style = [`linear-gradient(to right, hsl(0 0% 50%), hsl(${h} 100% ${l}%))`, `linear-gradient(to right, #000, hsl(${h} ${s}% 50%), #fff)`]; [$$(a, `.sat`), $$(a, `.lgt`)].map((b,k)=>{ b.style.background = style[k] })
@@ -318,7 +317,7 @@ $all("[name=efy_sidebar_align]").forEach(x => { let y = x.id.replace('efy_sideba
 $ready('[efy_alerts]', ()=>{ let b = $('[efy_alerts]'), c = $('#efy_notify_align');
     'left_top middle_top right_top left_bottom middle_bottom right_bottom'.split(' ').map(a =>{
         $add('input', {type: 'radio', name: 'efy_notify_align', id: a}, [], c);
-        $event($$(c, `#${a}`), 'change', ()=>{ b.setAttribute('efy_alerts', a); if (a == 'left_top'){ delete efy.notify_align} else {efy.notify_align = a}; $save() })
+        $event($$(c, `#${a}`), 'change', ()=>{ b.setAttribute('efy_alerts', a); if (a == 'left_top'){ delete efy.notify_align} else {efy.notify_align = a} $save() })
     });
     if (efy.notify_align){ let a = efy.notify_align, d = $$(c, `#${a}`); b.setAttribute('efy_alerts', a); d.checked = true} else {$$(c, '#left_top').checked = true}
 }, 1);
@@ -331,12 +330,12 @@ for (let a = ['bg', 'content', 'trans'], c = $('[efy_tabs=efyui_filters]'), i = 
 
 $all('[efy_tabs=efyui_filters] form').forEach(y =>{ let z = y.getAttribute('efy_content');
   $add('button', {type: 'reset', efy_lang: 'reset'}, [$add('i', {efy_icon: 'reload'})], y);
-  for (let a = ['brightness', 'blur', 'saturation', 'contrast', 'hue', 'sepia', 'invert'], b = ['brightness', 'blur', 'saturate', 'contrast', 'hue-rotate', 'sepia', 'invert'], c = ['0', '0', '0', '0.1', '0', '0', '0'], d = ['3', '100', '3', '3', '360', '1', '1'], e = ['1', '0', '1', '1', '0', '0', '0'], f = ['0.05', '1', '0.05', '0.05', '1', '0.05', '0.05'], i = 0; i < a.length; i++){ $add('div', {efy_lang: a[i], efy_range_text: a[i]}, [ $add('input', {class: `efy_${z}_${b[i]}`, type: 'range', min: c[i], max: d[i], value: e[i], step: f[i]}) ], y)}
+  for (let a = ['brightness', 'blur', 'saturation', 'contrast', 'hue', 'sepia', 'invert'], b = ['brightness', 'blur', 'saturate', 'contrast', 'hue-rotate', 'sepia', 'invert'], c = ['0', '0', '0', '0.1', '0', '0', '0'], d = ['4', '150', '4', '4', '360', '1', '1'], e = ['1', '0', '1', '1', '0', '0', '0'], f = ['0.05', '1', '0.05', '0.05', '1', '0.05', '0.05'], i = 0; i < a.length; i++){ $add('div', {efy_lang: a[i], efy_range_text: a[i]}, [ $add('input', {class: `efy_${z}_${b[i]}`, type: 'range', min: c[i], max: d[i], value: e[i], step: f[i]}) ], y)}
 });
 /*Trans Menu*/ a = $('[efy_tabs=efyui_filters] [efy_content=trans] [type=reset]'), b = 'efy_trans_filter_menu';
 $add('label', {for: b, efy_lang: 'menu'}, [], a, 'afterend'); $add('input', {id: b, type: 'checkbox'}, [], a, 'afterend');
 
-/*BG Size & Position*/ a = $('[efy_tabs=efyui_filters] [efy_content=bg] [type=reset]'), b = 'efy_bg_size', c = 'afterend';
+/*BG Size & Position*/ a = $('[efy_tabs=efyui_filters] [efy_content=bg] [type=reset]'), b = 'efy_bg_size'; let c = 'afterend';
 $add('div', {efy_lang: 'size', efy_range_text: 'bg_size', class: 'efy_hide_i'}, [ $add('input', {class: `efy_bg_size`, type: 'range', min: 10, max: 3000, value: 300, step: 10}) ], a, c);
 $add('div', {efy_lang: 'left', efy_range_text: 'bg_position_x', class: 'efy_hide_i'}, [ $add('input', {class: `bg_position_x`, type: 'range', min: -3000, max: 3000, value: 0, step: 1}) ], a, c);
 $add('div', {efy_lang: 'up', efy_range_text: 'bg_position_y', class: 'efy_hide_i'}, [ $add('input', {class: `bg_position_y`, type: 'range', min: -3000, max: 3000, value: 0, step: 1}) ], a, c);
@@ -457,7 +456,7 @@ $all('.efy_audio_volume_page').forEach(a => a.oninput =()=>{ $all('audio, video'
 /*Change bg image*/ $add('style', {class: 'efy_css_bgimg'}, [], $head); let efy_css_bgimg = $('.efy_css_bgimg');
 
 /*Upload Input: id, accept, efy_lang or 'small', multiple, icon*/ $ready('[efy_upload]', (a)=>{ let b = a.getAttribute('efy_upload').replaceAll(' ','').split(','), c = 'plus';
-    if (b[2]){ if (b[2] !== 'small'){ a.setAttribute('efy_lang', b[2]) } } else {a.setAttribute('efy_lang', 'add_file')}; if (b[4]){ c = b[4]}
+    if (b[2]){ if (b[2] !== 'small'){ a.setAttribute('efy_lang', b[2]) } } else {a.setAttribute('efy_lang', 'add_file')} if (b[4]){ c = b[4]}
     a.setAttribute('role', 'button'); $add('input', {type: 'file', id: b[0], accept: b[1]}, [], a); $add('i', {efy_icon: c}, [], a);
     if (b[3] == 'multiple'){ $all(`#${b[0]}`).forEach(a=>{ a.setAttribute('multiple', '')})}
 });
@@ -581,16 +580,16 @@ await importIDB(); $wait(3, ()=>{ location.reload()}) }; read.readAsText(file)})
     });
 });
 
-/*EFY Range Text*/ $ready('[efy_range_text]', (a)=>{ let c = $$(a, 'input');
-    $add('input', {class: 'efy_range_text_p', type: 'number', value: c.value, step: c.step, min: c.min, max: c.max}, [], a, 'afterbegin'); let p = $$(a, '.efy_range_text_p');
+/*EFY Range Text*/ let p; $ready('[efy_range_text]', (a)=>{ let c = $$(a, 'input[type=range]');
+    $add('input', {class: 'efy_range_text_p', type: 'number', value: c.value, step: c.step, min: c.min, max: c.max}, [], a, 'afterbegin'); p = $$(a, '.efy_range_text_p');
     $event(p, 'input', (x)=>{ c.value = x.target.value; c.dispatchEvent(new Event('input', {'bubbles': true }))});
-    $event(c, 'input', (x)=>{ p.value = x.target.value });
+    $event(c, 'input', (x)=>{ $$(a, '.efy_range_text_p').value = x.target.value });
 }); $all('form[class*=efy], [efy_content=colors] [efy_color_picker]').forEach(x =>{ $event(x,'reset', ()=>{
-        $$all(x, '[efy_range_text]').forEach(y =>{ p.value = `${$$(y, 'input').value}` })
+        $$all(x, '[efy_range_text]').forEach(y =>{ $$(y, '.efy_range_text_p').value = $$(y, 'input').value })
 })});
 
 
-/*Number Input*/ $all('input[type="number"]').forEach(t =>{ let n = $add('div', {efy_number: ''}); t.parentNode.replaceChild(n,t); $append(n, t); let s, h, f, i = t, step;
+/*Number Input*/ $all('input[type="number"]').forEach(t =>{ let n = $add('div', {efy_number: ''}); t.parentNode.replaceChild(n,t); n .appendChild(t); let s, h, f, i = t, step;
 i.hasAttribute("step") ? step = parseInt(i.getAttribute("step"),10) : step=1; i.hasAttribute("pattern")||i.setAttribute("pattern","[0-9]");
 h = i.hasAttribute("min") ? parseInt(i.getAttribute("min"),10) : 0; s = i.hasAttribute("max") ? parseInt(i.getAttribute("max"),10) : 99999;
 (new DOMParser).parseFromString(n,"text/html");
@@ -602,21 +601,25 @@ $$(n, j).addEventListener('pointerdown', ()=>{c = setInterval(g, 100)}); $$(n, j
 
 /*Clock & Timer*/ let time_0 =(i)=>{ if (i < 10){i = '0' + i} return i},
 
-/*Clock*/ efy_clock =()=>{ let t = new Date(), h = t.getHours(), m = ':' + time_0(t.getMinutes()), s = ''; $all('[efy_clock]').forEach(x =>{ let y = '';
-    if (x.getAttribute('efy_clock').includes('12')){ y = h < 12 ? ' AM' : ' PM'};
-    if (x.getAttribute('efy_clock').includes('hms')){ s = ':' + time_0(t.getSeconds()) };
-$text(x, h+m+s+y)})}; $ready('[efy_clock]', ()=>{ efy_clock(); setInterval(()=>{efy_clock()}, 1000)});
+/*Clock*/ efy_clock =()=>{ let t = new Date(), h = t.getHours(), m = time_0(t.getMinutes()), s = ''; $all('[efy_clock]').forEach(x =>{ let f = '';
+    if (x.getAttribute('efy_clock').includes('12')){ f = h < 12 ? ' AM' : ' PM'}
+    if (x.getAttribute('efy_clock').includes('hms')){ s = time_0(t.getSeconds())}
+    let z = 'hour s1 minute s2 second format'.split(' '); [h,':',m,':',s,f].map((a,i)=>{ $$(x, '.' + z[i]).textContent = a });
+ })};
+$ready('[efy_clock]', (x)=>{ 'hour s1 minute s2 second format'.split(' ').map(a =>{ $add('p', {class: a}, [], x)});
+    $wait(.1, efy_clock); setInterval(efy_clock, 1000)
+});
 
 /*Timer: ID, Time, Reverse (optional)*/ $ready('[efy_timer]', (y) =>{ let tm = y.getAttribute('efy_timer').split(','), time = '00:00:00'; if (tm[1]  !== undefined){ time = $sec_time(tm[1])}
     $add('div', {efy_text: ''}, [time], y); $add('button', {efy_start: '', title: 'Start or Pause'}, [], y); $add('button', {efy_reset: '', title: 'Reset'}, [], y);
 
     let play = $$(y, '[efy_start]'), reset= $$(y, '[efy_reset]'), timer_text = $$(y, '[efy_text]'), interval, i = 0;
-    const time_reset =()=>{clearInterval(interval); i = 0; if (tm[2] == 'reverse'){ $text(timer_text, $sec_time(tm[1]) )} else {$text(timer_text, "00:00:00")}; play.removeAttribute('efy_active')};
+    const time_reset =()=>{clearInterval(interval); i = 0; if (tm[2] == 'reverse'){ $text(timer_text, $sec_time(tm[1]) )} else {$text(timer_text, "00:00:00")} play.removeAttribute('efy_active')}
 
     $event(play, 'click', ()=>{ clearInterval(interval); play.toggleAttribute('efy_active'); if (play.hasAttribute('efy_active')){ interval = setInterval(()=>{
         /*Reverse*/ if (tm[2] == 'reverse'){ i++; $text(timer_text, $sec_time(tm[1] - i))}
         /*Normal*/ else { i++; $text(timer_text, $sec_time(i))}
-        /*Reset & Notify*/ if (i == tm[1]){ $notify(600, 'Done!', 'Time is up!'); $audio_play(efy_audio.call, 'loop'); time_reset(); $event($('[efy_alert]'), 'click', ()=>{ try {efy_audio.call.pause()} catch {} })}
+        /*Reset & Notify*/ if (i == tm[1]){ $notify(600, 'Done!', 'Time is up!'); $audio_play(efy_audio.call, 'loop'); time_reset(); $event($('[efy_alert]'), 'click', ()=>{ try {efy_audio.call.pause()} catch {/**/} })}
     }, 1000)} else { clearInterval(interval) }});
     $event(reset, 'click', time_reset);
 });
@@ -627,7 +630,7 @@ z.addEventListener('keyup', ()=>{ let val = z.value.toLowerCase(); $all(containe
 /*EFY Toggle*/ $ready('[efy_toggle]', (a)=>{ let b = a.getAttribute('efy_toggle'); a.addEventListener('click', ()=>{ $all(b).forEach(c =>{ c.classList.toggle('efy_hide_i')})})});
 
 /*Alerts*/ $add('div', {efy_alerts: '', class: 'efy_sidebar_width'}, [], $body, 'afterbegin'); $body.addEventListener("pointerup", ()=>{ if (event.target.matches('[efy_alert]')){ let a = event.target, b = a.classList[0], i = $('.efy_quick_notify i'), icon_fn =()=>{ if ($all('.efy_quick_notify_content [efy_alert]').length > 0){ i.setAttribute('efy_icon', 'notify_active')} else {i.setAttribute('efy_icon', 'notify')}};
-    a.classList.add('efy_anim_remove'); $wait($css_prop('--efy_anim_speed') * 0.05, ()=>{ a.remove(); try { $(`.efy_quick_notify_content [efy_alert].${b}`).remove()} catch {}; icon_fn() })
+    a.classList.add('efy_anim_remove'); $wait($css_prop('--efy_anim_speed') * 0.05, ()=>{ a.remove(); try { $(`.efy_quick_notify_content [efy_alert].${b}`).remove()} catch {/**/} icon_fn() })
 }});
 
 /*Online Status*/ for (let a = ['offline', 'online'], i = 0; i <a.length; i++){
@@ -641,8 +644,8 @@ z.addEventListener('keyup', ()=>{ let val = z.value.toLowerCase(); $all(containe
 /*Lang files loaded*/ $('.efy_lang_app_file').onload =()=>{
     /*Translations*/ $ready('[efy_lang]', (a)=>{ let b = a.getAttribute('efy_lang');
         efy_lang[b] = getComputedStyle($('[efy_lang]')).getPropertyValue(`--${b}`); let c = (a.hasAttribute('efy_range_text')) ? c+':' : efy_lang[b];
-        if ($$(a, '[efy_icon]') !== null){ $insert_text(a, 'beforeend', c)}
-        else {$insert_text(a, 'afterbegin', c)}
+        if ($$(a, '[efy_icon]') !== null){ $text(a, c, 'beforeend')}
+        else {$text(a, c, 'afterbegin')}
     a.removeAttribute('efy_lang')}); $efy_lang_start()
     /*Alpha*/ for (let a =['"Max Width"'], i=0; i<a.length; i++){ $add('mark', {efy_lang: 'alpha'}, [], $(`[efy_content=size] [efy_range_text*=${a[i]}] .efy_range_text_p`), 'afterend')}
     /*No Notifications*/ $add('style', {}, [`.efy_quick_notify_content:empty:before {content: '${efy_lang.no_notifications}'}`], $head);

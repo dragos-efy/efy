@@ -102,7 +102,7 @@
 
 
 /*Animation: None*/ [efy_tabs] [efy_tab]:active {-webkit-animation: none; animation: none}
-/*Animation: Hide*/  [efy_alert].efy_anim_remove {animation: remove calc(var(--efy_anim_status) * var(--efy_anim_speed) * .05s) ease-in-out backwards; animation-play-state: var(--efy_anim_state)}
+/*Animation: Hide*/ .efy_anim_remove {animation: remove calc(var(--efy_anim_status) * var(--efy_anim_speed) * .05s) ease-in-out backwards; animation-play-state: var(--efy_anim_state)}
 /*Transform: Pulse*/ :is(button, [efy_tab], [efy_bg_nr], .efy_anim_pulse):not([disabled]):active {transform: scale(.9); transition: calc(var(--efy_anim_status) * var(--efy_anim_speed) * .1s)}
 /*Transform: Pulse2*/ :is(details, input, textarea, select, a, label, [efy_timer], [efy_clock], [efy_card], [efy_alert], .efy_anim_pulse2):not([disabled]):active {transform: scale(.98); transition: calc(var(--efy_anim_status) * var(--efy_anim_speed) * .1s)}
 
@@ -288,7 +288,7 @@ details[open]:not([efy_help]) > summary:before {transform: rotate(90deg); right:
 
 .efy_about_div mark {display: block; width: fit-content; margin-bottom: 10rem; padding: 0 10rem}
 [efy_range_text] mark {margin: 0; line-height: 1; padding: 5rem 6rem}
-[efy_range_text] input {margin: 6rem 0 0 0}
+[efy_range_text] [type=range] {margin: 6rem 0 0 0}
 
 [efy_range_text="Max Width alpha"] .efy_range_text_p {width: 50rem; margin-right: -8rem!important}
 [efy_range_text="Max Width alpha"] .efy_range_text_p:focus {margin-right: 0!important}
@@ -358,11 +358,14 @@ details[open]:not([efy_help]) > summary:before {transform: rotate(90deg); right:
 
 [efy_tabs] [efy_content][efy_active], [efy_card], [efy_search_input] {transition: calc(var(--efy_anim_status) * var(--efy_anim_speed) * .1s) linear}
 
-/*Timer*/ [efy_timer], [efy_clock] {padding: 0 10rem; display: inline-flex; gap: var(--efy_gap0); flex-wrap: wrap; align-items: center}
-[efy_timer] [efy_text], [efy_clock] {font-size: 36rem; font-weight: bold}
+/*Timer*/ [efy_timer], [efy_clock] {padding: 0 10rem; display: inline-flex; flex-wrap: wrap; align-items: center}
+[efy_timer] {gap: var(--efy_gap0)}
+[efy_timer] [efy_text], [efy_clock] p {font-size: 36rem; font-weight: bold}
+[efy_clock] .format {padding-left: 8rem}
 [efy_start], [efy_reset]{padding: 8rem 10rem!important}
 :is([efy_start], [efy_reset]):before {margin-right:0!important}
 .efy_quick_shortcuts [efy_clock] {margin: 0 var(--efy_gap0) 12rem 0}
+[efy_clock]:not([efy_clock*=hms]) :is(.second, .s2), [efy_clock]:not([efy_clock*="12"]) .format {display: none}
 
 /*Alert*/ [efy_alerts] {display: grid; gap: var(--efy_gap0); position: fixed; top: var(--efy_gap); left: var(--efy_gap); z-index: 99999; width: calc(100% - (var(--efy_gap) * 2)); max-width: 400rem}
 [efy_alerts*=middle] {left: calc((var(--efy_bg_width) / 2) - 200rem)}
@@ -389,7 +392,7 @@ details[open]:not([efy_help]) > summary:before {transform: rotate(90deg); right:
 #custom_sidebar_menu a, #demo_sidebar_settings > div a {background: var(--efy_bg1); padding: var(--efy_padding); border-radius: var(--efy_radius); border: var(--efy_border); -webkit-text-fill-color: var(--efy_text)}
 
 /*Translations*/ .efy_lang_text {display: inline; margin: 0!important; pointer-events: none!important; -webkit-text-fill-color: inherit; color: inherit}
-.efy_range_text_p {background: transparent; border-color: transparent!important; padding: 0 4rem; width: fit-content; border-radius: calc(var(--efy_radius) / 1.5)}
+.efy_range_text_p {background: transparent; border-color: transparent!important; padding: 0 4rem; width: fit-content; border-radius: calc(var(--efy_radius) / 1.5); margin: 0}
 [efy_range_text] [efy_number]:focus-within {margin: 0 0 0 10rem!important}
 [efy_range_text] [efy_number] {display: inline-flex; margin: 0}
 
@@ -429,7 +432,8 @@ details[open]:not([efy_help]) > summary:before {transform: rotate(90deg); right:
 [efy_icon=arrow_down]:before {content: "\e900"; position:absolute; margin: 1rem 0 0 -15rem; transform: rotate(180deg)} [efy_icon=arrow_down] {margin-left: 15rem}
 [efy_icon=audio]:before {content: "\e905"}
 [efy_icon=check]:before {content: "\e914"}
-[efy_icon=chevron]:before, details:not([efy_help]) > summary:before {content: "\e907"}
+[efy_icon*=chevron]:before, details:not([efy_help]) > summary:before {content: "\e907"}
+[efy_icon=chevron_left]:before {display: inline-block; transform: rotate(180deg)}
 [efy_icon=copy]:before {content: "\e919"}
 [efy_icon=dots]:before {content: "\e902"}
 [efy_icon=edit]:before {content: "\e91b"}
