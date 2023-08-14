@@ -1,4 +1,4 @@
-import {$, $all, $add, $css_prop, $audio_play, efy_audio, efy} from './efy.js';
+import {$, $all, $add, $ready, $css_prop, $audio_play, efy_audio, efy, $save, $efy_lang_start} from './efy.js';
 
 $ready('#efy_sbtheme', ()=>{/*Audio Nature*/ efy_audio.folder = $css_prop('--efy_audio_folder'); let c = 'efy_audio_nature'; $add('details', {id: c, efy_select: ''}, [$add('summary', {efy_lang: 'nature_effects'}, [$add('i', {efy_icon: 'audio'})])], $('#efy_audio'));
 let b = $('#efy_audio #efy_audio_nature'); 'forest rain waves underwater people fireworks dreamy'.split(' ').forEach(x => {
