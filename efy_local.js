@@ -1,4 +1,4 @@
-let efy_version = '23.08.23 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document), $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
+let efy_version = '23.09.03 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document), $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
 /*Add: Selector, optional: {Attributes}, [Text, Children], Parent, Position*/ $add = (a, b = {}, c = [], d = document.body, e = 'beforeend')=>{ const f = document.createElement(a); for (const [g, h] of Object.entries(b)){ f.setAttribute(g, h)} c.forEach(i =>{ (typeof i === 'string') ? f.textContent += i : f.appendChild(i) }); d.insertAdjacentElement(e, f); return f},
 /*Text: Selector, Text, Position (optional)*/ $text = (a, b, c) =>{ c ? a.insertAdjacentText(c,b) : a.textContent = b},
 /*Get CSS Property*/ $css_prop = (a) =>{ return getComputedStyle($(':root')).getPropertyValue(a).replaceAll(' ','')},
@@ -153,11 +153,11 @@ $save()});
 $add('details', {efy_help: ''}, [$add('summary', {efy_lang: 'custom_colors'}), $add('div', {efy_lang: 'custom_colors_help'})], b);
 
 $add('div', {class: 'efy_custom_colors'}, [], b); let cc = $('.efy_custom_colors');
-c = ['text', 'bgcol', 'bordercol']; ['text,0 100% 50%,efy_color_text', 'background,0 0% 0%,efy_color_bgcol', 'border, 0 0% 50%,efy_color_bordercol'].map((a,i)=>{
+c = 'text bgcol bordercol buttoncol'.split(' '); ['text,0 100% 50%,efy_color_text', 'background,0 0% 0%,efy_color_bgcol', 'border, 0 0% 50%,efy_color_bordercol', 'button, 0 0% 50%,efy_color_buttoncol'].map((a,i)=>{
     $add('div', {efy_color: a+',lang'}, [ $add('input', {type: 'checkbox', name: `efy_${c[i]}_color_status`, id: `efy_${c[i]}_status`}), $add('label', {for: `efy_${c[i]}_status`}) ], cc);
 });
 
-for (let x = ['1', '2', '_text', '_bgcol', '_bordercol'], y = ['color1', 'color2', 'text', 'bgcol', 'bordercol'], i=0; i < x.length; i++){
+for (let x = ['1', '2', '_text', '_bgcol', '_bordercol', '_buttoncol'], y = ['color1', 'color2', 'text', 'bgcol', 'bordercol', 'buttoncol'], i=0; i < x.length; i++){
     if (efy[y[i]] !== undefined){ let z = efy[y[i]]; $root.style.setProperty(`--efy_color${x[i]}_var`, z) }}
 
 
@@ -168,47 +168,67 @@ $add('div', {class: 'efy_shadows'}, [ $add('div') ], b); let ss = $('.efy_shadow
     $add('div', {efy_color: a, efy_select: ''}, [], ss);
     $ready(`.efy_shadows [efy_color="${a}"] [efy_color_picker]`, (x)=>{
         $add('div', {efy_range_text: 'transparency', efy_lang: 'transparency'}, [$add('input', {class: `transparency`, type: 'range', min: '0', max: '1', value: '1', step: '0.05'})], $$(x, '[efy_range_text=brightness]'));
-        $add('div', {efy_range_text: 'spread', efy_lang: 'spread'}, [$add('input', {class: `spread`, type: 'range', min: '0', max: '30', value: '0', step: '1'})], x, 'afterbegin');
+        $add('div', {efy_range_text: 'spread', efy_lang: 'spread'}, [$add('input', {class: `spread`, type: 'range', min: '-20', max: '30', value: '0', step: '1'})], x, 'afterbegin');
         $add('div', {efy_range_text: 'blur', efy_lang: 'blur'}, [$add('input', {class: `blur`, type: 'range', min: '0', max: '50', value: '5', step: '1'})], x, 'afterbegin');
-        $add('div', {efy_range_text: 'y', efy_lang: 'y'}, [$add('input', {class: `y`, type: 'range', min: '-30', max: '30', value: '0', step: '1'})], x, 'afterbegin');
-        $add('div', {efy_range_text: 'x', efy_lang: 'x'}, [$add('input', {class: `x`, type: 'range', min: '-30', max: '30', value: '0', step: '1'})], x, 'afterbegin');
+        ['y', 'x'].map(a => $add('div', {efy_range_text: a, efy_lang: a}, [$add('input', {class: a, type: 'range', min: '-30', max: '30', value: '0', step: '1'})], x, 'afterbegin'));
         $add('label', {efy_lang: 'inset', for: `inset${i}`, name: `efy_shadow_trans${i}`}, [], x, 'afterbegin');
         $add('input', {id: `inset${i}`, name: `efy_shadow_trans${i}`, type: 'checkbox'}, [], x, 'afterbegin');
         $add('label', {efy_lang: 'status', for: `status${i}`, name: `efy_shadow_trans_status${i}`}, [], x, 'afterbegin');
-        $add('input', {id: `status${i}`, name: `efy_shadow_trans_status${i}`, type: 'checkbox', checked: true}, [], x, 'afterbegin');
-    })
-}); $ready(`.efy_shadows [efy_color*=trans4] .spread`, ()=>{ $add('p', {style: 'width: 100%'}, ['Shadows: Button', $add('mark', {efy_lang: 'alpha', style: 'margin-left: 8rem'}) ], $('.efy_shadows [efy_color*=trans4]'), 'afterend') });
+        $add('input', {id: `status${i}`, name: `efy_shadow_trans_status${i}`, type: 'checkbox'}, [], x, 'afterbegin');
+})});
+$ready(`.efy_shadows [efy_color*=btn1] .spread`, ()=>{
+    $add('p', {style: 'width: 100%'}, ['Shadows: Button', $add('mark', {efy_lang: 'alpha', style: 'margin-left: 8rem'}) ], $('.efy_shadows [efy_color*=trans4]'), 'afterend');
+    [0,4].map(a=> $(`.efy_shadows #status${a}`).checked = true);
+},1);
 
-let efy_shadow = ''; ['trans', 'button', 'button_trans'].map(a=>{
-    if (efy[`shadow_${a}`] !== undefined){
-        $root.style.setProperty(`--efy_shadow_${a}`, efy[`shadow_${a}`]);
-        if (a == 'trans'){ efy_shadow += 'trans' } else if (a == 'button'){ efy_shadow += ', button'}
-    }
-}); if (efy_shadow !== ''){ $root.setAttribute('efy_shadow', efy_shadow)}
+let efy_shadow = '', keys = 'shadow_trans shadow_button shadow_button_trans'.split(' '), values = ['trans', 'button', ''], a3 = [0,1,2,3], a4 = [0,1,2,3,4];
 
-'0 1 2 3 4'.split(' ').map(i =>{ let g = `.efy_shadows [efy_color*=trans`, d = `${g}${i}]`, c = [], e = []; '0 1 2 3'.split(' ').map(i =>{ e[i] = `${g}] #status${i}`; c[i] = `${g}${Number(i) + 1}] .`});
-    $ready(`${d} .spread`, ()=>{ $text($(`${d} [efy_color_preview]`), i);
-        $event($(d), 'input', ()=>{ if (event.target.matches('input')){ let inset = [], b = [];
-            '0 1 2 3'.split(' ').map(x =>{
-                inset[x] = $(`${g}] #inset${x}`).checked ? 'inset ' : '';
-                b[x] = `${inset[x] + $(c[x] + 'x').value}rem ${$(c[x] + 'y').value}rem ${$(c[x] + 'blur').value}rem ${$(c[x] + 'spread').value}rem hsla(${$(c[x] + 'efy_color_picker_hsl').value} / ${$(c[x] + 'transparency').value})`
-            });
-            $root.style.setProperty('--efy_shadow_trans', b); efy.shadow_trans = b; $save()
-        }})
-    }, 1)
-});
-'0 1 2 3 4'.split(' ').map(i =>{ let g = `.efy_shadows [efy_color*=btn`, d = `${g}${i}]`, c = [], e = []; '0 1 2 3'.split(' ').map(i =>{ e[i] = `${g}] #status${i}`; c[i] = `${g}${Number(i) + 1}] .`});
-    $ready(`${d} .spread`, ()=>{ $text($(`${d} [efy_color_preview]`), i);
-        $event($(d), 'input', ()=>{ if (event.target.matches('input')){ let inset = [], b = [], b2 = [];
-            '0 1 2 3'.split(' ').map(x =>{
-                inset[x] = $(`${g}] #inset${Number(x) + 4}`).checked ? 'inset ' : ''; console.log(c[x])
-                b[x] = `${inset[x] + $(c[x] + 'x').value}rem ${$(c[x] + 'y').value}rem ${$(c[x] + 'blur').value}rem ${$(c[x] + 'spread').value}rem hsla(${$(c[x] + 'efy_color_picker_hsl').value} / ${$(c[x] + 'transparency').value})`;
-                b2[x] = `${inset[x] + $(c[x] + 'x').value}rem ${$(c[x] + 'y').value}rem ${$(c[x] + 'blur').value}rem ${$(c[x] + 'spread').value}rem hsla(${$(c[x] + 'efy_color_picker_hsl').value} / ${ ($(c[x] + 'transparency').value / 3).toFixed(2) })`
-            });
-            $root.style.setProperty('--efy_shadow_button', b); efy.shadow_button = b; $root.style.setProperty('--efy_shadow_button_trans', b2); efy.shadow_button_trans = b2; $save()
-        }})
-    }, 1)
-});
+const restore_shadow =(key, value)=>{
+    if (efy[key] !== undefined){ $root.style.setProperty(`--efy_${key}`, efy[key]); let b = ['trans', 'btn'];
+        if (value !== ''){ efy_shadow += `${value},`}
+        ['shadow_trans', 'shadow_button'].map((x,y) =>{
+        if (key == x){ let sp = efy[key].split(',');
+            $wait(3, ()=>{
+                sp.map((a,i)=>{ let hsla = sp[i].split(' hsla(')[1].slice(0,-1), alpha = hsla.split(' / ')[1].replace(')', ''), hsl = hsla.split(' / ')[0].split(' '), h =  hsl[0], s = hsl[1].replace('%', ''), l = hsl[2].replace('%', ''),
+                    j = '.efy_shadows [efy_color*="' + b[y] + String(i + 1) + '"]';
+                    $(`${j} [efy_color_preview]`).style.background = `hsla(${hsla})`;
+                    $(`${j} .hue`).value = h;
+                    $(`${j} .sat`).value = s; $(`${j} .sat`).style.background = `linear-gradient(to right, hsl(0 0% 50%), hsl(${hsl}))`;
+                    $(`${j} .lgt`).value = l; $(`${j} .lgt`).style.background = `linear-gradient(to right, #000, hsl(${hsl}), #fff)`;
+                    $(`${j} .transparency`).value = alpha; $(`${j} .transparency`).style.background = `linear-gradient(to right, transparent, hsl(${hsl}))`;
+                })
+        })}})
+}},
+shadow =(i, efy_color, adjust, type)=>{
+    let g = `.efy_shadows [efy_color*=${efy_color}`, d = `${g}${i}]`, c = [], e = [];
+    a3.map(i =>{ e[i] = `${g}] #status${i}`; c[i] = `${g}${i + 1}] .` });
+    $ready(`${d} .spread`, ()=>{
+        $text($(`${d} [efy_color_preview]`), i);
+        $event($(d), 'input', ()=> {
+            if (event.target.matches('input')) { let inset = [], b = [], b2 = [];
+                a3.map(x => { let a = c[x]; if ($(`${g}] #status${x + adjust}`).checked){
+                    inset[x] = $(`${g}] #inset${x + adjust}`).checked ? 'inset ' : '';
+                    let f = `${inset[x] + $(a + 'x').value}rem ${$(a + 'y').value}rem ${$(a + 'blur').value}rem ${$(a + 'spread').value}rem hsla(${$(a + 'efy_color_picker_hsl').value} /`, tsp = $(a + 'transparency').value;
+                    b[x] = `${f} ${tsp})`;
+                    if (type == 'button'){ b2[x] = `${f} ${ (tsp / 3).toFixed(2) })` }
+                } else { delete b[x]; delete b2[x] }});
+                b = String(b).replaceAll(',,', ',').replaceAll(',,', ','); if (b.slice(-1) == ',') b = b.slice(0, -1); if (b.slice(0,1) == ',') b = b.slice(1);
+                $root.style.setProperty(`--efy_shadow_${type}`, b); if (b == []){ delete efy[`shadow_${type}`]} else { efy[`shadow_${type}`] = b};
+                if (type == 'button'){
+                    b2 = String(b2).replaceAll(',,', ',').replaceAll(',,', ','); if (b2.slice(-1) == ',') b2 = b2.slice(0, -1); if (b2.slice(0,1) == ',') b2 = b2.slice(1);
+                    $root.style.setProperty('--efy_shadow_button_trans', b2);
+                    if (b2 == []){ delete efy.shadow_button_trans} else { efy.shadow_button_trans = b2};
+                    efy_shadow = efy_shadow.replaceAll('button,', '')
+                } else { efy_shadow = efy_shadow.replaceAll('trans,', '')};
+                $save(); efy_shadow += `${type},`;
+                if (b == []){ efy_shadow = efy_shadow.replaceAll(`${type},`, '')}
+                if (b2 == []){ efy_shadow = efy_shadow.replaceAll('button,', '')}
+                $root.setAttribute('efy_shadow', efy_shadow.slice(0,-1))
+}})}, 1)};
+
+keys.forEach((key, i) => restore_shadow(key, values[i]));
+if (efy_shadow !== ''){ $root.setAttribute('efy_shadow', efy_shadow.slice(0,-1))}
+a4.map(i => shadow(i, 'trans', 0, 'trans')); a4.map(i => shadow(i, 'btn', 4, 'button'));
 
 
 /*HSL to / from RGB & HEX*/ const hsl2rgb=((t,i,a)=>{a/=100;const h=i=>(i+t/30)%12,n=(i/=100)*Math.min(a,1-a),e=t=>a-n*Math.max(-1,Math.min(h(t)-3,Math.min(9-h(t),1)));return (255*e(0)).toFixed(0)+' '+(255*e(8)).toFixed(0)+' '+(255*e(4)).toFixed(0)}),
@@ -256,7 +276,7 @@ cs.addEventListener('click', ()=>{ if (efy_swc == 1){ $text(cs, 'RGB')} else if 
 
     efy[`color${$$(a,'[efy_color_preview]').textContent}`] = hsl;
 
-    let y = ['text', 'bgcol', 'bordercol']; ['_text', '_bgcol', '_bordercol'].map((x,i)=>{ if (a.getAttribute('efy_color').includes(`color${x}`)){ $root.style.setProperty(`--efy_color${x}_var`, hsl); efy[y[i]] = hsl; $save() }});
+    let y = ['text', 'bgcol', 'bordercol', 'buttoncol']; ['_text', '_bgcol', '_bordercol', '_buttoncol'].map((x,i)=>{ if (a.getAttribute('efy_color').includes(`color${x}`)){ $root.style.setProperty(`--efy_color${x}_var`, hsl); efy[y[i]] = hsl; $save() }});
 
     /*Reset gradient*/ let x  = {y: '', y_trans: ''};
     /*Convert to Gradient*/ for (let i=1; i < efy.color_nr + 1; i++){ x.y += `, hsl(${efy[`color${i}`]})`; x.y_trans += `, hsla(${efy[`color${i}`]} / .3)`}
@@ -495,12 +515,13 @@ $all('.efy_audio_volume_page').forEach(a => a.oninput =()=>{ $all('audio, video'
 
 } /*Sidebar Modules - End*/
 
-/*Checkbox Toggles*/  'audio_status audio_click audio_hover outline text_status bgcol_status bordercol_status trans_filter_menu'.split(' ').forEach(x =>{ if (efy[x] == 'on'){ $(`#efy_${x}`).setAttribute('checked', '')} $(`#efy_${x}`).addEventListener('click', () =>{ if (efy[x] == 'on'){delete efy[x]} else {efy[x] = 'on'} $save() }) });
+/*Checkbox Toggles*/  'audio_status audio_click audio_hover outline text_status bgcol_status bordercol_status buttoncol_status trans_filter_menu'.split(' ').forEach(x =>{ if (efy[x] == 'on'){ $(`#efy_${x}`).setAttribute('checked', '')} $(`#efy_${x}`).addEventListener('click', () =>{ if (efy[x] == 'on'){delete efy[x]} else {efy[x] = 'on'} $save() }) });
 
-/*Focus Outline*/ if (efy.outline == 'on'){$root.setAttribute('efy_outline', '')}  $('#efy_outline').onchange =()=>{$root.toggleAttribute('efy_outline')}
-/*Custom Text Color*/ if (efy.text_status == 'on'){$root.setAttribute('efy_color_text', '')}  $('#efy_text_status').onchange =()=>{$root.toggleAttribute('efy_color_text')}
-/*Custom BG Color*/ if (efy.bgcol_status == 'on'){$root.setAttribute('efy_color_bgcol', '')}  $('#efy_bgcol_status').onchange =()=>{$root.toggleAttribute('efy_color_bgcol')}
-/*Custom BG Color*/ if (efy.bordercol_status == 'on'){$root.setAttribute('efy_color_bordercol', '')}  $('#efy_bordercol_status').onchange =()=>{$root.toggleAttribute('efy_color_bordercol')}
+/*Focus Outline*/ if (efy.outline == 'on'){$root.setAttribute('efy_outline', '')} $('#efy_outline').onchange =()=>{$root.toggleAttribute('efy_outline')}
+/*Custom Text Color*/ if (efy.text_status == 'on'){$root.setAttribute('efy_color_text', '')} $('#efy_text_status').onchange =()=>{$root.toggleAttribute('efy_color_text')}
+/*Custom BG Color*/ if (efy.bgcol_status == 'on'){$root.setAttribute('efy_color_bgcol', '')} $('#efy_bgcol_status').onchange =()=>{$root.toggleAttribute('efy_color_bgcol')}
+/*Custom BG Color*/ if (efy.bordercol_status == 'on'){$root.setAttribute('efy_color_bordercol', '')} $('#efy_bordercol_status').onchange =()=>{$root.toggleAttribute('efy_color_bordercol')}
+/*Custom Button Color*/ if (efy.buttoncol_status == 'on'){$root.setAttribute('efy_color_buttoncol', '')} $('#efy_buttoncol_status').onchange =()=>{$root.toggleAttribute('efy_color_buttoncol')}
 
 /*Change bg image*/ $add('style', {class: 'efy_css_bgimg'}, [], $head); let efy_css_bgimg = $('.efy_css_bgimg');
 
