@@ -1,4 +1,4 @@
-let efy_version = '23.09.03 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document), $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
+let efy_version = '23.09.13 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document), $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
 /*Add: Selector, optional: {Attributes}, [Text, Children], Parent, Position*/ $add = (a, b = {}, c = [], d = document.body, e = 'beforeend')=>{ const f = document.createElement(a); for (const [g, h] of Object.entries(b)){ f.setAttribute(g, h)} c.forEach(i =>{ (typeof i === 'string') ? f.textContent += i : f.appendChild(i) }); d.insertAdjacentElement(e, f); return f},
 /*Text: Selector, Text, Position (optional)*/ $text = (a, b, c) =>{ c ? a.insertAdjacentText(c,b) : a.textContent = b},
 /*Get CSS Property*/ $css_prop = (a) =>{ return getComputedStyle($(':root')).getPropertyValue(a).replaceAll(' ','')},
@@ -504,8 +504,8 @@ for (let a = ['status', 'click', 'hover'], b = ['active', 'click_tap', 'mouse_ho
 }}
 
 /*Effects*/ if (efy.audio_status == 'on' ){
-    efy_audio.folder = $css_prop('--efy_audio_folder'); 'pop ok ok2 ok3 ok4 hover slide squish step error disabled call wind'.split(' ').forEach(x => { efy_audio[x] = new Audio(`${efy_audio.folder}/${x}.webm`); efy_audio[x].volume = efy_audio.volume }); $body.addEventListener("pointerdown", ()=>{ if (efy.audio_click == 'on'){
-    for (let a = 'ok ok ok2 ok4 pop slide error disabled step step wind'.split(' '), b = 'pointerup change pointerup pointerup pointerup pointerup pointerup pointerup pointerdown input click'.split(' '), c = ['button:not([disabled], [type=submit], [type=reset], [efy_tab], [efy_sidebar_btn], [efy_toggle], [efy_keyboard] [efy_key], .shaka-overflow-menu button, .shaka-overflow-menu-button, .shaka-back-to-overflow-button, .efy_quick_fullscreen, [tabindex="-1"], [efy_audio_mute*=ok]), .video-grid>div', 'input, textarea', '.efy_img_previews [efy_bg_nr]', '[type=submit]', 'summary, [efy_toggle], select:not([multiple], [disabled]), [efy_tabs] [efy_tab], [efy_alert], [efy_alert] *, .shaka-overflow-menu button, .shaka-overflow-menu-button, .shaka-back-to-overflow-button', '[efy_sidebar_btn]', '[type=reset]', '[disabled]', 'input:not([type=radio], [type=checkbox], [type=reset], [disabled]), textarea:not([disabled]), [efy_keyboard] [efy_key]', 'input:not([type=radio], [type=checkbox], [type=reset], [disabled]), textarea:not([disabled])', '.efy_quick_fullscreen'], i = 0; i < a.length; i++){ $body.addEventListener(b[i], ()=>{ if (event.target.matches(c[i])){ $audio_play(efy_audio[a[i]]) }})}}
+    efy_audio.folder = $css_prop('--efy_audio_folder'); 'pop ok ok2 ok3 hover slide step error disabled call wind'.split(' ').forEach(x => { efy_audio[x] = new Audio(`${efy_audio.folder}/${x}.webm`); efy_audio[x].volume = efy_audio.volume }); $body.addEventListener("pointerdown", ()=>{ if (efy.audio_click == 'on'){
+    for (let a = 'ok ok ok2 ok3 pop slide error disabled step step wind'.split(' '), b = 'pointerup change pointerup pointerup pointerup pointerup pointerup pointerup pointerdown input click'.split(' '), c = ['button:not([disabled], [type=submit], [type=reset], [efy_tab], [efy_sidebar_btn], [efy_toggle], [efy_keyboard] [efy_key], .shaka-overflow-menu button, .shaka-overflow-menu-button, .shaka-back-to-overflow-button, .efy_quick_fullscreen, [tabindex="-1"], [efy_audio_mute*=ok]), .video-grid>div', 'input, textarea', '.efy_img_previews [efy_bg_nr]', '[type=submit]', 'summary, [efy_toggle], select:not([multiple], [disabled]), [efy_tabs] [efy_tab], [efy_alert], [efy_alert] *, .shaka-overflow-menu button, .shaka-overflow-menu-button, .shaka-back-to-overflow-button', '[efy_sidebar_btn]', '[type=reset]', '[disabled]', 'input:not([type=radio], [type=checkbox], [type=reset], [disabled]), textarea:not([disabled]), [efy_keyboard] [efy_key]', 'input:not([type=radio], [type=checkbox], [type=reset], [disabled]), textarea:not([disabled])', '.efy_quick_fullscreen'], i = 0; i < a.length; i++){ $body.addEventListener(b[i], ()=>{ if (event.target.matches(c[i])){ $audio_play(efy_audio[a[i]]) }})}}
     /*Hover*/ if (efy.audio_hover == "on"){ $all("summary, select:not([multiple], [disabled]), [type=submit], [type=reset], [efy_sidebar_btn], .video-grid>div").forEach(x => x.addEventListener("mouseenter",()=> $audio_play(efy_audio.hover) ))}
     /*Online Status*/ for (let a = ['online', 'offline'], b = ['ok', 'error'], i = 0; i < a.length; i++){ window.addEventListener(a[i], ()=>{ $audio_play(efy_audio[b[i]])})}
 }, {once: true});
@@ -600,7 +600,7 @@ request.onsuccess =()=>{ let efy_count_img = 0, transaction = request.result.tra
                     else { /*Store completed*/ exportObject[storeName] = allObjects;
                         if (idbDatabase.objectStoreNames.length === Object.keys(exportObject).length){ resolve(JSON.stringify(exportObject))}} })}} });
 
-    $(".efy_idb_export").addEventListener('click', async () => { $audio_play(efy_audio.ok4); let e = event.target; e.href = URL.createObjectURL(new Blob([json], {type: 'application/json'})); e.setAttribute('download', 'efy_images.json') });
+    $(".efy_idb_export").addEventListener('click', async () => { $audio_play(efy_audio.ok3); let e = event.target; e.href = URL.createObjectURL(new Blob([json], {type: 'application/json'})); e.setAttribute('download', 'efy_images.json') });
 } catch (err){ console.error(err) }})();
 
 /*Import indexedDB*/ let efy_idb_import = $('#efy_idb_import');
@@ -619,7 +619,7 @@ await importIDB(); $wait(3, ()=>{ location.reload()}) }; read.readAsText(file)})
     if (localStorage.efy){ let f = localStorage.efy.replaceAll('  ', '').replaceAll(',"', ',\n"').replaceAll('{"', '{\n"').replaceAll('"}', '"\n}');
         e.target.href = URL.createObjectURL(new Blob([f], {type: 'application/json'}));
         e.target.setAttribute('download', 'efy_settings.json');
-    $audio_play(efy_audio.ok4)}
+    $audio_play(efy_audio.ok3)}
     else { $notify(3, 'Nothing to export', "You're using default settings")}
 });
 
