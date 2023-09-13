@@ -94,7 +94,7 @@
 /*Pointer Events: None*/ [efy_icon], [efy_alert] *, a > button, .efy_about p {pointer-events: none}
 
 
-/*Disabled*/ :is(input, textarea, select):disabled, [role=button][aria-disabled=true], :is([type=submit], [type=reset], [type=button], [type=checkbox], [type=radio], button, select)[disabled] {filter: saturate(0) brightness(.7); opacity: 1!important; cursor: not-allowed}
+/*Disabled*/ :is(input, textarea, select):disabled, [role=button][aria-disabled=true], :is([type=submit], [type=reset], [type=button], [type=checkbox], [type=radio], button, select)[disabled] {filter: saturate(0) brightness(.7); opacity: 1; cursor: not-allowed}
 
 /*Line-Height: 30rem*/ mark, kbd {line-height: 30rem}
 
@@ -347,7 +347,8 @@ details[open]:not([efy_help]) > summary:before {transform: rotate(90deg); right:
 
 /*Button Align*/ #efy_btn_align div, #efy_notify_align {display: grid; gap: var(--efy_gap); grid-template-columns: 1fr 1fr 1fr; width: fit-content}
 #efy_btn_align div {margin-bottom: var(--efy_gap0)}
-:is(#efy_btn_align div, #efy_notify_align) input {display: block; position: relative; opacity: 1; margin: 0} :is#efy_btn_align, #efy_notify_align) #middle_middle {opacity: 0!important; pointer-events: none}
+:is(#efy_btn_align div, #efy_notify_align) input {display: block; position: relative; opacity: 1; margin: 0}
+#efy_btn_align #middle_middle {opacity: 0!important; pointer-events: none}
 
 [efy_btn_align*=left] {left: 15rem; right: unset}
 [efy_btn_align*=right] {right: 15rem; left:unset}
