@@ -1,4 +1,4 @@
-let efy_version = '23.09.13 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document), $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
+let efy_version = '23.09.16 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document), $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
 /*Add: Selector, optional: {Attributes}, [Text, Children], Parent, Position*/ $add = (a, b = {}, c = [], d = document.body, e = 'beforeend')=>{ const f = document.createElement(a); for (const [g, h] of Object.entries(b)){ f.setAttribute(g, h)} c.forEach(i =>{ (typeof i === 'string') ? f.textContent += i : f.appendChild(i) }); d.insertAdjacentElement(e, f); return f},
 /*Text: Selector, Text, Position (optional)*/ $text = (a, b, c) =>{ c ? a.insertAdjacentText(c,b) : a.textContent = b},
 /*Get CSS Property*/ $css_prop = (a) =>{ return getComputedStyle($(':root')).getPropertyValue(a).replaceAll(' ','')},
@@ -531,88 +531,122 @@ $all('.efy_audio_volume_page').forEach(a => a.oninput =()=>{ $all('audio, video'
     if (b[3] == 'multiple'){ $all(`#${b[0]}`).forEach(a=>{ a.setAttribute('multiple', '')})}
 });
 
-/*Background image*/ let db; $wait(3, ()=>{ $('#idb_addimg').addEventListener('change', efy_add_bgimg) });
-let request = indexedDB.open('efy');
+/*Background image*/ let db, request = indexedDB.open('efy');
 request.onerror =()=> console.error("efy: Can't open db");
 request.onsuccess = e => (db = e.target.result);
-request.onupgradeneeded = e => { let db = e.target.result; db.createObjectStore('images', { keyPath: 'id', autoIncrement: true }); db.createObjectStore("settings", { keyPath: "id", autoIncrement: true }) };
+request.onupgradeneeded = e =>{ let db = e.target.result;
+  db.createObjectStore('images', { keyPath: 'id', autoIncrement: true });
+  db.createObjectStore("settings", { keyPath: "id", autoIncrement: true })
+};
 
-let efy_add_bgimg = async (e)=>{ let read = new FileReader(); read.readAsDataURL(e.target.files[0]); read.onload = e => {
-    let img = new Image(), a = 'efy_temp_canvas', thumbnail; img.onload = ()=>{
-        /*Thumbnail*/ $add('canvas', {id: a}, [], $('.efy_img_previews')); let c = $(`#${a}`); c.width = (img.width / img.height) * 80; c.height = 80; c.getContext('2d').drawImage(img,0,0, c.width, c.height); thumbnail = $(`#${a}`).toDataURL('image/webp'); c.remove();
-        /*Update*/ db.transaction(["images"], "readwrite").objectStore("images").add({image: e.target.result, thumbnail: thumbnail}).onerror = e =>{ console.error(e)};
-    }; img.src = e.target.result;
-
-(async ()=>{ let request2 = indexedDB.open('efy');
-request2.onsuccess =()=>{ let efy_count_img2 = 0, transaction2 = request2.result.transaction(["images"], "readonly"), invoiceStore2 = transaction2.objectStore("images"), getCursorRequest2 = invoiceStore2.openCursor();
-    getCursorRequest2.onerror =()=> console.error("efy: no db entries");
-    getCursorRequest2.onsuccess = e => { let cursor2 = e.target.result;
-        if (cursor2){ efy_count_img2++; cursor2.continue()}
-        else { /*Set bgimg nr*/ efy.bg_nr = efy_count_img2; $save();
-             /*Restore Background*/ $text(efy_css_bgimg, `.efy_3d_back {background: url(${read.result})!important; background-size: var(--efy_bg_size)!important} html {background: var(--efy_text2)!important}`);
-            /*Add Preview*/ $add('button', {efy_bg_nr: efy_count_img2, style: `background: url(${thumbnail})`}, [], $('.efy_img_previews')); $all('.efy_img_previews [efy_bg_nr]').forEach(z => z.removeAttribute('efy_active')); $('.efy_img_previews [efy_bg_nr="'+efy_count_img2+'"]').setAttribute('efy_active','');
-             /*Preview Click*/ let y = $('.efy_img_previews [efy_bg_nr="'+efy_count_img2+'"]'); y.onclick =()=>{ $text(efy_css_bgimg, `.efy_3d_back {background: url(${read.result})!important; background-size: var(--efy_bg_size)!important} html {background: var(--efy_text2)!important}`); efy.bg_nr = efy_count_img2; $save(); $all('.efy_img_previews [efy_bg_nr]').forEach(z => z.removeAttribute('efy_active')); y.setAttribute('efy_active','')};
-
-             if (read.result.includes('video')){
-                $('.efy_3d_back').setAttribute('src', read.result); $('.efy_3d_back').volume = 0;
-                $event(document, 'visibilitychange', ()=>{ let a = $('.efy_3d_back'); if (document.hidden){ a.pause()} else {a.play()} });
-                // console.log(read.result);
-             }
-        }
-    }}
-})()
-
+let efy_add_bgimg = async (e)=>{ let read = new FileReader();
+  read.readAsDataURL(e.target.files[0]);
+  read.onload = e =>{ let result = e.target.result;
+    let img = new Image(), a = 'efy_temp_canvas', thumbnail;
+    img.onload =()=>{ /*Thumbnail*/
+        $add('canvas', {id: a}, [], $('.efy_img_previews')); let c = $(`#${a}`);
+        c.width =(img.width / img.height) * 80; c.height = 80;
+        c.getContext('2d').drawImage(img,0,0, c.width, c.height);
+        thumbnail = $(`#${a}`).toDataURL('image/webp'); c.remove();
+        /*Update*/ db.transaction(['images'], 'readwrite').objectStore('images')
+        .add({image: result, thumbnail: thumbnail}).onerror = e => console.error(e)
+    }
+    img.src = result; updateDBandUI(read, thumbnail)
 }}
 
-/*Count images*/ (async ()=>{ request = indexedDB.open('efy');
-request.onsuccess =()=>{ let efy_count_img = 0, transaction = request.result.transaction(["images"], "readonly"), invoiceStore = transaction.objectStore("images"), getCursorRequest = invoiceStore.openCursor();
-    getCursorRequest.onerror =()=> console.error("efy: no db entries");
-    getCursorRequest.onsuccess = e => { let cursor = e.target.result;
-        if (cursor){ efy_count_img++; let req = invoiceStore.get(efy_count_img);
-            req.onsuccess = e => { let x = e.target.result.image, thumbnail = e.target.result.thumbnail;
-                /*Preview Click*/ $add('button', {efy_bg_nr: efy_count_img, style: `background: url(${thumbnail})`, efy_audio_mute: 'ok'}, [], $('.efy_img_previews'));
-                let y = $('.efy_img_previews [efy_bg_nr="'+efy_count_img+'"]'); y.onclick =()=>{
-                    $text(efy_css_bgimg, `.efy_3d_back {background: url(${x})!important; background-size: var(--efy_bg_size)!important} html {background: var(--efy_text2)!important; background-size: cover!important}`);
-                    efy.bg_nr = e.target.result.id; $save(); $all('.efy_img_previews [efy_bg_nr]').forEach(z => z.removeAttribute('efy_active')); y.setAttribute('efy_active','')};
-            }; cursor.continue();
-        } else { /*Check bgimg number*/ let bgnr; if (efy.bg_nr){ bgnr = JSON.parse(efy.bg_nr)} else {bgnr = 1}
-            /*Restore Background*/ if (efy_count_img > 0){ invoiceStore.get(bgnr).onsuccess = e => { let x = e.target.result.image, y = e.target.result.id; $text(efy_css_bgimg, `.efy_3d_back {background: url(${x})!important; background-size: var(--efy_bg_size)!important}`); $('.efy_img_previews [efy_bg_nr="'+y+'"]').setAttribute('efy_active','')}}
-            /*Remove BG - Button*/ $all(".efy_idb_reset").forEach(z =>{ z.onclick =()=>{ indexedDB.deleteDatabase("efy"); location.reload()}});
-}}}})();
+let updateDBandUI = async (read, thumbnail)=>{ let count_img = 0,
+    transaction = db.transaction(["images"], "readonly"),
+    store = transaction.objectStore("images"), get_cursor = store.openCursor();
 
-/*Export IndexedDB*/ (async () => { try {
-    let dbExists = await new Promise(resolve => { let request = window.indexedDB.open('efy');
-        request.onupgradeneeded = e => { e.target.transaction.abort(); resolve(false)};
-        request.onerror =()=> resolve(true); request.onsuccess =()=> resolve(true)});
-    if (!dbExists){ throw new Error("efy: db doesn't exist")}
+    get_cursor.onerror =()=> console.error("efy: no db entries");
+    get_cursor.onsuccess = e =>{ let cursor = e.target.result;
+        if (cursor){ count_img++; cursor.continue()}
+        else {
+        /*Set bgimg nr*/ efy.bg_nr = count_img; $save();
+        /*Restore Background*/
+        $text(efy_css_bgimg, `.efy_3d_back {background: url(${read.result})!important; background-size: var(--efy_bg_size)!important} html {background: var(--efy_text2)!important}`);
+        /*Add Preview*/
+        $add('button', {efy_bg_nr: count_img, style: `background: url(${thumbnail})`}, [], $('.efy_img_previews'));
+        $all('.efy_img_previews [efy_bg_nr]').forEach(z => z.removeAttribute('efy_active'));
+        $('.efy_img_previews [efy_bg_nr="'+count_img+'"]').setAttribute('efy_active','');
+        /*Preview Click*/
+        let y = $('.efy_img_previews [efy_bg_nr="'+count_img+'"]');
+        y.onclick =()=>{
+            $text(efy_css_bgimg, `.efy_3d_back {background: url(${read.result})!important; background-size: var(--efy_bg_size)!important} html {background: var(--efy_text2)!important}`);
+            efy.bg_nr = count_img; $save();
+            $all('.efy_img_previews [efy_bg_nr]').forEach(z => z.removeAttribute('efy_active'));
+            y.setAttribute('efy_active','')
+        };
+        if (read.result.includes('video')){ let a = $('.efy_3d_back');
+            a.setAttribute('src', read.result); a.volume = 0;
+            $event(document, 'visibilitychange', ()=>{ document.hidden ? a.pause() : a.play() })
+}}}}
 
-    let idbDatabase = await new Promise((resolve, reject) => { let request = window.indexedDB.open('efy');
-        request.onerror =()=> reject("efy: Can't open db");
-        request.onsuccess =()=> resolve(request.result)});
-    let json = await new Promise((resolve, reject) => { let exportObject = {};
-        if (idbDatabase.objectStoreNames.length === 0){ resolve(JSON.stringify(exportObject))}
-        else { let transaction = idbDatabase.transaction(idbDatabase.objectStoreNames, "readonly");
-            transaction.addEventListener("error", reject);
+/*Count images*/
+let countImages = async ()=>{ let count_img = 0,
+    transaction = db.transaction(["images"], "readonly"),
+    store = transaction.objectStore("images"), get_cursor = store.openCursor();
 
-            for (let storeName of idbDatabase.objectStoreNames){ let allObjects = [];
-                transaction.objectStore(storeName).openCursor().addEventListener("success", event => { let cursor = event.target.result;
-                    if (cursor){ /*Store data*/ allObjects.push(cursor.value); cursor.continue() }
-                    else { /*Store completed*/ exportObject[storeName] = allObjects;
-                        if (idbDatabase.objectStoreNames.length === Object.keys(exportObject).length){ resolve(JSON.stringify(exportObject))}} })}} });
+    get_cursor.onerror =()=> console.error("efy: no db entries");
+    get_cursor.onsuccess = e =>{ let cursor = e.target.result;
+        if (cursor){ count_img++; cursor.continue()}
+        return count_img
+}}
 
-    $(".efy_idb_export").addEventListener('click', async () => { $audio_play(efy_audio.ok3); let e = event.target; e.href = URL.createObjectURL(new Blob([json], {type: 'application/json'})); e.setAttribute('download', 'efy_images.json') });
-} catch (err){ console.error(err) }})();
+let check_img_nr = async ()=>{ let count_img = await countImages(), bgnr = efy.bg_nr ? JSON.parse(efy.bg_nr) : 1;
+    /*Restore Background*/ if (count_img > 0){
+        let transaction = db.transaction(['images'], 'readonly'), store = transaction.objectStore('images');
+        store.get(bgnr).onsuccess = e =>{
+            let result = e.target.result, x = result.image, y = result.id;
+        $text(efy_css_bgimg, `.efy_3d_back {background: url(${x})!important; background-size: var(--efy_bg_size)!important}`);
+        $('.efy_img_previews [efy_bg_nr="'+y+'"]').setAttribute('efy_active','')
+    }}
+    /*Reset iDB*/ $all(".efy_idb_reset").forEach(z =>{
+        $event(z, 'click', ()=>{ indexedDB.deleteDatabase("efy"); location.reload()}
+})}
 
-/*Import indexedDB*/ let efy_idb_import = $('#efy_idb_import');
-efy_idb_import.addEventListener("change", () => { let file = efy_idb_import.files[0], read = new FileReader();
+/*Initialize*/ $wait(3, ()=>{ $event($('#idb_addimg'), 'change', efy_add_bgimg); check_img_nr() });
+
+let openIndexedDB =(dbname = 'efy')=>{
+    return new Promise((resolve, reject)=>{ let request = window.indexedDB.open(dbname);
+        request.onerror = e => reject("efy: Can't open db");
+        request.onsuccess = e => resolve(request.result);
+        request.onupgradeneeded = e =>{ let db = e.target.result;
+        db.createObjectStore("images", { keyPath: "id", autoIncrement: true });
+        db.createObjectStore("settings", { keyPath: "id", autoIncrement: true });
+}})}
+
+/*Export iDB*/ (async ()=>{ try { let db = await openIndexedDB(),
+    json = await new Promise((resolve, reject)=>{ let export_object = {};
+        let transaction = db.transaction(db.objectStoreNames, "readonly");
+        $event(transaction, 'error', reject);
+
+        for (let store_name of db.objectStoreNames){ let objects = [];
+            $event(transaction.objectStore(store_name).openCursor(), 'success', event =>{
+            let cursor = event.target.result;
+            if (cursor){ objects.push(cursor.value); cursor.continue()}
+            else { export_object[store_name] = objects;
+                if (db.objectStoreNames.length === Object.keys(export_object).length){
+                    resolve(JSON.stringify(export_object))
+        }}})}})
+        $event($('.efy_idb_export'), 'click', async ()=>{ let e = event.target; $audio_play(efy_audio.ok3);
+            e.href = URL.createObjectURL(new Blob([json], {type: 'application/json'}));
+            e.setAttribute('download', 'efy_images.json');
+        })
+} catch (err){ console.error(err)}})();
+
+/*Import iDB*/ let efy_idb_import = $('#efy_idb_import');
+$event(efy_idb_import, 'change', async ()=>{
+    let file = efy_idb_import.files[0], read = new FileReader();
     read.onload = async ()=>{ let data = JSON.parse(read.result); $audio_play(efy_audio.ok3);
-        let importIDB =(storename = "images", storename2 = "settings", arr = data["images"], arr2 = data["settings"])=>{
-            return new Promise(resolve => { let r = window.indexedDB.open("efy");
-                r.onupgradeneeded =()=>{ let idb = r.result; idb.createObjectStore(storename, { keyPath: "id", autoIncrement: true }); idb.createObjectStore(storename2, { keyPath: "id", autoIncrement: true })};
-                r.onsuccess =()=>{ let idb = r.result, store = idb.transaction(storename, "readwrite").objectStore(storename), store2 = idb.transaction(storename2, "readwrite").objectStore(storename2);
-                    for (let obj of arr){ store.put(obj)} for (let obj of arr2){ store2.put(obj)} resolve(idb);
-                }; r.onerror = e => console.log(e.target.errorCode) })}
-await importIDB(); $wait(3, ()=>{ location.reload()}) }; read.readAsText(file)});
+        let importIDB = async (images = "images", settings = "settings", arr = data[images], arr2 = data[settings])=>{
+            let db = await openIndexedDB(), transaction = db.transaction([images, settings], "readwrite"),
+            store = transaction.objectStore(images), store2 = transaction.objectStore(settings);
+            for (let obj of arr){ store.put(obj)}
+            for (let obj of arr2){ store2.put(obj)}
+        }
+        await importIDB(); $wait(3, ()=>{ location.reload()})
+}; read.readAsText(file) });
 
 
 /*Export Settings*/ $event($('.efy_localstorage_export'), 'click', (e)=>{
