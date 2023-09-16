@@ -602,7 +602,7 @@ let check_img_nr = async ()=>{ let count_img = await countImages(), bgnr = efy.b
         $('.efy_img_previews [efy_bg_nr="'+y+'"]').setAttribute('efy_active','')
     }}
     /*Reset iDB*/ $all(".efy_idb_reset").forEach(z =>{
-        $event(z, 'click', ()=>{ indexedDB.deleteDatabase("efy"); location.reload()}
+        $event(z, 'click', ()=>{ indexedDB.deleteDatabase("efy"); location.reload() })
 })}
 
 /*Initialize*/ $wait(3, ()=>{ $event($('#idb_addimg'), 'change', efy_add_bgimg); check_img_nr() });
