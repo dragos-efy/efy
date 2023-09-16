@@ -29,8 +29,8 @@
 [efy_color_buttoncol][efy_mode] [efy_select] input:checked + label:before, [efy_color_buttoncol][efy_mode] [efy_select] [type=checkbox]:checked + label:after {border-color: hsl(var(--efy_color_buttoncol_var))!important}
 
 [efy_color_buttoncol][efy_mode] :is([efy_tabs] [efy_tab]:not([efy_active], .efy_button_text_off [efy_tab])) {color: hsla(var(--efy_color_buttoncol_var) / .7); -webkit-text-fill-color: hsla(var(--efy_color_buttoncol_var) / .7)}
-[efy_color_buttoncol][efy_mode] [efy_select] label:not([efy_upload]):before {background: hsla(var(--efy_color_buttoncol_var) / .7)!important}
-[efy_color_buttoncol][efy_mode] [efy_select] label:not([efy_upload], input:checked + label) {background: linear-gradient(0deg, hsla(var(--efy_color_buttoncol_var) / .7), hsla(var(--efy_color_buttoncol_var) / .7)), var(--efy_color_trans); -webkit-background-clip: text, padding-box!important; -moz-background-clip: text, padding-box!important}
+[efy_color_buttoncol][efy_mode] [efy_select] label:not([efy_upload], .efy_color, [type=button]):before {background: hsla(var(--efy_color_buttoncol_var) / .7)!important}
+[efy_color_buttoncol][efy_mode] [efy_select] label:not([efy_upload], input:checked + label, .efy_color, [type=button]) {background: linear-gradient(0deg, hsla(var(--efy_color_buttoncol_var) / .7), hsla(var(--efy_color_buttoncol_var) / .7)), var(--efy_color_trans); -webkit-background-clip: text, padding-box!important; -moz-background-clip: text, padding-box!important}
 
 
 /*Display: Block*/ table, .efy_toggle_visible {display: block}
@@ -46,7 +46,7 @@
 /*BG1*/ aside, th, [type=file], pre, textarea, select, input, details, blockquote, pre, article, tr:nth-child(even), [efy_alert], [efy_timer], [efy_clock], .efy_bg1 {background: var(--efy_bg1)}
 /*BG: text*/ mark, kbd, .efy_bg_text {background: var(--efy_text)}
 /*BG: Color*/ button, [type=button], [role=button], [type=submit], [type=reset], blockquote:before, [efy_sidebar_btn=absolute]:hover, [type=checkbox]:checked, [type=radio]:checked, option:checked, [efy_select] input:checked + label, [efy_tabs] [efy_tab][efy_active], .efy_img_previews [efy_bg_nr][efy_active]:before, .efy_color {background: var(--efy_color); background-clip: padding-box; -webkit-background-clip: padding-box; -webkit-text-fill-color: var(--efy_text2)}
-/*BG: Color Trans*/ [type=range], [type=radio], [type=checkbox], [efy_sidebar_btn=absolute], [efy_select] label:not([efy_upload]), [efy_tabs] [efy_tab]:not([efy_active]), .efy_color_trans {background: var(--efy_color), var(--efy_color_trans); -webkit-background-clip: text, padding-box; -moz-background-clip: text, padding-box; -webkit-text-fill-color: transparent}
+/*BG: Color Trans*/ [type=range], [type=radio], [type=checkbox], [efy_sidebar_btn=absolute], [efy_select] label:not([efy_upload], [type=button]), [efy_tabs] [efy_tab]:not([efy_active]), .efy_color_trans {background: var(--efy_color), var(--efy_color_trans); -webkit-background-clip: text, padding-box; -moz-background-clip: text, padding-box; -webkit-text-fill-color: transparent}
 
 
 /*Text*/ body, textarea, select, input, pre, pre code, header > nav a, header > nav a:visited, [efy_sidebar_btn]:hover, .efy_text {color: var(--efy_text)}
@@ -361,9 +361,16 @@ details[open]:not([efy_help]) > summary:before {transform: rotate(90deg); right:
 
 #efy_trans_images {display: none}
 [efy_mode*=trans] #efy_trans_images {display: block}
-.efy_img_previews {display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: var(--efy_gap); padding:  var(--efy_gap0) 0 0 0}
-.efy_img_previews [efy_bg_nr] {margin: 0; border: 0; aspect-ratio: 1; cursor: pointer; position: relative; box-shadow: inset 0 0 20rem #0003, 0 0 20rem #0003; background-size: cover!important; background-repeat: no-repeat!important; background-position: center!important; border-radius: var(--efy_radius)}
+.efy_img_previews {display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: var(--efy_gap); padding:  5rem 0 0 0}
+.efy_img_previews :is(label, button) {margin: 0; border: 0; aspect-ratio: 1; cursor: pointer; position: relative; box-shadow: inset 0 0 20rem #0003, 0 0 20rem #0003; background-size: cover!important; background-repeat: no-repeat!important; background-position: center!important; border-radius: var(--efy_radius)}
 .efy_img_previews [efy_bg_nr]:is([efy_active], :focus) {box-shadow: inset 0 0 0 3rem var(--efy_text); z-index: 2}
+.efy_img_previews :is([for=idb_addimg], .efy_idb_reset) {padding: 0; display: flex; align-items: center; place-content: center; box-shadow: unset}
+.efy_img_previews [for=idb_addimg] {background: var(--efy_color)!important}
+[efy_shadow*=button] [for=idb_addimg] {box-shadow: var(--efy_shadow_button)!important}
+.efy_img_previews [for=idb_addimg]:before {display: none}
+.efy_img_previews i {margin: 0}
+.efy_img_previews [for=idb_addimg] i:before {font-size: 20rem}
+.efy_img_previews .efy_idb_reset i:before {font-size: 25rem}
 
 .efy_quick_shortcuts [efy_search_input] {margin-bottom: var(--efy_gap)}
 
