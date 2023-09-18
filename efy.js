@@ -1,4 +1,4 @@
-export let efy_version = '23.09.13 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document), $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
+export let efy_version = '23.09.18 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document), $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
 /*Add: Selector, optional: {Attributes}, [Text, Children], Parent, Position*/ $add = (a, b = {}, c = [], d = document.body, e = 'beforeend')=>{ const f = document.createElement(a); for (const [g, h] of Object.entries(b)){ f.setAttribute(g, h)} c.forEach(i =>{ (typeof i === 'string') ? f.textContent += i : f.appendChild(i) }); d.insertAdjacentElement(e, f); return f},
 /*Text: Selector, Text, Position (optional)*/ $text = (a, b, c) =>{ c ? a.insertAdjacentText(c,b) : a.textContent = b},
 /*Get CSS Property*/ $css_prop = (a) =>{ return getComputedStyle($(':root')).getPropertyValue(a).replaceAll(' ','')},
@@ -535,7 +535,7 @@ $all('.efy_audio_volume_page').forEach(a => a.oninput =()=>{ $all('audio, video'
 
 /*IndexedDB*/ let open_idb =(name = 'efy')=>{
     const stores = 'images settings layers button trans'.split(' ');
-    return new Promise((resolve, reject)=>{ console.log('test')
+    return new Promise((resolve, reject)=>{
         let request = window.indexedDB.open(name);
         request.onerror = e => reject("efy: Can't open db");
         request.onsuccess = e => resolve(request.result);
@@ -636,10 +636,10 @@ $event(efy_idb_import, 'change', async ()=>{
 
 
 /*Export Settings*/ $event($('.efy_localstorage_export'), 'click', (e)=>{
-    if (localStorage.efy){ let f = localStorage.efy.replaceAll('  ', '').replaceAll(',"', ',\n"').replaceAll('{"', '{\n"').replaceAll('"}', '"\n}');
-        e.target.href = URL.createObjectURL(new Blob([f], {type: 'application/json'}));
-        e.target.setAttribute('download', 'efy_settings.json');
-    $audio_play(efy_audio.ok3)}
+    if (localStorage.efy){ efy.version = efy_version; $save();
+        let result = JSON.stringify(JSON.parse(localStorage.efy), null, 2), x = e.target;
+        x.href = URL.createObjectURL(new Blob([result], {type: 'application/json'}));
+        x.download = 'efy_settings.json'; $audio_play(efy_audio.ok3)}
     else { $notify(3, 'Nothing to export', "You're using default settings")}
 });
 
