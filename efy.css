@@ -173,7 +173,7 @@ table {border-collapse: collapse; margin:  15rem 0; overflow: auto; width: fit-c
 td, th {text-align: left; padding:  8rem}
 table caption {margin-bottom:  8rem}
 
-textarea, select, input {font-size: inherit; font-family: inherit; padding:  8rem; margin-bottom:  var(--efy_gap0); box-shadow: none; box-sizing: border-box; width: 100%; -moz-appearance: none; -webkit-appearance: none; appearance: none}
+textarea, select, input {font-size: 16rem; font-family: inherit; padding:  8rem; margin-bottom:  var(--efy_gap0); box-shadow: none; box-sizing: border-box; width: 100%; -moz-appearance: none; -webkit-appearance: none; appearance: none}
 
 select {background-image: linear-gradient(45deg, transparent 49%, var(--efy_text) 51%), linear-gradient(135deg, var(--efy_text) 51%, transparent 49%); background-position: calc(100% - 20rem), calc(100% -  15rem); background-size: 5rem 5rem, 5rem 5rem; background-repeat: no-repeat}
 option:not(option:checked), optgroup {background: var(--efy_text2)}
@@ -259,8 +259,7 @@ img, video, iframe {width: 100%; max-width: 100%}
 ::-webkit-slider-runnable-track {background: transparent}
 
 
-::-webkit-file-upload-button {background: var(--efy_color); background-clip: padding-box; color: var(--efy_text2); border:  var(--efy_border); border-radius: var(--efy_radius); padding: var(--efy_padding); font-weight: bold; cursor: pointer; font-family: var(--efy_font_family)!important}
-::file-selector-button {background: var(--efy_color); background-clip: padding-box; color: var(--efy_text2); border: var(--efy_border); border-radius: var(--efy_radius); padding: var(--efy_padding); font-weight: bold; cursor: pointer; font-family: var(--efy_font_family)!important}
+::file-selector-button {background: var(--efy_color); background-clip: padding-box; color: var(--efy_text2); border: var(--efy_border); border-radius: var(--efy_radius); padding: var(--efy_padding); font-weight: bold; cursor: pointer; font-family: var(--efy_font_family)!important; font-size: 16rem}
 
 progress, meter {height:  15rem; border: 0; background: var(--efy_color_trans); background-clip: padding-box; border-radius: var(--efy_radius0); border: 0}
 ::-webkit-progress-bar, ::-webkit-meter-bar {height:  15rem; background: var(--efy_color_trans); background-clip: padding-box; border-radius: var(--efy_radius0); border: 0}
