@@ -1,4 +1,4 @@
-export let efy_version = '23.09.18 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document), $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
+export let efy_version = '23.09.25 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document), $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
 /*Add: Selector, optional: {Attributes}, [Text, Children], Parent, Position*/ $add = (a, b = {}, c = [], d = document.body, e = 'beforeend')=>{ const f = document.createElement(a); for (const [g, h] of Object.entries(b)){ f.setAttribute(g, h)} c.forEach(i =>{ (typeof i === 'string') ? f.textContent += i : f.appendChild(i) }); d.insertAdjacentElement(e, f); return f},
 /*Text: Selector, Text, Position (optional)*/ $text = (a, b, c) =>{ c ? a.insertAdjacentText(c,b) : a.textContent = b},
 /*Get CSS Property*/ $css_prop = (a) =>{ return getComputedStyle($(':root')).getPropertyValue(a).replaceAll(' ','')},
@@ -479,14 +479,16 @@ for (let a = ['efy_cursor_default', 'efy_cursor_custom', 'efy_cursor_none'], b =
 /*Default*/ $('#efy_cursor_default').addEventListener('change', ()=>{ if ($('#efy_cursor_default').checked){$root.removeAttribute('efy_cursor_custom'); $root.removeAttribute('efy_cursor_none'); document.removeEventListener('pointermove', cursor_fn); delete efy.cursor; $save()}});
 
 
-/*Animations*/ (()=>{ let a = 'efy_anim_status', b = '--efy_anim_state', x = $('.efy_anim_speed'); $add('style', {class: 'efy_anim_accessibility'}, [], $head);
-    if (efy.anim_speed){ $text($('.efy_anim_accessibility'), `:root {--efy_anim_speed: ${efy.anim_speed}!important}`); x.value = efy.anim_speed;
-        if (efy.anim_speed == '0'){$body.style.setProperty('--'+a, '0'); $body.style.setProperty(b, 'paused')}
+/*Animations*/ (()=>{ let status = '--efy_anim_status', state = '--efy_anim_state', input = $('.efy_anim_speed');
+    $add('style', {class: 'efy_anim_accessibility'}, [], $head);
+    if (efy.anim_speed){ let speed = efy.anim_speed; input.value = speed;
+        $text($('.efy_anim_accessibility'), `:root {--efy_anim_speed: ${speed}!important}`);
+        if (speed == '0'){ $body.style.setProperty(status, '0'); $body.style.setProperty(state, 'paused'); $body.setAttribute('efy_animations', 'off')}
     }
-    x.addEventListener('change', ()=>{ efy.anim_speed = x.value; $save();
-        if (efy.anim_speed == '0'){ $body.style.setProperty('--'+a, '0'); $body.style.setProperty(b, 'paused')}
-        else {$body.style.setProperty('--'+a, '1'); $body.style.setProperty(b, 'running')}
-        $text($('.efy_anim_accessibility'), `:root {--efy_anim_speed: ${x.value}!important}`)
+    input.addEventListener('change', ()=>{ let speed = input.value; efy.anim_speed = speed; $save();
+        if (speed == '0'){ $body.style.setProperty(status, '0'); $body.style.setProperty(state, 'paused'); $body.setAttribute('efy_animations', 'off')}
+        else { $body.style.setProperty(status, '1'); $body.style.setProperty(state, 'running'); $body.removeAttribute('efy_animations')}
+        $text($('.efy_anim_accessibility'), `:root {--efy_anim_speed: ${speed}!important}`)
 }) })();
 
 /* Text Size*/ $add('style', {class: 'efy_text_accessibility'}, [], $head); if (efy.text_zoom){ $text($('.efy_text_accessibility'), `:root {--efy_font_size: ${efy.text_zoom}px!important} html {letter-spacing: ${efy.text_spacing}px!important}`)
