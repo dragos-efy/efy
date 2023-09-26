@@ -2,32 +2,6 @@ import {$, $all, $add, $ready, efy, $save, $efy_lang_start} from './efy.js';
 
 $ready('#efy_sbtheme', ()=>{
 
-/*3D Layers*/ $add('details', {id: 'efy_nature', efy_select: ''}, [$add('summary', {}, [$add('i', {efy_icon: 'dots'}), $add('p', {efy_lang: '3d_layers'}), $add('mark', {efy_lang: 'alpha'})]), $add('div', {efy_tabs: 'efy_nature'})], $('.efy_sidebar'));
-
-/*Tabs*/ b = ['front', 'back']; c = $('[efy_tabs=efy_nature]');
-b.map(a => $add('button', {efy_tab: a, efy_lang: a}, [], c));
-b.map(a => $add('div', {efy_content: a, efy_select: '', id: `efy_${a}`}, [], c));
-['tab', 'content'].map(a => $(`#efy_nature [efy_${a}='front']`).setAttribute('efy_active', ''));
-$add('div', {efy_lang: 'coming_soon'}, [], $('[efy_tabs=efy_nature] [efy_content=back]'));
-
-let d = 'snow rain leaf flower bubble'.split(' '), e = 'snow rain leaves flowers bubbles'.split(' '); b = 'efy_nature_front'; c = $('#efy_nature [efy_content=front]'); d.map((a,i)=>{let d = e[i];
-  $add('input', {type: 'checkbox', name: b, id: `${b}_${a}`}, [], c);
-  $add('label', {for: `${b}_${a}`, efy_lang: d}, [], c);
-  $add('div', {efy_anim: a, 'aria-hidden': 'true'}, [], $('body'), 'afterbegin');
-});
-
-$('#efy_nature_front_rain').addEventListener('click', (x)=>{ if (x.target.checked == true){
-  for (let i = 0; i < 100; i++){
-      $add('div', {class: 'efy_anim_child', style: `left: ${Math.floor(Math.random() * window.innerWidth)}px; animation-duration: ${0.2 + Math.random() * 3.9}s; animation-delay: ${Math.random() * 5}s`}, [], $('[efy_anim*=rain]'));
-}} else {$('[efy_anim*=rain]').textContent = ''} })
-
-for (let e = ['snow', 'leaf', 'flower', 'bubble'], ax = ['❅ ❅ ❆ ❄ ❅ ❆ ❄ ❅ ❆ ❄', '🍂 🍁 🍂 🍁 🍂 🍁 🍂 🍁 🍂 🍁', '🌸 🌼 🌸 🌼 🌸 🌼 🌸 🌼 🌸 🌼', '᳃ ⸰ ᪤ ᳃ ⸰ ᪤ ᳃ ⸰ ᪤ ᳃'], j = 0; j < e.length; j++){ let f = $(`[efy_anim*=${e[j]}]`); f.setAttribute('efy_anim', f.getAttribute('efy_anim')+' falling');
-  $(`#efy_nature_front_${e[j]}`).addEventListener('click', (x)=>{ if (x.target.checked == true){
-    for (let a = ax[j].split(' '), b = '1 10 20 30 40 50 60 70 80 90'.split(' '), c = '0 1 6 4 2 8 6 2.5 1 3'.split(' '), d = '0 1 .5 2 2 3 2 1 0 1.5'.split(' '), i = 0; i < a.length; i++) {
-      $add('div', {class: 'efy_anim_child', style: `left: ${b[i]}%; animation-delay: ${c[i]}s, ${d[i]}s`}, [a[i]], $(`[efy_anim*=${e[j]}]`))
-}} else {$(`[efy_anim*=${e[j]}]`).textContent = ''} })}
-
-
 /*Keyboard*/
 
 $add('details', {id: 'efy_keyboard', efy_select: ''}, [$add('summary', {}, [$add('p', {efy_lang: 'virtual_keyboard'}), $add('mark', {efy_lang: 'alpha'})]), $add('input', {type: 'checkbox', name: 'efy_keyboard', id: 'efy_keyboard_status'}), $add('label', {for: 'efy_keyboard_status', efy_lang: 'active'}) ], $('#efy_accessibility'));

@@ -26,7 +26,6 @@
 --beta:Beta;
 --alpha:Alfa;
 --content:Conținut;
---trans_elements:Elemente Trans;
 --brightness:Lumină;
 --blur:Blur;
 --saturation:Saturație;
@@ -122,4 +121,6 @@
 --y:Y;
 --spread:Împrăștie;
 --button:Buton;
+--front:Față;
+--trans:Trans;
 }

@@ -1,4 +1,4 @@
-let efy_version = '23.09.25 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document), $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
+let efy_version = '23.09.26 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document), $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
 /*Add: Selector, optional: {Attributes}, [Text, Children], Parent, Position*/ $add = (a, b = {}, c = [], d = document.body, e = 'beforeend')=>{ const f = document.createElement(a); for (const [g, h] of Object.entries(b)){ f.setAttribute(g, h)} c.forEach(i =>{ (typeof i === 'string') ? f.textContent += i : f.appendChild(i) }); d.insertAdjacentElement(e, f); return f},
 /*Text: Selector, Text, Position (optional)*/ $text = (a, b, c) =>{ c ? a.insertAdjacentText(c,b) : a.textContent = b},
 /*Get CSS Property*/ $css_prop = (a) =>{ return getComputedStyle($(':root')).getPropertyValue(a).replaceAll(' ','')},
@@ -46,7 +46,7 @@ $event(window.visualViewport, 'resize', $100vh); $event(window.visualViewport, '
 ]),
     $add('button', {efy_sidebar_btn: 'close', class: 'efy_square_btn'}, [$add('i',{efy_icon: 'remove'})])
 ]), $add('div', {id: 'efy_modules'})
-], $body); $add('div', {efy_sidebar_btn: 'absolute'}, [], $body); $add('video', {class: 'efy_3d_back', autoplay: '', loop: '', muted: '', playsinline: ''}, [], $body);
+], $body); $add('div', {efy_sidebar_btn: 'absolute'}, [], $body); $add('video', {class: 'efy_3d_bg', autoplay: '', loop: '', muted: '', playsinline: ''}, [], $body);
 
 /*Buttons*/ $add('div', {efy_card: '', class: 'efy_about_div efy_hide_i'}, [
     $add('mark', {efy_lang: 'version'}, [`: ${efy_version}`]),
@@ -308,11 +308,11 @@ $add('div', {class: 'trans_window_div'}, [
     $add('input', {type: 'checkbox', name: 'trans_window', id: `trans_window`}), $add('label', {for: `trans_window`, efy_lang: 'window'})
 ], $('[for="efy_mode_dark_trans"]'), 'afterend')
 
-/*Images*/ $add('div', {id: 'efy_trans_images'}, [
+/*Images*/ $add('div', {id: 'efy_images_bg'}, [
     $add('details', {efy_help: ''}, [$add('summary', {efy_lang: 'images'}), $add('div', {efy_lang: 'sidebar_images_warning_help'})]),
     $add('div', {class: 'efy_img_previews'}, [
-        $add('input', {id: 'idb_addimg', type: 'file', accept: 'image/*, video/*', style: 'display: none'}),
-        $add('label', {for: 'idb_addimg', title: 'Add file', class: 'efy_color', type:'button'}, [ $add('i', {efy_icon: 'plus'}) ]),
+        $add('input', {id: 'idb_addimg_bg', type: 'file', accept: 'image/*, video/*', style: 'display: none'}),
+        $add('label', {for: 'idb_addimg_bg', title: 'Add file', class: 'efy_color', type:'button'}, [ $add('i', {efy_icon: 'plus'}) ]),
         $add('button', {class: 'efy_idb_reset', title: 'reset'}, [$add('i', {efy_icon: 'reload'})])
     ])
 ], $('#efy_sbtheme [efy_content=mode]'));
@@ -393,13 +393,24 @@ $ready('[efy_alerts]', ()=>{ let b = $('[efy_alerts]'), c = $('#efy_notify_align
     if (efy.notify_align){ let a = efy.notify_align, d = $$(c, `#${a}`); b.setAttribute('efy_alerts', a); d.checked = true} else {$$(c, '#left_top').checked = true}
 }, 1);
 
-/*Visual Filters*/ if ($efy_module('efy_filters')){ $add('details', {id: 'efy_vfilters', efy_select: ''}, [$add('summary', {efy_lang: 'visual_filters'}, [ $add('i', {efy_icon: 'dots'})]), $add('div', {efy_tabs: 'efyui_filters'})], $('.efy_sidebar'));
+/*Visual Filters*/ if ($efy_module('efy_filters')){ $add('details', {id: 'efy_vfilters', efy_select: ''}, [
+    $add('summary', {efy_lang: 'visual_filters'}, [ $add('i', {efy_icon: 'dots'})]),
+    $add('div', {efy_tabs: 'efyui_filters'}, [ $add('div', {class: 'efy_tabs'}) ])
+], $('.efy_sidebar'));
 
-/*Tabs*/ for (let a = ['bg', 'content', 'trans'], b = ['background', 'content', 'trans_elements'], c = $('[efy_tabs=efyui_filters]'), i = 0; i < a.length; i++){ $add('button', {efy_tab: a[i], efy_lang: b[i]}, [], c) }
-for (let a = ['bg', 'content', 'trans'], c = $('[efy_tabs=efyui_filters]'), i = 0; i < a.length; i++){ $add('form', {efy_content: a[i], efy_select: '', class: `efy_${a[i]}_filter`}, [], c) }
-/*Active*/ for (let a = ['[efy_tab=bg]', '[efy_content=bg]'], b = '[efy_tabs=efyui_filters] >', i = 0; i < a.length; i++){ $(b +' '+ a[i]).setAttribute('efy_active', '')}
+/*Tabs*/ for (let a = 'bg content trans front back button'.split(' '), b = 'background content trans front back button'.split(' '), i = 0; i < a.length; i++){
+    $add('button', {efy_tab: a[i], efy_lang: b[i]}, [], $('[efy_tabs=efyui_filters] .efy_tabs'))
+}
+/*Form*/ ['bg', 'content', 'trans', 'front', 'back'].map(a =>{
+    $add('form', {efy_content: a, efy_select: '', class: `efy_${a}_filter`, onsubmit: 'return false'}, [], $('[efy_tabs=efyui_filters]'))
+});
 
-$all('[efy_tabs=efyui_filters] form').forEach(y =>{ let z = y.getAttribute('efy_content');
+/*Active*/ ['.efy_tabs [efy_tab', '[efy_content'].map(a =>{
+    $(`[efy_tabs=efyui_filters] ${a}=bg]`).setAttribute('efy_active', '')
+});
+/*Temporary*/ $add('div', {efy_card: '', efy_lang: 'coming_soon', efy_content: 'button', style: 'margin: 0'}, [], $('[efy_tabs=efyui_filters]'));
+
+/*Form*/ $all('[efy_tabs=efyui_filters] form').forEach(y =>{ let z = y.getAttribute('efy_content');
   $add('button', {type: 'reset', efy_lang: 'reset'}, [$add('i', {efy_icon: 'reload'})], y);
   for (let a = ['brightness', 'blur', 'saturation', 'contrast', 'hue', 'sepia', 'invert'], b = ['brightness', 'blur', 'saturate', 'contrast', 'hue-rotate', 'sepia', 'invert'], c = ['0', '0', '0', '0.1', '0', '0', '0'], d = ['4', '150', '4', '4', '360', '1', '1'], e = ['1', '0', '1', '1', '0', '0', '0'], f = ['0.05', '1', '0.05', '0.05', '1', '0.05', '0.05'], i = 0; i < a.length; i++){ $add('div', {efy_lang: a[i], efy_range_text: a[i]}, [ $add('input', {class: `efy_${z}_${b[i]}`, type: 'range', min: c[i], max: d[i], value: e[i], step: f[i]}) ], y)}
 });
@@ -417,8 +428,13 @@ $event($('.'+b), 'input', (a)=>{ $root.style.setProperty(`--efy_bg_size`, `${a.t
 $event($('.bg_position_x'), 'input', (a)=>{ $root.style.setProperty(`--efy_bg_x`, `${a.target.value}rem`)})
 $event($('.bg_position_y'), 'input', (a)=>{ $root.style.setProperty(`--efy_bg_y`, `${a.target.value}rem`)})
 
-
-for (let a = ['bg', 'content', 'trans'], j = ['[efy_mode*=trans] .efy_3d_back {filter: ', 'img, video:not(.efy_3d_back) {filter: ', ':is(details:not([efy_help]), select, input, textarea, blockquote, pre, article, table, audio, button, [efy_card], [efy_tabs] [efy_content], [efy_timer], [efy_clock], [efy_tabs] [efy_tab], [efy_color_picker], [efy_keyboard], [efy_sidebar_btn*=absolute], [efy_select] label, .efy_trans_filter):not(.efy_trans_filter_off, .efy_trans_filter_off *, .efy_sidebar *){backdrop-filter: '], k = ['!important}', '!important}', '!important; -webkit-backdrop-filter: '], l = ['', '', '!important}'], i = 0; i < a.length; i++){
+for (let a = ['bg', 'content', 'trans', 'front', 'back'], j = [
+    '[efy_mode*=trans] .efy_3d_bg {filter: ',
+    'img, video:not(.efy_3d_bg) {filter: ',
+    ':is(details:not([efy_help]), select, input, textarea, blockquote, pre, article, table, audio, button, [efy_card], [efy_tabs] [efy_content], [efy_timer], [efy_clock], [efy_tabs] [efy_tab], [efy_color_picker], [efy_keyboard], [efy_sidebar_btn*=absolute], [efy_select] label, .efy_trans_filter):not(.efy_trans_filter_off, .efy_trans_filter_off *, .efy_sidebar *){backdrop-filter: ',
+    '.efy_3d_front {filter: ',
+    '.efy_3d_back {filter: '
+], k = ['!important}', '!important}', '!important; -webkit-backdrop-filter: ', '!important}', '!important}'], l = ['', '', '!important}', '', ''], i = 0; i < a.length; i++){
 
 $add('style', {class: `efy_css_${a[i]}_filter`}, [], $head); let css = $(`.efy_css_${a[i]}_filter`), f = {}, g = `${a[i]}_filter`, h = `${g}_css`,  fn = async ()=>{
     ['blur','brightness','saturate','contrast','hue-rotate','sepia','invert'].forEach(x => { f[x] = $(`.efy_${a[i]}_${x}`).value; if (x == 'blur'){ f[x] = f[x] + 'px' } else if (x == 'hue-rotate'){ f[x] = f[x] + 'deg' }});
@@ -527,79 +543,96 @@ $all('.efy_audio_volume_page').forEach(a => a.oninput =()=>{ $all('audio, video'
 /*Custom BG Color*/ if (efy.bordercol_status == 'on'){$root.setAttribute('efy_color_bordercol', '')} $('#efy_bordercol_status').onchange =()=>{$root.toggleAttribute('efy_color_bordercol')}
 /*Custom Button Color*/ if (efy.buttoncol_status == 'on'){$root.setAttribute('efy_color_buttoncol', '')} $('#efy_buttoncol_status').onchange =()=>{$root.toggleAttribute('efy_color_buttoncol')}
 
-/*Change bg image*/ $add('style', {class: 'efy_css_bgimg'}, [], $head); let efy_css_bgimg = $('.efy_css_bgimg');
-
 /*Upload Input: id, accept, efy_lang or 'small', multiple, icon*/ $ready('[efy_upload]', (a)=>{ let b = a.getAttribute('efy_upload').replaceAll(' ','').split(','), c = 'plus';
     if (b[2]){ if (b[2] !== 'small'){ a.setAttribute('efy_lang', b[2]) } } else {a.setAttribute('efy_lang', 'add_file')} if (b[4]){ c = b[4]}
     a.setAttribute('role', 'button'); $add('input', {type: 'file', id: b[0], accept: b[1]}, [], a); $add('i', {efy_icon: c}, [], a);
     if (b[3] == 'multiple'){ $all(`#${b[0]}`).forEach(a=>{ a.setAttribute('multiple', '')})}
 });
 
+/*3D Layers*/ ['front', 'back'].map(a =>{
+  $add('video', {class: `efy_3d_${a}`, autoplay: '', loop: '', muted: '', playsinline: ''}, [], $body);
+
+  $add('div', {id: `efy_images_${a}`, style: 'display: grid'}, [
+    $add('div', {class: 'efy_img_previews'}, [
+        $add('input', {id: `idb_addimg_${a}`, type: 'file', accept: 'image/*, video/*', style: 'display: none'}),
+        $add('label', {for: `idb_addimg_${a}`, title: 'Add file', class: 'efy_color', type:'button'}, [ $add('i', {efy_icon: 'plus'}) ]),
+        $add('button', {class: `idb_reset_${a}`, title: 'reset'}, [$add('i', {efy_icon: 'reload'})])
+  ]), $add('hr')], $(`[efy_tabs=efyui_filters] [efy_content=${a}]`), 'afterbegin')
+});
+
+/*3D Layer Input*/ let efy_css = {}; $ready('#idb_addimg_back', ()=>{
+    ['bg', 'front', 'back'].map(a=>{ let b = `efy_css_${a}`;
+        $add('style', {class: b}, [], $head); efy_css[a] = $('.' + b);
+        $event($(`#idb_addimg_${a}`), 'change', x => efy_add_bgimg(a, x));
+})}, 1);
+
 /*IndexedDB*/ let open_idb =(name = 'efy')=>{
-    const stores = 'images settings layers button trans'.split(' ');
+    const stores = 'bg settings front back button trans'.split(' ');
     return new Promise((resolve, reject)=>{
-        let request = window.indexedDB.open(name);
+        let request = indexedDB.open(name);
         request.onerror = e => reject("efy: Can't open db");
         request.onsuccess = e => resolve(request.result);
-        request.onupgradeneeded = e =>{ const db = e.target.result,
-        create_store =(a)=> db.createObjectStore(a, { keyPath: "id", autoIncrement: true });
-        stores.map(a => create_store(a))
+        request.onupgradeneeded = e =>{ const db = e.target.result;
+        stores.map(a => db.createObjectStore(a, { keyPath: "id", autoIncrement: true }))
 }})}; open_idb()
 
-/*Initialize*/ $wait(3, ()=>{ $event($('#idb_addimg'), 'change', efy_add_bgimg) });
-
-let efy_add_bgimg = async (e)=>{ let db = await open_idb(), read = new FileReader(); read.readAsDataURL(e.target.files[0]); read.onload = e => {
+const efy_add_bgimg = async (type, e)=>{ let db = await open_idb(), read = new FileReader(); read.readAsDataURL(e.target.files[0]); read.onload = e => {
     let file = read.result, img = new Image(), a = 'efy_temp_canvas', thumbnail;
     img.onload = ()=>{
-        /*Thumbnail*/ $add('canvas', {id: a}, [], $('.efy_img_previews')); let c = $(`#${a}`); c.width = (img.width / img.height) * 80; c.height = 80; c.getContext('2d').drawImage(img,0,0, c.width, c.height); thumbnail = $(`#${a}`).toDataURL('image/webp'); c.remove();
+        /*Thumbnail*/ $add('canvas', {id: a}, [], $(`#efy_images_${type} .efy_img_previews`)); let c = $(`#${a}`); c.width = (img.width / img.height) * 80; c.height = 80; c.getContext('2d').drawImage(img,0,0, c.width, c.height); thumbnail = $(`#${a}`).toDataURL('image/webp'); c.remove();
         /*Update*/
-        db.transaction(["images"], "readwrite").objectStore("images").add({image: file, thumbnail: thumbnail}).onerror = e =>{ console.error(e)};
+        db.transaction([type], "readwrite").objectStore(type).add({image: file, thumbnail: thumbnail}).onerror = e =>{ console.error(e)};
     }; img.src = file;
 
     (async ()=>{ let request = indexedDB.open('efy');
-    request.onsuccess =()=>{ let count_img = 0, transaction = request.result.transaction(["images"], "readonly"), store = transaction.objectStore("images"), get_cursor = store.openCursor();
+    request.onsuccess =()=>{ let count_img = 0, transaction = request.result.transaction([type], "readonly"), store = transaction.objectStore(type), get_cursor = store.openCursor();
         get_cursor.onerror =()=> console.error("efy: no db entries");
         get_cursor.onsuccess = e => { let cursor = e.target.result;
             if (cursor){ count_img++; cursor.continue()}
-            else { /*Set bgimg nr*/ efy.bg_nr = count_img; $save();
-                /*Restore Background*/ $text(efy_css_bgimg, `.efy_3d_back {background: url(${file})!important; background-size: var(--efy_bg_size)!important} html {background: var(--efy_text2)!important}`);
-                /*Add Preview*/ $add('button', {efy_bg_nr: count_img, style: `background: url(${thumbnail})`}, [], $('.efy_img_previews'));
-                const preview = $(`.efy_img_previews [efy_bg_nr="${count_img}"]`);
-                $all('.efy_img_previews [efy_bg_nr]').forEach(a => a.removeAttribute('efy_active'));
+            else { /*Set bgimg nr*/ efy[`nr_${type}`] = count_img; $save(); const previews = `#efy_images_${type} .efy_img_previews`;
+                /*Restore Background*/ $text(efy_css[type], `.efy_3d_${type} {background: url(${file})!important; background-size: var(--efy_bg_size)!important} html {background: var(--efy_text2)!important}`);
+                /*Add Preview*/ $add('button', {efy_bg_nr: count_img, style: `background: url(${thumbnail})`}, [], $(previews));
+                const preview = $(`${previews} [efy_bg_nr="${count_img}"]`);
+                $all(`${previews} [efy_bg_nr]`).forEach(a => a.removeAttribute('efy_active'));
                 preview.setAttribute('efy_active','');
                 /*Preview Click*/ $event(preview, 'click', ()=>{
-                    $text(efy_css_bgimg, `.efy_3d_back {background: url(${file})!important; background-size: var(--efy_bg_size)!important} html {background: var(--efy_text2)!important}`);
-                    efy.bg_nr = count_img; $save();
-                    $all('.efy_img_previews [efy_bg_nr]').forEach(a => a.removeAttribute('efy_active')); preview.setAttribute('efy_active','')
+                    $text(efy_css[type], `.efy_3d_${type} {background: url(${file})!important; background-size: var(--efy_bg_size)!important} html {background: var(--efy_text2)!important}`);
+                    efy[`nr_${type}`] = count_img; $save();
+                    $all(`${previews} [efy_bg_nr]`).forEach(a => a.removeAttribute('efy_active')); preview.setAttribute('efy_active','')
                 })
                 if (file.includes('video')){
-                    $('.efy_3d_back').setAttribute('src', file); $('.efy_3d_back').volume = 0;
-                    $event(document, 'visibilitychange', ()=>{ let a = $('.efy_3d_back'); document.hidden ? a.pause() : a.play() });
-}}}}})()}}
+                    $(`.efy_3d_${type}`).setAttribute('src', file); $(`.efy_3d_${type}`).volume = 0;
+                    $event(document, 'visibilitychange', ()=>{ let a = $(`.efy_3d_${type}`); document.hidden ? a.pause() : a.play() });
+                }
 
-/*Count images*/ (async ()=>{ request = indexedDB.open('efy');
-request.onsuccess =()=>{ let count_img = 0, transaction = request.result.transaction(["images"], "readonly"), store = transaction.objectStore("images"), get_cursor = store.openCursor();
-    get_cursor.onerror =()=> console.error("efy: no db entries");
-    get_cursor.onsuccess = e => { let cursor = e.target.result;
-        if (cursor){ count_img++; let req = store.get(count_img);
-            req.onsuccess = e => { const x = e.target.result, image = x.image, thumbnail = x.thumbnail;
-                /*Preview Click*/ $add('button', {efy_bg_nr: count_img, style: `background: url(${thumbnail})`, efy_audio_mute: 'ok'}, [], $('.efy_img_previews'));
-                let y = $(`.efy_img_previews [efy_bg_nr="${count_img}"]`); $event(y, 'click', ()=>{
-                    $text(efy_css_bgimg, `.efy_3d_back {background: url(${image})!important; background-size: var(--efy_bg_size)!important} html {background: var(--efy_text2)!important; background-size: cover!important}`);
-                    efy.bg_nr = x.id; $save();
-                    $all('.efy_img_previews [efy_bg_nr]').forEach(a => a.removeAttribute('efy_active'));
-                    y.setAttribute('efy_active','')
-                })
-            }; cursor.continue();
-        } else { /*Check bg_nr*/ let bgnr = efy.bg_nr ? JSON.parse(efy.bg_nr) : 1;
-            /*Restore Background*/ if (count_img > 0){
-                store.get(bgnr).onsuccess = e =>{
-                    const res = e.target.result, x = res.image, y = res.id;
-                    $text(efy_css_bgimg, `.efy_3d_back {background: url(${x})!important; background-size: var(--efy_bg_size)!important}`);
-                    $(`.efy_img_previews [efy_bg_nr="${y}"]`).setAttribute('efy_active','')
-                }}
-            /*Reset iDB*/ $all('.efy_idb_reset').forEach(a =>{ $event(a, 'click', ()=>{ indexedDB.deleteDatabase("efy"); location.reload() }) });
-}}}})();
+            } }}})()}}
+
+/*Count images*/ const count_images = async (type) => {
+    const db = await open_idb('efy'), transaction = db.transaction([type], "readonly"),
+    store = transaction.objectStore(type), cursor_request = store.openCursor(); let count_img = 0;
+
+    cursor_request.onsuccess = (event) =>{ const cursor = event.target.result;
+        if (cursor){ count_img++; const req = store.get(count_img);
+            req.onsuccess = e =>{ const x = e.target.result, image = x.image, thumbnail = x.thumbnail, previews = `#efy_images_${type} .efy_img_previews`;
+                /*Preview Click*/ $add('button', {efy_bg_nr: count_img, style: `background: url(${thumbnail})`, efy_audio_mute: 'ok'}, [], $(previews));
+                $event($(`${previews} [efy_bg_nr="${count_img}"]`), 'click', (y) => {
+                    $text(efy_css[type], `.efy_3d_${type} {background: url(${e.target.result.image})!important; background-size: var(--efy_bg_size)!important} html {background: var(--efy_text2)!important; background-size: cover!important}`);
+                    efy[`nr_${type}`] = x.id; $save();
+                    $all(`${previews} [efy_bg_nr]`).forEach(a => a.removeAttribute('efy_active')); y.target.setAttribute('efy_active', '')
+                });
+            cursor.continue();
+        }} else { /*Check bg_nr*/ let nr = efy[`nr_${type}`] ? JSON.parse(efy[`nr_${type}`]) : 1;
+            /*Restore Background*/ if (count_img > 0){ store.get(nr).onsuccess = e =>{
+                const res = e.target.result;
+                $text(efy_css[type], `.efy_3d_${type} {background: url(${res.image})!important; background-size: var(--efy_bg_size)!important}`);
+                $(`#efy_images_${type} .efy_img_previews [efy_bg_nr="${res.id}"]`).setAttribute('efy_active', '')
+            }}
+            /*Reset iDB*/ $all('.efy_idb_reset').forEach(a =>{ $event(a, 'click', () =>{ indexedDB.deleteDatabase("efy"); location.reload() }) });
+        }
+    };
+    cursor_request.onerror = () => console.error("efy: no db entries");
+};
+/*Run Functions*/ (async ()=>{ await count_images('bg'); await count_images('front'); count_images('back') })();
 
 /*Export iDB*/ (async ()=>{ try { let db = await open_idb(),
     json = await new Promise((resolve, reject)=>{ let export_object = {};

@@ -27,7 +27,6 @@
 --beta:Beta;
 --alpha:Alpha;
 --content:Content;
---trans_elements:Trans Elements;
 --brightness:Brightness;
 --blur:Blur;
 --saturation:Saturation;
@@ -122,4 +121,6 @@
 --y:Y;
 --spread:Spread;
 --button:Button;
+--front:Front;
+--trans:Trans;
 }

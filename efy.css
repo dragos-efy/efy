@@ -10,7 +10,7 @@
 --efy_anim_status: 1; --efy_anim_state: running; --efy_anim_speed: 1;
 --efy_ratio_width: calc(36rem + var(--efy_border_size) * 2); --efy_100vh: 100vh; --efy_sidebar_width: 450rem; --efy_sidebar_width_n: calc(-1 * var(--efy_sidebar_width)); --efy_bg_width: 100vw;
 }
-/*No White Flash*/ html, body {background: #0f0f0f} [efy_mode]:not([efy_mode*=trans_dark]) body {background: var(--efy_bg)!important} html[efy_mode], html[efy_mode*=trans].trans_window body, html.trans_window .efy_3d_back {background: transparent!important}
+/*No White Flash*/ html, body {background: #0f0f0f} [efy_mode]:not([efy_mode*=trans_dark]) body {background: var(--efy_bg)!important} html[efy_mode], html[efy_mode*=trans].trans_window body, html.trans_window .efy_3d_bg {background: transparent!important}
 /*Scheme*/ input, select, textarea, audio, video {color-scheme: var(--efy_scheme)}
 /*Light: All*/ [efy_mode*=light] {--efy_bg: hsl(0 0% 100%); --efy_bg_var: 0 0% 0%; --efy_scheme: light}
 /*Dark: All*/ [efy_mode*=dark] {--efy_bg: hsl(0 0% 0%); --efy_bg_var: 0 0% 100%; --efy_scheme: dark}
@@ -42,7 +42,7 @@
 /*Content: None*/ [efy_select] [for*=efy_color]:before, [efy_select] [for*=efy_color]:after {content: none}
 
 /*BG: Transparent*/ [efy_mode*=trans] .efy_sidebar {background: transparent!important; backdrop-filter: blur(50rem); -webkit-backdrop-filter: blur(50rem)}
-/*BG*/ html:not([efy_mode*=trans]) .efy_3d_back, .efy_bg {background: var(--efy_bg)!important}
+/*BG*/ html:not([efy_mode*=trans]) .efy_3d_bg, .efy_bg {background: var(--efy_bg)!important}
 /*BG1*/ aside, th, [type=file], pre, textarea, select, input, details, blockquote, pre, article, tr:nth-child(even), [efy_alert], [efy_timer], [efy_clock], .efy_bg1 {background: var(--efy_bg1)}
 /*BG: text*/ mark, kbd, .efy_bg_text {background: var(--efy_text)}
 /*BG: Color*/ button, [type=button], [role=button], [type=submit], [type=reset], blockquote:before, [efy_sidebar_btn=absolute]:hover, [type=checkbox]:checked, [type=radio]:checked, option:checked, [efy_select] input:checked + label, [efy_tabs] [efy_tab][efy_active], .efy_img_previews [efy_bg_nr][efy_active]:before, .efy_color {background: var(--efy_color); background-clip: padding-box; -webkit-background-clip: padding-box; -webkit-text-fill-color: var(--efy_text2)}
@@ -128,7 +128,8 @@
 /*Convergent body*/ * {margin: 0; padding: 0; box-sizing: border-box}
 html, body {margin: 0 auto}
 html {font-size: var(--efy_font_size)!important; font-size: var(--efy_font_size)!important}
-html .efy_3d_back {position: fixed; inset: 0; z-index: -1; object-fit: cover; width: 100vw; height: var(--efy_100vh); border-radius: 0!important; background-position: var(--efy_bg_x) var(--efy_bg_y)!important}
+html :is(.efy_3d_bg, .efy_3d_front, .efy_3d_back) {position: fixed; inset: 0; z-index: -1; object-fit: cover; width: 100vw; height: var(--efy_100vh); border-radius: 0!important; background-position: var(--efy_bg_x) var(--efy_bg_y)!important; pointer-events: none}
+html .efy_3d_front {z-index: 9998} html .efy_3d_back {z-index: -1}
 body {width: 100vw; padding: var(--efy_body_padding); line-height: 1.5; min-height: var(--efy_100vh); max-width: var(--efy_body_width); overflow: overlay; transition: background calc(var(--efy_anim_status) * var(--efy_anim_speed) * .3s), color calc(var(--efy_anim_status) * var(--efy_anim_speed) * .3s); scroll-behavior: smooth; -webkit-tap-highlight-color: transparent} body * {font-size: 16rem}
 
 /*Headings*/h1 {font-size:  45rem} h2 {font-size: 40rem} h3 {font-size: 35rem} h4 {font-size: 30rem} h5 {font-size: 25rem} h6 {font-size: 20rem}
@@ -350,18 +351,21 @@ details[open]:not([efy_help]) > summary:before {rotate: 90deg; right: -2rem}
 [efy_btn_align*=middle_] {left: calc(50vw - 20rem); right: unset}
 
 
-#efy_trans_images {display: none}
-[efy_mode*=trans] #efy_trans_images {display: block}
+#efy_images_bg:not([efy_mode*=trans] #efy_images_bg) {display: none}
 .efy_img_previews {display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: var(--efy_gap); padding:  5rem 0 0 0}
 .efy_img_previews :is(label, button) {margin: 0; border: 0; aspect-ratio: 1; cursor: pointer; position: relative; box-shadow: inset 0 0 20rem #0003, 0 0 20rem #0003; background-size: cover!important; background-repeat: no-repeat!important; background-position: center!important; border-radius: var(--efy_radius)}
 .efy_img_previews [efy_bg_nr]:is([efy_active], :focus) {box-shadow: inset 0 0 0 3rem var(--efy_text); z-index: 2}
-.efy_img_previews :is([for=idb_addimg], .efy_idb_reset) {padding: 0; display: flex; align-items: center; place-content: center; box-shadow: unset}
-.efy_img_previews [for=idb_addimg] {background: var(--efy_color)!important}
-[efy_shadow*=button] [for=idb_addimg] {box-shadow: var(--efy_shadow_button)!important}
-.efy_img_previews [for=idb_addimg]:before {display: none}
+.efy_img_previews :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back], .efy_idb_reset) {padding: 0; display: flex; align-items: center; place-content: center; box-shadow: unset}
+.efy_img_previews :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back]) {background: var(--efy_color)!important}
+[efy_shadow*=button] :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back]) {box-shadow: var(--efy_shadow_button)!important}
+.efy_img_previews :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back]):before {display: none}
 .efy_img_previews i {margin: 0}
-.efy_img_previews [for=idb_addimg] i:before {font-size: 20rem}
-.efy_img_previews .efy_idb_reset i:before {font-size: 25rem}
+.efy_img_previews :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back]) i:before {font-size: 20rem}
+.efy_img_previews :is(.efy_idb_reset, .idb_reset_front, .idb_reset_back) i:before {font-size: 25rem}
+
+[efy_tabs=efyui_filters] [type=reset] {margin: 0 var(--efy_gap0) 10rem 0}
+[efy_tabs=efyui_filters] .efy_tabs {display: flex; flex-wrap: wrap; gap: var(--efy_gap0); margin-bottom: 10rem}
+[efy_tabs=efyui_filters] .efy_tabs :is(button, [efy_tab]:last-of-type) {margin: 0}
 
 .efy_quick_shortcuts [efy_search_input] {margin-bottom: var(--efy_gap)}
 

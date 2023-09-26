@@ -26,7 +26,6 @@
 --beta:Beta;
 --alpha:Alfa;
 --content:Konten;
---trans_elements:Transparansi Elemen;
 --brightness:Kecerahan;
 --blur:Buram;
 --saturation:Saturasi;
@@ -122,4 +121,6 @@
 --y:Y;
 --spread:Spread;
 --button:Button;
+--front:Front;
+--trans:Trans;
 }

@@ -27,7 +27,6 @@
 --color:Цвет;
 --text:Текст;
 --background:Фон;
---trans_elements:Прозрачные элементы;
 --brightness:Яркость;
 --blur:Размытие;
 --saturation:Насыщенность;
@@ -122,4 +121,6 @@
 --y:Y;
 --spread:Spread;
 --button:Button;
+--front:Front;
+--trans:Trans;
 }
