@@ -1,6 +1,6 @@
 :root { --efy_font_size: 1px; --efy_bg_size: cover; --efy_bg_x: 0; --efy_bg_y: 0;
 --efy_radius0: calc(var(--efy_radius) / 1.25); --efy_radius2: calc(var(--efy_radius) * 1.5); --efy_radius00: calc(var(--efy_radius) / 3);
---efy_padding:  8rem  12rem; --efy_padding2: 3rem  6rem; --efy_gap0:  calc(var(--efy_gap) / 1.5); --efy_gap2:  calc(var(--efy_gap) * 2);
+--efy_padding: 8rem  12rem; --efy_padding2: 3rem  6rem; --efy_gap0: calc(var(--efy_gap) / 1.5); --efy_gap2: calc(var(--efy_gap) * 2);
 --efy_color: linear-gradient(var(--efy_color_angle), hsl(var(--efy_color1_var)), hsl(var(--efy_color2_var)));
 --efy_color_trans: linear-gradient(var(--efy_color_angle), hsla(var(--efy_color1_var) / .3), hsla(var(--efy_color2_var) / .3));
 --efy_color_text_var: 0 0% 0%; --efy_color_bgcol_var: 0 0% 39%; --efy_color_bordercol_var: var(--efy_bg_var);
@@ -10,7 +10,9 @@
 --efy_anim_status: 1; --efy_anim_state: running; --efy_anim_speed: 1;
 --efy_ratio_width: calc(36rem + var(--efy_border_size) * 2); --efy_100vh: 100vh; --efy_sidebar_width: 450rem; --efy_sidebar_width_n: calc(-1 * var(--efy_sidebar_width)); --efy_bg_width: 100vw;
 }
-/*No White Flash*/ html, body {background: #0f0f0f} [efy_mode]:not([efy_mode*=trans_dark]) body {background: var(--efy_bg)!important} html[efy_mode], html[efy_mode*=trans].trans_window body, html.trans_window .efy_3d_bg {background: transparent!important}
+/*No White Flash*/ html, body {background: #0f0f0f; margin: 0 auto}
+[efy_mode]:not([efy_mode*=trans_dark]) body {background: var(--efy_bg)!important}
+html[efy_mode], html[efy_mode*=trans].trans_window body, html.trans_window .efy_3d_bg {background: transparent!important}
 /*Scheme*/ input, select, textarea, audio, video {color-scheme: var(--efy_scheme)}
 /*Light: All*/ [efy_mode*=light] {--efy_bg: hsl(0 0% 100%); --efy_bg_var: 0 0% 0%; --efy_scheme: light}
 /*Dark: All*/ [efy_mode*=dark] {--efy_bg: hsl(0 0% 0%); --efy_bg_var: 0 0% 100%; --efy_scheme: dark}
@@ -23,47 +25,48 @@
 /*Custom Text, Border & BG*/ [efy_color_bgcol][efy_mode] {--efy_bg: hsl(var(--efy_color_bgcol_var))}
 [efy_color_text][efy_mode] {--efy_text: hsl(var(--efy_color_text_var)); --efy_text_trans: hsla(var(--efy_color_text_var) / .3); --efy_text_trans2: hsla(var(--efy_color_text_var) / .45)}
 [efy_color_bordercol][efy_mode] {--efy_border_alpha: 1; --efy_border: var(--efy_border_size) solid hsla(var(--efy_color_bordercol_var) / var(--efy_border_alpha))}
-[efy_color_buttoncol][efy_mode] :is(button:not(.efy_button_text_off [efy_tab]), [efy_tabs] [efy_tab][efy_active], [type=button], [role=button], input:is([type=reset], [type=submit]), [efy_select] input:checked + label, option:checked):not(.efy_button_text_off, [efy_color_preview]) {color: hsl(var(--efy_color_buttoncol_var)); -webkit-text-fill-color: hsl(var(--efy_color_buttoncol_var))}
-
-[efy_color_buttoncol][efy_mode] [efy_select] [type=radio]:checked + label:after {background: hsl(var(--efy_color_buttoncol_var))!important}
-[efy_color_buttoncol][efy_mode] [efy_select] input:checked + label:before, [efy_color_buttoncol][efy_mode] [efy_select] [type=checkbox]:checked + label:after {border-color: hsl(var(--efy_color_buttoncol_var))!important}
-
-[efy_color_buttoncol][efy_mode] :is([efy_tabs] [efy_tab]:not([efy_active], .efy_button_text_off [efy_tab])) {color: hsla(var(--efy_color_buttoncol_var) / .7); -webkit-text-fill-color: hsla(var(--efy_color_buttoncol_var) / .7)}
-[efy_color_buttoncol][efy_mode] [efy_select] label:not([efy_upload], .efy_color, [type=button]):before {background: hsla(var(--efy_color_buttoncol_var) / .7)!important}
-[efy_color_buttoncol][efy_mode] [efy_select] label:not([efy_upload], input:checked + label, .efy_color, [type=button]) {background: linear-gradient(0deg, hsla(var(--efy_color_buttoncol_var) / .7), hsla(var(--efy_color_buttoncol_var) / .7)), var(--efy_color_trans); -webkit-background-clip: text, padding-box!important; -moz-background-clip: text, padding-box!important}
-
-
+[efy_color_buttoncol][efy_mode] {
+    :is(button:not(.efy_button_text_off [efy_tab]), [efy_tabs] [efy_tab][efy_active], [type=button], [role=button], input:is([type=reset], [type=submit]), [efy_select] input:checked + label, option:checked):not(.efy_button_text_off, [efy_color_preview]) {color: hsl(var(--efy_color_buttoncol_var)); -webkit-text-fill-color: hsl(var(--efy_color_buttoncol_var))}
+    [efy_select] {
+        [type=radio]:checked + label:after {background: hsl(var(--efy_color_buttoncol_var))!important}
+        & input:checked + label:before, [type=checkbox]:checked + label:after {border-color: hsl(var(--efy_color_buttoncol_var))!important}
+        & label:not([efy_upload], .efy_color, [type=button]):before {background: hsla(var(--efy_color_buttoncol_var) / .7)!important}
+        & label:not([efy_upload], input:checked + label, .efy_color, [type=button]) {background: linear-gradient(0deg, hsla(var(--efy_color_buttoncol_var) / .7), hsla(var(--efy_color_buttoncol_var) / .7)), var(--efy_color_trans); -webkit-background-clip: text, padding-box!important; -moz-background-clip: text, padding-box!important}
+    }
+    :is([efy_tabs] [efy_tab]:not([efy_active], .efy_button_text_off [efy_tab])) {color: hsla(var(--efy_color_buttoncol_var) / .7); -webkit-text-fill-color: hsla(var(--efy_color_buttoncol_var) / .7)}
+}
 /*Display: Block*/ table, .efy_toggle_visible {display: block}
-/*Display: Inline-Block*/ header > nav li, header > nav a, header > nav a:visited, [efy_tabs] [efy_tab], [efy_select] label, [efy_select] label:before, [efy_select] input:checked + label:after {display: inline-block}
-/*Display: None*/ [efy_select] [for*=efy_color]:before, [efy_select] [for*=efy_color]:after, .efy_hide {display: none}
-/*Display: None ! */ .efy_hide_i {opacity: 0!important; position: absolute!important; pointer-events: none; scale: .3!important; transition: none!important} .efy_hide_i * {display: none!important}
+/*Inline-Block*/ header > nav :is(li, a, a:visited), [efy_tabs] [efy_tab], [efy_select] :is(label, label:before, input:checked + label:after):not(.efy_custom_colors *) {display: inline-flex; align-items: center; place-content: center}
+.efy_custom_colors [efy_select] :is(label, label:before, input:checked + label:after) {display: inline-block}
+/*None*/ .efy_hide {display: none}
+/*None ! */ .efy_hide_i {opacity: 0!important; position: absolute!important; pointer-events: none; scale: .3!important; transition: none!important} .efy_hide_i * {display: none!important}
 
-/*Content: ''*/ [type=radio]:checked:after, [type=checkbox]:checked:after, [efy_select] label:before, [efy_select] [type=radio]:checked + label:after {content: ''}
-/*Content: None*/ [efy_select] [for*=efy_color]:before, [efy_select] [for*=efy_color]:after {content: none}
+/*Content: ''*/ [type=radio]:checked:after, [efy_select] label:before, [efy_select] [type=radio]:checked + label:after {content: ''}
 
-/*BG: Transparent*/ [efy_mode*=trans] .efy_sidebar {background: transparent!important; backdrop-filter: blur(50rem); -webkit-backdrop-filter: blur(50rem)}
+/*Background: Transparent*/ [efy_mode*=trans] .efy_sidebar {background: transparent!important; backdrop-filter: blur(50rem); -webkit-backdrop-filter: blur(50rem)}
 /*BG*/ html:not([efy_mode*=trans]) .efy_3d_bg, .efy_bg {background: var(--efy_bg)!important}
 /*BG1*/ aside, th, [type=file], pre, textarea, select, input, details, blockquote, pre, article, tr:nth-child(even), [efy_alert], [efy_timer], [efy_clock], .efy_bg1 {background: var(--efy_bg1)}
-/*BG: text*/ mark, kbd, .efy_bg_text {background: var(--efy_text)}
-/*BG: Color*/ button, [type=button], [role=button], [type=submit], [type=reset], blockquote:before, [efy_sidebar_btn=absolute]:hover, [type=checkbox]:checked, [type=radio]:checked, option:checked, [efy_select] input:checked + label, [efy_tabs] [efy_tab][efy_active], .efy_img_previews [efy_bg_nr][efy_active]:before, .efy_color {background: var(--efy_color); background-clip: padding-box; -webkit-background-clip: padding-box; -webkit-text-fill-color: var(--efy_text2)}
-/*BG: Color Trans*/ [type=range], [type=radio], [type=checkbox], [efy_sidebar_btn=absolute], [efy_select] label:not([efy_upload], [type=button]), [efy_tabs] [efy_tab]:not([efy_active]), .efy_color_trans {background: var(--efy_color), var(--efy_color_trans); -webkit-background-clip: text, padding-box; -moz-background-clip: text, padding-box; -webkit-text-fill-color: transparent}
+/*Text*/ mark, kbd, .efy_bg_text {background: var(--efy_text)}
+/*Color*/ button, [type=button], [role=button], [type=submit], [type=reset], [efy_sidebar_btn=absolute]:hover, :is([type=checkbox], [type=radio], option):checked, [efy_select] input:checked + label, [efy_tabs] [efy_tab][efy_active], :is(blockquote, .efy_img_previews [efy_bg_nr][efy_active]):before, .efy_color {background: var(--efy_color); background-clip: padding-box; -webkit-background-clip: padding-box; -webkit-text-fill-color: var(--efy_text2)}
+/*Color Trans*/ [type=range], [type=radio], [type=checkbox], [efy_sidebar_btn=absolute], [efy_select] label:not([efy_upload], [type=button]), [efy_tabs] [efy_tab]:not([efy_active]), .efy_color_trans {background: var(--efy_color), var(--efy_color_trans); -webkit-background-clip: text, padding-box; -moz-background-clip: text, padding-box; -webkit-text-fill-color: transparent}
 
-
-/*Text*/ body, textarea, select, input, pre, pre code, header > nav a, header > nav a:visited, [efy_sidebar_btn]:hover, .efy_text {color: var(--efy_text)}
-/*Text*/ button, [type=button], [role=button], [type=submit], [type=reset], mark, kbd, option:checked, [efy_select] input:checked + label, .efy_text2 {color: var(--efy_text2)}
+/*Color: Text*/ body, textarea, select, input, pre, pre code, header > nav :is(a, a:visited), [efy_sidebar_btn]:hover, .efy_text {color: var(--efy_text)}
+/*Text2*/ button, [type=button], [role=button], [type=submit], [type=reset], mark, kbd, option:checked, [efy_select] input:checked + label, .efy_text2 {color: var(--efy_text2)}
 /*Text Trans2*/ figcaption, cite, footer, .efy_text_trans2 {color: var(--efy_text_trans2)} ::-webkit-input-placeholder {color: var(--efy_text_trans2)}
-/*Text Color*/ :is(a, a:visited):not([role=button]), pre > code, code, samp, [efy_logo] p:nth-of-type(1), .efy_text_color {background: var(--efy_color); background-clip: text; -webkit-background-clip: text; -moz-background-clip: text; -webkit-text-fill-color: transparent}
+/*Color*/ :is(a, a:visited):not([role=button]), pre > code, code, samp, [efy_logo] p:nth-of-type(1), .efy_text_color {background: var(--efy_color); background-clip: text; -webkit-background-clip: text; -moz-background-clip: text; -webkit-text-fill-color: transparent}
 /*Text-Decoration: None*/ a, a:visited {text-decoration: none}
 
-/*Border*/ textarea, select, input:not([type=color], [type=range]), button, [type=submit], [type=reset], [type=button], [role=button], details, pre, td, th, article, aside, blockquote, [type=file], .efy_sidebar, [efy_tabs] [efy_content], [efy_alert], [efy_timer], [efy_clock], .efy_border {border:  var(--efy_border)}
-/*Border: None*/ hr {border: none} [type=color], fieldset, [type=file] {border: none!important}
+/*Border*/ textarea, select, input:not([type=color], [type=range]), button, [type=submit], [type=reset], [type=button], [role=button], details, pre, td, th, article, aside, blockquote, [type=file], .efy_sidebar, [efy_tabs] [efy_content], [efy_alert], [efy_timer], [efy_clock], .efy_border {border: var(--efy_border)}
+/*None*/ hr {border: none} [type=color], fieldset, [type=file] {border: none!important}
 
 /*Outline: None*/ * {outline: none!important}
-/*Outline: Box-Shadow*/ :is(textarea, select, [type=file]):focus, input:not([type=checkbox], [type=radio], [role=button], [type=submit], [type=reset], [type=button], [type=color], [type=range]):focus, [efy_outline] :is(details:focus-within:not([efy_help])) {box-shadow: 0 0 0 calc(var(--efy_border_size) + 2rem) var(--efy_text)!important}
+/*Box-Shadow*/ :is(textarea, select, [type=file], input:not([type=checkbox], [type=radio], [role=button], [type=submit], [type=reset], [type=button], [type=color], [type=range])):focus,
+[efy_outline] :is(details:focus-within:not([efy_help])) {box-shadow: 0 0 0 calc(var(--efy_border_size) + 2rem) var(--efy_text)!important}
 
-[efy_shadow*=trans] :is(textarea, select, [type=file]):focus, [efy_shadow*=trans] input:not([type=checkbox], [type=radio], [role=button], [type=submit], [type=reset], [type=button], [type=color], [type=range]):focus, [efy_shadow*=trans][efy_outline] :is(details:focus-within:not([efy_help])) {box-shadow: 0 0 0 calc(var(--efy_border_size) + 2rem) var(--efy_text), var(--efy_shadow_trans)!important}
+[efy_shadow*=trans] :is(textarea, select, [type=file], input:not([type=checkbox], [type=radio], [role=button], [type=submit], [type=reset], [type=button], [type=color], [type=range])):focus,
+[efy_shadow*=trans][efy_outline] :is(details:focus-within:not([efy_help])) {box-shadow: 0 0 0 calc(var(--efy_border_size) + 2rem) var(--efy_text), var(--efy_shadow_trans)!important}
 
-/*Outline Offset*/ [efy_outline] :is([type=radio], [type=checkbox], button, [role=button], [type=submit], [type=reset], [type=button], [type=range], [type=color], a, [efy_tabs] [efy_tab]):focus:not([tabindex='-1'], .efy_img_previews [efy_bg_nr]), [efy_outline] [efy_select] input:focus + label, [efy_outline] :is([efy_select] [for*=efy_color], [efy_upload], [efy_help]):focus-within {outline: calc(var(--efy_border_size) + 2rem) solid var(--efy_text)!important; outline-offset: 4rem!important}
+/*Outline Offset*/ [efy_outline] :is([type=radio], [type=checkbox], button, [role=button], [type=submit], [type=reset], [type=button], [type=range], [type=color], a, [efy_tabs] [efy_tab]):focus:not([tabindex='-1'], .efy_img_previews [efy_bg_nr]), [efy_outline] [efy_select] input:focus + label, [efy_outline] :is([efy_upload], [efy_help]):focus-within {outline: calc(var(--efy_border_size) + 2rem) solid var(--efy_text)!important; outline-offset: 4rem!important}
 
 /*Shadow: Button*/ [efy_shadow*=button] :is(button, [role=button], input:is([type=button], [type=submit], [type=reset]), :is([type=radio], [type=checkbox], option):checked, [efy_select] input:checked + label):not(.efy_shadow_button_off, .efy_trans_filter, [efy_tab]:not([efy_active]), [efy_about] .efy_flex button, .efy_img_previews [efy_bg_nr], [efy_color_preview], [efy_card]) {box-shadow: var(--efy_shadow_button)}
 [efy_shadow*=button] [type=range]:not(.hue, .sat, .lgt, .transparency)::-webkit-slider-thumb, [efy_shadow*=button] ::-webkit-progress-value, [efy_shadow*=button] ::-webkit-meter-optimum-value {box-shadow: var(--efy_shadow_button)!important}
@@ -75,17 +78,17 @@
 
 /*Shadow: Trans*/ [efy_shadow*=trans] :is(details:not([efy_help]), [efy_card], [efy_clock], [efy_timer], [efy_color_picker], select:not([disabled]), input:not([type="range"], [type=checkbox], [type=radio], [role=button], [type=button], [type=submit], [type=reset], [disabled]), textarea:not([disabled]), input[type=number], blockquote, pre, audio, table, [efy_code], [efy_tabs]:not(.efy_shadow_trans_off) [efy_content], [efy_about] button:not([efy_sidebar_btn*=close]), .efy_sidebar, .efy_shadow_trans):not(.efy_shadow_trans_off, [efy_number] button:not(:focus), [efy_range_text] .efy_range_text_p:not(:focus)) {box-shadow: var(--efy_shadow_trans)}
 
-
 /*Radius*/ textarea, select, input, img, video, pre, details, summary, blockquote, article, aside, [type=range], button, [role=button], [type=submit], [type=reset],
 [type=button], img, video, audio, table, [efy_sidebar_btn=absolute], [efy_select] label, [efy_tabs] [efy_tab], .efy_radius {border-radius: var(--efy_radius)}
 /*2*/ [efy_timer], [efy_clock], [efy_alert], .efy_radius2 {border-radius: var(--efy_radius2)}
 /*0*/ mark, kbd, [type=checkbox], [type=radio], [efy_outline] a:focus, .efy_radius0 {border-radius: var(--efy_radius0)}
 /*00*/ [type=radio]:checked:after, .efy_radius00 {border-radius: var(--efy_radius00)}
 
-
 /*Position: Relative*/ [type=checkbox], [type=radio], [efy_select] label {position: relative}
 /*Absolute*/ [efy_select] :is([type=checkbox], [type=radio], label [type=color]), [efy_select] :is([type=checkbox], [type=radio]):checked + label:after {position: absolute}
 
+/*Width: 100%*/ img, video, iframe, hr, textarea, select, input, [efy_card] {width: 100%}
+/*Max-Width: 100%*/ pre, img, video, iframe, table {max-width: 100%}
 
 /*Cursor: Pointer*/ :is(button, [role=button], [type=submit], [type=reset], [type=button]):focus, :is(button, [type=reset], [type=button], [type=submit]):enabled:hover, [role=button]:not([aria-disabled=true]):hover, summary, [type=range], [type=file], [efy_sidebar_btn], [efy_select] label {cursor: pointer}
 /*Help*/ abbr {cursor: help}
@@ -93,7 +96,6 @@
 /*None*/ [efy_cursor_none] *, [efy_cursor_custom], [efy_cursor_custom] * {cursor: none!important}
 /*Custom*/ [efy_cursor_custom] [efy_cursor] { height: 16rem; width: 16rem; margin-left: -8rem; margin-top: -8rem; position: absolute; background: var(--efy_color); background-clip: padding-box; border-radius: var(--efy_radius0); pointer-events: none; box-shadow: 0 0 5rem #0003; z-index: 999999!important}
 /*Pointer Events: None*/ [efy_icon], [efy_alert] *, a > button, .efy_about p {pointer-events: none}
-
 
 /*Disabled*/ :is(input, textarea, select):disabled, [role=button][aria-disabled=true], :is([type=submit], [type=reset], [type=button], [type=checkbox], [type=radio], button, select)[disabled] {filter: saturate(0) brightness(.7); opacity: 1; cursor: not-allowed}
 
@@ -104,13 +106,8 @@
 /*Gap*/ .efy_gap {gap: var(--efy_gap)}
 /*Gap 0*/ .efy_gap0 {gap: var(--efy_gap0)}
 
-
-/*Vertical align: Middle*/ [efy_select] label:before, [efy_select] input:checked + label:after {vertical-align: middle}
-
-
 /*Text: Family*/ html, body, mark, code, pre, pre span, kbd, samp, button, a {font-family: var(--efy_font_family)}
 /*Bold*/ button, a, code, kbd, samp, mark, summary, th, table caption, [type=button], [type=submit], [type=reset], [efy_sidebar_btn], code,  [efy_select] label,  [efy_tabs] [efy_tab] {font-weight: bold}
-
 
 /*No Selection*/ [efy_select] label {user-drag: none; -webkit-user-drag: none; user-select: none; -webkit-user-select: none}
 /*Selection Color*/ ::selection {background: var(--efy_text); color: var(--efy_text2); -webkit-text-fill-color: var(--efy_text2)} ::-moz-selection {background: var(--efy_text); color: var(--efy_text2); -webkit-text-fill-color: var(--efy_text2)}
@@ -126,223 +123,247 @@
 /*No Animations*/ [efy_animations*=off] :is(details, input, textarea, select, a, label, [efy_timer], [efy_clock], [efy_card], [efy_alert], button, [efy_tab], [efy_bg_nr], .efy_anim_pulse, .efy_anim_pulse2):not([disabled]):active {scale: 1; transition: unset}
 
 /*Convergent body*/ * {margin: 0; padding: 0; box-sizing: border-box}
-html, body {margin: 0 auto}
-html {font-size: var(--efy_font_size)!important; font-size: var(--efy_font_size)!important}
-html :is(.efy_3d_bg, .efy_3d_front, .efy_3d_back) {position: fixed; inset: 0; z-index: -1; object-fit: cover; width: 100vw; height: var(--efy_100vh); border-radius: 0!important; background-position: var(--efy_bg_x) var(--efy_bg_y)!important; pointer-events: none}
-html .efy_3d_front {z-index: 9998} html .efy_3d_back {z-index: -1}
-body {width: 100vw; padding: var(--efy_body_padding); line-height: 1.5; min-height: var(--efy_100vh); max-width: var(--efy_body_width); overflow: overlay; transition: background calc(var(--efy_anim_status) * var(--efy_anim_speed) * .3s), color calc(var(--efy_anim_status) * var(--efy_anim_speed) * .3s); scroll-behavior: smooth; -webkit-tap-highlight-color: transparent} body * {font-size: 16rem}
+html {font-size: var(--efy_font_size)!important; font-size: var(--efy_font_size)!important;
+    :is(.efy_3d_bg, .efy_3d_front, .efy_3d_back) {position: fixed; inset: 0; z-index: -1; object-fit: cover; width: 100vw; height: var(--efy_100vh); border-radius: 0!important; background-position: var(--efy_bg_x) var(--efy_bg_y)!important; pointer-events: none}
+    .efy_3d_front {z-index: 9998} html .efy_3d_back {z-index: -1}
+}
+body {width: 100vw; padding: var(--efy_body_padding); line-height: 1.5; min-height: var(--efy_100vh); max-width: var(--efy_body_width); overflow: overlay; transition: background calc(var(--efy_anim_status) * var(--efy_anim_speed) * .3s), color calc(var(--efy_anim_status) * var(--efy_anim_speed) * .3s); scroll-behavior: smooth; -webkit-tap-highlight-color: transparent;
+    & * {font-size: 16rem}
+}
 
-/*Headings*/h1 {font-size:  45rem} h2 {font-size: 40rem} h3 {font-size: 35rem} h4 {font-size: 30rem} h5 {font-size: 25rem} h6 {font-size: 20rem}
+/*Headings*/ h1 {font-size: 45rem} h2 {font-size: 40rem} h3 {font-size: 35rem} h4 {font-size: 30rem} h5 {font-size: 25rem} h6 {font-size: 20rem}
 
-/*Links & buttons*/
-a, a:visited {font-size: inherit}
-a[role=button] {display: flex; width: fit-content; float: left}
+/*Links & buttons*/ a, a:visited {font-size: inherit}
+a[role=button] {display: flex; width: fit-content}
+button, [role=button], [type=submit], [type=reset], [type=button] {font-size: 16rem; -webkit-text-fill-color: var(--efy_text2); margin: var(--efy_gap0) 0}
 
-button, [role=button], [type=submit], [type=reset], [type=button] {font-size:  16rem; -webkit-text-fill-color: var(--efy_text2); margin: var(--efy_gap0) 0}
-
-/*Navigation*/ header {text-align: center; padding: 0  8rem; grid-column: 1 / -1}
-header :is(p, h1) {margin:  15rem auto}
-header > nav {padding:  15rem 0 0 0}
-header > nav :is(ul, ol) {align-content: space-around; align-items: center; display: flex; flex-direction: row; justify-content: center; list-style-type: none; margin: 0; padding: 0}
-header > nav :is(a, a:visited) {margin-right:  15rem; text-decoration: none}
-header > nav a:last-child {margin-right: 0}
-
-footer {margin-top: 40rem; padding: 30rem  15rem  25rem  15rem; text-align: center; border-top:  var(--efy_border)}
-
-ul, ol, li {padding: 0  1.5rem; margin: 0  8rem}
-
-aside {width: 30%; padding: 0 15rem; margin-left:  var(--efy_gap); float: right}
-article {padding: 15rem}
-section {border-top:  var(--efy_border); border-bottom:  var(--efy_border); padding: 30rem  15rem; margin:  calc(var(--efy_gap) * 3) 0}
+header {text-align: center; padding: 0  8rem; grid-column: 1 / -1;
+    :is(p, h1) {margin: 15rem auto}
+    & > nav {padding: 15rem 0 0 0;
+        :is(ul, ol) {align-content: space-around; align-items: center; display: flex; flex-direction: row; justify-content: center; list-style-type: none; margin: 0; padding: 0}
+        :is(a, a:visited) {margin-right: 15rem; text-decoration: none}
+        & a:last-child {margin-right: 0}
+}}
 
 [efy_content=menu] {padding: 0 var(--efy_gap)!important}
-details {margin-bottom:  var(--efy_gap)} :is(details, [efy_content=menu]) > details {padding: .6rem  15rem 0  15rem}
-details[open] {padding: .6rem  15rem 15rem  15rem}
-details[open] summary + * {margin-top: 0}
-details[open] summary {margin: 8rem 0; padding: 0}
-details[open] > *:last-child {margin-bottom: 0}
-mark {padding: 2rem 7rem}
-.efy_sidebar summary > mark {margin-left: 10rem}
 
-table {border-collapse: collapse; margin:  15rem 0; overflow: auto; width: fit-content; max-width: 100%}
-td, th {text-align: left; padding:  8rem}
-table caption {margin-bottom:  8rem}
+table {border-collapse: collapse; margin: 15rem 0; overflow: auto; width: fit-content;
+    & caption {margin-bottom: 8rem}
+    & td, & th {text-align: left; padding: 8rem}
+}
 
-textarea, select, input {font-size: 16rem; font-family: inherit; padding:  8rem; margin-bottom:  var(--efy_gap0); box-shadow: none; box-sizing: border-box; width: 100%; -moz-appearance: none; -webkit-appearance: none; appearance: none}
+textarea, select, input {font-size: 16rem; font-family: inherit; padding: 8rem; margin-bottom: var(--efy_gap0); box-shadow: none; box-sizing: border-box; -moz-appearance: none; -webkit-appearance: none; appearance: none}
 
-select {background-image: linear-gradient(45deg, transparent 49%, var(--efy_text) 51%), linear-gradient(135deg, var(--efy_text) 51%, transparent 49%); background-position: calc(100% - 20rem), calc(100% -  15rem); background-size: 5rem 5rem, 5rem 5rem; background-repeat: no-repeat}
+select {background-image: linear-gradient(45deg, transparent 49%, var(--efy_text) 51%), linear-gradient(135deg, var(--efy_text) 51%, transparent 49%); background-position: calc(100% - 20rem), calc(100% -  15rem); background-size: 5rem 5rem, 5rem 5rem; background-repeat: no-repeat;
+    &:not([multiple]) {padding-right: 32rem}
+}
 option:not(option:checked), optgroup {background: var(--efy_text2)}
-select[multiple] {background-image: none !important}
-select[multiple] option:not(option:checked), select[multiple] optgroup {background: transparent}
-select[multiple] option {padding: var(--efy_padding2); margin-top: 5rem; border-radius: var(--efy_radius0)}
-
+select[multiple] {background-image: none !important;
+    & option:not(option:checked), & optgroup {background: transparent}
+    & option {padding: var(--efy_padding2); margin-top: 5rem; border-radius: var(--efy_radius0)}
+}
 
 /*Checkbox & Radio*/ [type=checkbox], [type=radio] {width: 24rem; height: 24rem; padding: 6rem; vertical-align: bottom; margin-bottom: 0; display: inline-flex; align-items: center; place-content: center}
 [type=radio]:checked:after {width: 100%; aspect-ratio: 1; background: var(--efy_text2)}
 
-
-hr {border-top: var(--efy_border); margin: 15rem auto; width: 100%}
-
-main :is(img, video) {max-width: 100%; height: auto}
-
+footer {margin-top: 40rem; padding: 30rem 15rem 25rem 15rem; text-align: center}
+hr, section, footer {border-top: var(--efy_border)}
+ul, ol, li {padding: 0 2rem; margin: 0 8rem}
+aside {width: 30%; padding: 0 15rem; margin-left: var(--efy_gap); float: right}
+article {padding: 15rem}
+section {border-bottom: var(--efy_border); padding: 30rem 15rem; margin: calc(var(--efy_gap) * 3) 0}
+mark {padding: 2rem 7rem}
+hr {margin: 15rem auto}
+main :is(img, video) {height: auto}
 figure {margin: 0; text-align: center}
-figcaption {margin-bottom:  15rem}
-
+figcaption {margin-bottom: 15rem}
 blockquote {position: relative; padding-left: 25rem; font-weight: bold}
 blockquote:before {content: ''; display: block; width: 5rem; height: calc(100% - 20rem); top: 10rem; left: 10rem; position: absolute; border-radius: var(--efy_radius)}
 cite {font-style: normal; font-weight: normal}
+pre {overflow: auto}
 
-pre {max-width: 100%; overflow: auto}
+[efy_number] {display: flex; gap: var(--efy_gap0); align-items: center; padding: 0; margin: var(--efy_gap0) 0;
+    &, & input {-moz-appearance: textfield}
+    :is(button, input, select) {margin: 0!important}
+    & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button {-webkit-appearance: none; margin: 0}
+}
 
-img, video, iframe {width: 100%; max-width: 100%}
-
-
-/*Number Input*/ [efy_number] input::-webkit-outer-spin-button, [efy_number] input::-webkit-inner-spin-button {-webkit-appearance: none; margin: 0}
-[efy_number], [efy_number] input {-moz-appearance: textfield} [efy_number] :is(button, input, select) {margin: 0!important}
-[efy_number] {display: flex; gap: var(--efy_gap0); align-items: center; padding: 0; margin: var(--efy_gap0) 0}
-[efy_range_text*='Max Width'] select {width: auto}
-
-/*EFY Color Input*/ [efy_color] {display: inline}
+/*EFY Color Input*/ [efy_color] {display: inline;
+    &:not(:last-of-type) [efy_color_preview] {margin-right: var(--efy_gap0)}
+}
 [efy_color_preview] {-webkit-text-fill-color: var(--efy_text2)}
-[efy_color]:not(:last-of-type) [efy_color_preview] {margin-right: var(--efy_gap0)}
-.efy_custom_colors {display: flex; flex-wrap: wrap; gap: var(--efy_gap0)}
-.efy_custom_colors :is(label, [efy_color_preview]) {margin: 0!important; height: 39.2rem}
-.efy_custom_colors label {border-radius: var(--efy_radius) 0 0 var(--efy_radius); width: 43.2rem}
-.efy_custom_colors [efy_color_preview] {border-radius: 0 var(--efy_radius) var(--efy_radius) 0; border: 0}
+.efy_custom_colors {display: flex; flex-wrap: wrap; gap: var(--efy_gap0);
+    :is(label, [efy_color_preview]) {margin: 0!important; height: 37.6rem}
+    & label {border-radius: var(--efy_radius) 0 0 var(--efy_radius); width: 43.2rem}
+    [efy_color_preview] {border-radius: 0 var(--efy_radius) var(--efy_radius) 0; border: 0}
+}
 [efy_color*=efy_color_text] [efy_color_preview] {background: var(--efy_text)!important}
-[efy_color*=efy_color_text][efy_active] + br {display: none!important}
 [efy_color*=efy_color_bgcol] [efy_color_preview] {background: var(--efy_bg)!important; -webkit-text-fill-color: var(--efy_text)!important}
 [efy_color*=buttoncol] [efy_color_preview] {-webkit-text-fill-color: var(--efy_text2)!important}
 [efy_color_buttoncol][efy_mode] [efy_color*=buttoncol] [efy_color_preview] {background: hsl(var(--efy_color_buttoncol_var))!important}
 
 [efy_select]#efy_colors label:not(.efy_shadows label:nth-of-type(2)):before, [efy_sidebar_btn] [efy_icon=remove] {margin-right: 0}
 
-[efy_color_picker] {background: var(--efy_bg1); border: var(--efy_border); border-radius: var(--efy_radius); padding: 15rem; margin: 10rem 0; --efy_bs: 0 0 3rem #0005, inset 0 0 0 3rem hsl(var(--efy_bg_var)), inset 0 0 6rem #0005}
-[efy_color_picker] .hue {background: linear-gradient(to right, #f00 0%, #ff0 16.6%, #0f0 33.3%, #0ff 50%, #00f 66.6%, #f0f 83.3%, #f00 100%)}
-[efy_color_picker] .sat {background: linear-gradient(to right, #808080, #f00)}
-[efy_color_picker] .lgt {background: linear-gradient(to right, #000, #f00, #fff)}
-[efy_color_picker] [type=range]:not(.x, .y, .blur, .spread)::-webkit-slider-thumb {background: transparent; box-shadow: var(--efy_bs)}
-[efy_color_picker] [type=range]:not(.x, .y, .blur, .spread)::-moz-range-thumb {background: transparent; box-shadow: var(--efy_bs)}
-[efy_color_picker] .efy_cp_switch {display: flex; gap: var(--efy_gap); margin-top: 10rem}
-[efy_color_picker] .efy_cp_switch :is(input, button) {height: fit-content; margin: 0}
-[efy_color_picker] .efy_cp_switch input {width: 100%}
-[efy_color_picker] .copy_btn {display: flex}
-[efy_color_picker] .copy_btn .efy_color_picker_copy {border-radius: var(--efy_radius) 0 0 var(--efy_radius)}
-[efy_color_picker] .copy_btn .efy_color_picker_paste {border-radius: 0 var(--efy_radius) var(--efy_radius) 0}
-[efy_color_picker] .copy_btn i {margin-right: 0}
+[efy_color_picker] { background: var(--efy_bg1); border: var(--efy_border); border-radius: var(--efy_radius); padding: 15rem; margin: 10rem 0; --efy_bs: 0 0 3rem #0005, inset 0 0 0 3rem hsl(var(--efy_bg_var)), inset 0 0 6rem #0005;
+    .hue {background: linear-gradient(to right, #f00 0%, #ff0 16.6%, #0f0 33.3%, #0ff 50%, #00f 66.6%, #f0f 83.3%, #f00 100%)}
+    .sat {background: linear-gradient(to right, #808080, #f00)}
+    .lgt {background: linear-gradient(to right, #000, #f00, #fff)}
+    .efy_cp_switch { display: flex; gap: var(--efy_gap); margin-top: 10rem;
+        :is(input, button) {height: fit-content; margin: 0}
+        & input {width: 100%}
+    }
+    .copy_btn { display: flex;
+        .efy_color_picker_copy {border-radius: var(--efy_radius) 0 0 var(--efy_radius)}
+        .efy_color_picker_paste {border-radius: 0 var(--efy_radius) var(--efy_radius) 0}
+        & i {margin-right: 0}
+    }
+    [for*=status] {height: 39.2rem}
+    [type=range]:not(.x, .y, .blur, .spread)::-webkit-slider-thumb {background: transparent; box-shadow: var(--efy_bs)}
+    [type=range]:not(.x, .y, .blur, .spread)::-moz-range-thumb {background: transparent; box-shadow: var(--efy_bs)}
+}
 
-#efy_colors :is(#efy_pickers, .efy_shadows > div)  {display: flex; flex-wrap: wrap; gap: var(--efy_gap0); margin-bottom: var(--efy_gap0)}
-#efy_colors #efy_pickers :is([efy_color_preview], [efy_color]), #efy_colors #efy_pickers > button {margin:0!important; border: 0; height: fit-content}
-#efy_colors #efy_pickers > button, #efy_colors :is(#efy_pickers, .efy_shadows) [efy_color_preview] {width: var(--efy_ratio_width); height: var(--efy_ratio_width); display: flex; align-items: center; place-content: center; margin: 0}
-#efy_colors #efy_pickers > button i {margin: 0; display: flex; place-content: center}
-#efy_colors #efy_pickers .efy_color_add i:before {font-size: 14rem; margin: 0}
-#efy_colors #efy_pickers .efy_color_remove i:before {margin: 0}
+#efy_colors {
+    :is(#efy_pickers, .efy_shadows > div)  {display: flex; flex-wrap: wrap; gap: var(--efy_gap0); margin-bottom: var(--efy_gap0)}
+    #efy_pickers {
+        :is([efy_color_preview], [efy_color]), #efy_colors #efy_pickers > button {margin:0!important; border: 0; height: fit-content}
+        & > button i {margin: 0; display: flex; place-content: center}
+        .efy_color_add i:before {font-size: 14rem; margin: 0}
+        .efy_color_remove i:before {margin: 0}
+    }
+    :is(#efy_pickers > button, :is(#efy_pickers, .efy_shadows) [efy_color_preview]) {width: var(--efy_ratio_width); height: var(--efy_ratio_width); display: flex; align-items: center; place-content: center; margin: 0}
+}
 
-
-/*Color input*/ [type=color], [type=color]:focus {background: transparent; width: var(--efy_ratio_width); height: var(--efy_ratio_width); padding: 0; --efy_bs: inset 0 0 0 2rem #0003; --efy_b: 0!important}
+/*Color input*/ [type=color] {&, &:focus {background: transparent; width: var(--efy_ratio_width); height: var(--efy_ratio_width); padding: 0; --efy_bs: inset 0 0 0 2rem #0003; --efy_b: 0!important}}
 ::-webkit-color-swatch-wrapper {background: transparent; width: 100%; height: 100%; padding: 0}
 ::-webkit-color-swatch {border-radius: var(--efy_radius); box-shadow: var(--efy_bs); border: var(--efy_b)}
 ::-moz-color-swatch {border-radius: var(--efy_radius); box-shadow: var(--efy_bs); border: var(--efy_b)}
 
-
 /*Range input*/
-[type=range] {-webkit-appearance: none; appearance:none; width: 100%; height: 32rem; padding: 0; background: var(--efy_color_trans); background-clip: padding-box}
+[type=range] {-webkit-appearance: none; appearance:none; height: 32rem; padding: 0; background: var(--efy_color_trans); background-clip: padding-box}
 ::-moz-range-thumb {background: var(--efy_color); background-clip: padding-box; border: 0; border-radius: var(--efy_radius); height: 32rem; width: 32rem}
 ::-moz-range-track {background: transparent}
 ::-webkit-slider-thumb {-webkit-appearance: none; width: 32rem; height: 32rem; border-radius: var(--efy_radius); background: var(--efy_color); background-clip: padding-box; border:0}
 ::-webkit-slider-runnable-track {background: transparent}
 
-
 ::file-selector-button {background: var(--efy_color); background-clip: padding-box; color: var(--efy_text2); border: var(--efy_border); border-radius: var(--efy_radius); padding: var(--efy_padding); font-weight: bold; cursor: pointer; font-family: var(--efy_font_family)!important; font-size: 16rem}
 
-progress, meter {height:  15rem; border: 0; background: var(--efy_color_trans); background-clip: padding-box; border-radius: var(--efy_radius0); border: 0}
-::-webkit-progress-bar, ::-webkit-meter-bar {height:  15rem; background: var(--efy_color_trans); background-clip: padding-box; border-radius: var(--efy_radius0); border: 0}
+progress, meter {height: 15rem; border: 0; background: var(--efy_color_trans); background-clip: padding-box; border-radius: var(--efy_radius0); border: 0}
+::-webkit-progress-bar, ::-webkit-meter-bar {height: 15rem; background: var(--efy_color_trans); background-clip: padding-box; border-radius: var(--efy_radius0); border: 0}
 ::-webkit-progress-value, ::-webkit-meter-optimum-value {background: var(--efy_color); background-clip: padding-box; border-radius: var(--efy_radius0); border: 0}
-::-moz-progress-bar , ::-moz-meter-bar {height:  15rem; background: var(--efy_color); background-clip: padding-box; border-radius: var(--efy_radius0); border: 0}
+::-moz-progress-bar , ::-moz-meter-bar {height: 15rem; background: var(--efy_color); background-clip: padding-box; border-radius: var(--efy_radius0); border: 0}
 
-/*Audio & Video*/ audio::-webkit-media-controls-enclosure {background: var(--efy_bg1); border-radius: var(--efy_radius); border:  var(--efy_border)}
-::-internal-media-controls-overflow-menu-list, ::-webkit-internal-media-controls-overflow-menu-list-item {appearance: none; -webkit-appearance: none; background: var(--efy_text2); border-radius: var(--efy_radius)!important; border:  var(--efy_border)}
+/*Audio & Video*/ audio::-webkit-media-controls-enclosure {background: var(--efy_bg1); border-radius: var(--efy_radius); border: var(--efy_border)}
+::-internal-media-controls-overflow-menu-list, ::-webkit-internal-media-controls-overflow-menu-list-item {appearance: none; -webkit-appearance: none; background: var(--efy_text2); border-radius: var(--efy_radius)!important; border: var(--efy_border)}
 
-/*Details*/ details, summary {list-style: none; position: relative} summary::-webkit-details-marker {display: none}
-details:not([efy_help]) summary:before {position: absolute; right: 8rem; transition: transform calc(var(--efy_anim_status) * var(--efy_anim_speed) * .1s) ease}
-details details {margin-top: var(--efy_gap)} details details:not([efy_help]) > summary:before {right: -6rem}
-details[open]:not([efy_help]) > summary:before {rotate: 90deg; right: -2rem}
+/*Details*/ details, summary {list-style: none; position: relative}
+:is(details, [efy_content=menu]) > details {padding: .6rem  15rem 0  15rem}
+details { margin-bottom: var(--efy_gap);
+    &:not([efy_help]) summary:before {position: absolute; right: 8rem; transition: transform calc(var(--efy_anim_status) * var(--efy_anim_speed) * .1s) ease}
+    & details {margin-top: var(--efy_gap)} details details:not([efy_help]) > summary:before {right: -6rem}
+}
+details[open] { padding: .6rem  15rem 15rem  15rem;
+    &:not([efy_help]) > summary:before {rotate: 90deg; right: -2rem}
+    & summary + * {margin-top: 0}
+    & summary {margin: 8rem 0; padding: 0}
+    & > *:last-child {margin-bottom: 0}
+}
+summary, details[open] summary {padding-right: 20rem}
+summary::-webkit-details-marker {display: none}
 
-/*Help Box*/ [efy_help] {background: transparent; border: 0; padding: 0!important; margin: 0}
+/*Help Box*/ [efy_help] {background: transparent; border: 0; padding: 0!important; margin: 0;
+    & summary {pointer-events: none; margin-bottom: 0; padding: 0;
+        &:after {margin-left: 8rem; opacity: .5; pointer-events: all}
+}}
 [efy_help][open] {padding: 0 0 10rem 0!important}
-[efy_help] summary {pointer-events: none; margin-bottom: 0; padding: 0}
-[efy_help] summary:after {margin-left:  8rem; opacity: .5; pointer-events: all}
 
-/*Select Menu*/ [efy_select] label:not([efy_upload]):before {width:  16rem; height:  16rem; margin-right:  8rem; margin-top: -.2rem; position: relative; border-radius: calc(var(--efy_radius) / 1.5); border: 2.5rem solid transparent; background: var(--efy_color) border-box; -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0); -webkit-mask-composite: source-out; mask-composite: exclude}
+/*Select Menu*/ [efy_select] {
+    & label:not([efy_upload]):before {width: 16rem; height: 16rem; margin-right: 8rem; margin-top: -.2rem; position: relative; border-radius: calc(var(--efy_radius) / 1.5); border: 2.5rem solid transparent; background: var(--efy_color) border-box; -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0); -webkit-mask-composite: source-out; mask-composite: exclude}
+    [type=radio]:checked + label:after {background: var(--efy_text2); width: 9.6rem; height: 9.6rem; top: 8rem; left: 5.6rem; margin: var(--efy_padding); border-radius: calc(var(--efy_radius) / 3)}
+    [type=checkbox]:checked + label:after {top: 13.2rem; left: 16.5rem; font-family: 'efy_icons'; font-size: 12rem}
+    & input:checked + label:before {border-color: var(--efy_text2); background: transparent}
+    :is([type=checkbox], [type=radio], label [type=color]) {opacity:0}
+    :is(p, label, button), [efy_tabs] [efy_tab], .efy_about a, [type=file] {margin: calc(var(--efy_gap0) / 2) var(--efy_gap0) calc(var(--efy_gap0) / 2) 0}
+    & label:before, & input:checked + label:after {vertical-align: middle; display: inline-flex}
+}
 
-[efy_select] [type=radio]:checked + label:after {background: var(--efy_text2); width: 9.6rem; height: 9.6rem; top: 8rem; left: 5.6rem; margin: var(--efy_padding); border-radius: calc(var(--efy_radius) / 3)}
-[efy_select] [type=checkbox]:checked + label:after {top: 13.2rem; left: 16.5rem; font-family: 'efy_icons'; font-size: 12rem}
-[efy_select] input:checked + label:before {border-color: var(--efy_text2); background: transparent}
-[efy_select] :is([type=checkbox], [type=radio], label [type=color]) {opacity:0}
-[efy_select] :is(p, label, button), [efy_tabs] [efy_tab], .efy_about a, [type=file] {margin: calc(var(--efy_gap0) / 2) var(--efy_gap0) calc(var(--efy_gap0) / 2) 0}
-
-/*Padding-Right for Expanding Boxes*/ select:not([multiple]) {padding-right: 32rem} summary, details[open] summary {padding-right: 20rem}
-
-/*Card*/ [efy_card] {background: var(--efy_bg1); border-radius: var(--efy_radius); border: var(--efy_border); padding: 15rem; width: 100%}
+[efy_card] {background: var(--efy_bg1); border-radius: var(--efy_radius); border: var(--efy_border); padding: 15rem}
 [efy_card*=grid] {display: grid; gap: 5rem; align-content: baseline}
 
-/*Upload Input*/ [efy_upload] {position: relative; width: fit-content; font-weight: bold}
-[efy_upload] > input {position: absolute; inset: 0; margin: 0; padding: 0; border: 0; opacity: 0}
-[efy_upload*=small] {width: var(--efy_ratio_width); height: var(--efy_ratio_width); display: flex; align-items: center; place-content: center; line-height: 1}
-[efy_upload*=small] i {margin: 0 1rem 0 0}
-[efy_upload*=small] input::file-selector-button {width: var(--efy_ratio_width)!important; height: var(--efy_ratio_width)!important}
+/*Upload Input*/ [efy_upload] {position: relative; width: fit-content; font-weight: bold;
+    & > input {position: absolute; inset: 0; margin: 0; padding: 0; border: 0; opacity: 0}
+}
+[efy_upload*=small] {width: var(--efy_ratio_width); height: var(--efy_ratio_width); display: flex; align-items: center; place-content: center; line-height: 1;
+    & i {margin: 0 1rem 0 0}
+    & input::file-selector-button {width: var(--efy_ratio_width)!important; height: var(--efy_ratio_width)!important}
+}
 
-.efy_backup_div :is(button, [role=button]) {margin: 0}
-.efy_backup_div {margin-top: var(--efy_gap0)}
-.efy_backup_div:not(:last-of-type) {margin-bottom: var(--efy_gap0)}
+.efy_backup_div {margin-top: var(--efy_gap0);
+    &:not(:last-of-type) {margin-bottom: var(--efy_gap0)}
+    :is(button, [role=button]) {margin: 0}
+}
 
-.efy_about_div mark {display: block; width: fit-content; margin-bottom: 10rem; padding: 0 10rem}
-[efy_range_text] mark {margin: 0; line-height: 1; padding: 5rem 6rem}
-[efy_range_text] [type=range] {margin: 6rem 0 0 0}
+[efy_range_text] {
+    & mark {margin: 0; line-height: 1; padding: 5rem 6rem}
+    [type=range] {margin: 6rem 0 0 0}
+    [efy_number] {display: inline-flex; margin: 0;
+        &:focus-within {margin: 0 0 unset 10rem!important}
+}}
+[efy_range_text*="Max Width"] {
+    .efy_range_text_p {width: 50rem; margin-right: -8rem!important;
+        &:focus {margin-right: 0!important}
+    }
+    [type=range] {margin: 0}
+    & select {height: 32rem; line-height: 1; width: auto}
+}
 
-[efy_range_text="Max Width alpha"] .efy_range_text_p {width: 50rem; margin-right: -8rem!important}
-[efy_range_text="Max Width alpha"] .efy_range_text_p:focus {margin-right: 0!important}
-[efy_range_text="Max Width alpha"] [type=range] {margin: 0}
-[efy_range_text="Max Width alpha"] select {height: 32rem; line-height: 1}
-
-/*Sidebar*/ .efy_sidebar{background: var(--efy_bg); padding:  var(--efy_gap) calc(var(--efy_gap) - 2rem) var(--efy_gap) var(--efy_gap); width: 100vw; max-width: var(--efy_sidebar_width); height: var(--efy_100vh); z-index: 9999; position: fixed; right: var(--efy_sidebar_width_n); top: 0; border-radius: var(--efy_radius2) 0 0 var(--efy_radius2); transition-property: left, right; transition-duration: calc(var(--efy_anim_status) * var(--efy_anim_speed) * .3s); overflow-y: auto}
-[efy_sidebar*=on] .efy_sidebar {box-shadow: 0 0 30rem #0005}
-
-.efy_sidebar > details:last-of-type {margin: 0}
-.efy_sidebar summary {display: flex; align-items: center}
-.efy_sidebar summary > mark {padding: 5px 7rem; line-height: 1} .efy_sidebar summary > p {margin: 0}
-.efy_sidebar summary [efy_icon=arrow_down]:before {margin: -11rem 0 0 -15rem}
-
-[efy_sidebar*=on] :is(body, .efy_sidebar_width) {--efy_bg_width: calc(100vw - var(--efy_sidebar_width)); width: var(--efy_bg_width); margin-right: var(--efy_sidebar_width); margin-left: 0; --efy_body_width: 100%}
-[efy_sidebar*=on]:not([efy_sidebar*=left]) :is(body, .efy_sidebar_width)::-webkit-scrollbar {width: 0}
-[efy_sidebar*=on] .efy_sidebar {right: 0}
+/*Sidebar*/ .efy_sidebar {background: var(--efy_bg); padding: var(--efy_gap) calc(var(--efy_gap) - 2rem) var(--efy_gap) var(--efy_gap); width: 100vw; max-width: var(--efy_sidebar_width); height: var(--efy_100vh); z-index: 9999; position: fixed; right: var(--efy_sidebar_width_n); top: 0; border-radius: var(--efy_radius2) 0 0 var(--efy_radius2); transition-property: left, right; transition-duration: calc(var(--efy_anim_status) * var(--efy_anim_speed) * .3s); overflow-y: auto;
+    & > details:last-of-type {margin: 0}
+    & summary { display: flex; align-items: center;
+        & > mark {padding: 5px 7rem; line-height: 1; margin-left: 10rem}
+        & > p {margin: 0}
+        [efy_icon=arrow_down]:before {margin: -11rem 0 0 -15rem}
+    }
+    [efy_search_input] {margin: 0 0 var(--efy_gap) 0}
+}
+[efy_sidebar*=on] {
+    &:not([efy_sidebar*=left]) :is(body, .efy_sidebar_width)::-webkit-scrollbar {width: 0}
+    :is(body, .efy_sidebar_width) {--efy_bg_width: calc(100vw - var(--efy_sidebar_width)); width: var(--efy_bg_width); margin-right: var(--efy_sidebar_width); margin-left: 0; --efy_body_width: 100%}
+    .efy_sidebar {right: 0; box-shadow: 0 0 30rem #0005}
+}
 [efy_sidebar*=left] .efy_sidebar {right: unset; left: var(--efy_sidebar_width_n); border-radius: 0 var(--efy_radius2) var(--efy_radius2) 0}
-[efy_sidebar*=on_left] :is(body, .efy_sidebar_width) {margin-left: var(--efy_sidebar_width); margin-right: 0}
-[efy_sidebar*=on_left] .efy_sidebar {left: 0}
+[efy_sidebar*=on_left] {
+    :is(body, .efy_sidebar_width) {margin-left: var(--efy_sidebar_width); margin-right: 0}
+    .efy_sidebar {left: 0}
+}
 
 [efy_sidebar_btn*=close] {margin: 0 0 15rem 0; height: fit-content}
-[efy_sidebar_btn*=absolute] {z-index: 9999; font-size: 20rem; padding: 4rem 10rem; position: fixed; text-align: center; top:  15rem; right:  15rem}
+[efy_sidebar_btn*=absolute] {z-index: 9999; font-size: 20rem; padding: 4rem 10rem; position: fixed; text-align: center; top: 15rem; right: 15rem}
 
 
-.trans_window_div {width: fit-content; display: inline-flex; flex-wrap: wrap; gap: var(--efy_gap0); margin-top: calc(var(--efy_gap0) / 2)}
-.trans_window_div label {margin: 0}
-
+.trans_window_div {width: fit-content; display: inline-flex; flex-wrap: wrap; gap: var(--efy_gap0); margin-top: calc(var(--efy_gap0) / 2);
+    & label {margin: 0}
+}
 .efy_flex {display: flex; gap: var(--efy_gap); flex-wrap: wrap}
 
 [efy_about], .efy_sidebar [efy_card] {margin-bottom: var(--efy_gap)}
 .efy_about {padding: 0 10rem}
-[efy_about] {display: flex; gap: var(--efy_gap); justify-content: space-between; align-items: start}
-[efy_about] button {margin: 0; display: flex; align-items: center; gap: 8rem}
-[efy_about] button:not([efy_sidebar_btn*=close]) {background: var(--efy_bg1)}
-[efy_about] button:not([efy_sidebar_btn*=close]) i {-webkit-text-fill-color: var(--efy_text)}
-[efy_logo] p {font-size: 24rem; padding-top: 2.5rem; display: inline-block; -webkit-text-fill-color: var(--efy_text)}
-[efy_logo] i {font-size: 16rem; margin: 0 -2rem 0 0; display: inline-block}
+[efy_about] {display: flex; gap: var(--efy_gap); justify-content: space-between; align-items: start;
+    & button {margin: 0; display: flex; align-items: center; gap: 8rem;
+        &:not([efy_sidebar_btn*=close]) {background: var(--efy_bg1);
+            & i {-webkit-text-fill-color: var(--efy_text)}
+}}}
+[efy_logo] {
+    & p {font-size: 24rem; padding-top: 2.5rem; display: inline-block; -webkit-text-fill-color: var(--efy_text)}
+    & i {font-size: 16rem; margin: 0 -2rem 0 0; display: inline-block}
+}
 
-/*Button Align*/ #efy_btn_align div, #efy_notify_align {display: grid; gap: var(--efy_gap); grid-template-columns: 1fr 1fr 1fr; width: fit-content}
-#efy_btn_align div {margin-bottom: var(--efy_gap0)}
-:is(#efy_btn_align div, #efy_notify_align) input {display: block; position: relative; opacity: 1; margin: 0}
-#efy_btn_align #middle_middle {opacity: 0!important; pointer-events: none}
-
+/*Button Align*/ :is(#efy_btn_align div, #efy_notify_align) {display: grid; gap: var(--efy_gap); grid-template-columns: 1fr 1fr 1fr; width: fit-content;
+    & input {display: block; position: relative; opacity: 1; margin: 0}
+}
+#efy_btn_align {
+    & div {margin-bottom: var(--efy_gap0)}
+    #middle_middle {opacity: 0!important; pointer-events: none}
+}
 [efy_btn_align*=left] {left: 15rem; right: unset}
 [efy_btn_align*=right] {right: 15rem; left:unset}
 [efy_btn_align*=top] {top: 15rem; bottom: unset}
@@ -352,88 +373,98 @@ details[open]:not([efy_help]) > summary:before {rotate: 90deg; right: -2rem}
 
 
 #efy_images_bg:not([efy_mode*=trans] #efy_images_bg) {display: none}
-.efy_img_previews {display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: var(--efy_gap); padding:  5rem 0 0 0}
-.efy_img_previews :is(label, button) {margin: 0; border: 0; aspect-ratio: 1; cursor: pointer; position: relative; box-shadow: inset 0 0 20rem #0003, 0 0 20rem #0003; background-size: cover!important; background-repeat: no-repeat!important; background-position: center!important; border-radius: var(--efy_radius)}
-.efy_img_previews [efy_bg_nr]:is([efy_active], :focus) {box-shadow: inset 0 0 0 3rem var(--efy_text); z-index: 2}
-.efy_img_previews :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back], .efy_idb_reset) {padding: 0; display: flex; align-items: center; place-content: center; box-shadow: unset}
-.efy_img_previews :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back]) {background: var(--efy_color)!important}
-[efy_shadow*=button] :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back]) {box-shadow: var(--efy_shadow_button)!important}
-.efy_img_previews :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back]):before {display: none}
-.efy_img_previews i {margin: 0}
-.efy_img_previews :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back]) i:before {font-size: 20rem}
-.efy_img_previews :is(.efy_idb_reset, .idb_reset_front, .idb_reset_back) i:before {font-size: 25rem}
+.efy_img_previews {display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: var(--efy_gap); padding: 5rem 0 0 0;
+    :is(label, button) {margin: 0; border: 0; aspect-ratio: 1; cursor: pointer; position: relative; box-shadow: inset 0 0 20rem #0003, 0 0 20rem #0003; background-size: cover!important; background-repeat: no-repeat!important; background-position: center!important; border-radius: var(--efy_radius)}
+    [efy_bg_nr]:is([efy_active], :focus) {box-shadow: inset 0 0 0 3rem var(--efy_text); z-index: 2}
+    :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back], .efy_idb_reset) {padding: 0; display: flex; align-items: center; place-content: center; box-shadow: unset}
+    :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back]) {background: var(--efy_color)!important;
+         & i:before {font-size: 20rem}
+         &:before {display: none}
+    }
+    [efy_shadow*=button] :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back]) {box-shadow: var(--efy_shadow_button)!important}
+    & i {margin: 0}
+    :is(.efy_idb_reset, .idb_reset_front, .idb_reset_back) i:before {font-size: 25rem}
+}
 
-[efy_tabs=efyui_filters] [type=reset] {margin: 0 var(--efy_gap0) 10rem 0}
-[efy_tabs=efyui_filters] .efy_tabs {display: flex; flex-wrap: wrap; gap: var(--efy_gap0); margin-bottom: 10rem}
-[efy_tabs=efyui_filters] .efy_tabs :is(button, [efy_tab]:last-of-type) {margin: 0}
-
-.efy_quick_shortcuts [efy_search_input] {margin-bottom: var(--efy_gap)}
-
-
-/*Tabs*/ [efy_tabs] [efy_tab][efy_active] {-webkit-text-fill-color: var(--efy_text2)}
-[efy_tabs] [efy_tab] {min-width: var(--efy_ratio_width)}
-[efy_tabs] [efy_tab]:last-of-type {margin-right: 0; margin-bottom: var(--efy_gap0)}
-[efy_tabs] [efy_content] {opacity: 0; position: absolute; pointer-events: none; scale: .3; padding:  15rem; border-radius: var(--efy_radius); background: var(--efy_bg1)}
-[efy_tabs] [efy_content][efy_active] {opacity: 1; position: relative; pointer-events: all; scale: 1}
-[efy_tabs] [efy_content]:not([efy_active]) * {position: absolute; pointer-events: none; opacity: 0; display: none}
+[efy_tabs] {
+    [efy_tab][efy_active] {-webkit-text-fill-color: var(--efy_text2)}
+    [efy_tab] {min-width: var(--efy_ratio_width)}
+    [efy_tab]:last-of-type {margin-right: 0; margin-bottom: var(--efy_gap0)}
+    [efy_content] {opacity: 0; position: absolute; pointer-events: none; scale: .3; padding: 15rem; border-radius: var(--efy_radius); background: var(--efy_bg1)}
+    [efy_content][efy_active] {opacity: 1; position: relative; pointer-events: all; scale: 1}
+    [efy_content]:not([efy_active]) * {position: absolute; pointer-events: none; opacity: 0; display: none}
+    .efy_tabs {display: flex; flex-wrap: wrap; gap: var(--efy_gap0); margin-bottom: 10rem;
+        :is(button, [efy_tab]:last-of-type) {margin: 0}
+}}
+[efy_tabs=efyui_filters] {
+    [type=reset] {margin: 0 var(--efy_gap0) 10rem 0}
+}
 
 [efy_tabs] [efy_content][efy_active], [efy_card], [efy_search_input] {transition: calc(var(--efy_anim_status) * var(--efy_anim_speed) * .1s) linear}
 
-/*Timer*/ [efy_timer], [efy_clock] {padding: 0 10rem; display: inline-flex; flex-wrap: wrap; align-items: center}
+[efy_timer], [efy_clock] {padding: 0 10rem; display: inline-flex; flex-wrap: wrap; align-items: center}
 [efy_timer] {gap: var(--efy_gap0)}
 [efy_timer] [efy_text], [efy_clock] p {font-size: 36rem; font-weight: bold}
 [efy_clock] .format {padding-left: 8rem}
 [efy_start], [efy_reset]{padding: 8rem 10rem!important}
 :is([efy_start], [efy_reset]):before {margin-right:0!important}
-.efy_quick_shortcuts [efy_clock] {margin: 0 var(--efy_gap0) 12rem 0}
 [efy_clock]:not([efy_clock*=hms]) :is(.second, .s2), [efy_clock]:not([efy_clock*="12"]) .format {display: none}
 
-/*Alert*/ [efy_alerts] {display: grid; gap: var(--efy_gap0); position: fixed; top: var(--efy_gap); left: var(--efy_gap); z-index: 99999; width: calc(100% - (var(--efy_gap) * 2)); max-width: 400rem}
+[efy_alerts] {display: grid; gap: var(--efy_gap0); position: fixed; top: var(--efy_gap); left: var(--efy_gap); z-index: 99999; width: calc(100% - (var(--efy_gap) * 2)); max-width: 400rem}
 [efy_alerts*=middle] {left: calc((var(--efy_bg_width) / 2) - 200rem)}
 [efy_alerts*=right] {right: var(--efy_gap); left: unset}
 [efy_alerts*=bottom] {bottom: var(--efy_gap); top: unset}
 
 [efy_alert] {display: grid; grid-template-columns: 1fr auto; gap: var(--efy_gap); padding: 10rem; box-shadow: 0 0 20px var(--efy_text_trans); background: var(--efy_text2)}
-[efy_btn_square] {display: flex; align-items: center; padding: 10rem; height: fit-content; aspect-ratio: 1; margin: 0}
-[efy_btn_square] [efy_icon] {margin:0}
-.efy_quick_notify_content {display: grid; gap: var(--efy_gap); grid-template-columns: 1fr}
-.efy_quick_notify_content [efy_alert] {background: var(--efy_bg1); box-shadow: none; border-radius: var(--efy_radius)}
+[efy_btn_square] {display: flex; align-items: center; padding: 10rem; height: fit-content; aspect-ratio: 1; margin: 0;
+    [efy_icon] {margin:0}
+}
+.efy_quick_notify_content {display: grid; gap: var(--efy_gap); grid-template-columns: 1fr;
+    [efy_alert] {background: var(--efy_bg1); box-shadow: none; border-radius: var(--efy_radius)}
+}
 
-/*Quick Shortcuts*/  .efy_square_btn {display: inline-flex; gap: 12rem; margin: 0; padding: 10rem; width: var(--efy_ratio_width); height: var(--efy_ratio_width); align-items: center; place-content: center}
-.efy_square_btn i {margin:0}
-.efy_quick_shortcuts .efy_quick_back i{rotate: 180deg}
-.efy_quick_shortcuts {gap: var(--efy_gap)}
+/*Quick Shortcuts*/ .efy_square_btn {display: inline-flex; gap: 12rem; margin: 0; padding: 10rem; width: var(--efy_ratio_width); height: var(--efy_ratio_width); align-items: center; place-content: center;
+    & i {margin:0}
+}
+.efy_quick_shortcuts {gap: var(--efy_gap);
+    .efy_quick_back i {rotate: 180deg}
+    [efy_clock] {margin: 0 var(--efy_gap0) 12rem 0}
+}
 .efy_quick_buttons, .efy_about_div .efy_flex {gap: var(--efy_gap0)}
 .efy_quick_buttons button {margin: 0 0 var(--efy_gap0) 0}
-.efy_about_div .efy_flex {margin: var(--efy_gap0) 0 0 0}
- .efy_about_div .efy_flex a {margin: 0}
- .efy_sidebar [efy_search_input] {margin: 0 0 var(--efy_gap) 0}
+.efy_about_div {
+    .efy_flex {margin: var(--efy_gap0) 0 0 0;
+        & a {margin: 0}
+    }
+    & mark {display: block; width: fit-content; margin-bottom: 10rem; padding: 0 10rem}
+}
 
- /*Custom Sidebar Menu*/
-#custom_sidebar_menu, #demo_sidebar_settings > div {display: flex; flex-wrap: wrap; gap: var(--efy_gap); margin-bottom: var(--efy_gap)}
-#custom_sidebar_menu a, #demo_sidebar_settings > div a {background: var(--efy_bg1); padding: var(--efy_padding); border-radius: var(--efy_radius); border: var(--efy_border); -webkit-text-fill-color: var(--efy_text)}
+ #custom_sidebar_menu {display: flex; flex-wrap: wrap; gap: var(--efy_gap); margin-bottom: var(--efy_gap);
+    & a {background: var(--efy_bg1); padding: var(--efy_padding); border-radius: var(--efy_radius); border: var(--efy_border); -webkit-text-fill-color: var(--efy_text)}
+}
 
 /*Translations*/ .efy_lang_text {display: inline; margin: 0!important; pointer-events: none!important; -webkit-text-fill-color: inherit; color: inherit}
 .efy_range_text_p {background: transparent; border-color: transparent!important; padding: 0 4rem; width: fit-content; border-radius: calc(var(--efy_radius) / 1.5); margin: 0}
-[efy_range_text] [efy_number]:focus-within {margin: 0 0 unset 10rem!important}
-[efy_range_text] [efy_number] {display: inline-flex; margin: 0}
 
-/*Code*/ [efy_code] {position: relative; padding-top: calc(50rem + var(--efy_gap0))} [efy_code]:fullscreen {border-radius: 0; border: none; background: var(--efy_bg)!important}
-[efy_code] .efy_bar {position: absolute; top: 0; left: 0; width: 100%; padding: calc(var(--efy_gap0) / 1.5); display: flex; gap: calc(var(--efy_gap0) / 1.5); justify-content: space-between; border-bottom: var(--efy_border)}
-[efy_code] .efy_bar div {display: flex; gap: calc(var(--efy_gap0) / 1.5)}
-[efy_code] .efy_bar button {margin: 0; padding: var(--efy_padding2); border-radius: var(--efy_radius0)}
-[efy_code] .efy_bar :is(mark, button) {padding: 0 8rem; line-height: 1; display: flex; align-items: center; place-content: center; height: 28rem}
-[efy_code] .efy_bar :is(.efy_copy, .efy_fs) {width: 28rem}
-[efy_code] .efy_bar i {margin: 0 0 -1rem 0; font-size: 14rem}
+/*Code*/ [efy_code] {position: relative; padding-top: calc(50rem + var(--efy_gap0));
+    .efy_bar {position: absolute; top: 0; left: 0; width: 100%; padding: calc(var(--efy_gap0) / 1.5); display: flex; gap: calc(var(--efy_gap0) / 1.5); justify-content: space-between; border-bottom: var(--efy_border);
+        & div {display: flex; gap: calc(var(--efy_gap0) / 1.5)}
+        & button {margin: 0; padding: var(--efy_padding2); border-radius: var(--efy_radius0)}
+        :is(mark, button) {padding: 0 8rem; line-height: 1; display: flex; align-items: center; place-content: center; height: 28rem}
+        :is(.efy_copy, .efy_fs) {width: 28rem}
+        & i {margin: 0 0 -1rem 0; font-size: 14rem}
+}}
+[efy_code]:fullscreen {border-radius: 0; border: none; background: var(--efy_bg)!important}
 
 .efy_code_trans_on  [efy_code]:fullscreen {background: transparent!important; backdrop-filter: blur(50rem)}
  [efy_code] .efy_bar .efy_code_trans {display: none} [efy_code]:fullscreen .efy_code_trans {display: unset}
 
 :not(:root):fullscreen::backdrop {display: none!important}
 
-.efy_max_width_div {display: flex; gap: var(--efy_gap0); justify-content: space-between; margin-top: 10rem}
-.efy_max_width_div * {margin: 0}
-.efy_max_width_div [efy_number] {width: 100%}
+.efy_max_width_div {display: flex; gap: var(--efy_gap0); justify-content: space-between; margin-top: 10rem;
+    & * {margin: 0}
+    [efy_number] {width: 100%}
+}
 
 /*Convergence*/ @media screen and (max-width: 449px) {
     [efy_alerts] {left: var(--efy_gap)}
@@ -458,7 +489,7 @@ i, :is([efy_start], [efy_reset], [efy_sidebar_btn], details > summary):before, [
 [efy_icon=copy]:before {content: "\e919"}
 [efy_icon=dots]:before {content: "\e902"}
 [efy_icon=edit]:before {content: "\e91b"}
-[efy_icon=fullscreen]:before, [efy_icon=move]:before {content: "\e90c"}
+:is([efy_icon=fullscreen], [efy_icon=move]):before {content: "\e90c"}
 [efy_icon=globe]:before {content: "\e90f"}
 [efy_icon=group]:before {content: "\e90e"}
 [efy_icon=heart]:before {content: "\e915"}
@@ -470,11 +501,11 @@ i, :is([efy_start], [efy_reset], [efy_sidebar_btn], details > summary):before, [
 [efy_icon=notify]:before {content: "\e917"}
 [efy_icon=notify_active]:before {content: "\e916"}
 [efy_icon=paste]:before {content: "\e91a"}
-[efy_icon=pause]:before, [efy_timer] [efy_start][efy_active]:before {content: "\e90b"}
-[efy_icon=play]:before, [efy_timer] [efy_start]:before {content: "\e90a"}
+:is([efy_icon=pause], [efy_timer] [efy_start][efy_active]):before {content: "\e90b"}
+:is([efy_icon=play], [efy_timer] [efy_start]):before {content: "\e90a"}
 [efy_icon=plus]:before {	font-size: 11rem; margin: 0 0 4rem 0; rotate: 45deg; display: inline-block}
 :is([efy_icon=reload], [efy_reset]):before {content: "\e90d"}
-[efy_icon=remove]:before, [efy_icon=plus]:before {content: "\e909"}
+:is([efy_icon=remove], [efy_icon=plus]):before {content: "\e909"}
 [efy_icon=star]:before {content: "\e904"}
 [efy_icon=search]:before {content: "\e908"}
 [efy_icon=user]:before {content: "\e913"}
