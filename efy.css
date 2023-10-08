@@ -152,7 +152,7 @@ table {border-collapse: collapse; margin: 15rem 0; overflow: auto; width: fit-co
     & td, & th {text-align: left; padding: 8rem}
 }
 
-textarea, select, input {font-size: 16rem; font-family: inherit; padding: 8rem; margin-bottom: var(--efy_gap0); box-shadow: none; box-sizing: border-box; -moz-appearance: none; -webkit-appearance: none; appearance: none}
+textarea, select, input {font-size: 16rem; font-family: inherit; padding: 8rem; margin-bottom: var(--efy_gap0); box-shadow: none; box-sizing: border-box; -webkit-appearance: none; appearance: none}
 
 select {background-image: linear-gradient(45deg, transparent 49%, var(--efy_text) 51%), linear-gradient(135deg, var(--efy_text) 51%, transparent 49%); background-position: calc(100% - 20rem), calc(100% -  15rem); background-size: 5rem 5rem, 5rem 5rem; background-repeat: no-repeat;
     &:not([multiple]) {padding-right: 32rem}
@@ -483,13 +483,16 @@ i, :is([efy_start], [efy_reset], [efy_sidebar_btn], details > summary):before, [
 [efy_icon=arrow]:before {content: "\e900"}
 [efy_icon=arrow_down]:before {content: "\e900"; position:absolute; margin: 1rem 0 0 -15rem; rotate: 180deg} [efy_icon=arrow_down] {margin-left: 15rem}
 [efy_icon=audio]:before {content: "\e905"}
+[efy_icon=camera]:before {content: "\e91f"}
 [efy_icon=check]:before, [efy_select] [type=checkbox]:checked + label:after, [type=checkbox]:checked:after {content: "\e914"}
 [efy_icon*=chevron]:before, details:not([efy_help]) > summary:before {content: "\e907"}
 [efy_icon=chevron_left]:before {display: inline-block; rotate: 180deg}
+[efy_icon=circle]:before {content: "\e91c"}
 [efy_icon=copy]:before {content: "\e919"}
 [efy_icon=dots]:before {content: "\e902"}
 [efy_icon=edit]:before {content: "\e91b"}
 :is([efy_icon=fullscreen], [efy_icon=move]):before {content: "\e90c"}
+[efy_icon=github]:before {content: "\e91d"}
 [efy_icon=globe]:before {content: "\e90f"}
 [efy_icon=group]:before {content: "\e90e"}
 [efy_icon=heart]:before {content: "\e915"}
@@ -497,6 +500,7 @@ i, :is([efy_start], [efy_reset], [efy_sidebar_btn], details > summary):before, [
 [efy_icon=key]:before {content: "\e918"}
 :is([efy_icon=menu], [efy_sidebar_btn=absolute]):before {content: "\e906"}
 [efy_icon=menu2]:before {content: "\e903"}
+[efy_icon=microphone]:before {content: "\e920"}
 [efy_icon=move]:before {display: inline-block; rotate: 45deg}
 [efy_icon=notify]:before {content: "\e917"}
 [efy_icon=notify_active]:before {content: "\e916"}
@@ -506,6 +510,7 @@ i, :is([efy_start], [efy_reset], [efy_sidebar_btn], details > summary):before, [
 [efy_icon=plus]:before {	font-size: 11rem; margin: 0 0 4rem 0; rotate: 45deg; display: inline-block}
 :is([efy_icon=reload], [efy_reset]):before {content: "\e90d"}
 :is([efy_icon=remove], [efy_icon=plus]):before {content: "\e909"}
+[efy_icon=screen]:before {content: "\e91e"}
 [efy_icon=star]:before {content: "\e904"}
 [efy_icon=search]:before {content: "\e908"}
 [efy_icon=user]:before {content: "\e913"}
