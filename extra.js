@@ -1,4 +1,4 @@
-import {$, $all, $add, $ready, efy, $save, $efy_lang_start} from './efy.js';
+import {$, $all, $add, $ready, efy, $save} from './efy.js';
 
 $ready('#efy_sbtheme', ()=>{
 
@@ -45,4 +45,4 @@ b.addEventListener('click', (c)=>{ a.classList.toggle('efy_hide_i');
     if (c.target.checked){ efy.keyboard = 'on'} else {delete efy.keyboard} $save();
 });
 
-$efy_lang_start()}, 1);
+}, 1);

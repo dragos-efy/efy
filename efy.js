@@ -1,4 +1,4 @@
-export let efy_version = '23.10.06 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document), $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
+export let efy_version = '23.10.11 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document), $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
 /*Add: Selector, optional: {Attributes}, [Text, Children], Parent, Position*/ $add = (a, b = {}, c = [], d = document.body, e = 'beforeend')=>{ const f = document.createElement(a); for (const [g, h] of Object.entries(b)){ f.setAttribute(g, h)} c.forEach(i =>{ (typeof i === 'string') ? f.textContent += i : f.appendChild(i) }); d.insertAdjacentElement(e, f); return f},
 /*Text: Selector, Text, Position (optional)*/ $text = (a, b, c) =>{ c ? a.insertAdjacentText(c,b) : a.textContent = b},
 /*Get CSS Property*/ $css_prop = (a) =>{ return getComputedStyle($(':root')).getPropertyValue(a).replaceAll(' ','')},
@@ -22,8 +22,6 @@ export let efy_version = '23.10.06 Beta', $ = document.querySelector.bind(docume
         $add('div', {efy_alert: '', class: d}, [$add('div', {}, [$add('h6', {}, [b]), $add('p', {}, [c])]), $add('button', {efy_btn_square: ''}, [$add('i', {efy_icon: 'remove'})])], $(e));
     }); icon_fn();
 $wait(a, ()=>{ try { $$($('[efy_alerts]'), '.' + d).remove()} catch {/**/} icon_fn() })},
-/*Language*/ $efy_lang_start =()=>{ $all('[efy_lang]').forEach(a=>{ let b = a.getAttribute('efy_lang'), c = getComputedStyle($('[efy_lang]')).getPropertyValue(`--${b}`), d = (a.hasAttribute('efy_range_text')) ? c+':' : c; efy_lang[b] = c;
-($$(a, '[efy_icon]') !== null) ? $text(a, d, 'beforeend') : $text(a, d, 'afterbegin'); a.removeAttribute('efy_lang')})},
 /*Convert seconds to (hh:mm:ss)*/ $sec_time =(a)=>{ const h = Math.floor(a / 3600).toString().padStart(2,'0'), m = Math.floor(a % 3600 / 60).toString().padStart(2,'0'), s = Math.floor(a % 60).toString().padStart(2,'0'); return `${h}:${m}:${s}`};
 
 /*After Page Loads*/ window.onload = async ()=>{ $root = $(":root"), $head = document.head, $body = document.body; $efy_module = (a) =>{ let b = $css_prop('--efy_modules').split(',').includes(a) ? true : false; return b}; let a, b;
@@ -265,39 +263,32 @@ cs.addEventListener('click', ()=>{ if (efy_swc == 1){ $text(cs, 'RGB')} else if 
     $$all(cp, 'input').forEach(a=> a.classList.add('efy_hide')); $$(cp, `input:nth-of-type(${efy_swc})`).classList.remove('efy_hide');
 });
 
-    a.addEventListener('input', (d)=>{ let [h,s,l] = [$$(a, '.hue').value, $$(a, '.sat').value, $$(a, '.lgt').value], hsl = `${h} ${s}% ${l}%`, rgb = hsl2rgb(h,s,l), hex = hsl2hex(h,s,l);
+    a.addEventListener('input', (d)=>{ let [h,s,l] = [$$(a, '.hue').value, $$(a, '.sat').value, $$(a, '.lgt').value], hsl = `${h} ${s}% ${l}%`, rgb = hsl2rgb(h,s,l), hex = hsl2hex(h,s,l), classes = d.target.classList;
 
-    if (d.target.classList.contains('efy_color_picker_hsl')){ let c = $$(a, '.efy_color_picker_hsl').value.split(' '); [h,s,l] = [c[0], c[1].replace('%', ''), c[2].replace('%', '')]}
-    else if (d.target.classList.contains('efy_color_picker_rgb')){ let c = $$(a, '.efy_color_picker_rgb').value.split(' '), e = rgb2hsl(c); [h,s,l] = [e[0], e[1], e[2]]}
-    else if (d.target.classList.contains('efy_color_picker_hex')){ let c = '#' + $$(a, '.efy_color_picker_hex').value; try {let e = hex2hsl(c); [h,s,l] = [e[0], e[1], e[2]] } catch {/**/}}
-    else { let cvt = [hsl,rgb,hex]; ['hsl', 'rgb', 'hex'].map((b,i)=>{$$(a,`.efy_color_picker_${b}`).value = cvt[i]})}
-    hsl = `${h} ${s}% ${l}%`; [$$(a, '.hue').value, $$(a, '.sat').value, $$(a, '.lgt').value] = [h,s,l];
-    let style = [`hsl(${hsl})`, `linear-gradient(to right, hsl(0 0% 50%), hsl(${h} 100% ${l}%))`, `linear-gradient(to right, #000, hsl(${h} ${s}% 50%), #fff)`]; ['[efy_color_preview]', '.sat', '.lgt'].map((b,i)=>{$$(a,b).style.background = style[i] });
+        if (classes.contains('efy_color_picker_hsl')){ let c = $$(a, '.efy_color_picker_hsl').value.split(' '); [h,s,l] = [c[0], c[1].replace('%', ''), c[2].replace('%', '')]}
+        else if (classes.contains('efy_color_picker_rgb')){ let c = $$(a, '.efy_color_picker_rgb').value.split(' '), e = rgb2hsl(c); [h,s,l] = [e[0], e[1], e[2]]}
+        else if (classes.contains('efy_color_picker_hex')){ let c = '#' + $$(a, '.efy_color_picker_hex').value; try {let e = hex2hsl(c); [h,s,l] = [e[0], e[1], e[2]] } catch {/**/}}
+        else { let cvt = [hsl,rgb,hex]; ['hsl', 'rgb', 'hex'].map((b,i)=>{$$(a,`.efy_color_picker_${b}`).value = cvt[i]})}
+        hsl = `${h} ${s}% ${l}%`; [$$(a, '.hue').value, $$(a, '.sat').value, $$(a, '.lgt').value] = [h,s,l];
+        let style = [`hsl(${hsl})`, `linear-gradient(to right, hsl(0 0% 50%), hsl(${h} 100% ${l}%))`, `linear-gradient(to right, #000, hsl(${h} ${s}% 50%), #fff)`]; ['[efy_color_preview]', '.sat', '.lgt'].map((b,i)=>{$$(a,b).style.background = style[i] });
 
-    efy[`color${$$(a,'[efy_color_preview]').textContent}`] = hsl;
+        efy[`color${$$(a,'[efy_color_preview]').textContent}`] = hsl;
 
-    let y = ['text', 'bgcol', 'bordercol', 'buttoncol']; ['_text', '_bgcol', '_bordercol', '_buttoncol'].map((x,i)=>{ if (a.getAttribute('efy_color').includes(`color${x}`)){ $root.style.setProperty(`--efy_color${x}_var`, hsl); efy[y[i]] = hsl; $save() }});
+        let y = ['text', 'bgcol', 'bordercol', 'buttoncol']; ['_text', '_bgcol', '_bordercol', '_buttoncol'].map((x,i)=>{ if (a.getAttribute('efy_color').includes(`color${x}`)){ $root.style.setProperty(`--efy_color${x}_var`, hsl); efy[y[i]] = hsl; $save() }});
 
-    /*Reset gradient*/ let x  = {y: '', y_trans: ''};
-    /*Convert to Gradient*/ for (let i=1; i < efy.color_nr + 1; i++){ x.y += `, hsl(${efy[`color${i}`]})`; x.y_trans += `, hsla(${efy[`color${i}`]} / .3)`}
+        /*Reset gradient*/ let x  = {y: '', y_trans: ''};
+        /*Convert to Gradient*/ for (let i=1; i < efy.color_nr + 1; i++){ x.y += `, hsl(${efy[`color${i}`]})`; x.y_trans += `, hsla(${efy[`color${i}`]} / .3)`}
 
-    if (a.getAttribute('efy_color').includes(`color`)){
-        /*Set CSS*/ ['', '_trans'].map(a=>{ efy[`gradient${a}`] = `linear-gradient(var(--efy_color_angle), ${x[`y${a}`].replace(', h', 'h')})`; $root.style.setProperty(`--efy_color${a}`, efy[`gradient${a}`]) });
+        if (a.getAttribute('efy_color').includes(`color`)){
+            /*Set CSS*/ ['', '_trans'].map(a=>{ efy[`gradient${a}`] = `linear-gradient(var(--efy_color_angle), ${x[`y${a}`].replace(', h', 'h')})`; $root.style.setProperty(`--efy_color${a}`, efy[`gradient${a}`]) });
 
-        if (efy.color_nr == 1){ let b = efy.color1, hsl = [`hsl(${b})`, `hsla(${b} / .3)`]; efy.color2 = b;
-            ['', '_trans'].map((a,i)=>{ efy[`gradient${a}`] = efy[`gradient${a}`].replace('))', `), ${hsl[i]})`); $root.style.setProperty(`--efy_color${a}`, efy[`gradient${a}`]) });
+            if (efy.color_nr == 1){ let b = efy.color1, hsl = [`hsl(${b})`, `hsla(${b} / .3)`]; efy.color2 = b;
+                ['', '_trans'].map((a,i)=>{ efy[`gradient${a}`] = efy[`gradient${a}`].replace('))', `), ${hsl[i]})`); $root.style.setProperty(`--efy_color${a}`, efy[`gradient${a}`]) });
+            }
+            $save()
         }
-        $save()
-    }
-    $root.style.setProperty(`--efy_color1_var`, efy.color1); $root.style.setProperty(`--efy_color2_var`, efy.color2);
+        $root.style.setProperty(`--efy_color1_var`, efy.color1); $root.style.setProperty(`--efy_color2_var`, efy.color2);
     });
-
-    /*Lang Text - Temporary Fix*/ $wait(.3, ()=>{ $efy_lang_start(); let t = '[efy_range_text=', y = a.getAttribute('efy_color').replaceAll(', ', ',').split(',')[1].split(' '), h = y[0], s = y[1].replace('%', ''), l = y[2].replace('%', ''), p = ' .efy_range_text_p';
-    $$(a, '.hue').value = h; $$(a, `.sat`).value = s; $$(a, `.lgt`).value = l; $$(a, `.efy_color_picker_hsl`).value = `${h} ${s}% ${l}%`;
-    $$(a, t + 'hue]' + p).value = h; $$(a, t + 'saturation]' + p).value = s; $$(a, t + 'brightness]' + p).value = l;
-    let style = [`linear-gradient(to right, hsl(0 0% 50%), hsl(${h} 100% ${l}%))`, `linear-gradient(to right, #000, hsl(${h} ${s}% 50%), #fff)`]; [$$(a, `.sat`), $$(a, `.lgt`)].map((b,k)=>{ b.style.background = style[k] })
-    });
-
 });
 
 
@@ -767,11 +758,25 @@ z.addEventListener('keyup', ()=>{ let val = z.value.toLowerCase(); $all(containe
 /*Prevent Default*/ $all('input[type="range"], .plus-btn, .minus-btn').forEach(a => a.addEventListener('contextmenu', ()=> event.preventDefault()));
 
 /*Lang files loaded*/ $('.efy_lang_app_file').onload =()=>{
-    /*Translations*/ $ready('[efy_lang]', (a)=>{ let b = a.getAttribute('efy_lang');
-        efy_lang[b] = getComputedStyle($('[efy_lang]')).getPropertyValue(`--${b}`); let c = (a.hasAttribute('efy_range_text')) ? c+':' : efy_lang[b];
-        if ($$(a, '[efy_icon]') !== null){ $text(a, c, 'beforeend')}
-        else {$text(a, c, 'afterbegin')}
-    a.removeAttribute('efy_lang')}); $efy_lang_start()
+    /*Translations*/ const processed = new WeakSet(),
+    observer = new MutationObserver(mutations => {
+        for (let mutation of mutations){ if (mutation.type === 'childList'){
+                $$all(mutation.target, '[efy_lang]').forEach(element => {
+                    if (!processed.has(element)){
+                        const string = getComputedStyle($('[efy_lang]')).getPropertyValue(`--${element.getAttribute('efy_lang')}`);
+                        element.insertAdjacentText(
+                            $$(element, '[efy_icon]') ? 'beforeend' : 'afterbegin',
+                            element.hasAttribute('efy_range_text') ? `${string}:` : string
+                        );
+                        processed.add(element);
+                    }
+                });
+                mutation.removedNodes.forEach(node => {
+                    if (node.nodeType === 1) processed.delete(node);
+                });
+            }}
+    }); observer.observe(document.body, { childList: true, subtree: true });
+
     /*Alpha*/ for (let a =['"Max Width"'], i=0; i<a.length; i++){ $add('mark', {efy_lang: 'alpha'}, [], $(`[efy_content=size] [efy_range_text*=${a[i]}] .efy_range_text_p`), 'afterend')}
     /*No Notifications*/ $add('style', {}, [`.efy_quick_notify_content:empty:before {content: '${efy_lang.no_notifications}'}`], $head);
     /*Extra Modules*/ for (let a =['extra'], i=0; i<a.length; i++){

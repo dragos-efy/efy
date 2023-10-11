@@ -43,4 +43,4 @@ b.addEventListener('click', (c)=>{ a.classList.toggle('efy_hide_i');
     if (c.target.checked){ efy.keyboard = 'on'} else {delete efy.keyboard} $save();
 });
 
-$efy_lang_start()}, 1);
+}, 1);
