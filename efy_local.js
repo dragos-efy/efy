@@ -1,5 +1,19 @@
-let efy_version = '23.10.11 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document), $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
-/*Add: Selector, optional: {Attributes}, [Text, Children], Parent, Position*/ $add = (a, b = {}, c = [], d = document.body, e = 'beforeend')=>{ const f = document.createElement(a); for (const [g, h] of Object.entries(b)){ f.setAttribute(g, h)} c.forEach(i =>{ (typeof i === 'string') ? f.textContent += i : f.appendChild(i) }); d.insertAdjacentElement(e, f); return f},
+let efy_version = '23.10.13 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document), $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
+/*Add: Selector, optional: {Attributes}, [Text, Children], Parent, Position*/
+$add =(tag, attrs = {}, children = [], parent = document.body, position = 'beforeend')=>{
+    const element = document.createElement(tag);
+    Object.entries(attrs).forEach(([attr, value])=>{
+        if (element.getAttribute(attr) !== value){ element.setAttribute(attr, value)}
+    });
+    if (!Array.isArray(children)){ children = [children]}
+    children.forEach(child =>{
+        if (Array.isArray(child)){ const [tag, attrs, content] = child,
+            childElement = $add(tag, attrs, content, element);
+            element.appendChild(childElement);
+        } else if (typeof child === 'string'){ element.textContent += child}
+        else if (child instanceof Node){ element.appendChild(child)}
+    }); parent.insertAdjacentElement(position, element); return element;
+},
 /*Text: Selector, Text, Position (optional)*/ $text = (a, b, c) =>{ c ? a.insertAdjacentText(c,b) : a.textContent = b},
 /*Get CSS Property*/ $css_prop = (a) =>{ return getComputedStyle($(':root')).getPropertyValue(a).replaceAll(' ','')},
 /*Event*/ $event = (a,b,c,d) =>{ d ? a.addEventListener(b,c,d) : a.addEventListener(b,c) },
@@ -202,9 +216,9 @@ shadow =(i, efy_color, adjust, type)=>{
     a3.map(i =>{ e[i] = `${g}] #status${i}`; c[i] = `${g}${i + 1}] .` });
     $ready(`${d} .spread`, ()=>{
         $text($(`${d} [efy_color_preview]`), i);
-        $event($(d), 'input', ()=> {
+        $event($(d), 'input', ()=>{
             if (event.target.matches('input')) { let inset = [], b = [], b2 = [];
-                a3.map(x => { let a = c[x]; if ($(`${g}] #status${x + adjust}`).checked){
+                a3.map(x =>{ let a = c[x]; if ($(`${g}] #status${x + adjust}`).checked){
                     inset[x] = $(`${g}] #inset${x + adjust}`).checked ? 'inset ' : '';
                     let f = `${inset[x] + $(a + 'x').value}rem ${$(a + 'y').value}rem ${$(a + 'blur').value}rem ${$(a + 'spread').value}rem hsla(${$(a + 'efy_color_picker_hsl').value} /`, tsp = $(a + 'transparency').value;
                     b[x] = `${f} ${tsp})`;
@@ -310,7 +324,7 @@ $add('div', {class: 'trans_window_div'}, [
 
 /*Mode*/ if (efy.mode){ a = efy.mode; $root.setAttribute('efy_mode', a); $('#efy_mode_'+a).setAttribute('checked', '')}
 else {$root.setAttribute('efy_mode', 'default'); $('#efy_mode_default').setAttribute('checked', '')}
-$all("[name=efy_mode]").forEach(x => { let y = x.id.replace('efy_mode_', ''); x.onclick =()=>{ $root.setAttribute('efy_mode', y); efy.mode = y; $save() }});
+$all("[name=efy_mode]").forEach(x =>{ let y = x.id.replace('efy_mode_', ''); x.onclick =()=>{ $root.setAttribute('efy_mode', y); efy.mode = y; $save() }});
 
 /*Transparent Window*/ if (efy.trans_window){ a = efy.trans_window; $root.classList.add('trans_window'); $('#trans_window').setAttribute('checked', '')}
 $event($("#trans_window"), 'change', ()=>{ $root.classList.toggle('trans_window'); efy.trans_window = $("#trans_window").checked; $save() });
@@ -341,7 +355,7 @@ z.oninput =()=>{ if (z.value == '%'){ input2.setAttribute('min', '10'); input2.s
    $add('label', {name: 'efy_sidebar_align', for: `efy_sidebar_align_${a[i]}`, efy_lang: a[i]}, [], $('#efy_sidebar_align > div'))}
 
 /*Align Sidebar*/ if (efy.sidebar_align){ a = efy.sidebar_align; $root.setAttribute('efy_sidebar', a); $('#efy_sidebar_align_'+a).setAttribute('checked', '')} else {$('#efy_sidebar_align_right').setAttribute('checked', '')}
-$all("[name=efy_sidebar_align]").forEach(x => { let y = x.id.replace('efy_sidebar_align_', ''); x.onclick =()=>{ let z = ''; if ($root.getAttribute('efy_sidebar').includes('on')){z = 'on_'} $root.setAttribute('efy_sidebar', z+y); efy.sidebar_align = y; $save() }});
+$all("[name=efy_sidebar_align]").forEach(x =>{ let y = x.id.replace('efy_sidebar_align_', ''); x.onclick =()=>{ let z = ''; if ($root.getAttribute('efy_sidebar').includes('on')){z = 'on_'} $root.setAttribute('efy_sidebar', z+y); efy.sidebar_align = y; $save() }});
 
  /*Align & Toggle Button*/ for (let i = 0, a = ['left_top', 'middle_top', 'right_top', 'left_middle', 'middle_middle', 'right_middle', 'left_bottom', 'middle_bottom', 'right_bottom']; i < a.length; i++){ $add(['input'], {type: 'radio', name: 'efy_btn_align', id: a[i]}, [], $('#efy_btn_align > div'))} $('#middle_middle[name=efy_btn_align]').setAttribute('disabled','');
 
@@ -354,7 +368,7 @@ $all("[name=efy_sidebar_align]").forEach(x => { let y = x.id.replace('efy_sideba
 
     if (efy.btn_align){ let c = efy.btn_align; $("#" + c).setAttribute('checked', ''); a.setAttribute(b, c)}
     else { let y = sd_btn[0]; $('#'+y).setAttribute('checked', ''); a.setAttribute(b, y)}
-    $all("[name=efy_btn_align]").forEach(x => { x.onclick =()=>{ a.setAttribute(b, x.id); efy.btn_align = x.id; $save() }});
+    $all("[name=efy_btn_align]").forEach(x =>{ x.onclick =()=>{ a.setAttribute(b, x.id); efy.btn_align = x.id; $save() }});
 
 /*Toggle Sidebar*/ $body.addEventListener("click", ()=>{ let x = event.target;
     if (x.matches('[efy_sidebar_btn]')){ a.classList.toggle('efy_hide');
@@ -428,7 +442,7 @@ for (let a = ['bg', 'content', 'trans', 'front', 'back'], j = [
 ], k = ['!important}', '!important}', '!important; -webkit-backdrop-filter: ', '!important}', '!important}'], l = ['', '', '!important}', '', ''], i = 0; i < a.length; i++){
 
 $add('style', {class: `efy_css_${a[i]}_filter`}, [], $head); let css = $(`.efy_css_${a[i]}_filter`), f = {}, g = `${a[i]}_filter`, h = `${g}_css`,  fn = async ()=>{
-    ['blur','brightness','saturate','contrast','hue-rotate','sepia','invert'].forEach(x => { f[x] = $(`.efy_${a[i]}_${x}`).value; if (x == 'blur'){ f[x] = f[x] + 'px' } else if (x == 'hue-rotate'){ f[x] = f[x] + 'deg' }});
+    ['blur','brightness','saturate','contrast','hue-rotate','sepia','invert'].forEach(x =>{ f[x] = $(`.efy_${a[i]}_${x}`).value; if (x == 'blur'){ f[x] = f[x] + 'px' } else if (x == 'hue-rotate'){ f[x] = f[x] + 'deg' }});
 
     let string = ''; Object.keys(f).forEach(x =>{ string = string + ` ${x}(${f[x]})` });
     let y; if (a[i] == 'trans'){ let m = ''; if ($('#efy_trans_filter_menu').checked){ m = ', .efy_sidebar'; efy.trans_filter_menu = 'on'} y = j[i] + string + k[i] + string + l[i] + ' ::-webkit-progress-bar, ::-webkit-meter-bar' + m + '{backdrop-filter: ' + string + k[i] + string + l[i]} else {y= y = j[i] + string + k[i]; delete efy.trans_filter_menu}
@@ -515,7 +529,7 @@ for (let a = ['status', 'click', 'hover'], b = ['active', 'click_tap', 'mouse_ho
 }}
 
 /*Effects*/ if (efy.audio_status == 'on' ){
-    efy_audio.folder = $css_prop('--efy_audio_folder'); 'pop ok ok2 ok3 hover slide step error disabled call wind'.split(' ').forEach(x => { efy_audio[x] = new Audio(`${efy_audio.folder}/${x}.webm`); efy_audio[x].volume = efy_audio.volume }); $body.addEventListener("pointerdown", ()=>{ if (efy.audio_click == 'on'){
+    efy_audio.folder = $css_prop('--efy_audio_folder'); 'pop ok ok2 ok3 hover slide step error disabled call wind'.split(' ').forEach(x =>{ efy_audio[x] = new Audio(`${efy_audio.folder}/${x}.webm`); efy_audio[x].volume = efy_audio.volume }); $body.addEventListener("pointerdown", ()=>{ if (efy.audio_click == 'on'){
     for (let a = 'ok ok ok2 ok3 pop slide error disabled step step wind'.split(' '), b = 'pointerup change pointerup pointerup pointerup pointerup pointerup pointerup pointerdown input click'.split(' '), c = ['button:not([disabled], [type=submit], [type=reset], [efy_tab], [efy_sidebar_btn], [efy_toggle], [efy_keyboard] [efy_key], .shaka-overflow-menu button, .shaka-overflow-menu-button, .shaka-back-to-overflow-button, .efy_quick_fullscreen, [tabindex="-1"], [efy_audio_mute*=ok]), .video-grid>div', 'input, textarea', '.efy_img_previews [efy_bg_nr]', '[type=submit]', 'summary, [efy_toggle], select:not([multiple], [disabled]), [efy_tabs] [efy_tab], [efy_alert], [efy_alert] *, .shaka-overflow-menu button, .shaka-overflow-menu-button, .shaka-back-to-overflow-button', '[efy_sidebar_btn]', '[type=reset]', '[disabled]', 'input:not([type=radio], [type=checkbox], [type=reset], [disabled]), textarea:not([disabled]), [efy_keyboard] [efy_key]', 'input:not([type=radio], [type=checkbox], [type=reset], [disabled]), textarea:not([disabled])', '.efy_quick_fullscreen'], i = 0; i < a.length; i++){ $body.addEventListener(b[i], ()=>{ if (event.target.matches(c[i])){ $audio_play(efy_audio[a[i]]) }})}}
     /*Hover*/ if (efy.audio_hover == "on"){ $all("summary, select:not([multiple], [disabled]), [type=submit], [type=reset], [efy_sidebar_btn], .video-grid>div").forEach(x => x.addEventListener("mouseenter",()=> $audio_play(efy_audio.hover) ))}
     /*Online Status*/ for (let a = ['online', 'offline'], b = ['ok', 'error'], i = 0; i < a.length; i++){ window.addEventListener(a[i], ()=>{ $audio_play(efy_audio[b[i]])})}
@@ -567,7 +581,7 @@ $all('.efy_audio_volume_page').forEach(a => a.oninput =()=>{ $all('audio, video'
         stores.map(a => db.createObjectStore(a, { keyPath: "id", autoIncrement: true }))
 }})}; open_idb()
 
-const efy_add_bgimg = async (type, e)=>{ let db = await open_idb(), read = new FileReader(); read.readAsDataURL(e.target.files[0]); read.onload = e => {
+const efy_add_bgimg = async (type, e)=>{ let db = await open_idb(), read = new FileReader(); read.readAsDataURL(e.target.files[0]); read.onload = e =>{
     let file = read.result, img = new Image(), a = 'efy_temp_canvas', thumbnail;
     img.onload = ()=>{
         /*Thumbnail*/ $add('canvas', {id: a}, [], $(`#efy_images_${type} .efy_img_previews`)); let c = $(`#${a}`); c.width = (img.width / img.height) * 80; c.height = 80; c.getContext('2d').drawImage(img,0,0, c.width, c.height); thumbnail = $(`#${a}`).toDataURL('image/webp'); c.remove();
@@ -578,7 +592,7 @@ const efy_add_bgimg = async (type, e)=>{ let db = await open_idb(), read = new F
     (async ()=>{ let request = indexedDB.open('efy');
     request.onsuccess =()=>{ let count_img = 0, transaction = request.result.transaction([type], "readonly"), store = transaction.objectStore(type), get_cursor = store.openCursor();
         get_cursor.onerror =()=> console.error("efy: no db entries");
-        get_cursor.onsuccess = e => { let cursor = e.target.result;
+        get_cursor.onsuccess = e =>{ let cursor = e.target.result;
             if (cursor){ count_img++; cursor.continue()}
             else { /*Set bgimg nr*/ efy[`nr_${type}`] = count_img; $save(); const previews = `#efy_images_${type} .efy_img_previews`;
                 /*Restore Background*/ $text(efy_css[type], `.efy_3d_${type} {background: url(${file})!important; background-size: var(--efy_bg_size)!important} html {background: var(--efy_text2)!important}`);
@@ -598,7 +612,7 @@ const efy_add_bgimg = async (type, e)=>{ let db = await open_idb(), read = new F
 
             } }}})()}}
 
-/*Count images*/ const count_images = async (type) => {
+/*Count images*/ const count_images = async (type) =>{
     const db = await open_idb('efy'), transaction = db.transaction([type], "readonly"),
     store = transaction.objectStore(type), cursor_request = store.openCursor(); let count_img = 0;
 
@@ -606,7 +620,7 @@ const efy_add_bgimg = async (type, e)=>{ let db = await open_idb(), read = new F
         if (cursor){ count_img++; const req = store.get(count_img);
             req.onsuccess = e =>{ const x = e.target.result, image = x.image, thumbnail = x.thumbnail, previews = `#efy_images_${type} .efy_img_previews`;
                 /*Preview Click*/ $add('button', {efy_bg_nr: count_img, style: `background: url(${thumbnail})`, efy_audio_mute: 'ok'}, [], $(previews));
-                $event($(`${previews} [efy_bg_nr="${count_img}"]`), 'click', (y) => {
+                $event($(`${previews} [efy_bg_nr="${count_img}"]`), 'click', (y) =>{
                     $text(efy_css[type], `.efy_3d_${type} {background: url(${e.target.result.image})!important; background-size: var(--efy_bg_size)!important} html {background: var(--efy_text2)!important; background-size: cover!important}`);
                     efy[`nr_${type}`] = x.id; $save();
                     $all(`${previews} [efy_bg_nr]`).forEach(a => a.removeAttribute('efy_active')); y.target.setAttribute('efy_active', '')
@@ -759,9 +773,9 @@ z.addEventListener('keyup', ()=>{ let val = z.value.toLowerCase(); $all(containe
 
 /*Lang files loaded*/ $('.efy_lang_app_file').onload =()=>{
     /*Translations*/ const processed = new WeakSet(),
-    observer = new MutationObserver(mutations => {
+    observer = new MutationObserver(mutations =>{
         for (let mutation of mutations){ if (mutation.type === 'childList'){
-                $$all(mutation.target, '[efy_lang]').forEach(element => {
+                $$all(mutation.target, '[efy_lang]').forEach(element =>{
                     if (!processed.has(element)){
                         const string = getComputedStyle($('[efy_lang]')).getPropertyValue(`--${element.getAttribute('efy_lang')}`);
                         element.insertAdjacentText(
@@ -771,7 +785,7 @@ z.addEventListener('keyup', ()=>{ let val = z.value.toLowerCase(); $all(containe
                         processed.add(element);
                     }
                 });
-                mutation.removedNodes.forEach(node => {
+                mutation.removedNodes.forEach(node =>{
                     if (node.nodeType === 1) processed.delete(node);
                 });
             }}

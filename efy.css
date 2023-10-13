@@ -134,8 +134,8 @@ body {width: 100vw; padding: var(--efy_body_padding); line-height: 1.5; min-heig
 /*Headings*/ h1 {font-size: 45rem} h2 {font-size: 40rem} h3 {font-size: 35rem} h4 {font-size: 30rem} h5 {font-size: 25rem} h6 {font-size: 20rem}
 
 /*Links & buttons*/ a, a:visited {font-size: inherit}
-a[role=button] {display: flex; width: fit-content}
-button, [role=button], [type=submit], [type=reset], [type=button] {font-size: 16rem; -webkit-text-fill-color: var(--efy_text2); margin: var(--efy_gap0) 0}
+a[role=button] {display: inline-flex; align-items: center; place-content: center}
+button, [role=button], [type=submit], [type=reset], [type=button] {display: inline-flex; width: fit-content; font-size: 16rem; -webkit-text-fill-color: var(--efy_text2); margin: var(--efy_gap0) 0; align-items: center; place-content: center}
 
 header {text-align: center; padding: 0  8rem; grid-column: 1 / -1;
     :is(p, h1) {margin: 15rem auto}
@@ -321,7 +321,6 @@ summary::-webkit-details-marker {display: none}
     & summary { display: flex; align-items: center;
         & > mark {padding: 5px 7rem; line-height: 1; margin-left: 10rem}
         & > p {margin: 0}
-        [efy_icon=arrow_down]:before {margin: -11rem 0 0 -15rem}
     }
     [efy_search_input] {margin: 0 0 var(--efy_gap) 0}
 }
@@ -374,7 +373,7 @@ summary::-webkit-details-marker {display: none}
 
 #efy_images_bg:not([efy_mode*=trans] #efy_images_bg) {display: none}
 .efy_img_previews {display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: var(--efy_gap); padding: 5rem 0 0 0;
-    :is(label, button) {margin: 0; border: 0; aspect-ratio: 1; cursor: pointer; position: relative; box-shadow: inset 0 0 20rem #0003, 0 0 20rem #0003; background-size: cover!important; background-repeat: no-repeat!important; background-position: center!important; border-radius: var(--efy_radius)}
+    :is(label, button) {margin: 0; border: 0; aspect-ratio: 1; cursor: pointer; position: relative; box-shadow: inset 0 0 20rem #0003, 0 0 20rem #0003; background-size: cover!important; background-repeat: no-repeat!important; background-position: center!important; border-radius: var(--efy_radius); width: 100%}
     [efy_bg_nr]:is([efy_active], :focus) {box-shadow: inset 0 0 0 3rem var(--efy_text); z-index: 2}
     :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back], .efy_idb_reset) {padding: 0; display: flex; align-items: center; place-content: center; box-shadow: unset}
     :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back]) {background: var(--efy_color)!important;
@@ -423,7 +422,7 @@ summary::-webkit-details-marker {display: none}
     [efy_alert] {background: var(--efy_bg1); box-shadow: none; border-radius: var(--efy_radius)}
 }
 
-/*Quick Shortcuts*/ .efy_square_btn {display: inline-flex; gap: 12rem; margin: 0; padding: 10rem; width: var(--efy_ratio_width); height: var(--efy_ratio_width); align-items: center; place-content: center;
+/*Quick Shortcuts*/ .efy_square_btn, :is([efy_timer], [efy_color_picker] .copy_btn) button {display: inline-flex; gap: 12rem; margin: 0; padding: 10rem; width: var(--efy_ratio_width); height: var(--efy_ratio_width); align-items: center; place-content: center;
     & i {margin:0}
 }
 .efy_quick_shortcuts {gap: var(--efy_gap);
@@ -470,23 +469,24 @@ summary::-webkit-details-marker {display: none}
     [efy_alerts] {left: var(--efy_gap)}
     [efy_sidebar*=on] .efy_sidebar {border-radius: 0; border: 0}
 } @media screen and (max-width: 840px) {
-    [efy_sidebar*=on] [efy_alerts] {--efy_bg_width: 100vw!important; width: calc(100% - (var(--efy_gap) * 2))}
-    [efy_sidebar*=on] [efy_alerts*=right] {right: calc(var(--efy_gap) - var(--efy_sidebar_width)); left: unset}
-    [efy_sidebar*=on_left] [efy_alerts] {margin-left: 0}
-    [efy_sidebar*=on_left] [efy_alerts*=right] {right: var(--efy_gap); left: unset}
+    [efy_sidebar*=on] {
+        [efy_alerts] {--efy_bg_width: 100vw!important; width: calc(100% - (var(--efy_gap) * 2))}
+        [efy_alerts*=right] {right: calc(var(--efy_gap) - var(--efy_sidebar_width)); left: unset}
+    }
+    [efy_sidebar*=on_left] {
+        [efy_alerts] {margin-left: 0}
+        [efy_alerts*=right] {right: var(--efy_gap); left: unset}
+    }
 }
-
 /*EFY Icons*/ @font-face {font-family: 'efy_icons'; src: url('efy_icons.woff2') format('truetype'); font-weight: normal; font-style: normal; font-display: block}
 i, :is([efy_start], [efy_reset], [efy_sidebar_btn], details > summary):before, [efy_help] summary:after,  [type=checkbox]:checked:after {font-family: 'efy_icons' !important; speak: never; font-style: normal; font-weight: normal; font-variant: normal; text-transform: none; vertical-align: middle; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale} i {margin-right: 8rem}
 
 [efy_icon=accessibility]:before {content: "\e910"}
-[efy_icon=arrow]:before {content: "\e900"}
-[efy_icon=arrow_down]:before {content: "\e900"; position:absolute; margin: 1rem 0 0 -15rem; rotate: 180deg} [efy_icon=arrow_down] {margin-left: 15rem}
+[efy_icon*=arrow]:before {content: "\e900"}
 [efy_icon=audio]:before {content: "\e905"}
 [efy_icon=camera]:before {content: "\e91f"}
 [efy_icon=check]:before, [efy_select] [type=checkbox]:checked + label:after, [type=checkbox]:checked:after {content: "\e914"}
 [efy_icon*=chevron]:before, details:not([efy_help]) > summary:before {content: "\e907"}
-[efy_icon=chevron_left]:before {display: inline-block; rotate: 180deg}
 [efy_icon=circle]:before {content: "\e91c"}
 [efy_icon=copy]:before {content: "\e919"}
 [efy_icon=dots]:before {content: "\e902"}
@@ -501,13 +501,12 @@ i, :is([efy_start], [efy_reset], [efy_sidebar_btn], details > summary):before, [
 :is([efy_icon=menu], [efy_sidebar_btn=absolute]):before {content: "\e906"}
 [efy_icon=menu2]:before {content: "\e903"}
 [efy_icon=microphone]:before {content: "\e920"}
-[efy_icon=move]:before {display: inline-block; rotate: 45deg}
 [efy_icon=notify]:before {content: "\e917"}
 [efy_icon=notify_active]:before {content: "\e916"}
 [efy_icon=paste]:before {content: "\e91a"}
 :is([efy_icon=pause], [efy_timer] [efy_start][efy_active]):before {content: "\e90b"}
 :is([efy_icon=play], [efy_timer] [efy_start]):before {content: "\e90a"}
-[efy_icon=plus]:before {	font-size: 11rem; margin: 0 0 4rem 0; rotate: 45deg; display: inline-block}
+[efy_icon=plus]:before {	font-size: 12rem}
 :is([efy_icon=reload], [efy_reset]):before {content: "\e90d"}
 :is([efy_icon=remove], [efy_icon=plus]):before {content: "\e909"}
 [efy_icon=screen]:before {content: "\e91e"}
@@ -516,3 +515,10 @@ i, :is([efy_start], [efy_reset], [efy_sidebar_btn], details > summary):before, [
 [efy_icon=user]:before {content: "\e913"}
 [efy_icon=zoom_in]:before {content: "\e912"}
 [efy_icon=zoom_out]:before {content: "\e911"}
+[efy_icon] {align-items: center; place-content: center;
+    &, &:before {display: inline-flex}
+}
+:is([efy_icon=chevron_up], [efy_icon=arrow_up]):before {rotate: -90deg}
+:is([efy_icon=move], [efy_icon=plus]):before {rotate: 45deg}
+:is([efy_icon=chevron_down], [efy_icon=arrow_down]):before {rotate: 90deg}
+:is([efy_icon=chevron_left], [efy_icon=arrow_left]):before {rotate: 180deg}
