@@ -256,7 +256,7 @@ progress, meter {height: 15rem; border: 0; background: var(--efy_color_trans); b
 ::-internal-media-controls-overflow-menu-list, ::-webkit-internal-media-controls-overflow-menu-list-item {appearance: none; -webkit-appearance: none; background: var(--efy_text2); border-radius: var(--efy_radius)!important; border: var(--efy_border)}
 
 /*Details*/ details, summary {list-style: none; position: relative}
-:is(details, [efy_content=menu]) > details {padding: .6rem  15rem 0  15rem}
+:is(details, [efy_content=menu]) > details {padding: .6rem 0 0 15rem}
 details { margin-bottom: var(--efy_gap);
     &:not([efy_help]) summary:before {position: absolute; right: 8rem; transition: transform calc(var(--efy_anim_status) * var(--efy_anim_speed) * .1s) ease}
     & details {margin-top: var(--efy_gap)} details details:not([efy_help]) > summary:before {right: -6rem}
