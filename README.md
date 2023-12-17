@@ -41,7 +41,11 @@ Yes, but you gotta keep it open source, the credits and please donate if you wan
 - Feedback: is very important, so the more the better! Take screenshots or record videos too of your issues / ideas if needed. You can do that here or in the matrix room where you can also talk to the community.
 - Translations: https://translate.codeberg.org/projects/efy/efy
 - Matrix chat: https://matrix.to/#/#efy_ui:matrix.org
-- Donations: https://liberapay.com/efy
+- Donations:
+
+  - Monero: 447Tj2BMKPnGJzGHjKoC9EBHpA2dK9zeMQfhaUHRB6bCPi1eUHX5Y7L271Y5rPvUsDH3t4SqnGYtP13zj8v3fuQdN2r5DYV
+  - LiberaPay: https://liberapay.com/efy
+
 - Business: Do you want to work with me on your graphic / ui / ux design, web dev projects or need consulting? Or know someone that does? Let me know.
 
 ## Future Plans
