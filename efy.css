@@ -3,7 +3,7 @@
 --efy_padding: 8rem  12rem; --efy_padding2: 3rem  6rem; --efy_gap0: calc(var(--efy_gap) / 1.5); --efy_gap2: calc(var(--efy_gap) * 2);
 --efy_color: linear-gradient(var(--efy_color_angle), hsl(var(--efy_color1_var)), hsl(var(--efy_color2_var)));
 --efy_color_trans: linear-gradient(var(--efy_color_angle), hsla(var(--efy_color1_var) / .3), hsla(var(--efy_color2_var) / .3));
---efy_color_text_var: 0 0% 0%; --efy_color_bgcol_var: 0 0% 39%; --efy_color_bordercol_var: var(--efy_bg_var);
+--efy_color_text_var: 0 0% 0%; --efy_color_bgcol_var: 0 0% 39%; --efy_color_bordercol_var: 0 0% 50%; --efy_color_buttoncol_var: 0 0% 50%;
 --efy_bg1: hsla(var(--efy_bg_var) / .07); --efy_bg2: hsla(var(--efy_bg_var) / .13);
 --efy_text: hsl(var(--efy_bg_var)); --efy_text_trans: hsla(var(--efy_bg_var) / .3); --efy_text_trans2: hsla(var(--efy_bg_var) / .45); --efy_text2: var(--efy_bg);
 --efy_border_alpha: .07; --efy_border: var(--efy_border_size) solid hsla(var(--efy_bg_var) / var(--efy_border_alpha)); --efy_border_size2: calc(2 * var(--efy_border_size));
@@ -32,7 +32,7 @@ html[efy_mode], html[efy_mode*=trans].trans_window body, html.trans_window .efy_
         [type=radio]:checked + label:after {background: hsl(var(--efy_color_buttoncol_var))!important}
         & input:checked + label:before, [type=checkbox]:checked + label:after {border-color: hsl(var(--efy_color_buttoncol_var))!important}
         & label:not([efy_upload], .efy_color, [type=button]):before {background: hsla(var(--efy_color_buttoncol_var) / .7)!important}
-        & label:not([efy_upload], input:checked + label, .efy_color, [type=button]) {background: linear-gradient(0deg, hsla(var(--efy_color_buttoncol_var) / .7), hsla(var(--efy_color_buttoncol_var) / .7)), var(--efy_color_trans); -webkit-background-clip: text, border-box!important; background-clip: text, border-box!important; background-origin: border-box!important}
+        & label:not([efy_upload], input:checked + label, .efy_color, [type=button], :is(.efy_custom_colors, #efy_colors) label) {background: linear-gradient(0deg, hsla(var(--efy_color_buttoncol_var) / .7), hsla(var(--efy_color_buttoncol_var) / .7)), var(--efy_color_trans); -webkit-background-clip: text, border-box!important; background-clip: text, border-box!important; background-origin: border-box!important}
     }
     :is([efy_tabs] [efy_tab]:not([efy_active], .efy_button_text_off [efy_tab])) {color: hsla(var(--efy_color_buttoncol_var) / .7); -webkit-text-fill-color: hsla(var(--efy_color_buttoncol_var) / .7)}
 }
@@ -196,18 +196,35 @@ pre {overflow: auto}
 }
 [efy_color_preview] {-webkit-text-fill-color: var(--efy_text2)}
 .efy_custom_colors {display: flex; flex-wrap: wrap; gap: var(--efy_gap0);
+    .tabs {display: flex; flex-wrap: wrap; gap: var(--efy_gap0);
+        .efy_tab {display: flex}
+        [for=efy_custom_bgcol] {background: var(--efy_bg)!important; -webkit-text-fill-color: var(--efy_text)!important}
+        [for=efy_custom_text] {background: var(--efy_text)!important}
+        [for=efy_custom_buttoncol] {background: hsl(var(--efy_color_buttoncol_var))!important}
+        [for=efy_custom_bordercol] {background: hsl(var(--efy_color_bordercol_var)) !important}
+        [for*=efy_custom_]:not([for=efy_custom_bgcol]) {-webkit-text-fill-color: var(--efy_text2)!important}
+        [efy_tab]:not([efy_active]) + [for*=efy_custom_] {box-shadow: none!important}
+        [efy_tab][efy_active] + [for*=efy_custom_] {box-shadow: inset 0 0 0 3rem var(--efy_text)!important; border-color: var(--efy_text)!important}
+        [efy_tab][efy_active] + [for=efy_custom_text] {box-shadow: inset 0 0 0 3rem var(--efy_text2)!important; border-color: var(--efy_text2)!important}
+    }
+    [id=efy_custom_][efy_active] + [for=efy_custom_] {box-shadow: inset 0 0 0 3rem var(--efy_text)}
     :is(label, [efy_color_preview]) {margin: 0!important; height: var(--efy_size)}
-    & label {border-radius: var(--efy_radius) 0 0 var(--efy_radius); width: 43.2rem}
-    [efy_color_preview] {border-radius: 0 var(--efy_radius) var(--efy_radius) 0; border: 0}
+    & label {border-radius: var(--efy_radius)}
+    [for*=status] {width: var(--efy_size); display: flex; border-radius: var(--efy_radius) 0 0 var(--efy_radius); padding: 0; place-content: center; align-items: center;
+        &:before {margin: 0; display: flex}
+        &:after {top: 0!important; left: -1rem!important; width: var(--efy_size)!important; height: var(--efy_size)!important; align-items: center; place-content: center}
+    }
+    [id*=efy_custom] {pointer-events: none!important}
+    [for*=efy_custom] {border-radius: 0 var(--efy_radius) var(--efy_radius) 0}
+    [for*=efy_custom]:before, [for*=efy_custom]:after {display: none!important}
+    [efy_color_picker] {background: transparent; padding: 0; margin: 0; border: 0; backdrop-filter: none!important; box-shadow: none!important}
+    [efy_color_preview] {display: none}
 }
-[efy_color*=efy_color_text] [efy_color_preview] {background: var(--efy_text)!important}
-[efy_color*=efy_color_bgcol] [efy_color_preview] {background: var(--efy_bg)!important; -webkit-text-fill-color: var(--efy_text)!important}
-[efy_color*=buttoncol] [efy_color_preview] {-webkit-text-fill-color: var(--efy_text2)!important}
-[efy_color_buttoncol][efy_mode] [efy_color*=buttoncol] [efy_color_preview] {background: hsl(var(--efy_color_buttoncol_var))!important}
 
 [efy_select]#efy_colors label:not(.efy_shadows label:nth-of-type(2)):before, [efy_sidebar_btn] [efy_icon=remove] {margin-right: 0}
 
-[efy_color_picker] { background: var(--efy_bg1); border: var(--efy_border); border-radius: var(--efy_radius); padding: 15rem; margin: 10rem 0; --efy_bs: 0 0 3rem #0005, inset 0 0 0 calc(1.5rem + var(--efy_border_size)) hsl(var(--efy_bg_var)), inset 0 0 6rem #0005;
+[efy_color_picker] { --efy_bs: 0 0 3rem #0005, inset 0 0 0 calc(1.5rem + var(--efy_border_size)) hsl(var(--efy_bg_var)), inset 0 0 6rem #0005;
+    background: var(--efy_bg1); border: var(--efy_border); border-radius: var(--efy_radius); padding: 15rem; margin: 10rem 0;
     .hue {background: linear-gradient(to right, #f00 0%, #ff0 16.6%, #0f0 33.3%, #0ff 50%, #00f 66.6%, #f0f 83.3%, #f00 100%) !important}
     .sat {background: linear-gradient(to right, #808080, #f00)}
     .lgt {background: linear-gradient(to right, #000, #f00, #fff)}
@@ -316,7 +333,7 @@ summary::-webkit-details-marker {display: none}
     & input::file-selector-button {width: var(--efy_size)!important; height: var(--efy_size)!important}
 }
 
-.efy_backup_div {margin-top: var(--efy_gap0);
+.efy_backup_div {display: flex; flex-wrap: wrap; gap: var(--efy_gap0); margin-top: var(--efy_gap0);
     &:not(:last-of-type) {margin-bottom: var(--efy_gap0)}
     :is(button, [role=button]) {margin: 0}
 }
