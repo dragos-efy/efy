@@ -409,9 +409,10 @@ summary::-webkit-details-marker {display: none}
 
 #efy_images_bg:not([efy_mode*=trans] #efy_images_bg) {display: none}
 .efy_img_previews {display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: var(--efy_gap); padding: 5rem 0 0 0;
+    &.efy_remove [efy_bg_nr] {box-shadow: inset 0 0 0 calc(var(--efy_border_size) * 1) var(--efy_text)!important; border-color: var(--efy_text)!important}
     :is(label, button) {margin: 0; background-origin: border-box; background-clip: border-box; aspect-ratio: 1; cursor: pointer; position: relative; box-shadow: inset 0 0 20rem #0003, 0 0 20rem #0003; background-size: cover!important; background-repeat: no-repeat!important; background-position: center!important; border-radius: var(--efy_radius); width: 100%}
     [efy_bg_nr]:is([efy_active], :focus) {box-shadow: inset 0 0 0 3rem var(--efy_text); z-index: 2}
-    :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back], .efy_idb_reset) {padding: 0; display: flex; align-items: center; place-content: center; box-shadow: unset}
+    :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back], [for=idb_remove_toggle], .efy_idb_reset) {padding: 0; display: flex; align-items: center; place-content: center; box-shadow: unset}
     :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back]) {background-color: var(--efy_color)!important;
          & i:before {font-size: 20rem}
          &:before {display: none}
@@ -420,6 +421,12 @@ summary::-webkit-details-marker {display: none}
     [efy_shadow*=button] :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back]) {box-shadow: var(--efy_shadow_button)!important}
     & i {margin: 0}
     :is(.efy_idb_reset, .idb_reset_front, .idb_reset_back) i:before {font-size: 25rem}
+    [for=idb_remove_toggle] {
+        &:not(#idb_remove_toggle:checked + label) {background: var(--efy_color), var(--efy_color_trans);	-webkit-background-clip: text, border-box;
+        background-clip: text, border-box; background-origin: border-box; border: var(--efy_border); -webkit-text-fill-color: transparent}
+        &:before, &:after {display: none!important}
+        & i {font-size: 22rem}
+    }
 }
 
 [efy_tabs] {

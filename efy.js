@@ -1,4 +1,4 @@
-export let efy_version = '23.12.22 Beta', efy_performance = performance.now(),
+export let efy_version = '23.12.31 Beta', efy_performance = performance.now(),
 $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document),
 $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
 /*Add: Selector, optional: {Attributes}, [Text, Children], Parent, Position*/
@@ -85,7 +85,7 @@ $add('video', {class: 'efy_3d_bg', autoplay: '', loop: '', muted: '', playsinlin
 
 
 /*Quick Shortcuts*/ if ($efy_module('efy_quick')){ let a = $('[efy_about]');
-    $add('input', {type: 'text', efy_search_input: '', class: 'efy_hide_i', placeholder: 'Search through menu...'}, [], a, 'afterend');
+    $add('input', {type: 'text', efy_search_input: '', class: 'efy_hide_i', placeholder: 'Search through menu...', name: 'efy_name'}, [], a, 'afterend');
     $add('div', {class: 'efy_quick_notify_content efy_hide_i', efy_card: ''}, [], a, 'afterend');
 
     $add('div', {id: 'efy_quick', class: 'efy_quick_shortcuts efy_hide_i', efy_card: ''}, [
@@ -338,7 +338,7 @@ let cp = $$(a, '.efy_cp_switch'), c = ['hue', 'sat', 'lgt'], d = ['360', '100', 
 });
 
 let val = ['0 100 50', '255 0 0', 'ff0000'], min = [13,5,3], max = [13,11,6], hide = ['', 'efy_hide', 'efy_hide']; ['hsl', 'rgb', 'hex'].map((b,i)=>{
-    $add('input', {class: `efy_color_picker_${b} ${hide[i]}`, type: 'text', value: val[i], minlength: min[i], maxlength: max[i]}, [], cp)
+    $add('input', {class: `efy_color_picker_${b} ${hide[i]}`, type: 'text', value: val[i], minlength: min[i], maxlength: max[i], name: 'efy_name'}, [], cp)
 });
 
 $add('div', {class: 'copy_btn'}, [
@@ -396,7 +396,9 @@ $add('div', {class: 'trans_window_div'}, [
     ['div', {class: 'efy_img_previews'}, [
         ['input', {id: 'idb_addimg_bg', type: 'file', accept: 'image/*, video/*', style: 'display: none'}],
         ['label', {for: 'idb_addimg_bg', title: 'Add file', class: 'efy_color', type:'button', role: 'button'}, [['i', {efy_icon: 'plus'}]]],
-        ['button', {class: 'efy_idb_reset', title: 'reset'}, [['i', {efy_icon: 'reload'}]]]
+        ['input', {id: 'idb_remove_toggle', type: 'checkbox', style: 'display: none'}],
+        ['label', {for: 'idb_remove_toggle', title: 'Remove', class: 'efy_color', type:'button', role: 'button'}, [['i', {efy_icon: 'remove'}]]],
+        ['button', {class: 'efy_idb_reset efy_hide_i', title: 'reset'}, [['i', {efy_icon: 'reload'}]]]
     ]]
 ], $('#efy_sbtheme [efy_content=mode]'));
 
@@ -414,7 +416,7 @@ $add('div', {efy_lang: 'gap', efy_range_text: 'Gap alpha'}, [['input', {class: '
 $add('div', {efy_lang: 'max_width', efy_range_text: 'Max Width alpha'}, [
     ['div', {class: 'efy_max_width_div'}, [
         ['input', {class: 'efy_maxwidth_input', type: 'range', min: '500', max: '5000', value: '1200', step: '1'}],
-        ['select', {}, [ ['option', {value: 'rem'}, 'REM'], ['option', {value: '%'}, '%'] ]]
+        ['select', {name: 'efy_name'}, [ ['option', {value: 'rem'}, 'REM'], ['option', {value: '%'}, '%'] ]]
 ]] ], a);
 
 /*Radius, Gap & Color Angle*/ a = ['radius', 'border_size', 'gap', 'color_angle']; let e = ['rem', 'rem', 'rem', 'deg'];
@@ -758,31 +760,44 @@ const efy_add_bgimg = async (type, e)=>{ let db = await open_idb(), read = new F
 
             } }}})()}}
 
-/*Count images*/ const count_images = async (type) =>{
+/*Count images*/ const count_images = async (type) =>{ let current_id = 0;
     const db = await open_idb('efy'), transaction = db.transaction([type], "readonly"),
-    store = transaction.objectStore(type), cursor_request = store.openCursor(); let count_img = 0;
+    store = transaction.objectStore(type), cursor_request = store.openCursor(); let count_img = 0, last_img = 0;
 
     cursor_request.onsuccess = (event) =>{ const cursor = event.target.result;
-        if (cursor){ count_img++; const req = store.get(count_img);
-            req.onsuccess = e =>{ const x = e.target.result, image = x.image, thumbnail = x.thumbnail, previews = `#efy_images_${type} .efy_img_previews`;
-                /*Preview Click*/ $add('button', {efy_bg_nr: count_img, style: `background: url(${thumbnail})`, efy_audio_mute: 'ok'}, [], $(previews));
-                $event($(`${previews} [efy_bg_nr="${count_img}"]`), 'click', (y) =>{
-                    $text(efy_css[type], `.efy_3d_${type} {background: url(${e.target.result.image})!important; background-size: var(--efy_bg_size)!important} html {background: var(--efy_text2)!important; background-size: cover!important}`);
-                    efy[`nr_${type}`] = x.id; $save();
-                    $all(`${previews} [efy_bg_nr]`).forEach(a => a.removeAttribute('efy_active')); y.target.setAttribute('efy_active', '')
-                });
+        if (cursor){ count_img++; const x = cursor.value, previews = `#efy_images_${type} .efy_img_previews`, current = count_img;
+            if (efy[`nr_${type}`] == current) current_id = x.id;
+
+            /*Preview Click*/ $add('button', {efy_bg_nr: x.id, style: `background: url(${x.thumbnail})`, efy_audio_mute: 'ok'}, [], $(previews));
+            $event($(`${previews} [efy_bg_nr="${x.id}"]`), 'click', (y) =>{
+                $text(efy_css[type], `.efy_3d_${type} {background: url(${x.image})!important; background-size: var(--efy_bg_size)!important} html {background: var(--efy_text2)!important; background-size: cover!important}`);
+                efy[`nr_${type}`] = current; $save();
+                $all(`${previews} [efy_bg_nr]`).forEach(a => a.removeAttribute('efy_active')); y.target.setAttribute('efy_active', '')
+            });
             cursor.continue();
-        }} else { /*Check bg_nr*/ let nr = efy[`nr_${type}`] ? JSON.parse(efy[`nr_${type}`]) : 1;
-            /*Restore Background*/ if (count_img > 0){ store.get(nr).onsuccess = e =>{
-                const res = e.target.result;
-                $text(efy_css[type], `.efy_3d_${type} {background: url(${res.image})!important; background-size: var(--efy_bg_size)!important}`);
-                $(`#efy_images_${type} .efy_img_previews [efy_bg_nr="${res.id}"]`).setAttribute('efy_active', '')
+        } else { /*Check bg_nr*/
+            /*Restore Background*/ if (count_img > 0){ store.get(current_id).onsuccess = e =>{
+                $text(efy_css[type], `.efy_3d_${type} {background: url(${e.target.result.image})!important; background-size: var(--efy_bg_size)!important}`);
+                $(`#efy_images_${type} .efy_img_previews [efy_bg_nr]:nth-of-type(${efy[`nr_${type}`] + 1})`).setAttribute('efy_active', '')
             }}
             /*Reset iDB*/ $all('.efy_idb_reset').forEach(a =>{ $event(a, 'click', () =>{ indexedDB.deleteDatabase("efy"); location.reload() }) });
         }
     };
     cursor_request.onerror = () => console.error("efy: no db entries");
 };
+
+/*Remove Images*/ const img_previews = $('.efy_img_previews');
+
+$event(img_previews, 'click', (e)=>{
+    if (e.target.matches('.efy_remove [efy_bg_nr]')){ const x = e.target, nr = Number(x.getAttribute('efy_bg_nr'));
+    indexedDB.open('efy').onsuccess =(res)=>{
+        const db = res.target.result, trans = db.transaction(['bg'], 'readwrite'),
+        store = trans.objectStore('bg'); store.delete(nr); x.remove();
+    }} else if (e.target.matches('#idb_remove_toggle')){
+        img_previews.classList.toggle('efy_remove'); $('.efy_idb_reset').classList.toggle('efy_hide_i')
+    }
+});
+
 /*Run Functions*/ (async ()=>{ await count_images('bg'); await count_images('front'); count_images('back') })();
 
 /*Export iDB*/ (async ()=>{ try { let db = await open_idb(),
@@ -856,7 +871,7 @@ $event(efy_idb_import, 'change', async ()=>{
 });
 
 /*EFY Range Text*/ let p; $ready('[efy_range_text]', (a)=>{ let c = $$(a, 'input[type=range]');
-    $add('input', {class: 'efy_range_text_p', type: 'number', value: c.value, step: c.step, min: c.min, max: c.max}, [], a, 'afterbegin'); p = $$(a, '.efy_range_text_p');
+    $add('input', {class: 'efy_range_text_p', type: 'number', value: c.value, step: c.step, min: c.min, max: c.max, name: 'efy_name'}, [], a, 'afterbegin'); p = $$(a, '.efy_range_text_p');
     $event(p, 'input', (x)=>{ c.value = x.target.value; c.dispatchEvent(new Event('input', {'bubbles': true }))});
     $event(c, 'input', (x)=>{ $$(a, '.efy_range_text_p').value = x.target.value });
 }); $all('form[class*=efy], [efy_content=colors] [efy_color_picker]').forEach(x =>{ $event(x,'reset', ()=>{
