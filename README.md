@@ -58,4 +58,4 @@ Yes, but you gotta keep it open source, the credits and please donate if you wan
 
 ## Top Contributors
 
-[Bnyro](https://github.com/Bnyro), [Kavin](https://github.com/FireMasterK), [Linerly](https://github.com/Linerly), [DarkCat09](https://github.com/DarkCat09), Zucc (whatever.social), Diamond_AaronXG, IkelAtomig, ARBoyGo, Hiajen, Auge, ewm, tygyh
+[Bnyro](https://github.com/Bnyro), [Kavin](https://github.com/FireMasterK), [ARBoyGo](https://github.com/ARBoyGo), [Linerly](https://github.com/Linerly), [DarkCat09](https://github.com/DarkCat09), Zucc (whatever.social), Diamond_AaronXG, IkelAtomig, Hiajen, Auge, ewm, tygyh
