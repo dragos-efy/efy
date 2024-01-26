@@ -1,7 +1,7 @@
 {
   "name": "efy",
-  "version": "24.01.26A",
+  "version": "24.01.26B",
   "keywords": ["efy", "ui", "ux", "design", "offline", "css", "javascript", "transparent", "framework", "touchscreen", "responsive"],
   "author": "efy.ooo",
-  "files": [".gitignore", "**/*"]
+  "files": [".gitignore", "**/*", "!.git/**", "!.github/**"]
 }
