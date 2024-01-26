@@ -245,7 +245,11 @@ pre {overflow: auto}
 #efy_colors {
     [efy_tabs=container] [efy_content] {background: var(--efy_bg1); border: var(--efy_border); border-radius: var(--efy_radius); padding: var(--efy_gap); margin: var(--efy_gap0) 0 0 0;
         --efy_bs: 0 0 3rem oklch(0% 0 0 / .5), inset 0 0 0 calc(1.5rem + var(--efy_border_size)) hsl(var(--efy_bg_var)), inset 0 0 6rem oklch(0% 0 0 / .5);
-        .hue {background: linear-gradient(to right in oklch longer hue, oklch(70% .3 0) 0%, oklch(70% .3 0) 100%) !important}
+        .hue {
+            /*Fallback*/ background: linear-gradient(to right, oklch(70% .3 0), oklch(63% .26 29), oklch(71% .17 55),
+            oklch(71% .24 142), oklch(77% .13 202), oklch(64% .2 253), oklch(67% .27 318), oklch(70% .3 0)) !important;
+            background: linear-gradient(to right in oklch longer hue, oklch(70% .3 0) 0%, oklch(70% .3 0) 100%) !important
+        }
         .chroma {background: linear-gradient(to right, oklch(50% 0 0), oklch(70% .3 0))}
         .lightness {background: linear-gradient(to right, oklch(0% 0 0), oklch(70% .3 0), oklch(100% 0 0))}
         [type=range]::-webkit-slider-thumb {background: transparent; box-shadow: var(--efy_bs) !important; border: 0}
@@ -458,7 +462,15 @@ summary::-webkit-details-marker {display: none}
 [efy_alerts*=right] {right: var(--efy_gap); left: unset}
 [efy_alerts*=bottom] {bottom: var(--efy_gap); top: unset}
 
-[efy_alert] {display: grid; grid-template-columns: 1fr auto; gap: var(--efy_gap); padding: 10rem; box-shadow: 0 0 20px var(--efy_text_trans); background: var(--efy_text2)}
+[efy_alert] {display: grid; grid-template-columns: 1fr auto; gap: var(--efy_gap); padding: 10rem; box-shadow: 0 0 20px var(--efy_text_trans); background: var(--efy_text2);
+    .remove_timer { display: flex; align-items: center; place-content: center; height: fit-content;
+        & > :is(button, div) {margin: 0; height: var(--efy_size); min-width: var(--efy_size)}
+        .time_left {display: flex; align-items: center; place-content: center; padding: 10rem; border-radius: var(--efy_radius) 0 0 var(--efy_radius);
+            font-weight: bold; border: var(--efy_border); border-right: 0; background: var(--efy_color), var(--efy_color_trans);
+            background-clip: text, border-box; background-origin: border-box; -webkit-text-fill-color: transparent}
+        .remove:not(.efy_quick_notify_content .remove) {border-radius: 0 var(--efy_radius) var(--efy_radius) 0}
+    }
+}
 [efy_btn_square] {display: flex; align-items: center; padding: 10rem; height: fit-content; aspect-ratio: 1; margin: 0;
     [efy_icon] {margin:0}
 }
@@ -466,7 +478,8 @@ summary::-webkit-details-marker {display: none}
     [efy_alert] {background: var(--efy_bg1); box-shadow: none; border-radius: var(--efy_radius)}
 }
 
-/*Quick Shortcuts*/ .efy_square_btn, :is([efy_timer], [efy_color_picker] .copy_btn) button {display: inline-flex; gap: 12rem; margin: 0; padding: 10rem; width: var(--efy_size); height: var(--efy_size); align-items: center; place-content: center;
+/*Quick Shortcuts*/ .efy_square_btn, :is([efy_timer], [efy_color_picker] .copy_btn) button {
+    display: inline-flex; gap: 12rem; margin: 0; padding: 10rem; width: var(--efy_size); height: var(--efy_size); align-items: center; place-content: center;
     & i {margin:0}
 }
 .efy_quick_shortcuts {gap: var(--efy_gap); padding: var(--efy_gap0);
@@ -491,7 +504,7 @@ summary::-webkit-details-marker {display: none}
 /*Translations*/ .efy_lang_text {display: inline; margin: 0!important; pointer-events: none!important; -webkit-text-fill-color: inherit; color: inherit}
 .efy_range_text_p {background: transparent; border-color: transparent!important; padding: 0 4rem; width: fit-content; border-radius: calc(var(--efy_radius) / 1.5); margin: 0}
 
-/*Code*/ [efy_code] {position: relative; padding-top: calc(50rem + var(--efy_gap0));
+/*Code*/ [efy_code] {position: relative; padding-top: calc(40rem + var(--efy_gap0)); white-space: pre-wrap;
     .efy_bar {position: absolute; top: 0; left: 0; width: 100%; padding: calc(var(--efy_gap0) / 1.5); display: flex; gap: calc(var(--efy_gap0) / 1.5); justify-content: space-between; border-bottom: var(--efy_border);
         & div {display: flex; gap: calc(var(--efy_gap0) / 1.5)}
         & button {margin: 0; padding: var(--efy_padding2); border-radius: var(--efy_radius0)}

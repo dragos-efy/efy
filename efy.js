@@ -1,4 +1,4 @@
-export let efy_version = '23.12.31 Beta', efy_performance = performance.now(),
+export let efy_version = '24.01.26 Beta', efy_performance = performance.now(),
 $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document),
 $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
 /*Add: Selector, optional: {Attributes}, [Text, Children], Parent, Position*/
@@ -34,13 +34,30 @@ $css_prop =(prop, value, position = $root)=>{ if (value){ position.style.setProp
 /*Audio Play*/ $audio_play = async (a,b)=>{ try { a.pause(); a.currentTime = 0; a.play(); if (b == 'loop'){ $event(a, 'ended', ()=>{ a.pause(); a.currentTime = 0; a.play()}, false)}} catch {/**/}},
 /*Wait: Seconds, FN*/ $wait =(a,b)=> setTimeout(b,a*1000),
 /*Custom QuerySelectors*/ $$ =(a,b)=> a.querySelector(b), $$all =(a,b)=> a.querySelectorAll(b),
-/*Notify*/ $notify =(a,b,c,lang)=>{ let d = 'alert' + Date.now(), i = $('.efy_quick_notify i'),
-    icon_fn =()=>{ let icon = ($all('.efy_quick_notify_content [efy_alert]').length > 0) ? 'notify_active' : 'notify'; i.setAttribute('efy_icon', icon)};
-    if (lang == 'lang'){ b = efy_lang[b]; c = efy_lang[c]}
+/*Notify*/ $notify =(seconds, title, info, lang, callback)=>{
+    const presets = {'short': 5, 'long': 30, 'infinite': 600}, startTime = Date.now(), id = 'alert' + startTime, i = $('.efy_quick_notify i');
+    seconds = presets[seconds] !== undefined ? presets[seconds] : seconds; let current = seconds;
+    const icon_fn =()=>{ let icon = ($all('.efy_quick_notify_content [efy_alert]').length > 0) ? 'notify_active' : 'notify'; i.setAttribute('efy_icon', icon)};
+    if (lang == 'lang'){ title = efy_lang[title]; info = efy_lang[info]}
+
     ['[efy_alerts]', '.efy_quick_notify_content'].map(e =>{
-        $add('div', {efy_alert: '', class: d}, [ ['div', {}, [ ['h6', {}, b], ['p', {}, c] ]], ['button', {efy_btn_square: ''}, [['i', {efy_icon: 'remove'}]]] ], $(e));
+        const time_left = (e == '[efy_alerts]') ? ['div', {class: 'time_left'}, String(seconds)] : '';
+        $add('div', {efy_alert: '', class: id}, [
+            ['div', {}, [['h6', {}, title], ['p', {}, info]]], ['div', {class: 'remove_timer'}, [
+                time_left, ['button', {efy_btn_square: '', class: 'remove'}, [['i', {efy_icon: 'remove'}]]]
+        ]]], $(e));
     }); icon_fn();
-$wait(a, ()=>{ try { $$($('[efy_alerts]'), '.' + d).remove()} catch {/**/} icon_fn() })},
+
+    efy_timer_interval = setInterval(()=>{ const element = $(`.${id} .time_left`);
+        current = seconds - (Math.floor((Date.now() - startTime) / 1000));
+        element ? element.textContent = current : clearInterval(efy_timer_interval);
+    }, 1000);
+
+    $wait(seconds, ()=>{ clearInterval(efy_timer_interval);
+        try {$(`[efy_alerts] .${id}`).remove()} catch {/**/}
+        if (callback) callback(); icon_fn()
+    });
+},
 /*Convert seconds to hh:mm:ss*/ $sec_time =(a)=>{
     const h = Math.floor(a / 3600).toString().padStart(2,'0'), m = Math.floor(a % 3600 / 60).toString().padStart(2,'0'), s = Math.floor(a % 60).toString().padStart(2,'0'); return `${h}:${m}:${s}`
 };
@@ -348,7 +365,7 @@ $add('div', {class: 'copy_btn'}, [
 
 let efy_swc = 1, cs = $$(cp, '.efy_color_picker_switch');
 
-$$(cp, '.efy_color_picker_copy').addEventListener('click', ()=>{ let b = cs.textContent.toLowerCase(); let d = $$(a,`.efy_color_picker_${b}`).value; navigator.clipboard.writeText(d); if (efy.notify_clipboard != false){ $notify(3, 'Copied to clipboard', d)}});
+$$(cp, '.efy_color_picker_copy').addEventListener('click', ()=>{ let b = cs.textContent.toLowerCase(); let d = $$(a,`.efy_color_picker_${b}`).value; navigator.clipboard.writeText(d); if (efy.notify_clipboard != false){ $notify('short', 'Copied to clipboard', d)}});
 $$(cp, '.efy_color_picker_paste').addEventListener('click', ()=>{ let b = cs.textContent.toLowerCase(), x = $$(a,`.efy_color_picker_${b}`);
     navigator.clipboard.readText().then(cb =>{ x.value = cb; x.dispatchEvent(new Event('input', { 'bubbles': true })) }).catch();
 });
@@ -794,7 +811,9 @@ $event(img_previews, 'click', (e)=>{
         const db = res.target.result, trans = db.transaction(['bg'], 'readwrite'),
         store = trans.objectStore('bg'); store.delete(nr); x.remove();
     }} else if (e.target.matches('#idb_remove_toggle')){
-        img_previews.classList.toggle('efy_remove'); $('.efy_idb_reset').classList.toggle('efy_hide_i')
+        img_previews.classList.toggle('efy_remove'); $('.efy_idb_reset').classList.toggle('efy_hide_i');
+        const status = e.target.checked;
+        $notify('short', status ? 'Remove Media' : 'Set Background', status ? 'Select what to remove' : 'Select your background');
     }
 });
 
@@ -841,7 +860,7 @@ $event(efy_idb_import, 'change', async ()=>{
         let result = JSON.stringify(JSON.parse(localStorage.efy), null, 2), x = e.target;
         x.href = URL.createObjectURL(new Blob([result], {type: 'application/json'}));
         x.download = 'efy_settings.json'; $audio_play(efy_audio.ok3)}
-    else { $notify(3, 'Nothing to export', "You're using default settings")}
+    else { $notify('short', 'Nothing to export', "You're using default settings")}
 });
 
 /*Import Settings*/ let efy_ls_import = $('#efy_localstorage_import'); $event(efy_ls_import, 'change', ()=>{ let file = efy_ls_import.files[0], read = new FileReader();
@@ -857,17 +876,22 @@ $event(efy_idb_import, 'change', async ()=>{
     $all(`${tabs} :is([efy_tab=${active}], [efy_content=${active}])`).forEach(x => x.setAttribute('efy_active', ''));
 }})});
 
-/*Code*/ $ready('[efy_code]', (a)=>{ let b = a.getAttribute('efy_code').split(',');
+/*Code*/ $ready('[efy_code]', (a)=>{ let b = a.getAttribute('efy_code').split(','), chars = a.getAttribute('efy_code').length + 2;
     $add('div', {class: 'efy_bar'}, [ ['mark', {}, b[0]], ['div', {}, [
         ['button', {class: 'efy_code_trans'}, 'transparent'],
         ['button', {class: 'efy_fs'}, [ ['i', {efy_icon: 'fullscreen'}] ]],
         ['button', {class: 'efy_copy'}, [ ['i', {efy_icon: 'copy'}] ]]
     ]]], a, 'afterbegin');
-    $$(a,'.efy_fs').addEventListener('click', ()=>{ if (document.fullscreenElement){ document.exitFullscreen()} else {a.requestFullscreen()}});
-    $$(a,'.efy_code_trans').addEventListener('click', ()=>{ $body.classList.toggle('efy_code_trans_on')});
-    $$(a,'.efy_copy').addEventListener('click', ()=>{ let c = a.innerText, d = c.substring(c.indexOf('copy') + 5); navigator.clipboard.writeText(d);
-         if (efy.notify_clipboard != false){ $notify(3, 'Copied to clipboard', d)}
+
+    $event(a, 'click', (x)=>{ x = x.target;
+        if (x.matches('.efy_fs')){ document.fullscreenElement ? document.exitFullscreen() : a.requestFullscreen()}
+        else if (x.matches('.efy_code_trans')){ $body.classList.toggle('efy_code_trans_on')}
+        else if (x.matches('.efy_copy')){
+            let c = a.innerText, d = c.substring(c.indexOf('copy') + chars); navigator.clipboard.writeText(d);
+            if (efy.notify_clipboard != false){ $notify('short', 'Copied to clipboard', d)}
+        }
     });
+
 });
 
 /*EFY Range Text*/ let p; $ready('[efy_range_text]', (a)=>{ let c = $$(a, 'input[type=range]');
@@ -900,7 +924,7 @@ $ready('[efy_clock]', (x)=>{ 'hour s1 minute s2 second format'.split(' ').map(a 
     $wait(.1, efy_clock); setInterval(efy_clock, 1000)
 });
 
-/*Timer: ID, Time, Reverse (optional)*/ $ready('[efy_timer]', (y) =>{ let tm = y.getAttribute('efy_timer').split(','), time = '00:00:00'; if (tm[1]  !== undefined){ time = $sec_time(tm[1])}
+/*Timer: ID, Time, Reverse (optional)*/ $ready('[efy_timer]', (y) =>{ let tm = y.getAttribute('efy_timer').replaceAll(' ', '').split(','), time = '00:00:00'; if (tm[1]  !== undefined){ time = $sec_time(tm[1])}
     $add('div', {efy_text: ''}, [time], y); $add('button', {efy_start: '', title: 'Start or Pause'}, [], y); $add('button', {efy_reset: '', title: 'Reset'}, [], y);
 
     let play = $$(y, '[efy_start]'), reset= $$(y, '[efy_reset]'), timer_text = $$(y, '[efy_text]'), interval, i = 0;
@@ -909,7 +933,7 @@ $ready('[efy_clock]', (x)=>{ 'hour s1 minute s2 second format'.split(' ').map(a 
     $event(play, 'click', ()=>{ clearInterval(interval); play.toggleAttribute('efy_active'); if (play.hasAttribute('efy_active')){ interval = setInterval(()=>{
         /*Reverse*/ if (tm[2] == 'reverse'){ i++; $text(timer_text, $sec_time(tm[1] - i))}
         /*Normal*/ else { i++; $text(timer_text, $sec_time(i))}
-        /*Reset & Notify*/ if (i == tm[1]){ $notify(600, 'Done!', 'Time is up!'); $audio_play(efy_audio.call, 'loop'); time_reset(); $event($('[efy_alert]'), 'click', ()=>{ try {efy_audio.call.pause()} catch {/**/} })}
+        /*Reset & Notify*/ if (i == tm[1]){ $notify('infinite', 'Done!', 'Time is up!'); $audio_play(efy_audio.call, 'loop'); time_reset(); $event($('[efy_alert]'), 'click', ()=>{ try {efy_audio.call.pause()} catch {/**/} })}
     }, 1000)} else { clearInterval(interval) }});
     $event(reset, 'click', time_reset);
 });
@@ -919,14 +943,18 @@ z.addEventListener('keyup', ()=>{ let val = z.value.toLowerCase(); $all(containe
 
 /*EFY Toggle*/ $ready('[efy_toggle]', (a)=>{ let b = a.getAttribute('efy_toggle'); a.addEventListener('click', ()=>{ $all(b).forEach(c =>{ c.classList.toggle('efy_hide_i')})})});
 
-/*Alerts*/ $add('div', {efy_alerts: '', class: 'efy_sidebar_width'}, [], $body, 'afterbegin'); $body.addEventListener("pointerup", ()=>{ if (event.target.matches('[efy_alert]')){ let a = event.target, b = a.classList[0], i = $('.efy_quick_notify i'), icon_fn =()=>{ if ($all('.efy_quick_notify_content [efy_alert]').length > 0){ i.setAttribute('efy_icon', 'notify_active')} else {i.setAttribute('efy_icon', 'notify')}};
-    a.classList.add('efy_anim_remove'); $wait($css_prop('--efy_anim_speed') * 0.05, ()=>{ a.remove(); try { $(`.efy_quick_notify_content [efy_alert].${b}`).remove()} catch {/**/} icon_fn() })
+/*Alerts*/ $add('div', {efy_alerts: '', class: 'efy_sidebar_width'}, [], $body, 'afterbegin');
+$event($body, 'pointerup', ()=>{ let a = event.target;
+    if (a.matches('[efy_alert]')){
+        let b = a.classList[0], icon_fn =()=>{
+            let active = $all('.efy_quick_notify_content [efy_alert]').length > 0 ? '_active' : '';
+            $('.efy_quick_notify i').setAttribute('efy_icon', 'notify' + active);
+        };
+        a.classList.add('efy_anim_remove');
+        $wait($css_prop('--efy_anim_speed') * 0.05, ()=>{
+            a.remove(); try { $(`.efy_quick_notify_content [efy_alert].${b}`).remove(); clearInterval(efy_timer_interval)} catch {/**/} icon_fn()
+        })
 }});
-
-/*Online Status*/ for (let a = ['offline', 'online'], i = 0; i <a.length; i++){
-    /*Fix This, it loads translations*/ let style = 'opacity: 0; pointer-events: none; position: absolute'; $add('i', {efy_lang: `${a[i]}_notify`, style: style}, [], $('.efy_sidebar')); $add('i', {efy_lang: `${a[i]}_notify_text`, style: style}, [], $('.efy_sidebar'));
-    $event(window, a[i], () =>{ if (efy.notify_offline !== false){ $notify(5, `${a[i]}_notify`, `${a[i]}_notify_text`, 'lang') }})
-}
 
 /*Lang Pseudo Trigger (Temporary)*/ $add('i', {efy_lang: 'no_notifications', style: 'opacity: 0; pointer-events: none; position: absolute'}, [], $('.efy_sidebar'));
 /*Prevent Default*/ $all('input[type="range"], .plus-btn, .minus-btn').forEach(a => a.addEventListener('contextmenu', ()=> event.preventDefault()));
@@ -951,13 +979,18 @@ z.addEventListener('keyup', ()=>{ let val = z.value.toLowerCase(); $all(containe
             }}
     }); observer.observe(document.body, { childList: true, subtree: true });
 
-    /*Alpha*/ for (let a =['"Max Width"'], i=0; i<a.length; i++){ $add('mark', {efy_lang: 'alpha'}, [], $(`[efy_content=size] [efy_range_text*=${a[i]}] .efy_range_text_p`), 'afterend')}
+    /*Alpha*/ ['"Max Width"'].map(a=>{ $add('mark', {efy_lang: 'alpha'}, [], $(`[efy_content=size] [efy_range_text*=${a}] .efy_range_text_p`), 'afterend') });
     /*No Notifications*/ $add('style', {}, [`.efy_quick_notify_content:empty:before {content: '${efy_lang.no_notifications}'}`], $head);
-    /*Extra Modules*/ for (let a =['extra'], i=0; i<a.length; i++){
-        if ($efy_module(`efy_${a[i]}`)){ $add('link', {href: `${efy.folder}/${a[i]}.css`, rel: 'stylesheet'}, [], $head);
-            if ($css_prop('--efy_protocol') == 'http'){ $add('script', {src: `${efy.folder}/${a[i]}.js`, type: 'module'}, [], $head)}
-            else { $add('script', {src: `${efy.folder}/${a[i]}_local.js`}, [], $head)}
-    }}
+    /*Extra Modules*/ ['extra'].map(a=>{
+        if ($efy_module(`efy_${a}`)){ $add('link', {href: `${efy.folder}/${a}.css`, rel: 'stylesheet'}, [], $head);
+            if ($css_prop('--efy_protocol') == 'http'){ $add('script', {src: `${efy.folder}/${a}.js`, type: 'module'}, [], $head)}
+            else { $add('script', {src: `${efy.folder}/${a}_local.js`}, [], $head)}
+    }});
+
+    /*Online Status*/ ['offline', 'online'].map((a,i)=>{ $event(window, a, ()=>{ if (efy.notify_offline !== false){
+        const lang = ['', $('[efy_lang]')], n = `--${a}_notify`; $notify('short', $css_prop(n, ...lang), $css_prop(`${n}_text`, ...lang))
+    }})});
+
 }
-    // $notify(3, 'EFY Load', `${performance.now() - efy_performance}ms`);
+    // $notify('short', 'EFY Load', `${performance.now() - efy_performance}ms`);
 }
