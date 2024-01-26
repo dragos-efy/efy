@@ -3,5 +3,5 @@
   "version": "24.01.26",
   "keywords": ["efy", "ui", "ux", "design", "offline", "css", "javascript", "transparent", "framework", "touchscreen", "responsive"],
   "author": "efy.ooo",
-  "files": ["/"]
+  "files": [".gitignore", "**/*"]
 }
