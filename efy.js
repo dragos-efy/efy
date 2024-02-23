@@ -1,5 +1,4 @@
-export let efy_version = '24.01.26 Beta', efy_performance = performance.now(),
-$ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document),
+export let efy_version = '24.02.23 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document),
 $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
 /*Add: Selector, optional: {Attributes}, [Text, Children], Parent, Position*/
 $add =(tag, attrs = {}, children = [], parent = document.body, position = 'beforeend')=>{
@@ -20,7 +19,7 @@ $css_prop =(prop, value, position = $root)=>{ if (value){ position.style.setProp
     else { let value = getComputedStyle(position).getPropertyValue(prop);
         if (value.startsWith(' ')){ value = value.slice(0,1)}; return value
 }},
-/*Event*/ $event = (a,b,c,d) =>{ d ? a.addEventListener(b,c,d) : a.addEventListener(b,c) },
+/*Event*/ $event =(a,b,c,d)=>{ d ? a.addEventListener(b,c,d) : a.addEventListener(b,c) },
 /*Remove Event*/ $event_rm = (a,b,c,d) =>{ d ? a.removeEventListener(b,c,d) : a.removeEventListener(b,c) },
 /*Ready: Selector, Function, 1 (optional)*/ $ready =(sel, fn, once)=>{ let d = document.documentElement; if (once == 1){
         return new Promise((res) =>{ let b = $(sel); if (b){res(b); return}
@@ -95,11 +94,14 @@ $event(window.visualViewport, 'resize', $100vh); $event(window.visualViewport, '
             ['a', {href: 'https://matrix.to/#/#efy_ui:matrix.org', role: 'button'}, 'Matrix'],
             ['a', {href: 'https://translate.codeberg.org/projects/efy', role: 'button', efy_lang: 'translations'}]
         ]]
-    ]], ['div', {id: 'efy_modules'}]
+    ]], ['div', {id: 'efy_modules'}],
+    ['details', {id: 'efy_sbtheme', efy_select: ''}, [
+        ['summary', {efy_lang: 'theme'}, [['i', {efy_icon: 'star'}]]],
+        ['div', {efy_tabs: 'efy_theme'}, [['div', {class: 'efy_tabs'}]]]
+    ]]
 ]);
 $add('div', {efy_sidebar_btn: 'absolute'});
 $add('video', {class: 'efy_3d_bg', autoplay: '', loop: '', muted: '', playsinline: ''});
-
 
 /*Quick Shortcuts*/ if ($efy_module('efy_quick')){ let a = $('[efy_about]');
     $add('input', {type: 'text', efy_search_input: '', class: 'efy_hide_i', placeholder: 'Search through menu...', name: 'efy_name'}, [], a, 'afterend');
@@ -118,288 +120,265 @@ $add('video', {class: 'efy_3d_bg', autoplay: '', loop: '', muted: '', playsinlin
     ['back', 'forward'].map(a =>{ $event($(`.efy_quick_${a}`), 'click', ()=> window.history.go(a === 'back' ? -1 : 1)) });
 }
 
-/*Theme*/ if ($efy_module('efy_mode')){
+/*Theme*/
 
-    $add('details', {id: 'efy_sbtheme', efy_select: ''}, [
-        ['summary', {efy_lang: 'theme'}, [['i', {efy_icon: 'star'}]]],
-        ['div', {efy_tabs: 'efyui_0'}, [['div', {class: 'efy_tabs'}]]]
-    ], $('.efy_sidebar'));
-
-    /*Tabs*/ let ui = [$('[efy_tabs=efyui_0]'), $('[efy_tabs=efyui_0] .efy_tabs')];
-    ['mode', 'colors', 'size', 'menu'].map(a =>{
-        const tab = $add('button', {efy_tab: a, efy_lang: a}, [], ui[1]),
-        content = $add('div', {efy_content: a, efy_select: '', id: `efy_${a}`}, [], ui[0]);
+    /*Tabs*/ ['mode', 'colors', 'size', 'menu'].map(a =>{
+        const tab = $add('button', {efy_tab: a, efy_lang: a}, [], $('[efy_tabs=efy_theme] .efy_tabs')),
+        content = $add('div', {efy_content: a, efy_select: '', id: `efy_${a}`}, [], $('[efy_tabs=efy_theme]'));
         if (a == 'mode'){ tab.setAttribute('efy_active', ''); content.setAttribute('efy_active', '')}
     });
 
     /*Colors*/ b = $('#efy_sbtheme [efy_content=colors]');
+    let container, css = $css_prop(`--efy_color`).split(', ');
+    css.map((a,i) => css[i] = `${i+1} ${a}`);
+    let colors = (efy.colors) ? String(efy.colors) : css;
 
-    $add('div', {efy_tabs: 'container'}, [
-        ['div', {class: 'previews', efy_select: ''}, [
-            ['button', {id: 'add-color'}, [ ['i', {efy_icon: 'plus'}] ]],
-            ['button', {id: 'remove-color'}, [ ['i', {efy_icon: 'remove'}] ]]
-        ]]
+    container = $add('div', {id: 'efy_gradient', efy_tabs: 'container', efy_color: `${colors}, range:1-18`}, [], b);
+    $add('div', {efy_lang: 'angle', efy_range_text: 'Angle'}, [
+        ['input', {class: 'efy_color_angle_input', type: 'range', min: '0', max: '360', value: '165', step: '1'}]
     ], b);
 
-    const container = $('[efy_tabs=container]'), add = $('#add-color'), remove = $('#remove-color'),
-    bg = 'background: linear-gradient(to right,'; let count = 1;
+/*Set Colors*/ ['', '_trans'].map(a=> $css_prop(`--efy_color${a}`, efy[`gradient${a}`]));
 
-const inputs =(i, color, light, chroma, hue, alpha)=>{ i = String(i); const inputs = [
-        ['hue', 'hue', 360, 1, hue],
-        ['saturation', 'chroma', 0.37, 0.01, chroma, `${bg} oklch(50% 0 0), ${color})`],
-        ['brightness', 'lightness', 100, 1, light, `${bg} oklch(0% 0 0), ${color}, oklch(100% 0 0))`],
-        ['alpha', 'alpha', 1, 0.01, alpha]
-    ].map(p =>{ return ['div', { efy_lang: p[0], efy_range_text: p[0] }, [
-        ['input', { class: p[1], type: 'range', min: 0, max: p[2], step: p[3], value: p[4], style: p[5] }]
-    ]]});
-    $add('div', {efy_content: i}, inputs, container);
-    $add('input', {id: `color${i}`, type: 'radio', name: 'efy_color_gradient'}, [], add, 'beforebegin');
-    $add('label', {for: `color${i}`, efy_tab: i, style: `background: ${color}`}, i, add, 'beforebegin');
-}
+const update_color =(angle)=>{ let [alpha, gradient, gradient_trans, gradients, colors] = [[],[],[],[],[]];
+    const contents = $$all(container, '[efy_content]');
+    if (!angle){ angle = $('.efy_color_angle_input').value + 'deg'}
 
-const add_color =(nr, colors)=>{ for (let i = 1; i < nr+1; i++){
-    let color = colors ? colors[i-1] : efy[`color${i}`];
-    let [light, chroma, hue, alpha] = color.replace(`oklch(`, '').replace('%','').replace('/ ', '').split(' ');
-    inputs(i, color, light, chroma, hue, alpha);
-}};
+    contents.forEach((form, i)=>{ alpha.push($$(form, `.alpha`).value);
+        const ok = `${$$(form, '.lightness').value} ${$$(form, '.chroma').value} ${$$(form, '.hue').value}`;
+        colors.push(`${i+1} ${ok} ${alpha[i]}`);
+        gradient.push(`oklch(${ok} / ${alpha[i]})`);
+        gradient_trans.push(`oklch(${ok} / ${ (alpha[i] / 3).toFixed(2) })`);
+    });
 
-if (efy.color_nr){ count = efy.color_nr; add_color(count)}
-else { let colors = $css_prop(`--efy_color`).split(','), gradient = [], gradient_trans = []; count = colors.length; const angle = $css_prop(`--efy_color_angle`);
-    colors.map((a, i) =>{ if (a.startsWith(' ')){ colors[i] = a.slice(1)}
-        const color = colors[i].replace('/ ', '').split(' ');
-        gradient.push(`oklch(${colors[i]})`);
-        gradient_trans.push(`oklch(${color[0]} ${color[1]} ${color[2]} / ${ (color[3] / 3).toFixed(2) })`);
+    gradients = (contents.length > 1) ? [gradient, gradient_trans] : [`${gradient}, ${gradient}`, `${gradient_trans}, ${gradient_trans}`];
+    efy.gradient = `linear-gradient(${angle}, ${gradients[0]})`;
+    efy.gradient_trans = `linear-gradient(${angle}, ${gradients[1]})`;
+    efy.colors = colors; $save();
+    ['', '_trans'].map(a=> $css_prop(`--efy_color${a}`, efy[`gradient${a}`]));
+};
+
+if (!efy.colors){ let [lightness, chroma, hue, alpha, gradient, gradient_trans] = [[],[],[],[],[],[]]; const angle = $css_prop(`--efy_color_angle`);
+    css.map((a,i) =>{ const split = css[i].split(' '), ok = `split[1]} ${split[2]} ${split[3]}`, alpha = split[4];
+        gradient.push(`oklch(${ok} / ${alpha})`);
+        gradient_trans.push(`oklch(${ok} / ${(alpha / 3).toFixed(2)})`);
     });
     efy.gradient = `linear-gradient(${angle}deg, ${gradient})`;
     efy.gradient_trans = `linear-gradient(${angle}, ${gradient_trans})`;
-    add_color(count, colors); update_color(angle); efy.color_nr = count; $save()
+    $ready('#efy_gradient .alpha', update_color, 1);
 }
 
-$css_prop(`--efy_color`, efy.gradient); $css_prop(`--efy_color_trans`, efy.gradient_trans)
-if (count == 1){ remove.setAttribute('disabled', '')} else if (count == 12){ add.setAttribute('disabled', '')}
-
-const toggle_disabled =()=>{
-    count == 1 ? remove.setAttribute('disabled', '') : remove.removeAttribute('disabled');
-    count == 12 ? add.setAttribute('disabled', '') : add.removeAttribute('disabled');
-}
-
-$event($('#add-color'), 'click', ()=>{ if (count < 12){
-    const color = $$(container, `[efy_content="${count}"]`),
-    light = $$(color, `.lightness`).value, chroma = $$(color, '.chroma').value, hue = $$(color, '.hue').value, alpha = $$(color, '.alpha').value;
-    count++; inputs(count, color, light, chroma, hue, alpha);
-    efy.color_nr = count; $save()
-}; toggle_disabled()});
-
-$event($('#remove-color'), 'click', (a)=>{ if (count > 1){
-    $$(container, `[efy_content="${count}"]`).remove(); $$(container, `[efy_tab="${count}"]`).remove();
-    delete efy[`color${count}`]; count--; efy.color_nr = count; $save()
-}; toggle_disabled()});
-
-function update_color(angle){ let [light, chroma, hue, alpha, gradient, gradient_trans] = [[], [], [], [], [], []], colors = 1;
-    const content_colors = $$all(container, '[efy_content]');
-
-    if (!angle){ angle = $('.efy_color_angle_input').value + 'deg'}
-
-    content_colors.forEach((form, i) => {
-        light.push($$(form, '.lightness').value); chroma.push($$(form, '.chroma').value);
-        hue.push($$(form, '.hue').value); alpha.push($$(form, '.alpha').value);
-        const c = `oklch(${light[i]}% ${chroma[i]} ${hue[i]}`;
-
-        $$(form, '.lightness').style = `${bg} oklch(0% 0 0), ${c}), oklch(100% 0 0))`;
-        $$(form, '.chroma').style = `${bg} oklch(50% 0 0), ${c}))`;
-        $$(form, '.alpha').style = `${bg} oklch(0% 0 0 / 0), ${c}))`;
-
-        gradient.push(`${c} / ${alpha[i]})`);
-        gradient_trans.push(`${c} / ${ (alpha[i] / 3).toFixed(2) })`);
-        $$(container, `[efy_tab="${i+1}"]`).style.background = gradient[i];
-        efy[`color${i+1}`] = `${c} / ${alpha[i]}`;
-    });
-    if (content_colors.length > 1){
-        efy.gradient = `linear-gradient(${angle}, ${gradient})`;
-        efy.gradient_trans = `linear-gradient(${angle}, ${gradient_trans})`;
-    } else {
-        efy.gradient = `linear-gradient(${angle}, ${gradient}, ${gradient})`;
-        efy.gradient_trans = `linear-gradient(${angle}, ${gradient_trans}, ${gradient_trans})`;
-    };
-    $css_prop(`--efy_color`, efy.gradient); $css_prop(`--efy_color_trans`, efy.gradient_trans); $save()
-}
-
-$event(container, 'input', (e)=>{ if (e.target.matches('input')){ update_color() }});
-$event(container, 'click', (e)=>{ if (e.target.matches('#add-color') || e.target.matches('#remove-color')){ update_color() }});
-
-/*Angle*/ $add('div', {efy_lang: 'angle', efy_range_text: 'Angle'}, [['input', {class: 'efy_color_angle_input', type: 'range', min: '0', max: '360', value: '165', step: '1'}]], b);
+$event($('.efy_color_angle_input'), 'input', ()=> update_color());
+$event(container, 'input', ()=> update_color());
+$event(container, 'click', (e)=>{ const x = e.target;
+    if (x.matches('.color_add') || x.matches('.color_remove')) update_color();
+});
 
 $add('details', {efy_help: ''}, [['summary', {efy_lang: 'custom_colors'}], ['div', {efy_lang: 'custom_colors_help'}]], b);
+$add('div', {class: 'efy_custom_colors', efy_color: `Text 0.5 0.2 0 1 efy_color_text, Background 0.7 0.2 100 1 efy_color_bgcol, Border 0.7 0.2 100 1 efy_color_bordercol, Button 0.7 0.2 100 1 efy_color_buttoncol`}, [], b);
 
-$add('div', {efy_tabs: 'efy_custom_colors', class: 'efy_custom_colors'}, [
-    ['div', {class: 'tabs'}]
-], b);
+$ready(`[for=efy_color_buttoncol]`, ()=>{
 
-let cc = $('.efy_custom_colors'); c = ['bgcol', 'text', 'bordercol', 'buttoncol'];
+    ['text', 'bgcol', 'bordercol', 'buttoncol'].map((a,i)=>{
+        const j = i + 1, id = `efy_${a}_status`, begin = [[], $(`.efy_custom_colors [efy_content="${j}"]`), 'afterbegin'];
+        $add('label', {for: id, efy_lang: 'active'}, ...begin); $add('input', {id: id, type: 'checkbox'}, ...begin);
+        if (efy[a] !== undefined) $css_prop(`--efy_color_${a}_var`, efy[a]);
+    });
 
-['background,0 0% 0%,efy_color_bgcol', 'text,0 100% 50%,efy_color_text', 'border, 0 0% 50%,efy_color_bordercol', 'button, 0 0% 50%,efy_color_buttoncol'].map((a,i)=>{
-    $add('div', {class: 'efy_tab'}, [
-        ['input', {type: 'checkbox', name: `efy_custom_colors`, id: `efy_${c[i]}_status`}],
-        ['label', {for: `efy_${c[i]}_status`}],
-        ['input', {type: 'radio', efy_tab: c[i], id: 'efy_custom_' + c[i], name: 'efy_custom_colors'}],
-        ['label', {for: 'efy_custom_' + c[i], efy_lang: a.split(',')[0]}],
-    ], $('[efy_tabs=efy_custom_colors] .tabs'));
+    /*Checkbox Toggles*/  'audio_status audio_click audio_hover outline text_status bgcol_status bordercol_status buttoncol_status trans_filter_menu'.split(' ').forEach(x =>{
+        if (efy[x] == 'on'){ $(`#efy_${x}`).setAttribute('checked', '')}
+        $event($(`#efy_${x}`), 'click', ()=>{
+            efy[x] == 'on' ? delete efy[x] : efy[x] = 'on'; $save()
+        })
+    });
+    /*Focus Outline*/ if (efy.outline == 'on'){$root.setAttribute('efy_outline', '')} $('#efy_outline').onchange =()=>{$root.toggleAttribute('efy_outline')}
+    /*Custom Text Color*/ if (efy.text_status == 'on'){$root.setAttribute('efy_color_text', '')} $('#efy_text_status').onchange =()=>{$root.toggleAttribute('efy_color_text')}
+    /*Custom BG Color*/ if (efy.bgcol_status == 'on'){$root.setAttribute('efy_color_bgcol', '')} $('#efy_bgcol_status').onchange =()=>{$root.toggleAttribute('efy_color_bgcol')}
+    /*Custom BG Color*/ if (efy.bordercol_status == 'on'){$root.setAttribute('efy_color_bordercol', '')} $('#efy_bordercol_status').onchange =()=>{$root.toggleAttribute('efy_color_bordercol')}
+    /*Custom Button Color*/ if (efy.buttoncol_status == 'on'){$root.setAttribute('efy_color_buttoncol', '')} $('#efy_buttoncol_status').onchange =()=>{$root.toggleAttribute('efy_color_buttoncol')}
 
-    $add('div', {efy_content: c[i], efy_color: a+',lang', class: 'show'}, [], $('[efy_tabs=efy_custom_colors]'));
-});
-$all(`[efy_tab=bgcol], [efy_content=bgcol]`).forEach(a=> a.setAttribute('efy_active', ''));
+    /*Keyboard Accessibility*/
+    $event($('.efy_custom_colors .efy_tabs'), 'keydown', (event)=>{
+        const inputs = Array.from($all('.efy_custom_colors .efy_tabs .efy_tab input')), index = inputs.indexOf(document.activeElement);
 
-c.map(a =>{
-    if (efy[a] !== undefined){ $css_prop(`--efy_color_${a}_var`, efy[a]) }
-});
+        if (event.key === 'Tab'){ event.shiftKey ? inputs[0].focus() : index !== inputs.length - 1 ? inputs[inputs.length - 1].focus() : null}
+        if (['ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown'].includes(event.key)) { event.preventDefault();
+            const index2 = (index + (['ArrowRight', 'ArrowDown'].includes(event.key) ? 1 : -1) + inputs.length) % inputs.length; inputs[index2].focus();
+        }
+    });
 
-/*Keyboard Accessibility*/
-$event($('.efy_custom_colors .tabs'), 'keydown', (event)=>{
-    const inputs = Array.from($all('.efy_tab input')), index = inputs.indexOf(document.activeElement);
-
-    if (event.key === 'Tab'){ event.shiftKey ? inputs[0].focus() : index !== inputs.length - 1 ? inputs[inputs.length - 1].focus() : null}
-    if (['ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown'].includes(event.key)) { event.preventDefault();
-        const index2 = (index + (['ArrowRight', 'ArrowDown'].includes(event.key) ? 1 : -1) + inputs.length) % inputs.length; inputs[index2].focus();
-    }
-});
-
-/*Shadows*/ $add('p', {style: 'margin: 15rem 0 10rem 0'}, [ 'Shadows: Trans', ['mark', {efy_lang: 'alpha', style: 'margin-left: 8rem'}] ], b);
-
-$add('div', {class: 'efy_shadows'}, [ ['div'] ], b); let ss = $('.efy_shadows div');
-['trans1, 0 0% 50%, 1', 'trans2, 0 0% 50%, 2', 'trans3, 0 0% 50%, 3', 'trans4, 0 0% 50%, 4', 'btn1, 0 0% 50%,1',  'btn2, 0 0% 50%, 2',  'btn3, 0 0% 50%, 3',  'btn4, 0 0% 50%, 4'].map((a,i)=>{
-    $add('div', {efy_color: a, efy_select: ''}, [], ss);
-    $ready(`.efy_shadows [efy_color="${a}"] [efy_color_picker]`, (x)=>{
-        $add('div', {efy_range_text: 'transparency', efy_lang: 'transparency'}, [$add('input', {class: `transparency`, type: 'range', min: '0', max: '1', value: '1', step: '0.05'})], $$(x, '[efy_range_text=brightness]'));
-        $add('div', {efy_range_text: 'spread', efy_lang: 'spread'}, [$add('input', {class: `spread`, type: 'range', min: '-20', max: '30', value: '0', step: '1'})], x, 'afterbegin');
-        $add('div', {efy_range_text: 'blur', efy_lang: 'blur'}, [$add('input', {class: `blur`, type: 'range', min: '0', max: '50', value: '5', step: '1'})], x, 'afterbegin');
-        ['y', 'x'].map(a => $add('div', {efy_range_text: a, efy_lang: a}, [$add('input', {class: a, type: 'range', min: '-30', max: '30', value: '0', step: '1'})], x, 'afterbegin'));
-        $add('label', {efy_lang: 'inset', for: `inset${i}`, name: `efy_shadow_trans${i}`}, [], x, 'afterbegin');
-        $add('input', {id: `inset${i}`, name: `efy_shadow_trans${i}`, type: 'checkbox'}, [], x, 'afterbegin');
-        $add('label', {efy_lang: 'status', for: `status${i}`, name: `efy_shadow_trans_status${i}`}, [], x, 'afterbegin');
-        $add('input', {id: `status${i}`, name: `efy_shadow_trans_status${i}`, type: 'checkbox'}, [], x, 'afterbegin');
-})});
-$ready(`.efy_shadows [efy_color*=btn1] .spread`, ()=>{
-    $add('p', {style: 'width: 100%'}, ['Shadows: Button', ['mark', {efy_lang: 'alpha', style: 'margin-left: 8rem'}] ], $('.efy_shadows [efy_color*=trans4]'), 'afterend');
-    [0,4].map(a=> $(`.efy_shadows #status${a}`).checked = true);
 },1);
 
-let efy_shadow = '', keys = 'shadow_trans shadow_button shadow_button_trans'.split(' '), values = ['trans', 'button', ''], a3 = [0,1,2,3], a4 = [0,1,2,3,4];
+/*Shadows*/ const efy_shadows = $add('div', {class: 'efy_shadows'}, [], b); let efy_shadow = [];
 
-const restore_shadow =(key, value)=>{
-    if (efy[key] !== undefined){ $css_prop(`--efy_${key}`, efy[key]); let b = ['trans', 'btn'];
-        if (value !== ''){ efy_shadow += `${value},`}
-        ['shadow_trans', 'shadow_button'].map((x,y) =>{
-        if (key == x){ let sp = efy[key].split(',');
-            $wait(3, ()=>{
-                sp.map((a,i)=>{ let hsla = sp[i].split(' hsla(')[1].slice(0,-1), alpha = hsla.split(' / ')[1].replace(')', ''), hsl = hsla.split(' / ')[0].split(' '), h =  hsl[0], s = hsl[1].replace('%', ''), l = hsl[2].replace('%', ''),
-                    j = '.efy_shadows [efy_color*="' + b[y] + String(i + 1) + '"]';
-                    $(`${j} [efy_color_preview]`).style.background = `hsla(${hsla})`;
-                    $(`${j} .hue`).value = h;
-                    $(`${j} .sat`).value = s; $(`${j} .sat`).style.background = `linear-gradient(to right, hsl(0 0% 50%), hsl(${hsl}))`;
-                    $(`${j} .lgt`).value = l; $(`${j} .lgt`).style.background = `linear-gradient(to right, #000, hsl(${hsl}), #fff)`;
-                    $(`${j} .transparency`).value = alpha; $(`${j} .transparency`).style.background = `linear-gradient(to right, transparent, hsl(${hsl}))`;
-                })
-        })}})
-}},
-shadow =(i, efy_color, adjust, type)=>{
-    let g = `.efy_shadows [efy_color*=${efy_color}`, d = `${g}${i}]`, c = [], e = [];
-    a3.map(i =>{ e[i] = `${g}] #status${i}`; c[i] = `${g}${i + 1}] .` });
-    $ready(`${d} .spread`, ()=>{
-        $text($(`${d} [efy_color_preview]`), i);
-        $event($(d), 'input', ()=>{
-            if (event.target.matches('input')) { let inset = [], b = [], b2 = [];
-                a3.map(x =>{ let a = c[x]; if ($(`${g}] #status${x + adjust}`).checked){
-                    inset[x] = $(`${g}] #inset${x + adjust}`).checked ? 'inset ' : '';
-                    let f = `${inset[x] + $(a + 'x').value}rem ${$(a + 'y').value}rem ${$(a + 'blur').value}rem ${$(a + 'spread').value}rem hsla(${$(a + 'efy_color_picker_hsl').value} /`, tsp = $(a + 'transparency').value;
-                    b[x] = `${f} ${tsp})`;
-                    if (type == 'button'){ b2[x] = `${f} ${ (tsp / 3).toFixed(2) })` }
-                } else { delete b[x]; delete b2[x] }});
-                b = String(b).replaceAll(',,', ',').replaceAll(',,', ','); if (b.slice(-1) == ',') b = b.slice(0, -1); if (b.slice(0,1) == ',') b = b.slice(1);
-                $css_prop(`--efy_shadow_${type}`, b); if (b == []){ delete efy[`shadow_${type}`]} else { efy[`shadow_${type}`] = b};
-                if (type == 'button'){
-                    b2 = String(b2).replaceAll(',,', ',').replaceAll(',,', ','); if (b2.slice(-1) == ',') b2 = b2.slice(0, -1); if (b2.slice(0,1) == ',') b2 = b2.slice(1);
-                    $css_prop('--efy_shadow_button_trans', b2);
-                    if (b2 == []){ delete efy.shadow_button_trans} else { efy.shadow_button_trans = b2};
-                    efy_shadow = efy_shadow.replaceAll('button,', '')
-                } else { efy_shadow = efy_shadow.replaceAll('trans,', '')};
-                $save(); efy_shadow += `${type},`;
-                if (b == []){ efy_shadow = efy_shadow.replaceAll(`${type},`, '')}
-                if (b2 == []){ efy_shadow = efy_shadow.replaceAll('button,', '')}
-                $root.setAttribute('efy_shadow', efy_shadow.slice(0,-1))
-}})}, 1)};
+/*Set*/ ['button', 'trans'].map(type =>{ const key = `shadow_${type}`,
+    shadows = `.efy_shadows .efy_shadows_${type}`; let b = [], colors = [];
 
-keys.forEach((key, i) => restore_shadow(key, values[i]));
-if (efy_shadow !== ''){ $root.setAttribute('efy_shadow', efy_shadow.slice(0,-1))}
-a4.map(i => shadow(i, 'trans', 0, 'trans')); a4.map(i => shadow(i, 'btn', 4, 'button'));
-
-
-/*HSL to / from RGB & HEX*/ const hsl2rgb=((t,i,a)=>{a/=100;const h=i=>(i+t/30)%12,n=(i/=100)*Math.min(a,1-a),e=t=>a-n*Math.max(-1,Math.min(h(t)-3,Math.min(9-h(t),1)));return (255*e(0)).toFixed(0)+' '+(255*e(8)).toFixed(0)+' '+(255*e(4)).toFixed(0)}),
-hsl2hex=((t,n,a)=>{a/=100;const r=n*Math.min(a,1-a)/100,h=n=>{const h=(n+t/30)%12,o=a-r*Math.max(Math.min(h-3,9-h,1),-1);return Math.round(255*o).toString(16).padStart(2,"0")};return`${h(0)}${h(8)}${h(4)}`}),
-hex2hsl=(a=>{let e=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(a),[t,r,s]=[parseInt(e[1],16),parseInt(e[2],16),parseInt(e[3],16)];t/=255,r/=255,s/=255;let h,n,d=Math.max(t,r,s),c=Math.min(t,r,s),l=(d+c)/2;if(d==c)h=n=0;else{let a=d-c;switch(n=l>.5?a/(2-d-c):a/(d+c),d){case t:h=(r-s)/a+(r<s?6:0);break;case r:h=(s-t)/a+2;break;case s:h=(t-r)/a+4}h/=6}return n*=100,n=Math.round(n),l*=100,l=Math.round(l),[h=Math.round(360*h),n,l]}),
-rgb2hsl=(t=>{let[a,h,r]=[t[0]/255,t[1]/255,t[2]/255],n=Math.max(a,h,r),M=Math.min(a,h,r),u=(n+M)/2,d=0,o=0;return n!=M&&(d=u<.5?(n-M)/(n+M):(n-M)/(2-n-M),o=a==n?(h-r)/(n-M):h==n?2+(r-a)/(n-M):4+(a-h)/(n-M)),[u,d,o]=[100*u,100*d,60*o],o<0&&(o+=360),[Math.round(o),Math.round(d),Math.round(u)]});
-
-/*Color Picker: text or lang, hsl, id, lang*/ $ready('[efy_color]', (a)=>{ let g = a.getAttribute('efy_color').replaceAll(', ', ',').split(','), h = '', j = g[0]; if (g[3] == 'lang'){ h = g[0]; j = ''}
-    $add('button', {efy_color_preview: '', style: `background: hsl(${g[1]})`, efy_lang: h}, [j], a);
-    $add('div', {efy_color_picker: ''}, [['div', {class: 'efy_cp_switch'}, [ ['button', {class: 'efy_color_picker_switch'}, 'HSL'] ]]], a);
-
-    if (!a.classList.contains('show')){
-        $$(a, '[efy_color_picker]').classList.add('efy_hide');
-        $event($$(a, '[efy_color_preview]'), 'click', ()=>{
-            $$(a, '[efy_color_picker]').classList.toggle('efy_hide');
-            a.toggleAttribute('efy_active')
-        });
+    if (efy[key]){ efy_shadow.push(type);
+        efy[key].map((a,i)=> colors.push(`${i+1} ${a.lightness} ${a.chroma} ${a.hue} ${a.alpha}`))
     }
+    $add('p', {}, `Shadows: ${type.charAt(0).toUpperCase() + type.slice(1)}`, efy_shadows);
+    $add('div', {class: `efy_shadows_${type}`, efy_color: `${(colors.length === 0) ? '' : `${colors}, `}range:0-10`}, [], efy_shadows);
 
-let cp = $$(a, '.efy_cp_switch'), c = ['hue', 'sat', 'lgt'], d = ['360', '100', '100'], e = ['0', '100', '50']; ['hue', 'saturation', 'brightness'].map((b,i)=>{
-    $add('div', {efy_lang: b, efy_range_text: b}, [ ['input', {class: c[i], type: 'range', step: '1', min: '0', max: d[i], value: e[i]}] ], cp, 'beforebegin')
-});
+    $ready(`${shadows} .alpha`, ()=>{
+        const set_css =(style, style_button)=>{
+            $css_prop(`--efy_${key}`, style); if (type === 'button') $css_prop(`--efy_${key}_trans`, style_button);
+        };
 
-let val = ['0 100 50', '255 0 0', 'ff0000'], min = [13,5,3], max = [13,11,6], hide = ['', 'efy_hide', 'efy_hide']; ['hsl', 'rgb', 'hex'].map((b,i)=>{
-    $add('input', {class: `efy_color_picker_${b} ${hide[i]}`, type: 'text', value: val[i], minlength: min[i], maxlength: max[i], name: 'efy_name'}, [], cp)
-});
+        /*Restore*/ if (efy[key]){ let [style, style_button] = [[],[]];
+            efy[key].map((a,i)=>{
+                const props = a, j = i+1, c = $(`${shadows} [efy_content="${j}"]`),
+                [L, C, H, A] = [$$(c, '.lightness'), $$(c, '.chroma'), $$(c, '.hue'), $$(c, '.alpha')],
+                ok = [props.lightness, props.chroma, props.hue], lch = `, oklch(${ok})`;
+                [[style, props.alpha], [style_button, (props.alpha / 3).toFixed(2)]].map(a=> a[0].push(`${props.css} ${a[1]})`))
+                [L.value, C.value, H.value, A.value] = [...ok, props.alpha];
+                [[L, `oklch(0 0 0)${lch}, #fff)`], [C, `oklch(0.5 0 0)${lch})`], [A, `transparent${lch})`]]
+                .forEach(x=> x[0].style.background = `linear-gradient(to right, ${x[1]}`);
+            });
+            set_css(style, style_button);
+        }
 
-$add('div', {class: 'copy_btn'}, [
-    ['button', {class: 'efy_color_picker_copy', title: 'copy'}, [['i', {efy_icon: 'copy'}]]],
-    ['button', {class: 'efy_color_picker_paste', title: 'paste'}, [['i', {efy_icon: 'paste'}]]]
-], cp);
+        /*Set*/ $event($(shadows), 'input', ()=>{ if (event.target.matches('input')){ let [array, style, style_button] = [[],[],[]];
+            $all(`${shadows} [efy_content]`).forEach((a,i)=>{
+                const [inset, x, y, blur, spread, lightness, chroma, hue, alpha] = [
+                    $$(a, `#efy_shadow_${type}_inset${i}`).checked, $$(a, '.x').value, $$(a, '.y').value,
+                    $$(a, '.blur').value, $$(a, '.spread').value, $$(a, '.lightness').value,
+                    $$(a, '.chroma').value, $$(a, '.hue').value, $$(a, '.alpha').value,
+                ], css = `${(inset) ? 'inset ': ''}${x}rem ${y}rem ${blur}rem ${spread}rem oklch(${lightness} ${chroma} ${hue} /`;
+                array.push({inset: inset, x: x, y: y, blur: blur, spread: spread, lightness: lightness, chroma: chroma, hue: hue, alpha: alpha, css: css});
+                [[style, alpha], [style_button, (alpha / 3).toFixed(2)]].map(a=> a[0].push(`${css} ${a[1]})`))
+            });
+            set_css(style, style_button); efy[key] = array; $save();
 
-let efy_swc = 1, cs = $$(cp, '.efy_color_picker_switch');
+            if (!efy_shadow.includes(type)) efy_shadow.push(type);
+            $root.setAttribute('efy_shadow', efy_shadow);
+        }});
 
-$$(cp, '.efy_color_picker_copy').addEventListener('click', ()=>{ let b = cs.textContent.toLowerCase(); let d = $$(a,`.efy_color_picker_${b}`).value; navigator.clipboard.writeText(d); if (efy.notify_clipboard != false){ $notify('short', 'Copied to clipboard', d)}});
-$$(cp, '.efy_color_picker_paste').addEventListener('click', ()=>{ let b = cs.textContent.toLowerCase(), x = $$(a,`.efy_color_picker_${b}`);
-    navigator.clipboard.readText().then(cb =>{ x.value = cb; x.dispatchEvent(new Event('input', { 'bubbles': true })) }).catch();
-});
+    }, 1);
+}); if (efy_shadow !== []) $root.setAttribute('efy_shadow', efy_shadow);
 
-cs.addEventListener('click', ()=>{ if (efy_swc == 1){ $text(cs, 'RGB')} else if (efy_swc == 2){ $text(cs, 'HEX')} else if (efy_swc == 3){efy_swc = 0; $text(cs, 'HSL')} efy_swc++;
-    $$all(cp, 'input').forEach(a=> a.classList.add('efy_hide')); $$(cp, `input:nth-of-type(${efy_swc})`).classList.remove('efy_hide');
-});
+/*Color Picker | Name color1 id, lang:Name color2 id, range:min-max*/ let unique = 0;
+$ready('[efy_color]', (a)=>{ const now = `colors_${Date.now()}${unique}`; unique++;
+    let [colors, names, lightnesses, chromas, hues, alphas, ids, min, max] = [[],[],[],[],[],[],[], 1, 9];
+    a.setAttribute('efy_tabs', now); $add('div', {class: 'efy_tabs', efy_select: ''}, [], a);
 
-    a.addEventListener('input', (d)=>{ let [h,s,l] = [$$(a, '.hue').value, $$(a, '.sat').value, $$(a, '.lgt').value], hsl = `${h} ${s}% ${l}%`, rgb = hsl2rgb(h,s,l), hex = hsl2hex(h,s,l), classes = d.target.classList;
+    a.getAttribute('efy_color').replaceAll(', ', ',').split(',').map((x,i) =>{ let ok = x.split(' '), name = ok[0];
+        // Find a Solution | name = getComputedStyle($('[efy_lang]')).getPropertyValue(`--${ok[0].replace('lang:', '')}`);
+        if (ok[0].includes('lang:')) name = ok[0].replace('lang:', '');
+        names[i] = name; lightnesses[i] = ok[1] || null; chromas[i] = ok[2] || null;
+        hues[i] = ok[3] || null; alphas[i] = ok[4] || null; ids[i] = ok[5] || null;
+    });
 
-        if (classes.contains('efy_color_picker_hsl')){ let c = $$(a, '.efy_color_picker_hsl').value.split(' '); [h,s,l] = [c[0], c[1].replace('%', ''), c[2].replace('%', '')]}
-        else if (classes.contains('efy_color_picker_rgb')){ let c = $$(a, '.efy_color_picker_rgb').value.split(' '), e = rgb2hsl(c); [h,s,l] = [e[0], e[1], e[2]]}
-        else if (classes.contains('efy_color_picker_hex')){ let c = '#' + $$(a, '.efy_color_picker_hex').value; try {let e = hex2hsl(c); [h,s,l] = [e[0], e[1], e[2]] } catch {/**/}}
-        else { let cvt = [hsl,rgb,hex]; ['hsl', 'rgb', 'hex'].map((b,i)=>{$$(a,`.efy_color_picker_${b}`).value = cvt[i]})}
-        hsl = `${h} ${s}% ${l}%`; [$$(a, '.hue').value, $$(a, '.sat').value, $$(a, '.lgt').value] = [h,s,l];
-        let style = [`hsl(${hsl})`, `linear-gradient(to right, hsl(0 0% 50%), hsl(${h} 100% ${l}%))`, `linear-gradient(to right, #000, hsl(${h} ${s}% 50%), #fff)`]; ['[efy_color_preview]', '.sat', '.lgt'].map((b,i)=>{$$(a,b).style.background = style[i] });
+    const last_name = names[names.length - 1],range_status = last_name.includes('range'), previews = $$(a, '.efy_tabs');
+    if (range_status){ [min, max] = last_name.replace('range:', '').split('-');
+        [names, lightnesses, chromas, hues, alphas, ids].map(a=> a.pop());
+    }; let nr = names.length, last, last2;
 
-        efy[`color${$$(a,'[efy_color_preview]').textContent}`] = hsl;
+    /*Add Buttons: Add, Remove, Copy, Paste*/
+    const range_hide = (!range_status) ? ' efy_hide_i' : '', bg = 'background: linear-gradient(to right,';
+    [['add', 'plus'], ['remove', 'remove']].map(a =>{
+        $add('button', {class: `color_${a[0]}${range_hide}`}, [['i', {efy_icon: a[1]}]], previews);
+    }); ['copy', 'paste'].map(a => $add('button', {class: `efy_${a}`, title: a}, [['i', {efy_icon: a}]], previews));
+    const add = $$(a, '.color_add'), remove = $$(a, '.color_remove'), copy = $$(a, '.efy_copy'), paste = $$(a, '.efy_paste'),
+    toggle_arcp =()=>{ if (range_status){
+            (nr < max) ? add.classList.remove('efy_hide_i') : add.classList.add('efy_hide_i');
+            (nr > min) ? remove.classList.remove('efy_hide_i') : remove.classList.add('efy_hide_i');
+        }; if (nr > min){ copy.classList.remove('efy_hide_i'); paste.classList.remove('efy_hide_i')}
+        else if (nr == 0){ copy.classList.add('efy_hide_i'); paste.classList.add('efy_hide_i')}
+    }; toggle_arcp();
+
+    const add_color =(start, nr)=>{ for (let i = start; i < nr; i++){ const j = String(i + 1);
+        const color = `oklch(${lightnesses[i]} ${chromas[i]} ${hues[i]} / ${alphas[i]})`, inputs = [
+            ['hue', 'hue', 360, 1, hues[i]],
+            ['saturation', 'chroma', 0.37, 0.01, chromas[i], `${bg} oklch(.5 0 0), ${color})`],
+            ['brightness', 'lightness', 1, 0.01, lightnesses[i], `${bg} oklch(0 0 0), ${color}, oklch(1 0 0))`],
+            ['alpha', 'alpha', 1, 0.01, alphas[i], `${bg} oklch(0 0 0 / 0), ${color})`]
+        ].map(p =>{ return ['div', { efy_lang: p[0], efy_range_text: p[0] }, [
+            ['input', { class: p[1], type: 'range', min: 0, max: p[2], step: p[3], value: p[4], style: p[5] }]
+        ]]}), id = ids[i] || `${now}_${j}`;
+        const content = $add('div', {efy_content: j}, [...inputs], a);
+        $add('input', {id: id, type: 'radio', name: now}, [], add, 'beforebegin');
+        $add('label', {for: id, efy_tab: j, style: `background: ${color}`}, names[i] || nr, add, 'beforebegin');
+
+        /*Add Shadows*/ ['button', 'trans'].map(type =>{ if (a.classList.contains(`efy_shadows_${type}`)){
+            let [inset, x, y, blur, spread] = [false, 0, 0, 0, 0]; const inset_id = `efy_shadow_${type}_inset${i}`, begin = [[], content, 'afterbegin'];
+            if (efy[`shadow_${type}`]){
+                const props = efy[`shadow_${type}`][i] || efy[`shadow_${type}`][i - 1];
+                [inset, x, y, blur, spread] = [props.inset, props.x, props.y, props.blur, props.spread];
+            }
+            $add('label', {efy_lang: 'inset', for: inset_id}, ...begin); $add('input', {id: inset_id, type: 'checkbox', ...(inset ? {checked: true} : {})}, ...begin);
+            [['x', x], ['y', y]].map(a => $add('div', {efy_range_text: a[0], efy_lang: a[0]}, [['input', {class: a[0], type: 'range', min: '-30', max: '30', value: a[1], step: '1'}]], content));
+            $add('div', {efy_range_text: 'blur', efy_lang: 'blur'}, [['input', {class: `blur`, type: 'range', min: '0', max: '50', value: blur, step: '1'}]], content);
+            $add('div', {efy_range_text: 'spread', efy_lang: 'spread'}, [['input', {class: `spread`, type: 'range', min: '-20', max: '30', value: spread, step: '1'}]], content);
+        }});
+
+    }}; add_color(0, nr);
+
+    /*Copy, Paste, Add, Remove*/ $event(previews, 'click', (event)=>{
+        let current, active; const target = event.target; toggle_arcp();
+        const match = {
+            copy: target.matches('.efy_copy'), paste: target.matches('.efy_paste'),
+            add: target.matches('.color_add'), remove: target.matches('.color_remove')
+        };
+        if ((match.add || match.remove) && (nr !== 0)){
+            active = $$(a, '[efy_content][efy_active]') || $$(a, '[efy_content]:last-of-type'); current = active.getAttribute('efy_content') - 1;
+        }
+        if (match.add && (nr < max)){ nr++; last = nr - 1, last2 = nr - 2;
+            [names[last], lightnesses[last], chromas[last], hues[last], alphas[last]] =
+            [String(nr), lightnesses[current], chromas[current], hues[current], alphas[current]];
+            if (nr === 0){ add_color(0, 1); active = $$(a, '[efy_content]'); current = active.getAttribute('efy_content')}
+            else { add_color(last, nr)}
+            $$(a, '[efy_tab]:last-of-type').click();
+        }
+        else if (match.copy){ let h = $$(active, '.hue').value, c = $$(active, '.chroma').value, l = $$(active, '.lightness').value,
+            alpha = $$(active, '.alpha').value, ok = `${l} ${c} ${h} ${alpha}`;
+            navigator.clipboard.writeText(ok);
+            if (efy.notify_clipboard != false) $notify('short', 'Copied to clipboard', ok);
+        }
+        else if (match.paste){ navigator.clipboard.readText().then(ok =>{
+            [$$(active, '.lightness').value, $$(active, '.chroma').value, $$(active, '.hue').value, $$(active, '.alpha').value] = ok.split(' ');
+            $$(active, '.hue').dispatchEvent(new Event('input', { 'bubbles': true }))
+        }).catch()}
+        else if (match.remove && (nr > min)){ $$all(a, `[efy_tab], [efy_content], input[type=radio]`).forEach(x => x.remove());
+            [lightnesses, chromas, hues, alphas].map(x => x.splice(current, 1));
+            nr--; last = nr - 1, last2 = nr - 2; names = []; for (let i =  1; i <=  nr; i++) { names.push(String(i))}
+            add_color(0, nr);
+            if (nr !== 0){ const focus = $$(a, `[efy_tab="${current + 1}"]`) || $$(a, '[efy_tab]:last-of-type'); focus.click()}
+            else { ['button', 'trans'].map(type =>{ if (a.classList.contains(`efy_shadows_${type}`)){
+                efy_shadow = efy_shadow.filter(x => x !== type); $root.setAttribute('efy_shadow', efy_shadow);
+                delete efy[`shadow_${type}`]; $save();
+            }})}
+        }
+    });
+
+    $event(a, 'input', (d)=>{ if (d.target.getAttribute('type') == 'range'){
+        const active = $$(a, '[efy_content][efy_active]'), current = active.getAttribute('efy_content'),
+        l = $$(active, '.lightness').value, c = $$(active, '.chroma').value, h = $$(active, '.hue').value,
+        alpha = $$(active, '.alpha').value, ok = `${l} ${c} ${h}`,
+        style = [`.5 0 0), oklch(${l} ${c} ${h}))`, `0 0 0), oklch(.5 ${c} ${h}), oklch(1 0 0))`, `0 0 0 / 0), oklch(${l} ${c} ${h}))`];
+
+        /*Update Design*/ ['.chroma', '.lightness', '.alpha'].map((b,i)=>{
+            $$(active, b).style.background = 'linear-gradient(to right, oklch(' + style[i]
+        }); $$(a, `[efy_tab="${current}"]`).style.background = `oklch(${ok} / ${alpha})`;
+
+        [lightnesses[current-1], chromas[current-1], hues[current-1], alphas[current-1]] = [l, c, h, alpha];
 
         ['text', 'bgcol', 'bordercol', 'buttoncol'].map(x =>{
-            if (a.getAttribute('efy_color').includes(`color_${x}`)){ $css_prop(`--efy_color_${x}_var`, hsl); efy[x] = hsl; $save() }
-        });
-    });
+            if ($$(a, `[efy_tab="${current}"]`).getAttribute('for') == `efy_color_${x}`){
+                $css_prop(`--efy_color_${x}_var`, ok); efy[x] = ok; $save()
+        }});
+    }});
+
 });
 
 
 /*Mode*/ 'default light_light light_sepia dark_dark dark_nord dark_black light_trans dark_trans'.split(' ').map(a =>{
-    const c = $('#efy_sbtheme [efy_content=mode]'), id = `efy_mode_${a}`;
+    const content = [[], $('#efy_sbtheme [efy_content=mode]')], id = `efy_mode_${a}`;
     ['_trans', 'light_', 'dark_'].forEach(b => a = a.replace(new RegExp(b, 'g'), ''));
-    $add('input', {type: 'radio', name: 'efy_mode', id}, [], c); $add('label', {for: id, efy_lang: a}, [], c);
+    $add('input', {type: 'radio', name: 'efy_mode', id}, ...content); $add('label', {for: id, efy_lang: a}, ...content);
 });
 
-$add('details', {efy_help: ''}, [
-    ['summary', {efy_lang: 'transparency'}],
+$add('details', {efy_help: ''}, [['summary', {efy_lang: 'transparency'}],
     ['div', {efy_lang: 'sidebar_transparency_help'}]
 ], $('#efy_mode_light_trans'), 'beforebegin');
 
@@ -492,8 +471,6 @@ $all("[name=efy_sidebar_align]").forEach(x =>{ const y = x.id.replace('efy_sideb
         }; if (x.matches('[efy_sidebar_btn*=close]')) $('body [efy_sidebar_btn]:not(.efy_sidebar button)').focus()
     })
 })()
-
-}
 
  /*EFY Notifications*/ $add('details', {id: 'efy_notifications', efy_select: ''}, [
     ['summary', {efy_lang: 'notifications'}, [['mark', {efy_lang: 'alpha'}]]],
@@ -698,19 +675,6 @@ $all('.efy_audio_volume_page').forEach(a => a.oninput =()=>{ $all('audio, video'
 
 } /*Sidebar Modules - End*/
 
-/*Checkbox Toggles*/  'audio_status audio_click audio_hover outline text_status bgcol_status bordercol_status buttoncol_status trans_filter_menu'.split(' ').forEach(x =>{
-    if (efy[x] == 'on'){ $(`#efy_${x}`).setAttribute('checked', '')}
-    $event($(`#efy_${x}`), 'click', ()=>{
-        efy[x] == 'on' ? delete efy[x] : efy[x] = 'on'; $save()
-    })
-});
-
-/*Focus Outline*/ if (efy.outline == 'on'){$root.setAttribute('efy_outline', '')} $('#efy_outline').onchange =()=>{$root.toggleAttribute('efy_outline')}
-/*Custom Text Color*/ if (efy.text_status == 'on'){$root.setAttribute('efy_color_text', '')} $('#efy_text_status').onchange =()=>{$root.toggleAttribute('efy_color_text')}
-/*Custom BG Color*/ if (efy.bgcol_status == 'on'){$root.setAttribute('efy_color_bgcol', '')} $('#efy_bgcol_status').onchange =()=>{$root.toggleAttribute('efy_color_bgcol')}
-/*Custom BG Color*/ if (efy.bordercol_status == 'on'){$root.setAttribute('efy_color_bordercol', '')} $('#efy_bordercol_status').onchange =()=>{$root.toggleAttribute('efy_color_bordercol')}
-/*Custom Button Color*/ if (efy.buttoncol_status == 'on'){$root.setAttribute('efy_color_buttoncol', '')} $('#efy_buttoncol_status').onchange =()=>{$root.toggleAttribute('efy_color_buttoncol')}
-
 /*Upload Input: id, accept, efy_lang or 'small', multiple, icon*/ $ready('[efy_upload]', (a)=>{
     let value = a.getAttribute('efy_upload'), accept_array = value.match(/\[(.*?)\]/), accept, b = value.replaceAll(' ','').split(','), c = 'plus';
     if (accept_array){ accept = accept_array[1]; b = value.replace(`[${accept}],`, ',').replaceAll(' ','').split(',')} else {accept = b[1]}
@@ -869,12 +833,14 @@ $event(efy_idb_import, 'change', async ()=>{
 /*Reset Settings*/ $all(".efy_localstorage_reset").forEach(x =>{ $event(x, 'click', ()=>{ localStorage.removeItem('efy'); location.reload() })});
 
 
-/*Tabs*/ $ready('[efy_tabs]', (a)=>{ $event(a, 'click', (a)=>{ tab = a.target; if (tab.matches(`[efy_tab]`)){
-    const active = `"${tab.getAttribute('efy_tab')}"`, name = `[efy_tabs="${tab.closest('[efy_tabs]').getAttribute('efy_tabs')}"]`,
-    tabs = `:is(${name}, ${name} > div, ${name} > div > div) >`;
-    $all(`${tabs} :is([efy_tab], [efy_content])[efy_active]`).forEach(x => x.removeAttribute('efy_active'));
-    $all(`${tabs} :is([efy_tab=${active}], [efy_content=${active}])`).forEach(x => x.setAttribute('efy_active', ''));
-}})});
+/*Tabs*/ $ready('[efy_tabs]', a => $event(a, 'click', event =>{ const tab = event.target;
+    if (!tab.matches(`[efy_tab]`)) return; event.stopPropagation();
+    const name = `[efy_tabs="${tab.closest('[efy_tabs]').getAttribute('efy_tabs')}"]`, active = tab.hasAttribute('efy_active'),
+    tabs = `:is(${name}, ${name} > div, ${name} > div > div) >`, content = $(`${tabs} [efy_content="${tab.getAttribute('efy_tab')}"]`),
+    toggle =(a,b)=> a[b ? 'removeAttribute' : 'setAttribute']('efy_active', '');
+    $all(`${tabs} :is([efy_tab], [efy_content])[efy_active]`).forEach(x => toggle(x, true));
+    [tab, content].forEach(x=> toggle(x, active))
+}));
 
 /*Code*/ $ready('[efy_code]', (a)=>{ let b = a.getAttribute('efy_code').split(','), chars = a.getAttribute('efy_code').length + 2;
     $add('div', {class: 'efy_bar'}, [ ['mark', {}, b[0]], ['div', {}, [
@@ -891,7 +857,6 @@ $event(efy_idb_import, 'change', async ()=>{
             if (efy.notify_clipboard != false){ $notify('short', 'Copied to clipboard', d)}
         }
     });
-
 });
 
 /*EFY Range Text*/ let p; $ready('[efy_range_text]', (a)=>{ let c = $$(a, 'input[type=range]');
@@ -991,6 +956,4 @@ $event($body, 'pointerup', ()=>{ let a = event.target;
         const lang = ['', $('[efy_lang]')], n = `--${a}_notify`; $notify('short', $css_prop(n, ...lang), $css_prop(`${n}_text`, ...lang))
     }})});
 
-}
-    // $notify('short', 'EFY Load', `${performance.now() - efy_performance}ms`);
-}
+}}
