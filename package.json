@@ -1,7 +1,14 @@
 {
   "name": "efy",
-  "version": "24.02.23",
+  "version": "24.02.25",
+  "description": "User Customizable CSS / JS framework. Private, modular & convergent apps",
   "keywords": ["efy", "ui", "ux", "design", "offline", "css", "javascript", "transparent", "framework", "touchscreen", "responsive"],
   "author": "efy.ooo",
+  "license": "AGPL-3.0",
+  "homepage": "https://efy.ooo",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dragos-efy/efy"
+  },
   "files": [".gitignore", "**/*", "!.git/**", "!.github/**"]
 }

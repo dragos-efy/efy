@@ -1,4 +1,4 @@
-export let efy_version = '24.02.23 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document),
+export let efy_version = '24.02.25 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document),
 $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
 /*Add: Selector, optional: {Attributes}, [Text, Children], Parent, Position*/
 $add =(tag, attrs = {}, children = [], parent = document.body, position = 'beforeend')=>{
@@ -272,7 +272,7 @@ $ready('[efy_color]', (a)=>{ const now = `colors_${Date.now()}${unique}`; unique
     const last_name = names[names.length - 1],range_status = last_name.includes('range'), previews = $$(a, '.efy_tabs');
     if (range_status){ [min, max] = last_name.replace('range:', '').split('-');
         [names, lightnesses, chromas, hues, alphas, ids].map(a=> a.pop());
-    }; let nr = names.length, last, last2;
+    }; let nr = names.length, last;
 
     /*Add Buttons: Add, Remove, Copy, Paste*/
     const range_hide = (!range_status) ? ' efy_hide_i' : '', bg = 'background: linear-gradient(to right,';
@@ -315,33 +315,35 @@ $ready('[efy_color]', (a)=>{ const now = `colors_${Date.now()}${unique}`; unique
     }}; add_color(0, nr);
 
     /*Copy, Paste, Add, Remove*/ $event(previews, 'click', (event)=>{
-        let current, active; const target = event.target; toggle_arcp();
+        let current, active, l, c, h, alpha; const target = event.target; toggle_arcp();
         const match = {
             copy: target.matches('.efy_copy'), paste: target.matches('.efy_paste'),
             add: target.matches('.color_add'), remove: target.matches('.color_remove')
         };
-        if ((match.add || match.remove) && (nr !== 0)){
-            active = $$(a, '[efy_content][efy_active]') || $$(a, '[efy_content]:last-of-type'); current = active.getAttribute('efy_content') - 1;
+        if (nr !== 0){ active = $$(a, '[efy_content][efy_active]') || $$(a, '[efy_content]:last-of-type');
+            current = active.getAttribute('efy_content') - 1;
         }
-        if (match.add && (nr < max)){ nr++; last = nr - 1, last2 = nr - 2;
+        if (match.copy || match.paste){ [l, c, h, alpha] =
+            [$$(active, '.lightness'), $$(active, '.chroma'), $$(active, '.hue'), alpha = $$(active, '.alpha')]
+        }
+        if (match.add && (nr < max)){ nr++; last = nr - 1;
             [names[last], lightnesses[last], chromas[last], hues[last], alphas[last]] =
             [String(nr), lightnesses[current], chromas[current], hues[current], alphas[current]];
             if (nr === 0){ add_color(0, 1); active = $$(a, '[efy_content]'); current = active.getAttribute('efy_content')}
             else { add_color(last, nr)}
             $$(a, '[efy_tab]:last-of-type').click();
         }
-        else if (match.copy){ let h = $$(active, '.hue').value, c = $$(active, '.chroma').value, l = $$(active, '.lightness').value,
-            alpha = $$(active, '.alpha').value, ok = `${l} ${c} ${h} ${alpha}`;
+        else if (match.copy){ const ok = `${l.value} ${c.value} ${h.value} ${alpha.value}`;
             navigator.clipboard.writeText(ok);
             if (efy.notify_clipboard != false) $notify('short', 'Copied to clipboard', ok);
         }
         else if (match.paste){ navigator.clipboard.readText().then(ok =>{
-            [$$(active, '.lightness').value, $$(active, '.chroma').value, $$(active, '.hue').value, $$(active, '.alpha').value] = ok.split(' ');
-            $$(active, '.hue').dispatchEvent(new Event('input', { 'bubbles': true }))
+            [l.value, c.value, h.value, alpha.value] = ok.split(' ');
+            h.dispatchEvent(new Event('input', { 'bubbles': true }))
         }).catch()}
         else if (match.remove && (nr > min)){ $$all(a, `[efy_tab], [efy_content], input[type=radio]`).forEach(x => x.remove());
             [lightnesses, chromas, hues, alphas].map(x => x.splice(current, 1));
-            nr--; last = nr - 1, last2 = nr - 2; names = []; for (let i =  1; i <=  nr; i++) { names.push(String(i))}
+            nr--; last = nr - 1; names = []; for (let i =  1; i <=  nr; i++) { names.push(String(i))}
             add_color(0, nr);
             if (nr !== 0){ const focus = $$(a, `[efy_tab="${current + 1}"]`) || $$(a, '[efy_tab]:last-of-type'); focus.click()}
             else { ['button', 'trans'].map(type =>{ if (a.classList.contains(`efy_shadows_${type}`)){
