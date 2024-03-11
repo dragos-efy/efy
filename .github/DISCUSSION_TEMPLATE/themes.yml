@@ -4,7 +4,9 @@ body:
    attributes:
      value: |
        Request adding a new theme to the public collection
+
        ## Checklist
+
        - Only submit your theme if you think others would need it. Quality over quantity
        - Check if the json is valid and works when you import it from `efy` > `backup`
        - Reduce the size or resolution of your images as much as possible (ideally between 50kb - 2mb) by compressing them and using formats like `webp` and `avif`
@@ -13,17 +15,17 @@ body:
  - type: input
    id: name
    attributes:
-     label: "Name (required)"
+     label: "Name"
    validations:
      required: true
  - type: input
    id: description
    attributes:
-     label: "Description (optional)"
+     label: "Description"
  - type: textarea
    id: json
    attributes:
-     label: "JSON (required)"
+     label: "JSON"
      placeholder: "Paste the JSON text of your theme"
      render: json
    validations:
@@ -31,13 +33,13 @@ body:
  - type: input
    id: author
    attributes:
-     label: "Author (optional)"
+     label: "Author"
  - type: input
    id: author_url
    attributes:
-     label: "Author URL (optional)"
+     label: "Author URL"
  - type: input
    id: comment
    attributes:
-     label: "Comment (optional)"
+     label: "Comment"
      placeholder: "Any additional information..."
