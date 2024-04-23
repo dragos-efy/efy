@@ -1,6 +1,10 @@
 [efy_lang]{
 --version:Version;
 --theme:Theme;
+--themes:Themes;
+--type:Type;
+--solid:Solid;
+--system:System;
 --visual_filters:Visual Filters;
 --backup:Backup;
 --efy_language:EFY Language;
@@ -42,8 +46,7 @@
 --max_width:Max Width;
 --transparency:Transparency;
 --window:Window;
---efy_settings:EFY Settings;
---efy_images:EFY Images;
+--efy_database:EFY Database;
 --save:Save;
 --button_position:Button Position;
 --floating_button:Floating Button;
@@ -57,7 +60,7 @@
 --text_spacing:Text Spacing;
 --cursor:Cursor;
 --custom:Custom;
---hide_touchscreen:Hide (Touchscreen);
+--hide:Hide;
 --learn_more:Learn more;
 --website:Website;
 --translations:Translations;
@@ -123,4 +126,9 @@
 --localstorage_off_text:You cannot save your preferences and some features will not work until you turn it on. No worries, your efy data stays in this local device only.;
 --front:Front;
 --trans:Trans;
+--yes:Yes;
+--no:No;
+--confirm:Confirm Changes;
+--custom:Custom;
+--saved_themes:Saved Themes;
 }

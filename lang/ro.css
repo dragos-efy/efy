@@ -1,6 +1,10 @@
 [efy_lang]{
 --version:Versiune;
 --theme:Temă;
+--themes:Teme;
+--type:Tip;
+--solid:Solid;
+--system:Sistem;
 --visual_filters:Filtre Vizuale;
 --backup:Backup;
 --efy_language:Limbă EFY;
@@ -123,4 +127,11 @@
 --button:Buton;
 --front:Față;
 --trans:Trans;
+--yes:Da;
+--no:Nu;
+--confirm:Confirmă Schimbări;
+--custom:Personalizat;
+--saved_themes:Teme Salvate;
+--efy_database:Bază de date EFY;
+--hide:Ascunde;
 }

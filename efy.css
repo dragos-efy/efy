@@ -12,16 +12,16 @@
 --efy_size: calc(36rem + var(--efy_border_size2)); --efy_size0: calc(30.5rem + var(--efy_border_size2));
 }
 /*No White Flash*/ html, body {background: #0f0f0f; margin: 0 auto}
-[efy_mode]:not([efy_mode*=trans_dark]) body {background: var(--efy_bg)!important}
+[efy_mode]:not([efy_mode="dark,trans"]) body {background: var(--efy_bg)!important}
 html[efy_mode], html[efy_mode*=trans].trans_window body, html.trans_window .efy_3d_bg {background: transparent!important}
 /*Scheme*/ input, select, textarea, audio, video {color-scheme: var(--efy_scheme)}
 /*Light: All*/ [efy_mode*=light] {--efy_bg: oklch(1 0 0); --efy_bg_var: 0 0 0; --efy_bg_var2: 1 0 0; --efy_scheme: light}
 /*Dark: All*/ [efy_mode*=dark] {--efy_bg: oklch(0 0 0); --efy_bg_var: 1 0 0; --efy_bg_var2: 0 0 0; --efy_scheme: dark}
-/*Sepia*/ [efy_mode=light_sepia] {--efy_bg: oklch(.94 .03 89); --efy_text: oklch(.41 .04 59)}
-/*Dark*/ [efy_mode=dark_dark] {--efy_bg: oklch(.25 0 0); --efy_text: oklch(.9 0 0)}
-/*Nord*/ [efy_mode=dark_nord] {--efy_bg: oklch(.28 .02 265); --efy_text: oklch(.85 .02 265)}
-/*Black*/ [efy_mode=dark_black] {--efy_text: oklch(.85 0 0)}
-/*Dark Trans*/ [efy_mode=dark_trans] {--efy_text2: oklch(0 0 0)}
+/*Sepia*/ [efy_mode*=sepia] {--efy_bg: oklch(.94 .03 89); --efy_text: oklch(.41 .04 59)}
+/*Dark*/ [efy_mode=dark] {--efy_bg: oklch(.25 0 0); --efy_text: oklch(.9 0 0)}
+/*Nord*/ [efy_mode*=nord] {--efy_bg: oklch(.28 .02 265); --efy_text: oklch(.85 .02 265)}
+/*Black*/ [efy_mode*=black] {--efy_text: oklch(.85 0 0)}
+/*Dark Trans*/ [efy_mode="dark,trans"] {--efy_text2: oklch(0 0 0)}
 
 /*Custom Text, Border & BG*/ [efy_color_bgcol][efy_mode] {--efy_bg: oklch(var(--efy_color_bgcol_var))}
 [efy_color_text][efy_mode] {--efy_text: oklch(var(--efy_color_text_var)); --efy_text_trans: oklch(var(--efy_color_text_var) / .3); --efy_text_trans2: oklch(var(--efy_color_text_var) / .45)}
@@ -30,9 +30,9 @@ html[efy_mode], html[efy_mode*=trans].trans_window body, html.trans_window .efy_
     :is(button:not(.efy_button_text_off [efy_tab]), [efy_tabs] [efy_tab][efy_active], [type=button], [role=button], input:is([type=reset], [type=submit]), [efy_select] input:checked + label, option:checked):not(.efy_button_text_off, [efy_color_preview]) {color: oklch(var(--efy_color_buttoncol_var)); -webkit-text-fill-color: oklch(var(--efy_color_buttoncol_var))}
     [efy_select] {
         [type=radio]:checked + label:after {background: oklch(var(--efy_color_buttoncol_var))!important}
-        & input:checked + label:before, [type=checkbox]:checked + label:after {border-color: oklch(var(--efy_color_buttoncol_var))!important}
-        & label:not([efy_upload], .efy_color, [type=button]):before {background: oklch(var(--efy_color_buttoncol_var) / .7)!important}
-        & label:not([efy_upload], input:checked + label, .efy_color, [type=button], :is(.efy_custom_colors, #efy_colors) label) {background: linear-gradient(0deg, oklch(var(--efy_color_buttoncol_var) / .7), oklch(var(--efy_color_buttoncol_var) / .7)), var(--efy_color_trans); -webkit-background-clip: text, border-box!important; background-clip: text, border-box!important; background-origin: border-box!important}
+        input:checked + label:before, [type=checkbox]:checked + label:after {border-color: oklch(var(--efy_color_buttoncol_var))!important}
+        label:not([efy_upload], .efy_color, [type=button]):before {background: oklch(var(--efy_color_buttoncol_var) / .7)!important}
+        label:not([efy_upload], input:checked + label, .efy_color, [type=button], :is(.efy_custom_colors, #efy_colors) label) {background: linear-gradient(0deg, oklch(var(--efy_color_buttoncol_var) / .7), oklch(var(--efy_color_buttoncol_var) / .7)), var(--efy_color_trans); background-clip: text, border-box!important; background-origin: border-box!important}
     }
     :is([efy_tabs] [efy_tab]:not([efy_active], .efy_button_text_off [efy_tab])) {color: oklch(var(--efy_color_buttoncol_var) / .7); -webkit-text-fill-color: oklch(var(--efy_color_buttoncol_var) / .7)}
 }
@@ -49,12 +49,12 @@ html[efy_mode], html[efy_mode*=trans].trans_window body, html.trans_window .efy_
 /*BG1*/ aside, th, [type=file], pre, textarea, select, input, details, blockquote, pre, article, tr:nth-child(even), [efy_alert], [efy_timer], [efy_clock], .efy_bg1 {background: var(--efy_bg1)}
 /*Text*/ mark, kbd, .efy_bg_text {background: var(--efy_text)}
 /*Color*/ button, [type=button], [role=button], [type=submit], [type=reset], [efy_sidebar_btn=absolute]:hover, :is([type=checkbox], [type=radio], option):checked, [efy_select] input:checked + label, [efy_tabs] [efy_tab][efy_active], :is(blockquote, .efy_img_previews [efy_bg_nr][efy_active]):before, .efy_color {background: var(--efy_color); background-clip: border-box; background-origin: border-box; -webkit-text-fill-color: var(--efy_text2); border: var(--efy_border)}
-/*Color Trans*/ [type=range], [type=radio], [type=checkbox], [efy_sidebar_btn=absolute], [efy_select] label:not([efy_upload], [type=button]), [efy_tabs] [efy_tab]:not([efy_active]), .efy_color_trans {background: var(--efy_color), var(--efy_color_trans); -webkit-background-clip: text, border-box; background-clip: text, border-box; background-origin: border-box; border: var(--efy_border); -webkit-text-fill-color: transparent}
+/*Color Trans*/ [type=range], [type=radio], [type=checkbox], [efy_sidebar_btn=absolute], [efy_select] label:not([efy_upload], [type=button]), [efy_tabs] [efy_tab]:not([efy_active]), .efy_color_trans {background: var(--efy_color), var(--efy_color_trans); background-clip: text, border-box; background-origin: border-box; border: var(--efy_border); -webkit-text-fill-color: transparent}
 
 /*Color: Text*/ body, textarea, select, input, pre, pre code, header > nav :is(a, a:visited), [efy_sidebar_btn]:hover, .efy_text {color: var(--efy_text)}
 /*Text2*/ button, [type=button], [role=button], [type=submit], [type=reset], mark, kbd, option:checked, [efy_select] input:checked + label, .efy_text2 {color: var(--efy_text2)}
 /*Text Trans2*/ figcaption, cite, footer, .efy_text_trans2 {color: var(--efy_text_trans2)} ::-webkit-input-placeholder {color: var(--efy_text_trans2)}
-/*Color*/ :is(a, a:visited):not([role=button]), pre > code, code, samp, [efy_logo] p:nth-of-type(1), .efy_text_color {background: var(--efy_color); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent}
+/*Color*/ :is(a, a:visited):not([role=button]), pre > code, code, samp, [efy_logo] p:nth-of-type(1), .efy_text_color {background: var(--efy_color); background-clip: text; -webkit-text-fill-color: transparent}
 /*Text-Decoration: None*/ a, a:visited {text-decoration: none}
 
 /*Border*/ textarea, select, input:not([type=color], [type=range]), button, [type=submit], [type=reset], [type=button], [role=button], details, pre, td, th, article, aside, blockquote, [type=file], .efy_sidebar, [efy_tabs] [efy_content], [efy_alert], [efy_timer], [efy_clock], .efy_border {border: var(--efy_border)}
@@ -129,7 +129,7 @@ html {font-size: var(--efy_font_size)!important; font-size: var(--efy_font_size)
     .efy_3d_front {z-index: 9998} html .efy_3d_back {z-index: -1}
 }
 body {width: 100vw; padding: var(--efy_body_padding); line-height: 1.5; min-height: var(--efy_100vh); max-width: var(--efy_body_width); overflow: overlay; transition: background calc(var(--efy_anim_status) * var(--efy_anim_speed) * .3s), color calc(var(--efy_anim_status) * var(--efy_anim_speed) * .3s); scroll-behavior: smooth; -webkit-tap-highlight-color: transparent;
-    & * {font-size: 16rem}
+    * {font-size: 16rem}
 }
 
 /*Headings*/ h1 {font-size: 45rem} h2 {font-size: 40rem} h3 {font-size: 35rem} h4 {font-size: 30rem} h5 {font-size: 25rem} h6 {font-size: 20rem}
@@ -140,17 +140,17 @@ button, [role=button], [type=submit], [type=reset], [type=button] {display: inli
 
 header {text-align: center; padding: 0  8rem; grid-column: 1 / -1;
     :is(p, h1) {margin: 15rem auto}
-    & > nav {padding: 15rem 0 0 0;
+    > nav {padding: 15rem 0 0 0;
         :is(ul, ol) {align-content: space-around; align-items: center; display: flex; flex-direction: row; justify-content: center; list-style-type: none; margin: 0; padding: 0}
         :is(a, a:visited) {margin-right: 15rem; text-decoration: none}
-        & a:last-child {margin-right: 0}
+        a:last-child {margin-right: 0}
 }}
 
 [efy_content=menu] {padding: 0 var(--efy_gap)!important}
 
 table {border-collapse: collapse; margin: 15rem 0; overflow: auto; width: fit-content;
-    & caption {margin-bottom: 8rem}
-    & td, & th {text-align: left; padding: 8rem}
+    caption {margin-bottom: 8rem}
+    td, th {text-align: left; padding: 8rem}
 }
 
 textarea, select, input {font-size: 16rem; font-family: inherit; padding: 8rem; margin-bottom: var(--efy_gap0); box-shadow: none; box-sizing: border-box; -webkit-appearance: none; appearance: none}
@@ -160,8 +160,8 @@ select {background-image: linear-gradient(45deg, transparent 49%, var(--efy_text
 }
 option:not(option:checked), optgroup {background: var(--efy_text2)}
 select[multiple] {background-image: none !important;
-    & option:not(option:checked), & optgroup {background: transparent}
-    & option {padding: var(--efy_padding2); margin-top: 5rem; border-radius: var(--efy_radius0)}
+    option:not(option:checked), optgroup {background: transparent}
+    option {padding: var(--efy_padding2); margin-top: 5rem; border-radius: var(--efy_radius0)}
 }
 
 /*Checkbox & Radio*/ [type=checkbox], [type=radio] {--efy_size: calc(24rem + var(--efy_border_size));
@@ -186,9 +186,9 @@ cite {font-style: normal; font-weight: normal}
 pre {overflow: auto}
 
 [efy_number] {display: flex; gap: var(--efy_gap0); align-items: center; padding: 0; margin: var(--efy_gap0) 0;
-    &, & input {appearance: textfield}
+    &, input {appearance: textfield}
     :is(button, input, select) {margin: 0!important}
-    & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button {-webkit-appearance: none; margin: 0}
+    input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {-webkit-appearance: none; margin: 0}
 }
 
 /*Color Picker*/ [efy_color] {display: flex; flex-direction: column; padding: 0;
@@ -204,7 +204,7 @@ pre {overflow: auto}
     }
     .efy_tabs {
         [efy_tab], button {min-width: var(--efy_size); height: var(--efy_size); border-radius: var(--efy_radius); -webkit-text-fill-color: var(--efy_text2)!important; display: flex; align-items: center; place-content: center;
-            &, & i {margin: 0!important}
+            &, i {margin: 0!important}
             &:before, &:after {display: none}
         }
         [for=efy_color_bgcol] {background: var(--efy_bg)!important; -webkit-text-fill-color: var(--efy_text)!important}
@@ -220,16 +220,16 @@ pre {overflow: auto}
     }
     [efy_range_text=Angle] {margin-top: 10rem}
 }
-#efy_colors {padding: var(--efy_gap);
+#efy_colors {padding: var(--efy_gap) 0;
+    > div:not(.efy_shadows, .efy_hr_div), .efy_shadows_button, .efy_shadows_trans {padding: 0 var(--efy_gap)}
+    .efy_hr_div {padding: 0 0 0 var(--efy_gap)}
     [efy_range_text="Angle"] {display: flex; flex-wrap: wrap; row-gap: 5rem;
         .efy_color_angle_input {width: 100%; margin: 0}
     }
     #efy_gradient, .efy_custom_colors {margin-bottom: 5rem;
         [for*=status] {display: flex; margin: 0 0 7rem 0; width: fit-content; align-items: center; place-content: center}
     }
-    .efy_shadows {display: flex; flex-direction: column; gap: 5rem;
-        & > div {display: flex; flex-wrap: wrap; gap: var(--efy_gap0);}
-    }
+    .efy_shadows {display: flex; flex-direction: column; gap: 5rem}
 }
 
 /*Color input*/ [type=color] {&, &:focus {background: transparent; width: var(--efy_size); height: var(--efy_size); padding: 0}}
@@ -245,7 +245,8 @@ pre {overflow: auto}
 ::-webkit-slider-runnable-track {background: transparent}
 
 ::file-selector-button {background: var(--efy_color); color: var(--efy_text2); border: var(--efy_border); border-radius: var(--efy_radius); padding: var(--efy_padding); font-weight: bold; cursor: pointer; font-family: var(--efy_font_family)!important; font-size: 16rem}
-[type=number]:is(::-moz-number-spin-up, ::-moz-number-spin-down) {appearance: none; display: none}
+::-moz-number-spin-up, ::-moz-number-spin-down {appearance: none; display: none}
+::-webkit-inner-spin-button {appearance: none; display: none}
 
 progress, meter {height: 15rem; border: 0; background: var(--efy_color_trans); border-radius: var(--efy_radius0); border: 0}
 ::-webkit-progress-bar, ::-webkit-meter-bar {height: 15rem; background: var(--efy_color_trans)}
@@ -261,42 +262,42 @@ progress, meter {height: 15rem; border: 0; background: var(--efy_color_trans); b
 ::-moz-color-swatch, ::-moz-range-thumb, ::-moz-progress-bar , ::-moz-meter-bar {background-clip: border-box; background-origin: border-box}
 
 /*Details*/ details, summary {list-style: none; position: relative}
-:is(details, [efy_content=menu]) > details {padding: .6rem 0 0 15rem}
+:is(details, [efy_content=menu], [efy_content=mode], .efy_mode_type_div) > details {padding: .6rem 0 0 15rem}
 details { margin-bottom: var(--efy_gap);
     &:not([efy_help]) summary:before {position: absolute; right: 8rem; transition: transform calc(var(--efy_anim_status) * var(--efy_anim_speed) * .1s) ease}
-    & details {margin-top: var(--efy_gap)} details details:not([efy_help]) > summary:before {right: -6rem}
+    details {margin-top: var(--efy_gap)} details details:not([efy_help]) > summary:before {right: -6rem}
 }
 details[open] { padding: .6rem  15rem 15rem  15rem;
     &:not([efy_help]) > summary:before {rotate: 90deg; right: -2rem}
-    & summary + * {margin-top: 0}
-    & summary {margin: 8rem 0; padding: 0}
-    & > *:last-child {margin-bottom: 0}
+    summary + * {margin-top: 0}
+    summary {margin: 8rem 0; padding: 0}
+    > *:last-child {margin-bottom: 0}
 }
 summary, details[open] summary {padding-right: 20rem}
 summary::-webkit-details-marker {display: none}
 
 /*Help Box*/ [efy_help] {background: transparent; border: 0; padding: 0!important; margin: 0;
-    & summary {pointer-events: none; margin-bottom: 0; padding: 0;
+    summary {pointer-events: none; margin-bottom: 0; padding: 0;
         &:after {margin-left: 8rem; opacity: .5; pointer-events: all}
 }}
 [efy_help][open] {padding: 0 0 10rem 0!important}
 
 /*Select Menu*/ [efy_select] {
-    & label:not([efy_upload]):before {width: 16rem; height: 16rem; margin-right: 8rem; margin-top: -.2rem; position: relative; border-radius: calc(var(--efy_radius) / 1.5); border: 2.5rem solid transparent; background: var(--efy_color) border-box; -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0); -webkit-mask-composite: source-out; mask-composite: exclude}
+    label:not([efy_upload]):before {width: 16rem; height: 16rem; margin-right: 8rem; margin-top: -.2rem; position: relative; border-radius: calc(var(--efy_radius) / 1.5); border: 2.5rem solid transparent; background: var(--efy_color) border-box; -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0); -webkit-mask-composite: source-out; mask-composite: exclude}
     [type=radio]:checked + label:after {background: var(--efy_text2); width: 9.6rem; height: 9.6rem; top: 8rem; left: 5.6rem; margin: var(--efy_padding); border-radius: calc(var(--efy_radius) / 3)}
     [type=checkbox]:checked + label:after {top: 13.2rem; left: 16.5rem; font-family: 'efy_icons'; font-size: 12rem}
-    & input:checked + label:before {border-color: var(--efy_text2); background: transparent}
+    input:checked + label:before {border-color: var(--efy_text2); background: transparent}
     :is([type=checkbox], [type=radio], label [type=color]) {opacity:0}
     :is(p, label, button), [efy_tabs] [efy_tab], .efy_about a, [type=file] {margin: calc(var(--efy_gap0) / 2) var(--efy_gap0) calc(var(--efy_gap0) / 2) 0}
-    & label:before, & input:checked + label:after {vertical-align: middle; display: inline-flex}
+    label:before, input:checked + label:after {vertical-align: middle; display: inline-flex}
 }
 
 /*Upload Input*/ [efy_upload] {position: relative; width: fit-content; font-weight: bold;
-    & > input {position: absolute; inset: 0; margin: 0; padding: 0; border: 0; opacity: 0}
+    > input {position: absolute; inset: 0; margin: 0; padding: 0; border: 0; opacity: 0}
 }
 [efy_upload*=small] {width: var(--efy_size); height: var(--efy_size); display: flex; align-items: center; place-content: center; line-height: 1;
-    & i {margin: 0 1rem 0 0}
-    & input::file-selector-button {width: var(--efy_size)!important; height: var(--efy_size)!important}
+    i {margin: 0 1rem 0 0}
+    input::file-selector-button {width: var(--efy_size)!important; height: var(--efy_size)!important}
 }
 
 .efy_backup_div {display: flex; flex-wrap: wrap; gap: var(--efy_gap0); margin-top: var(--efy_gap0);
@@ -305,96 +306,19 @@ summary::-webkit-details-marker {display: none}
 }
 
 [efy_range_text] {
-    & mark {margin: 0; line-height: 1; padding: 5rem 6rem}
+    mark {line-height: 1}
     [type=range] {margin: 6rem 0 0 0; background-origin: border-box!important}
     [efy_number] {display: inline-flex; margin: 0;
         &:focus-within {margin: 0 0 unset 10rem!important}
 }}
 [efy_range_text*="Max Width"] {
-    .efy_range_text_p {width: 50rem; margin-right: -8rem!important;
-        &:focus {margin-right: 0!important}
-    }
+    .efy_range_text_p {width: 5ch}
     [type=range] {margin: 0}
-    & select {height: var(--efy_size0); line-height: 1; width: auto}
-}
-
-/*Sidebar*/ .efy_sidebar {background: var(--efy_bg); padding: var(--efy_gap) calc(var(--efy_gap) - 2rem) var(--efy_gap) var(--efy_gap); width: 100vw; max-width: var(--efy_sidebar_width); height: var(--efy_100vh); z-index: 9999; position: fixed; right: var(--efy_sidebar_width_n); top: 0; border-radius: var(--efy_radius2) 0 0 var(--efy_radius2); transition-property: left, right; transition-duration: calc(var(--efy_anim_status) * var(--efy_anim_speed) * .3s); overflow-y: auto;
-    & > details:last-of-type {margin: 0}
-    & summary { display: flex; align-items: center;
-        & > mark {padding: 5px 7rem; line-height: 1; margin-left: 10rem}
-        & > p {margin: 0}
-    }
-    [efy_search_input] {margin: 0 0 var(--efy_gap) 0}
-}
-[efy_sidebar*=on] {
-    &:not([efy_sidebar*=left]) :is(body, .efy_sidebar_width)::-webkit-scrollbar {width: 0}
-    :is(body, .efy_sidebar_width) {--efy_bg_width: calc(100vw - var(--efy_sidebar_width)); width: var(--efy_bg_width); margin-right: var(--efy_sidebar_width); margin-left: 0; --efy_body_width: 100%}
-    .efy_sidebar {right: 0; box-shadow: 0 0 30rem #0005}
-}
-[efy_sidebar*=left] .efy_sidebar {right: unset; left: var(--efy_sidebar_width_n); border-radius: 0 var(--efy_radius2) var(--efy_radius2) 0}
-[efy_sidebar*=on_left] {
-    :is(body, .efy_sidebar_width) {margin-left: var(--efy_sidebar_width); margin-right: 0}
-    .efy_sidebar {left: 0}
-}
-
-[efy_sidebar_btn*=close] {margin: 0 0 15rem 0; height: fit-content}
-[efy_sidebar_btn*=absolute] {z-index: 9999; font-size: 20rem; padding: 4rem 10rem; position: fixed; text-align: center; top: 15rem; right: 15rem}
-
-
-.trans_window_div {width: fit-content; display: inline-flex; flex-wrap: wrap; gap: var(--efy_gap0); margin-top: calc(var(--efy_gap0) / 2);
-    & label {margin: 0}
-}
-.efy_flex {display: flex; gap: var(--efy_gap); flex-wrap: wrap}
-
-[efy_about], .efy_sidebar [efy_card] {margin-bottom: var(--efy_gap)}
-.efy_about {padding: 0 10rem}
-[efy_about] {display: flex; gap: var(--efy_gap); justify-content: space-between; align-items: start;
-    & button {margin: 0; display: flex; align-items: center; gap: 8rem;
-        &:not([efy_sidebar_btn*=close]) {background: var(--efy_bg1);
-            & i {-webkit-text-fill-color: var(--efy_text)}
-}}}
-[efy_logo] {
-    & p {font-size: 24rem; padding-top: 2.5rem; display: inline-block; -webkit-text-fill-color: var(--efy_text)}
-    & i {font-size: 16rem; margin: 0 -2rem 0 0; display: inline-block}
-}
-
-/*Button Align*/ :is(#efy_btn_align div, #efy_notify_align) {display: grid; gap: var(--efy_gap); grid-template-columns: 1fr 1fr 1fr; width: fit-content;
-    & input {position: relative; opacity: 1}
-}
-#efy_btn_align {
-    & div {margin-bottom: var(--efy_gap0)}
-    #middle_middle {opacity: 0!important; pointer-events: none}
-}
-[efy_btn_align*=left] {left: 15rem; right: unset}
-[efy_btn_align*=right] {right: 15rem; left:unset}
-[efy_btn_align*=top] {top: 15rem; bottom: unset}
-[efy_btn_align*=bottom] {bottom: 15rem; top: unset}
-[efy_btn_align*=_middle] {top: 50vh}
-[efy_btn_align*=middle_] {left: calc(50vw - 20rem); right: unset}
-
-
-#efy_images_bg:not([efy_mode*=trans] #efy_images_bg) {display: none}
-#efy_images_bg [efy_help] {margin-bottom: 5rem}
-.efy_img_previews {display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: var(--efy_gap);
-    &.efy_remove [efy_bg_nr] {box-shadow: inset 0 0 0 calc(var(--efy_border_size) * 1) var(--efy_text)!important; border-color: var(--efy_text)!important}
-    :is(label, button) {margin: 0; background-origin: border-box; background-clip: border-box; aspect-ratio: 1; cursor: pointer; position: relative; box-shadow: inset 0 0 20rem #0003, 0 0 20rem #0003; background-size: cover!important; background-repeat: no-repeat!important; background-position: center!important; border-radius: var(--efy_radius); width: 100%}
-    [efy_bg_nr]:is([efy_active], :focus) {box-shadow: inset 0 0 0 3rem var(--efy_text); z-index: 2}
-    :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back], [for=idb_remove_toggle], .efy_idb_reset) {padding: 0; display: flex; align-items: center; place-content: center; box-shadow: unset}
-    :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back]) {background-color: var(--efy_color)!important;
-         & i:before {font-size: 20rem}
-         &:before {display: none}
-    }
-    :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back], button) {width: 100%; height: 100%}
-    [efy_shadow*=button] :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back]) {box-shadow: var(--efy_shadow_button)!important}
-    & i {margin: 0}
-    :is(.efy_idb_reset, .idb_reset_front, .idb_reset_back) i:before {font-size: 25rem}
-    [for=idb_remove_toggle] {
-        &:not(#idb_remove_toggle:checked + label) {background: var(--efy_color), var(--efy_color_trans);	-webkit-background-clip: text, border-box;
-        background-clip: text, border-box; background-origin: border-box; border: var(--efy_border); -webkit-text-fill-color: transparent}
-        &:before, &:after {display: none!important}
-        & i {font-size: 22rem}
-    }
-}
+    select {height: var(--efy_size0); line-height: 1; width: auto}
+    .efy_max_width_div {display: flex; gap: var(--efy_gap0); justify-content: space-between; margin-top: 5rem;
+        * {margin: 0}
+        [efy_number] {width: 100%}
+}}
 
 [efy_tabs] {display: flex; flex-direction: column; gap: var(--efy_gap0);
     [efy_tab][efy_active] {-webkit-text-fill-color: var(--efy_text2)}
@@ -414,6 +338,142 @@ summary::-webkit-details-marker {display: none}
 
 [efy_tabs] [efy_content][efy_active], [efy_card], [efy_search_input] {transition: calc(var(--efy_anim_status) * var(--efy_anim_speed) * .1s) linear}
 
+/*Sidebar*/ .efy_sidebar {background: var(--efy_bg); padding: var(--efy_gap) calc(var(--efy_gap) - 2rem) var(--efy_gap) var(--efy_gap); width: 100vw; max-width: var(--efy_sidebar_width); height: var(--efy_100vh); z-index: 9999; position: fixed; right: var(--efy_sidebar_width_n); top: 0; border-radius: var(--efy_radius2) 0 0 var(--efy_radius2); transition-property: left, right; transition-duration: calc(var(--efy_anim_status) * var(--efy_anim_speed) * .3s); overflow-y: auto;
+    > details:last-of-type {margin: 0}
+    summary { display: flex; align-items: center;
+        > mark {padding: 5px 7rem; line-height: 1; margin-left: 10rem}
+        > p {margin: 0}
+    }
+    label:not([type=checkbox] + label) { &:before, &:after {display: none}}
+    [efy_search_input] {margin: 0 0 var(--efy_gap) 0}
+    [efy_content=mode] {padding: 0; border: 0; background: unset;
+        .current_mode {background: var(--efy_bg1); padding-bottom: var(--efy_gap); border: var(--efy_border); border-radius: var(--efy_radius);
+            &:has(#efy_mode_default:checked) {padding: 0;
+                .efy_mode_div {padding: var(--efy_gap0)}
+            }
+        }
+        hr {margin: 0}
+        .efy_mode_div, .efy_mode_type_div {display: flex; flex-wrap: wrap; gap: var(--efy_gap0);
+            label {margin: 0}
+        }
+        .efy_mode_div {padding: var(--efy_gap) var(--efy_gap) 0 var(--efy_gap)}
+        .efy_mode_type_div {padding: 0 var(--efy_gap)}
+        .efy_mode_type_div {
+            details {width: calc(50% - var(--efy_gap00)); margin: 0;
+                &[open] {width: 100%}
+            }
+        }
+        &:has(.system_light:not(.efy_hide_i)) .efy_mode_type_div {margin-top: var(--efy_gap)}
+        [efy_help=type], [efy_help=images] {margin: 0 0 0 var(--efy_gap)}
+        :is(.system_light, .system_dark) > div {display: flex; flex-wrap: wrap; gap: var(--efy_gap0)}
+    }
+
+.efy_hr_div {display: flex; align-items: center; place-content: center;
+    details {width: 100%; margin-right: 0;}
+    summary {display: flex; gap: 8rem; width: 100%; padding-right: 0;
+        &:after {margin: 0}
+        hr {margin: 0; order: 1}
+    }
+    summary p, > p {min-width: fit-content}
+    [efy_help=custom_colors] p {font-weight: normal}
+}
+
+#efy_themes {display: flex; flex-wrap: wrap; margin: var(--efy_gap) 0 0 0; padding: 0;
+    summary {padding: 0 32rem 0 12rem}
+    &[open] summary {margin-bottom: 7rem;
+        &:before {right: 10rem}
+    }
+    :is(button, input, label, .name) {margin: 0}
+    .name {width: 100%}
+    .themes, .buttons {padding: var(--efy_gap); gap: var(--efy_gap0)}
+    .themes {display: flex; flex-wrap: wrap; width: 100%;
+        [type="checkbox"] {pointer-events: none}
+        label:before, label:after {display: none!important}
+        label i:before {background: var(--efy_color); background-clip: text}
+    }
+    .themes {display: flex; flex-wrap: wrap;
+        [data-id] {
+            width: fit-content; min-width: unset; height: var(--efy_size); background-clip: text, border-box!important; background-origin: border-box!important;
+            background: var(--efy_color), var(--efy_color_trans); -webkit-text-fill-color: transparent; font-weight: bold;
+            &[contenteditable=true] {border: var(--efy_border_size) dashed var(--efy_text_trans2); text-decoration: none;
+                background: var(--efy_bg1); -webkit-text-fill-color: var(--efy_text); color: var(--efy_text);
+                &:focus {border: var(--efy_border); box-shadow: 0 0 0 var(--efy_border_size) var(--efy_text)}
+            }
+        }
+    }
+    p {line-height: 1; margin: var(--efy_gap)}
+}
+}
+[efy_sidebar*=on] {
+    &:not([efy_sidebar*=left]) :is(body, .efy_sidebar_width)::-webkit-scrollbar {width: 0}
+    :is(body, .efy_sidebar_width) {--efy_bg_width: calc(100vw - var(--efy_sidebar_width)); width: var(--efy_bg_width); margin-right: var(--efy_sidebar_width); margin-left: 0; --efy_body_width: 100%}
+    .efy_sidebar {right: 0; box-shadow: 0 0 30rem #0005}
+}
+[efy_sidebar*=left] .efy_sidebar {right: unset; left: var(--efy_sidebar_width_n); border-radius: 0 var(--efy_radius2) var(--efy_radius2) 0}
+[efy_sidebar*=on_left] {
+    :is(body, .efy_sidebar_width) {margin-left: var(--efy_sidebar_width); margin-right: 0}
+    .efy_sidebar {left: 0}
+}
+
+[efy_sidebar_btn*=close] {margin: 0 0 15rem 0; height: fit-content}
+[efy_sidebar_btn*=absolute] {z-index: 9999; font-size: 20rem; padding: 4rem 10rem; position: fixed; text-align: center; top: 15rem; right: 15rem}
+
+
+.trans_window_div {width: fit-content; display: inline-flex; flex-wrap: wrap; gap: var(--efy_gap0);
+    label {margin: 0}
+}
+.efy_flex {display: flex; gap: var(--efy_gap); flex-wrap: wrap}
+
+[efy_about], .efy_sidebar [efy_card] {margin-bottom: var(--efy_gap)}
+.efy_about {padding: 0 10rem}
+[efy_about] {display: flex; gap: var(--efy_gap); justify-content: space-between; align-items: start;
+    button {margin: 0; display: flex; align-items: center; gap: 8rem;
+        &:not([efy_sidebar_btn*=close]) {background: var(--efy_bg1);
+            i {-webkit-text-fill-color: var(--efy_text)}
+}}}
+[efy_logo] {
+    p {font-size: 24rem; padding-top: 2.5rem; display: inline-block; -webkit-text-fill-color: var(--efy_text)}
+    i {font-size: 16rem; margin: 0 -2rem 0 0; display: inline-block}
+}
+
+/*Button Align*/ :is(#efy_btn_align div, #efy_notify_align) {display: grid; gap: var(--efy_gap); grid-template-columns: 1fr 1fr 1fr; width: fit-content;
+    input {position: relative; opacity: 1}
+}
+#efy_btn_align {
+    div {margin-bottom: var(--efy_gap0)}
+    #middle_middle {opacity: 0!important; pointer-events: none}
+}
+[efy_btn_align*=left] {left: 15rem; right: unset}
+[efy_btn_align*=right] {right: 15rem; left:unset}
+[efy_btn_align*=top] {top: 15rem; bottom: unset}
+[efy_btn_align*=bottom] {bottom: 15rem; top: unset}
+[efy_btn_align*=_middle] {top: 50vh}
+[efy_btn_align*=middle_] {left: calc(50vw - 20rem); right: unset}
+
+
+#efy_images_bg:not([efy_mode*=trans] #efy_images_bg) {display: none}
+.efy_img_previews {display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: var(--efy_gap);
+    &:not(#efy_vfilters .efy_img_previews) {padding: 0 var(--efy_gap)}
+    [efy_bg_nr] {background-origin: border-box!important}
+    &.efy_remove [efy_bg_nr], [efy_bg_nr]:is([efy_active], :focus) {box-shadow: inset 0 0 0 var(--efy_border_size) var(--efy_text)!important; border-color: var(--efy_text)!important; z-index: 2}
+    :is(label, button) {margin: 0; background-origin: border-box; background-clip: border-box; aspect-ratio: 1; cursor: pointer; position: relative; box-shadow: inset 0 0 20rem #0003, 0 0 20rem #0003; background-size: cover!important; background-repeat: no-repeat!important; background-position: center!important; border-radius: var(--efy_radius); width: 100%}
+    :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back], [for=idb_remove_toggle], .efy_idb_reset) {padding: 0; display: flex; align-items: center; place-content: center; box-shadow: unset}
+    :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back]) {background-color: var(--efy_color)!important;
+         &:before {display: none}
+         i:before {font-size: 20rem}
+    }
+    :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back], button) {width: 100%; height: 100%}
+    [efy_shadow*=button] :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back]) {box-shadow: var(--efy_shadow_button)!important}
+    i {margin: 0}
+    :is(.efy_idb_reset, .idb_reset_front, .idb_reset_back) i:before {font-size: 25rem}
+    [for=idb_remove_toggle] {
+        &:not(#idb_remove_toggle:checked + label) {background: var(--efy_color), var(--efy_color_trans);
+        background-clip: text, border-box; background-origin: border-box; border: var(--efy_border); -webkit-text-fill-color: transparent}
+        &:before, &:after {display: none!important}
+        i {font-size: 22rem}
+    }
+}
+
 [efy_timer], [efy_clock] {padding: 10rem; display: inline-flex; flex-wrap: wrap; align-items: center}
 [efy_timer] {gap: var(--efy_gap0)}
 [efy_timer] [efy_text], [efy_clock] p {font-size: 36rem; font-weight: bold; line-height: 1}
@@ -429,11 +489,16 @@ summary::-webkit-details-marker {display: none}
 
 [efy_alert] {display: grid; grid-template-columns: 1fr auto; gap: var(--efy_gap); padding: 10rem; box-shadow: 0 0 20px var(--efy_text_trans); background: var(--efy_text2);
     .remove_timer { display: flex; align-items: center; place-content: center; height: fit-content;
-        & > :is(button, div) {margin: 0; height: var(--efy_size); min-width: var(--efy_size)}
+        > :is(button, div) {margin: 0; height: var(--efy_size); min-width: var(--efy_size)}
         .time_left {display: flex; align-items: center; place-content: center; padding: 10rem; border-radius: var(--efy_radius) 0 0 var(--efy_radius);
             font-weight: bold; border: var(--efy_border); border-right: 0; background: var(--efy_color), var(--efy_color_trans);
             background-clip: text, border-box; background-origin: border-box; -webkit-text-fill-color: transparent}
         .remove:not(.efy_quick_notify_content .remove) {border-radius: 0 var(--efy_radius) var(--efy_radius) 0}
+    }
+    .answers {display: flex; gap: var(--efy_gap0);
+        button {margin: 0;
+            &:not(.empty){pointer-events: all}
+        }
     }
 }
 [efy_btn_square] {display: flex; align-items: center; padding: 10rem; height: fit-content; aspect-ratio: 1; margin: 0;
@@ -445,25 +510,25 @@ summary::-webkit-details-marker {display: none}
 
 /*Quick Shortcuts*/ .efy_square_btn, :is([efy_timer], [efy_color_picker] .copy_btn) button {
     display: inline-flex; gap: 12rem; margin: 0; padding: 10rem; width: var(--efy_size); height: var(--efy_size); align-items: center; place-content: center;
-    & i {margin:0}
+    i {margin:0}
 }
 .efy_quick_shortcuts {gap: var(--efy_gap); padding: var(--efy_gap0);
     .efy_quick_back i {rotate: 180deg}
     [efy_clock] {margin: 0; height: var(--efy_size); border-radius: var(--efy_radius); padding: 0 8rem;
-        & p {font-size: 25rem}
+        p {font-size: 25rem}
     }
 }
 .efy_quick_buttons, .efy_about_div .efy_flex {gap: var(--efy_gap0)}
 .efy_quick_buttons button {margin: 0}
 .efy_about_div {
     .efy_flex {margin: var(--efy_gap0) 0 0 0;
-        & a {margin: 0}
+        a {margin: 0}
     }
-    & mark {display: block; width: fit-content; margin-bottom: 10rem; padding: 0 10rem}
+    mark {display: block; width: fit-content; margin-bottom: 10rem; padding: 0 10rem}
 }
 
  #custom_sidebar_menu {display: flex; flex-wrap: wrap; gap: var(--efy_gap); margin-bottom: var(--efy_gap);
-    & a {background: var(--efy_bg1); padding: var(--efy_padding); border-radius: var(--efy_radius); border: var(--efy_border); -webkit-text-fill-color: var(--efy_text)}
+    a {background: var(--efy_bg1); padding: var(--efy_padding); border-radius: var(--efy_radius); border: var(--efy_border); -webkit-text-fill-color: var(--efy_text)}
 }
 
 /*Translations*/ .efy_lang_text {display: inline; margin: 0!important; pointer-events: none!important; -webkit-text-fill-color: inherit; color: inherit}
@@ -471,11 +536,11 @@ summary::-webkit-details-marker {display: none}
 
 /*Code*/ [efy_code] {position: relative; padding-top: calc(40rem + var(--efy_gap0)); white-space: pre-wrap;
     .efy_bar {position: absolute; top: 0; left: 0; width: 100%; padding: calc(var(--efy_gap0) / 1.5); display: flex; gap: calc(var(--efy_gap0) / 1.5); justify-content: space-between; border-bottom: var(--efy_border);
-        & div {display: flex; gap: calc(var(--efy_gap0) / 1.5)}
-        & button {margin: 0; padding: var(--efy_padding2); border-radius: var(--efy_radius0)}
+        div {display: flex; gap: calc(var(--efy_gap0) / 1.5)}
+        button {margin: 0; padding: var(--efy_padding2); border-radius: var(--efy_radius0)}
         :is(mark, button) {padding: 0 8rem; line-height: 1; display: flex; align-items: center; place-content: center; height: 28rem}
         :is(.efy_copy, .efy_fs) {width: 28rem}
-        & i {margin: 0 0 -1rem 0; font-size: 14rem}
+        i {margin: 0 0 -1rem 0; font-size: 14rem}
 }}
 [efy_code]:fullscreen {border-radius: 0; border: none; background: var(--efy_bg)!important}
 
@@ -483,11 +548,6 @@ summary::-webkit-details-marker {display: none}
  [efy_code] .efy_bar .efy_code_trans {display: none} [efy_code]:fullscreen .efy_code_trans {display: unset}
 
 :not(:root):fullscreen::backdrop {display: none!important}
-
-.efy_max_width_div {display: flex; gap: var(--efy_gap0); justify-content: space-between; margin-top: 10rem;
-    & * {margin: 0}
-    [efy_number] {width: 100%}
-}
 
 /*Convergence*/ @media screen and (max-width: 449px) {
     [efy_alerts] {left: var(--efy_gap)}
@@ -505,6 +565,9 @@ summary::-webkit-details-marker {display: none}
 /*EFY Icons*/ @font-face {font-family: 'efy_icons'; src: url('efy_icons.woff2') format('truetype'); font-weight: normal; font-style: normal; font-display: block}
 i, :is([efy_start], [efy_reset], [efy_sidebar_btn], details > summary):before, [efy_help] summary:after,  [type=checkbox]:checked:after {font-family: 'efy_icons' !important; speak: never; font-style: normal; font-weight: normal; font-variant: normal; text-transform: none; vertical-align: middle; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale} i {margin-right: 8rem}
 
+[efy_icon] {align-items: center; place-content: center;
+    &, &:before {display: inline-flex}
+}
 [efy_icon=accessibility]:before {content: "\e910"}
 [efy_icon*=arrow]:before {content: "\e900"}
 [efy_icon=audio]:before {content: "\e905"}
@@ -539,9 +602,6 @@ i, :is([efy_start], [efy_reset], [efy_sidebar_btn], details > summary):before, [
 [efy_icon=user]:before {content: "\e913"}
 [efy_icon=zoom_in]:before {content: "\e912"}
 [efy_icon=zoom_out]:before {content: "\e911"}
-[efy_icon] {align-items: center; place-content: center;
-    &, &:before {display: inline-flex}
-}
 :is([efy_icon=chevron_up], [efy_icon=arrow_up]):before {rotate: -90deg}
 :is([efy_icon=move], [efy_icon=plus]):before {rotate: 45deg}
 :is([efy_icon=chevron_down], [efy_icon=arrow_down]):before {rotate: 90deg}
