@@ -445,7 +445,7 @@ $add('div', {class: 'trans_window_div efy_hide_i'}, [
         ['label', {for: 'idb_addimg_bg', title: 'Add file', class: 'efy_color', type:'button', role: 'button'}, [['i', {efy_icon: 'plus'}]]],
         ['input', {id: 'idb_remove_toggle', type: 'checkbox', style: 'display: none'}],
         ['label', {for: 'idb_remove_toggle', title: 'Remove', class: 'efy_color', type:'button', role: 'button'}, [['i', {efy_icon: 'remove'}]]],
-        ['button', {class: 'efy_idb_reset efy_hide_i', title: 'reset'}, [['i', {efy_icon: 'reload'}]]]
+        ['button', {class: 'efy_images_reset efy_hide_i', title: 'reset'}, [['i', {efy_icon: 'reload'}]]]
     ]]
 ], $('#efy_sbtheme [efy_content=mode] .efy_mode_type_div'), 'afterend');
 
@@ -902,7 +902,9 @@ $all(`.efy_${a[i]}_filter [type=reset]`).forEach(x =>{ $event(x, 'pointerup', ()
             ['button', {type: 'reset', class: `${aa}_reset`, efy_lang: 'reset'}, [['i', {efy_icon: 'reload'}]]],
             ['label', {efy_upload: `${aa}_import, .json`}]
         ], $(c))
-}}
+    }
+    $event($('.efy_idb_reset'), 'click', ()=>{ indexedDB.deleteDatabase('efy'); location.reload()});
+}
 
 /*Language*/ if ($efy_module('efy_language')){
     let a = 'en id ro ru de pl sv'.split(' '), b = 'English Indonesia Română Русский Deutsch Polski Svenska'.split(' ');
@@ -1100,12 +1102,11 @@ $all('.efy_audio_volume_page').forEach(a => a.oninput =()=>{ $all('audio, video'
                 $text(efy_css[type], `.efy_3d_${type} {background: url(${e.target.result.image})!important; background-size: var(--efy_bg_size)!important}`);
                 $(`#efy_images_${type} .efy_img_previews [efy_bg_nr]:nth-of-type(${efy[`nr_${type}`] + 1})`).setAttribute('efy_active', '')
             }}
-            /*Reset iDB*/ $all('.efy_idb_reset').forEach(a =>{ $event(a, 'click', () =>{
+            /*Reset iDB*/ $all('.efy_images_reset').forEach(a =>{ $event(a, 'click', () =>{
                 const transaction = efy_idb.transaction(['bg'], 'readwrite'),
                 store = transaction.objectStore('bg');
                 store.clear().onsuccess =(event)=>{
                     $all('.efy_img_previews [efy_bg_nr]').forEach(a => a.remove());
-                    $notify('short', 'Images Deleted - Success');
                 }
             })});
         }
@@ -1121,7 +1122,7 @@ $event(img_previews, 'click', (e)=>{
         const db = res.target.result, trans = db.transaction(['bg'], 'readwrite'),
         store = trans.objectStore('bg'); store.delete(nr); x.remove();
     }} else if (e.target.matches('#idb_remove_toggle')){
-        img_previews.classList.toggle('efy_remove'); $('.efy_idb_reset').classList.toggle('efy_hide_i');
+        img_previews.classList.toggle('efy_remove'); $('.efy_images_reset').classList.toggle('efy_hide_i');
         const status = e.target.checked;
         $notify('short', status ? 'Remove Media' : 'Set Background', status ? 'Select what to remove' : 'Select your background');
     }
@@ -1149,23 +1150,20 @@ $event(img_previews, 'click', (e)=>{
         })
 } catch (err){ console.error(err)}})();
 
-// Import IndexedDB
-let efy_idb_import = $('#efy_idb_import');
-$event(efy_idb_import, 'change', async ()=>{
-  let file = efy_idb_import.files[0], read = new FileReader();
-  read.onload = async ()=>{ let data = JSON.parse(read.result);
-    $audio_play(efy_audio.ok3);
-    let importIDB = async (images = "images", settings = "settings", arr = data[images], arr2 = data[settings])=>{
-      let db = await open_idb(), transaction = db.transaction([images, settings], "readwrite");
-      let store = transaction.objectStore(images), store2 = transaction.objectStore(settings);
-      for (let obj of arr){ store.put(obj)}
-      for (let obj of arr2){ store2.put(obj)}
-    };
-    await importIDB(); $wait(3, ()=>{ location.reload() });
-}; read.readAsText(file) });
+/*Import IndexedDB*/ $event($('#efy_idb_import'), 'change', async (e)=>{
+    let file = e.target.files[0], read = new FileReader();
+    read.onload = async ()=>{ $audio_play(efy_audio.ok3);
+        let data = JSON.parse(read.result), keys = Object.keys(data),
+        importIDB = async (data)=>{
+            let db = await open_idb(), transaction = db.transaction(keys, "readwrite");
+            transaction.oncomplete =()=> location.reload();
+            for (let name of keys){
+                let store = transaction.objectStore(name);
+                for (let obj of data[name]){ store.put(obj)}
+        }}; await importIDB(data);
+}; read.readAsText(file)});
 
-
-/*Export Settings*/ $event($('.efy_localstorage_export'), 'click', (e)=>{
+/*Export localStorage*/ $event($('.efy_localstorage_export'), 'click', (e)=>{
     if (localStorage.efy){ efy.version = efy_version; $save();
         let result = JSON.stringify(JSON.parse(localStorage.efy), null, 2), x = e.target;
         x.href = URL.createObjectURL(new Blob([result], {type: 'application/json'}));
@@ -1173,10 +1171,12 @@ $event(efy_idb_import, 'change', async ()=>{
     else { $notify('short', 'Nothing to export', "You're using default settings")}
 });
 
-/*Import Settings*/ let efy_ls_import = $('#efy_localstorage_import'); $event(efy_ls_import, 'change', ()=>{ let file = efy_ls_import.files[0], read = new FileReader();
-	read.onload =()=>{ localStorage.efy = read.result.replaceAll(',\n"', ',"').replaceAll('{\n"', '{"').replaceAll('"\n}', '"}'); location.reload()}; read.readAsText(file)});
+/*Import localStorage*/ $event($('#efy_localstorage_import'), 'change', (e)=>{
+    let file = e.target.files[0], read = new FileReader();
+	read.onload =()=>{ localStorage.efy = read.result.replaceAll(',\n"', ',"').replaceAll('{\n"', '{"').replaceAll('"\n}', '"}'); location.reload()};
+read.readAsText(file)});
 
-/*Reset Settings*/ $all(".efy_localstorage_reset").forEach(x =>{ $event(x, 'click', ()=>{ localStorage.removeItem('efy'); location.reload() })});
+/*Reset localStorage*/ $all(".efy_localstorage_reset").forEach(x =>{ $event(x, 'click', ()=>{ localStorage.removeItem('efy'); location.reload() })});
 
 
 /*Tabs*/ $ready('[efy_tabs]', a => $event(a, 'click', event =>{ const tab = event.target;
