@@ -1,4 +1,4 @@
-let efy_version = '24.04.23 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document),
+let efy_version = '24.05.19 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document),
 $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
 /*Add: Selector, optional: {Attributes}, [Text, Children], Parent, Position*/
 $add =(tag, attrs = {}, children = [], parent = document.body, position = 'beforeend')=>{
@@ -118,7 +118,11 @@ $add('video', {class: 'efy_3d_bg', autoplay: '', loop: '', muted: '', playsinlin
     });
 
     $event($(".efy_quick_reload"), 'click', ()=> location.reload());
-    $event($(".efy_quick_fullscreen"), 'click', ()=> document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen());
+
+    $ready('.efy_quick_fullscreen', (x)=>{
+        $event(x, 'click', ()=> document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen());
+    });
+
     ['back', 'forward'].map(a =>{ $event($(`.efy_quick_${a}`), 'click', ()=> window.history.go(a === 'back' ? -1 : 1)) });
 }
 
