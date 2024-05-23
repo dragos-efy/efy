@@ -74,7 +74,7 @@ $add('button', {efy_key: '`'}, '`', row5);
 $add('button', {efy_key: '~', class: 'efy_hide'}, '~', row5);
 
 
-d = 'space copy paste left down right'.split(' '), e = ' copy paste arrow_left arrow_down arrow'.split(' '); d.map((a,i)=>{let b = e[i];
+let d = 'space copy paste left down right'.split(' '), e = ' copy paste arrow_left arrow_down arrow'.split(' '); d.map((a,i)=>{let b = e[i];
   $add('button', {efy_key: a, class: 'efy_show'}, [['i', {efy_icon: b}]], $('[efy_keyboard] .row:nth-of-type(5)'))
 });
 
@@ -89,7 +89,7 @@ $event($(`[efy_key="enter"]`), 'click', ()=>{
     current_input.value += '\n';
 });
 
-c = $(`[efy_key="backspace"]`);
+let c = $(`[efy_key="backspace"]`);
 $event(c, 'click', backspace);
 $event(c, 'pointerdown', ()=>{ intv = setInterval(backspace, 100) });
 $event(c, 'pointerup', ()=> clearInterval(intv) );
@@ -106,7 +106,7 @@ $all('[efy_keyboard] [efy_key="close"]').forEach(a =>{ $event(a, 'click', ()=>{ 
 
 /*Prevent Default*/ $all('[efy_keyboard]').forEach(a => $event(a, 'contextmenu', ()=> event.preventDefault()));
 
-let a = $('[efy_keyboard]'); b = $('#efy_keyboard_status'); if (efy.keyboard){ b.setAttribute('checked', ''); a.classList.remove('efy_hide_i')}
+let a = $('[efy_keyboard]'), b = $('#efy_keyboard_status'); if (efy.keyboard){ b.setAttribute('checked', ''); a.classList.remove('efy_hide_i')}
 $event(b, 'click', (c)=>{ a.classList.toggle('efy_hide_i');
     if (c.target.checked){ efy.keyboard = true} else {delete efy.keyboard} $save();
 });
