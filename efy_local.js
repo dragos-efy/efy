@@ -1,4 +1,4 @@
-let efy_version = '24.05.23 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document),
+let efy_version = '24.06.10 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document),
 $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
 /*Add: Selector, optional: {Attributes}, [Text, Children], Parent, Position*/
 $add =(tag, attrs = {}, children = [], parent = document.body, position = 'beforeend')=>{
@@ -82,11 +82,11 @@ $event(window.visualViewport, 'resize', $100vh); $event(window.visualViewport, '
     ['div', {efy_about: ''}, [
         ['div', {class: 'efy_flex'}, [
             ['button', {class: 'efy_about', efy_toggle: '.efy_about_div', efy_logo: ''}, [ ['p', {}, 'EFY'], ['p', {}, ' UI'] ]],
-            ['button', {class: 'efy_quick_notify efy_square_btn', efy_toggle: '.efy_quick_notify_content'}, [['i', {efy_icon: 'notify'}]]],
-            ['button', {class: 'efy_quick_search efy_square_btn', efy_toggle: '#efy_sidebar [efy_search_input]'}, [['i', {efy_icon: 'search'}]]],
+            ['button', {class: 'efy_quick_notify efy_square_btn', efy_toggle: '.efy_quick_notify_content', title: 'Notifications'}, [['i', {efy_icon: 'notify'}]]],
+            ['button', {class: 'efy_quick_search efy_square_btn', efy_toggle: '#efy_sidebar [efy_search_input]', title: 'Search'}, [['i', {efy_icon: 'search'}]]],
             ['button', {id: 'efy_quick_toggle', efy_toggle: '#efy_quick', class: 'efy_square_btn', title: 'Quick shortcuts'}, [['i', {efy_icon: 'star'}]]]
         ]],
-        ['button', {efy_sidebar_btn: 'close', class: 'efy_square_btn'}, [['i',{efy_icon: 'remove'}]]],
+        ['button', {efy_sidebar_btn: 'close', class: 'efy_square_btn', title: 'close'}, [['i',{efy_icon: 'remove'}]]],
     ]],
     ['div', {efy_card: '', class: 'efy_about_div efy_hide_i'}, [
         ['mark', {efy_lang: 'version'}, [`: ${efy_version}`]], ['p', {efy_lang: 'sidebar_about_text'}],
@@ -102,11 +102,11 @@ $event(window.visualViewport, 'resize', $100vh); $event(window.visualViewport, '
         ['div', {efy_tabs: 'efy_theme'}, [['div', {class: 'efy_tabs'}]]]
     ]]
 ]);
-$add('div', {efy_sidebar_btn: 'absolute'});
+$add('button', {efy_sidebar_btn: 'absolute', title: 'menu'});
 $add('video', {class: 'efy_3d_bg', autoplay: '', loop: '', muted: '', playsinline: ''});
 
 /*Quick Shortcuts*/ if ($efy_module('efy_quick')){ let a = $('[efy_about]');
-    $add('input', {type: 'text', efy_search_input: '', class: 'efy_hide_i', placeholder: 'Search through menu...', name: 'efy_name'}, [], a, 'afterend');
+    $add('input', {type: 'text', efy_search_input: '', class: 'efy_hide_i', tabindex: '-1', placeholder: 'Search through menu...', name: 'efy_name'}, [], a, 'afterend');
     $add('div', {class: 'efy_quick_notify_content efy_hide_i', efy_card: ''}, [], a, 'afterend');
 
     $add('div', {id: 'efy_quick', class: 'efy_quick_shortcuts efy_hide_i', efy_card: ''}, [
@@ -801,7 +801,7 @@ $all("[name=efy_sidebar_align]").forEach(x =>{ const y = x.id.replace('efy_sideb
     $all("[name=efy_btn_align]").forEach(x =>{ x.onclick =()=>{ a.setAttribute(b, x.id); efy.btn_align = x.id; $save() }});
 
     /*Toggle Sidebar*/ $event($body, 'click', ()=>{ let x = event.target;
-        if (x.matches('[efy_sidebar_btn]')){ a.classList.toggle('efy_hide'); let final = 'on';
+        if (x.matches('[efy_sidebar_btn]')){ a.classList.toggle('efy_hide_i'); let final = 'on';
             if ($root.hasAttribute('efy_sidebar')){ let d = $root.getAttribute('efy_sidebar'), e = '';
                 if (['left', 'right'].some(s => d.includes(s))) e = d.replace('on_', '');
                 final = d.includes('on') ? e : 'on_' + e; $('.efy_sidebar [efy_sidebar_btn="close"]').focus();
@@ -879,7 +879,7 @@ $event($('.bg_position_y'), 'input', (a)=> $css_prop(`--efy_bg_y`, `${a.target.v
 for (let a = ['bg', 'content', 'trans', 'front', 'back'], j = [
     '[efy_mode*=trans] .efy_3d_bg {filter: ',
     'img, video:not(.efy_3d_bg, .efy_3d_front, .efy_3d_back) {filter: ',
-    ':is(details:not([efy_help]), select, input, textarea, blockquote, pre, article, table, audio, button, [efy_card], [efy_tabs] [efy_content], [efy_timer], [efy_clock], [efy_tabs] [efy_tab], [efy_color_picker], [efy_keyboard], [efy_sidebar_btn*=absolute], [efy_select] label, .efy_trans_filter, .efy_btn_trans, .efy_trans):not(.efy_trans_filter_off, .efy_trans_filter_off_all, .efy_trans_filter_off_all *, .efy_sidebar *, [efy_range_text] input){backdrop-filter: ',
+    ':is(details:not([efy_help]), select, input, textarea, blockquote, pre, article, table, audio, button, [efy_card], [efy_tabs] [efy_content], [efy_timer], [efy_clock], [efy_tabs] [efy_tab], [efy_keyboard], [efy_sidebar_btn*=absolute], [efy_select] label, .efy_trans_filter, .efy_btn_trans, .efy_trans):not(.efy_trans_filter_off, .efy_trans_filter_off_all, .efy_trans_filter_off_all *, .efy_sidebar *, [efy_range_text] input){backdrop-filter: ',
     '.efy_3d_front {filter: ',
     '.efy_3d_back {filter: '
 ], k = ['!important}', '!important}', '!important; -webkit-backdrop-filter: ', '!important}', '!important}'], l = ['', '', '!important}', '', ''], i = 0; i < a.length; i++){
@@ -1209,12 +1209,16 @@ read.readAsText(file)});
     });
 });
 
-/*EFY Range Text*/ let p; $ready('[efy_range_text]', (a)=>{ let c = $$(a, 'input[type=range]');
-    $add('input', {class: 'efy_range_text_p', type: 'number', value: c.value, step: c.step, min: c.min, max: c.max, name: 'efy_name'}, [], a, 'afterbegin'); p = $$(a, '.efy_range_text_p');
+/*EFY Range Text*/ $ready('[efy_range_text]', (a)=>{
+    const c = $$(a, 'input[type=range]'),
+    p = $add('input', {class: 'efy_range_text_p', type: 'number', value: c.value, step: c.step, min: c.min, max: c.max, name: 'efy_name'}, [], a, 'afterbegin');
+    c.setAttribute('aria-hidden', ''); c.setAttribute('tabindex', '-1');
     $event(p, 'input', (x)=>{ c.value = x.target.value; c.dispatchEvent(new Event('input', {'bubbles': true }))});
-    $event(c, 'input', (x)=>{ $$(a, '.efy_range_text_p').value = x.target.value });
-}); $all('form[class*=efy], [efy_content=colors] [efy_color_picker]').forEach(x =>{ $event(x,'reset', ()=>{
-        $$all(x, '[efy_range_text]').forEach(y =>{ $$(y, '.efy_range_text_p').value = $$(y, 'input').value })
+    $event(c, 'input', (x)=> p.value = x.target.value);
+}); $all('form[class*=efy]').forEach(x =>{ $event(x,'reset', ()=>{
+        $$all(x, '[efy_range_text]').forEach(y =>{
+            $$(y, '.efy_range_text_p').value = $$(y, 'input').value
+        })
 })});
 
 /*Clock & Timer*/ let time_0 =(i)=>{ if (i < 10){i = '0' + i} return i},
@@ -1250,7 +1254,12 @@ $ready('[efy_clock]', (x)=>{ 'hour s1 minute s2 second format'.split(' ').map(a 
             else {x.classList.remove('efy_hide_i')}
 })})});
 
-/*EFY Toggle*/ $ready('[efy_toggle]', (a)=>{ let b = a.getAttribute('efy_toggle'); $event(a, 'click', ()=>{ $all(b).forEach(c =>{ c.classList.toggle('efy_hide_i')})})});
+/*EFY Toggle*/ $ready('[efy_toggle]', (a)=>{
+    let b = a.getAttribute('efy_toggle');
+    $event(a, 'click', ()=>{ $all(b).forEach(c =>{
+        c.classList.toggle('efy_hide_i');
+        c.classList.contains('efy_hide_i') ? c.setAttribute('tabindex', '-1') : c.removeAttribute('tabindex');
+})})});
 
 /*Alerts*/ $add('div', {efy_alerts: '', class: 'efy_sidebar_width'}, [], $body, 'afterbegin');
 $event($body, 'pointerup', ()=>{ let a = event.target;

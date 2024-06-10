@@ -508,7 +508,7 @@ summary::-webkit-details-marker {display: none}
     [efy_alert] {background: var(--efy_bg1); box-shadow: none; border-radius: var(--efy_radius)}
 }
 
-/*Quick Shortcuts*/ .efy_square_btn, :is([efy_timer], [efy_color_picker] .copy_btn) button {
+/*Quick Shortcuts*/ .efy_square_btn, [efy_sidebar_btn=absolute], :is([efy_timer], [efy_color_picker] .copy_btn) button {
     display: inline-flex; gap: 12rem; margin: 0; padding: 10rem; width: var(--efy_size); height: var(--efy_size); align-items: center; place-content: center;
     i {margin:0}
 }
