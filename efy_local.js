@@ -1,4 +1,4 @@
-let efy_version = '24.06.10 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document),
+let efy_version = '24.06.10A Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document),
 $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
 /*Add: Selector, optional: {Attributes}, [Text, Children], Parent, Position*/
 $add =(tag, attrs = {}, children = [], parent = document.body, position = 'beforeend')=>{
@@ -784,15 +784,25 @@ $all("[name=efy_sidebar_align]").forEach(x =>{ const y = x.id.replace('efy_sideb
         $root.setAttribute('efy_sidebar', z + y); efy.sidebar_align = y; $save();
 })});
 
- /*Align & Toggle Button*/ 'left_top middle_top right_top left_middle middle_middle right_middle left_bottom middle_bottom right_bottom'.split(' ').map(a =>{
+/*Align & Toggle Button*/ 'left_top middle_top right_top left_middle middle_middle right_middle left_bottom middle_bottom right_bottom'.split(' ').map(a =>{
     const input = $add('input', {type: 'radio', name: 'efy_btn_align', id: a}, [], $('#efy_btn_align > div'));
     if (a == 'middle_middle') input.setAttribute('disabled','');
 });
 
-(()=>{ let sd_btn = $css_prop('--efy_sidebar_button').replaceAll(' ', '').split(','), a = 'efy_sidebar_btn_hide', c = $('#efy_btn_align'), d = 'beforeend', e = $('[efy_sidebar_btn*=absolute]');
-    $add('input', {type: 'checkbox', name: a, id: a, checked: ''}, [], c, d); $add('label', {for: a, efy_lang: 'floating_button'}, [], c, d);
-    if (!(efy.sidebar_btn_status) && (sd_btn.includes('off'))){ e.classList.add('efy_hide_i'); $('#'+a).removeAttribute('checked')}
-    $event($('#'+a), 'click', ()=>{ if (e.classList.contains('efy_hide_i')){efy.sidebar_btn_status = 'on'; $save()} else {delete efy.sidebar_btn_status; $save()} e.classList.toggle('efy_hide_i') });
+(()=>{
+    let sd_btn = $css_prop('--efy_sidebar_button').replaceAll(' ', '').split(','),
+    a = 'efy_sidebar_btn_hide', c = $('#efy_btn_align'), d = 'beforeend', e = $('[efy_sidebar_btn*=absolute]');
+
+    $add('input', {type: 'checkbox', name: a, id: a, checked: ''}, [], c, d);
+    $add('label', {for: a, efy_lang: 'floating_button'}, [], c, d);
+    if (!(efy.sidebar_btn_status) && (sd_btn.includes('off'))){
+        e.classList.add('efy_hide_i'); $('#'+a).removeAttribute('checked')
+    }
+    $event($('#'+a), 'click', ()=>{
+        if (e.classList.contains('efy_hide_i')){efy.sidebar_btn_status = 'on'; $save()}
+        else {delete efy.sidebar_btn_status; $save()}
+        e.classList.toggle('efy_hide_i')
+    });
 
     a = $('[efy_sidebar_btn=absolute]'); b = 'efy_btn_align';
 
@@ -801,12 +811,18 @@ $all("[name=efy_sidebar_align]").forEach(x =>{ const y = x.id.replace('efy_sideb
     $all("[name=efy_btn_align]").forEach(x =>{ x.onclick =()=>{ a.setAttribute(b, x.id); efy.btn_align = x.id; $save() }});
 
     /*Toggle Sidebar*/ $event($body, 'click', ()=>{ let x = event.target;
-        if (x.matches('[efy_sidebar_btn]')){ a.classList.toggle('efy_hide_i'); let final = 'on';
-            if ($root.hasAttribute('efy_sidebar')){ let d = $root.getAttribute('efy_sidebar'), e = '';
+        if (x.matches('[efy_sidebar_btn]')){ let final = 'on';
+            if (x.matches('[efy_sidebar_btn*=absolute]')) a.classList.toggle('efy_hide_i');
+            if ($root.hasAttribute('efy_sidebar')){
+                let d = $root.getAttribute('efy_sidebar'), e = '';
                 if (['left', 'right'].some(s => d.includes(s))) e = d.replace('on_', '');
                 final = d.includes('on') ? e : 'on_' + e; $('.efy_sidebar [efy_sidebar_btn="close"]').focus();
             }; $root.setAttribute('efy_sidebar', final)
-        }; if (x.matches('[efy_sidebar_btn*=close]')) $('body [efy_sidebar_btn]:not(.efy_sidebar button)').focus()
+        }
+        if (x.matches('[efy_sidebar_btn*=close]')){
+            $('body [efy_sidebar_btn]:not(.efy_sidebar button)').focus();
+            if (sd_btn.includes('on') || efy.sidebar_btn_status === 'on') a.classList.toggle('efy_hide_i');
+        }
     })
 })()
 
