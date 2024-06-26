@@ -27,20 +27,20 @@ html[efy_mode], html[efy_mode*=trans].trans_window body, html.trans_window .efy_
 [efy_color_text][efy_mode] {--efy_text: oklch(var(--efy_color_text_var)); --efy_text_trans: oklch(var(--efy_color_text_var) / .3); --efy_text_trans2: oklch(var(--efy_color_text_var) / .45)}
 [efy_color_bordercol][efy_mode] {--efy_border_alpha: 1; --efy_border: var(--efy_border_size) solid oklch(var(--efy_color_bordercol_var))}
 [efy_color_buttoncol][efy_mode] {
-    :is(button:not(.efy_button_text_off [efy_tab]), [efy_tabs] [efy_tab][efy_active], [type=button], [role=button], input:is([type=reset], [type=submit]), [efy_select] input:checked + label, option:checked):not(.efy_button_text_off, [efy_color_preview]) {color: oklch(var(--efy_color_buttoncol_var)); -webkit-text-fill-color: oklch(var(--efy_color_buttoncol_var))}
+    :is(button:not(.efy_button_text_off :is([efy_tab], [efy_tab] + label)), [efy_tabs] :is([efy_tab], [efy_tab] + label)[efy_active], [type=button], [role=button], input:is([type=reset], [type=submit]), [efy_select] input:checked + label, option:checked):not(.efy_button_text_off, [efy_color_preview]) {color: oklch(var(--efy_color_buttoncol_var)); -webkit-text-fill-color: oklch(var(--efy_color_buttoncol_var))}
     [efy_select] {
         [type=radio]:checked + label:after {background: oklch(var(--efy_color_buttoncol_var))!important}
         input:checked + label:before, [type=checkbox]:checked + label:after {border-color: oklch(var(--efy_color_buttoncol_var))!important}
         label:not([efy_upload], .efy_color, [type=button]):before {background: oklch(var(--efy_color_buttoncol_var) / .7)!important}
         label:not([efy_upload], input:checked + label, .efy_color, [type=button], :is(.efy_custom_colors, #efy_colors) label) {background: linear-gradient(0deg, oklch(var(--efy_color_buttoncol_var) / .7), oklch(var(--efy_color_buttoncol_var) / .7)), var(--efy_color_trans); background-clip: text, border-box!important; background-origin: border-box!important}
     }
-    :is([efy_tabs] [efy_tab]:not([efy_active], .efy_button_text_off [efy_tab])) {color: oklch(var(--efy_color_buttoncol_var) / .7); -webkit-text-fill-color: oklch(var(--efy_color_buttoncol_var) / .7)}
+    :is([efy_tabs] :is([efy_tab], [efy_tab] + label):not([efy_active], .efy_button_text_off :is([efy_tab], [efy_tab] + label))) {color: oklch(var(--efy_color_buttoncol_var) / .7); -webkit-text-fill-color: oklch(var(--efy_color_buttoncol_var) / .7)}
 }
 /*Display: Block*/ table, .efy_toggle_visible {display: block}
-/*Inline-Block*/ header > nav :is(li, a, a:visited), [efy_tabs] [efy_tab], [efy_select] :is(label, label:before, input:checked + label:after):not(.efy_custom_colors *) {display: inline-flex; align-items: center; place-content: center}
+/*Inline-Flex*/ header > nav :is(li, a, a:visited), [efy_tabs] :is([efy_tab], [efy_tab] + label), [efy_select] :is(label, label:before, input:checked + label:after):not(.efy_custom_colors *) {display: inline-flex; align-items: center; place-content: center}
 .efy_custom_colors [efy_select] :is(label, label:before, input:checked + label:after) {display: inline-block}
 /*None*/ .efy_hide {display: none}
-/*None ! */ .efy_hide_i {opacity: 0!important; position: absolute!important; pointer-events: none; scale: .3!important; transition: none!important} .efy_hide_i * {display: none!important}
+/*None ! */ .efy_hide_i, [efy_tabs] input[efy_tab] {opacity: 0!important; position: absolute!important; pointer-events: none; scale: .3!important; transition: none!important} .efy_hide_i * {display: none!important}
 
 /*Content: ''*/ [type=radio]:checked:after, [efy_select] label:before, [efy_select] [type=radio]:checked + label:after {content: ''}
 
@@ -48,8 +48,8 @@ html[efy_mode], html[efy_mode*=trans].trans_window body, html.trans_window .efy_
 /*BG*/ html:not([efy_mode*=trans]) .efy_3d_bg, .efy_bg {background: var(--efy_bg)!important}
 /*BG1*/ aside, th, [type=file], pre, textarea, select, input, details, blockquote, pre, article, tr:nth-child(even), [efy_alert], [efy_timer], [efy_clock], .efy_bg1 {background: var(--efy_bg1)}
 /*Text*/ mark, kbd, .efy_bg_text {background: var(--efy_text)}
-/*Color*/ button, [type=button], [role=button], [type=submit], [type=reset], [efy_sidebar_btn=absolute]:hover, :is([type=checkbox], [type=radio], option):checked, [efy_select] input:checked + label, [efy_tabs] [efy_tab][efy_active], :is(blockquote, .efy_img_previews [efy_bg_nr][efy_active]):before, .efy_color {background: var(--efy_color); background-clip: border-box; background-origin: border-box; -webkit-text-fill-color: var(--efy_text2); border: var(--efy_border)}
-/*Color Trans*/ [type=range], [type=radio], [type=checkbox], [efy_sidebar_btn=absolute], [efy_select] label:not([efy_upload], [type=button]), [efy_tabs] [efy_tab]:not([efy_active]), .efy_color_trans {background: var(--efy_color), var(--efy_color_trans); background-clip: text, border-box; background-origin: border-box; border: var(--efy_border); -webkit-text-fill-color: transparent}
+/*Color*/ button, [type=button], [role=button], [type=submit], [type=reset], [efy_sidebar_btn=absolute]:hover, :is([type=checkbox], [type=radio], option):checked, [efy_select] input:checked + label, [efy_tabs] [efy_tab][efy_active] + label, :is(blockquote, .efy_img_previews [efy_bg_nr][efy_active]):before, .efy_color {background: var(--efy_color); background-clip: border-box; background-origin: border-box; -webkit-text-fill-color: var(--efy_text2); border: var(--efy_border)}
+/*Color Trans*/ [type=range], [type=radio], [type=checkbox], [efy_sidebar_btn=absolute], [efy_select] label:not([efy_upload], [type=button]), [efy_tabs] [efy_tab]:not([efy_active]) + label, .efy_color_trans {background: var(--efy_color), var(--efy_color_trans); background-clip: text, border-box; background-origin: border-box; border: var(--efy_border); -webkit-text-fill-color: transparent}
 
 /*Color: Text*/ body, textarea, select, input, pre, pre code, header > nav :is(a, a:visited), [efy_sidebar_btn]:hover, .efy_text {color: var(--efy_text)}
 /*Text2*/ button, [type=button], [role=button], [type=submit], [type=reset], mark, kbd, option:checked, [efy_select] input:checked + label, .efy_text2 {color: var(--efy_text2)}
@@ -67,20 +67,20 @@ html[efy_mode], html[efy_mode*=trans].trans_window body, html.trans_window .efy_
 [efy_shadow*=trans] :is(textarea, select, [type=file], input:not([type=checkbox], [type=radio], [role=button], [type=submit], [type=reset], [type=button], [type=color], [type=range])):focus,
 [efy_shadow*=trans][efy_outline] :is(details:focus-within:not([efy_help])) {box-shadow: 0 0 0 calc(var(--efy_border_size) + 2rem) var(--efy_text), var(--efy_shadow_trans)!important}
 
-/*Outline Offset*/ [efy_outline] :is([type=radio], [type=checkbox], button, [role=button], [type=submit], [type=reset], [type=button], [type=range], [type=color], a, [efy_tabs] [efy_tab]):focus:not([tabindex='-1'], .efy_img_previews [efy_bg_nr]), [efy_outline] [efy_select] input:focus + label, [efy_outline] :is([efy_upload], [efy_help]):focus-within {outline: calc(var(--efy_border_size) + 2rem) solid var(--efy_text)!important; outline-offset: 4rem!important}
+/*Outline*/ [efy_outline] :is([type=radio], [type=checkbox], button, [role=button], [type=submit], [type=reset], [type=button], [type=range], [type=color], a):focus:not([tabindex='-1'], .efy_img_previews [efy_bg_nr]), [efy_outline] [efy_select] input:focus + label, [efy_outline] :is([efy_upload], [efy_help]):focus-within, [efy_outline] [efy_tabs] [efy_tab]:focus + label:not([tabindex='-1']) {outline: calc(var(--efy_border_size) + 2rem) solid var(--efy_text)!important; outline-offset: 4rem!important}
 
 /*Shadow: Button*/ [efy_shadow*=button] :is(button, [role=button], input:is([type=button], [type=submit], [type=reset]), :is([type=radio], [type=checkbox], option):checked, [efy_select] input:checked + label):not(.efy_shadow_button_off, .efy_trans_filter, .efy_btn_trans, [efy_tab]:not([efy_active]), [efy_about] .efy_flex button, .efy_img_previews [efy_bg_nr], [efy_color_preview], [efy_card]) {box-shadow: var(--efy_shadow_button)}
 [efy_shadow*=button] [type=range]:not(.hue, .sat, .lgt, .transparency)::-webkit-slider-thumb, [efy_shadow*=button] ::-webkit-progress-value, [efy_shadow*=button] ::-webkit-meter-optimum-value {box-shadow: var(--efy_shadow_button)!important}
 [efy_shadow*=button] [type=range]:not(.hue, .sat, .lgt, .transparency)::-moz-range-thumb {box-shadow: var(--efy_shadow_button)!important}
 [efy_shadow*=button] ::file-selector-button {box-shadow: var(--efy_shadow_button)!important}
-/*Shadow: Button Trans*/ [efy_shadow*=button] :is([efy_tabs] [efy_tab], :is(button, [role=button]).efy_trans_filter, [efy_select] label:not([efy_upload]), [type=range], .efy_btn_trans):not([efy_active], .efy_trans_filter_off) {box-shadow: var(--efy_shadow_button_trans)}
+/*Shadow: Button Trans*/ [efy_shadow*=button] :is([efy_tabs] :is([efy_tab], [efy_tab] + label), :is(button, [role=button]).efy_trans_filter, [efy_select] label:not([efy_upload]), [type=range], .efy_btn_trans):not([efy_active], .efy_trans_filter_off) {box-shadow: var(--efy_shadow_button_trans)}
 [efy_shadow*=button] :is([type=radio], [type=checkbox]):not(:checked) {box-shadow: var(--efy_shadow_button_trans)!important}
 [efy_shadow*=button] ::-webkit-progress-bar, [efy_shadow*=button] ::-webkit-meter-bar {box-shadow: var(--efy_shadow_button_trans)!important}
 
 /*Shadow: Trans*/ [efy_shadow*=trans] :is(details:not([efy_help]), [efy_card], [efy_clock], [efy_timer], [efy_color_picker], select:not([disabled]), input:not([type="range"], [type=checkbox], [type=radio], [role=button], [type=button], [type=submit], [type=reset], [disabled]), textarea:not([disabled]), input[type=number], blockquote, pre, audio, table, [efy_code], [efy_tabs]:not(.efy_shadow_trans_off) [efy_content], [efy_about] button:not([efy_sidebar_btn*=close]), .efy_sidebar, .efy_shadow_trans):not(.efy_shadow_trans_off, [efy_number] button:not(:focus), [efy_range_text] .efy_range_text_p:not(:focus)) {box-shadow: var(--efy_shadow_trans)}
 
 /*Radius*/ textarea, select, input, img, video, pre, details, summary, blockquote, article, aside, [type=range], button, [role=button], [type=submit], [type=reset],
-[type=button], img, video, audio, table, [efy_sidebar_btn=absolute], [efy_select] label, [efy_tabs] [efy_tab], .efy_radius {border-radius: var(--efy_radius)}
+[type=button], img, video, audio, table, [efy_sidebar_btn=absolute], [efy_select] label, [efy_tabs] :is([efy_tab], [efy_tab] + label), .efy_radius {border-radius: var(--efy_radius)}
 /*2*/ [efy_timer], [efy_clock], [efy_alert], .efy_radius2 {border-radius: var(--efy_radius2)}
 /*0*/ mark, kbd, [type=checkbox], [type=radio], [efy_outline] a:focus, .efy_radius0 {border-radius: var(--efy_radius0)}
 /*00*/ [type=radio]:checked:after, .efy_radius00 {border-radius: var(--efy_radius00)}
@@ -91,7 +91,7 @@ html[efy_mode], html[efy_mode*=trans].trans_window body, html.trans_window .efy_
 /*Width: 100%*/ img, video, iframe, hr, textarea, select, input, [efy_card] {width: 100%}
 /*Max-Width: 100%*/ pre, img, video, iframe, table {max-width: 100%}
 
-/*Cursor: Pointer*/ :is(button, [role=button], [type=submit], [type=reset], [type=button]):focus, :is(button, [type=reset], [type=button], [type=submit]):enabled:hover, [role=button]:not([aria-disabled=true]):hover, summary, [type=range], [type=file], [efy_sidebar_btn], [efy_select] label {cursor: pointer}
+/*Cursor: Pointer*/ :is(button, [role=button], [type=submit], [type=reset], [type=button]):focus, :is(button, [type=reset], [type=button], [type=submit]):enabled:hover, [role=button]:not([aria-disabled=true]):hover, summary, [type=range], [type=file], [efy_sidebar_btn], [efy_select] label, [efy_tab] + label {cursor: pointer}
 /*Help*/ abbr {cursor: help}
 /*Normal*/ [tabindex='-1'] {cursor: default!important}
 /*None*/ [efy_cursor_none] *, [efy_cursor_custom], [efy_cursor_custom] * {cursor: none!important}
@@ -102,13 +102,13 @@ html[efy_mode], html[efy_mode*=trans].trans_window body, html.trans_window .efy_
 
 /*Line-Height: 30rem*/ mark, kbd {line-height: 30rem}
 
-/*Padding1*/ button, [role=button], [type=submit], [type=reset], [type=button], summary, blockquote, pre, [efy_select] label, [efy_tabs] [efy_tab], .efy_padding {padding: var(--efy_padding)}
+/*Padding1*/ button, [role=button], [type=submit], [type=reset], [type=button], summary, blockquote, pre, [efy_select] label, [efy_tabs] :is([efy_tab], [efy_tab] + label), .efy_padding {padding: var(--efy_padding)}
 /*Padding2*/ kbd, .efy_padding2 {padding: var(--efy_padding2)}
 /*Gap*/ .efy_gap {gap: var(--efy_gap)}
 /*Gap 0*/ .efy_gap0 {gap: var(--efy_gap0)}
 
 /*Text: Family*/ html, body, mark, code, pre, pre span, kbd, samp, button, a {font-family: var(--efy_font_family)}
-/*Bold*/ button, a, code, kbd, samp, mark, summary, th, table caption, [type=button], [type=submit], [type=reset], [efy_sidebar_btn], code,  [efy_select] label,  [efy_tabs] [efy_tab] {font-weight: bold}
+/*Bold*/ button, a, code, kbd, samp, mark, summary, th, table caption, [type=button], [type=submit], [type=reset], [efy_sidebar_btn], code,  [efy_select] label,  [efy_tabs] :is([efy_tab], [efy_tab] + label) {font-weight: bold}
 
 /*No Selection*/ [efy_select] label {user-drag: none; -webkit-user-drag: none; user-select: none; -webkit-user-select: none}
 /*Selection Color*/ ::selection {background: var(--efy_text); color: var(--efy_text2); -webkit-text-fill-color: var(--efy_text2)} ::-moz-selection {background: var(--efy_text); color: var(--efy_text2); -webkit-text-fill-color: var(--efy_text2)}
@@ -116,9 +116,9 @@ html[efy_mode], html[efy_mode*=trans].trans_window body, html.trans_window .efy_
 /*Scrollbar*/ ::-webkit-scrollbar {width:20rem; min-height:20rem; background: transparent!important} ::-webkit-scrollbar-thumb{background: transparent!important; border-radius: var(--efy_radius0); border: 6rem solid transparent; box-shadow: inset 0 0 0 6rem var(--efy_bg2), inset 0 0 0  1.5rem var(--efy_bg1); min-height:20rem} ::-webkit-scrollbar-thumb:hover{box-shadow: inset 0 0 0 6rem var(--efy_text)} ::-webkit-scrollbar-corner {background: transparent!important}
 
 /*Animations*/
-/*None*/ [efy_tabs] [efy_tab]:active {-webkit-animation: none; animation: none}
+/*None*/ [efy_tabs] :is([efy_tab], [efy_tab] + label):active {-webkit-animation: none; animation: none}
 /*Hide*/ .efy_anim_remove {animation: remove calc(var(--efy_anim_status) * var(--efy_anim_speed) * .05s) ease-in-out backwards; animation-play-state: var(--efy_anim_state)}
-/*Pulse*/ :is(button, [efy_tab], [efy_bg_nr], .efy_anim_pulse):not([disabled]):active {scale: .9; transition: calc(var(--efy_anim_status) * var(--efy_anim_speed) * .1s)}
+/*Pulse*/ :is(button, [efy_tab], [efy_tab] + label, [efy_bg_nr], .efy_anim_pulse):not([disabled]):active {scale: .9; transition: calc(var(--efy_anim_status) * var(--efy_anim_speed) * .1s)}
 /*Pulse2*/ :is(details, input, textarea, select, a, label, [efy_timer], [efy_clock], [efy_card], [efy_alert], .efy_anim_pulse2):not([disabled]):active {scale: .98; transition: calc(var(--efy_anim_status) * var(--efy_anim_speed) * .1s)}
 /*Remove*/ @keyframes remove {0% {scale: .98} 30% {scale: 1} 100% {scale: .8; box-shadow: none}}
 /*No Animations*/ [efy_animations*=off] :is(details, input, textarea, select, a, label, [efy_timer], [efy_clock], [efy_card], [efy_alert], button, [efy_tab], [efy_bg_nr], .efy_anim_pulse, .efy_anim_pulse2):not([disabled]):active {scale: 1; transition: unset}
@@ -203,17 +203,18 @@ pre {overflow: auto}
         [type=range]:not(.x, .y, .blur, .spread)::-moz-range-thumb {background: transparent; box-shadow: var(--efy_bs) !important; border: 0}
     }
     .efy_tabs {
-        [efy_tab], button {min-width: var(--efy_size); height: var(--efy_size); border-radius: var(--efy_radius); -webkit-text-fill-color: var(--efy_text2)!important; display: flex; align-items: center; place-content: center;
+        [efy_tab] + label, button {min-width: var(--efy_size); height: var(--efy_size); border-radius: var(--efy_radius); display: flex; align-items: center; place-content: center;
             &, i {margin: 0!important}
             &:before, &:after {display: none}
         }
+        [efy_tab] + label:not([for=efy_color_bgcol]) {-webkit-text-fill-color: var(--efy_text2)!important}
         [for=efy_color_bgcol] {background: var(--efy_bg)!important; -webkit-text-fill-color: var(--efy_text)!important}
         [for=efy_color_text] {background: var(--efy_text)!important}
         [for=efy_color_buttoncol] {background: oklch(var(--efy_color_buttoncol_var))!important}
         [for=efy_color_bordercol] {background: oklch(var(--efy_color_bordercol_var)) !important}
         .color_add, .color_remove, .efy_copy, .efy_paste {width: var(--efy_size)}
-        [efy_tab]:not([efy_active]) {box-shadow: none}
-        [efy_tab][efy_active] {box-shadow: inset 0 0 0 3rem var(--efy_text); border: none}
+        [efy_tab]:not([efy_active]) + label {box-shadow: none}
+        [efy_tab][efy_active] + label {box-shadow: inset 0 0 0 3rem var(--efy_text); border: none}
         [type=radio]:checked + label:after {display: none}
         [type=radio] {width: 0; height: 0}
         .color_add i:before {font-size: 14rem}
@@ -288,7 +289,7 @@ summary::-webkit-details-marker {display: none}
     [type=checkbox]:checked + label:after {top: 13.2rem; left: 16.5rem; font-family: 'efy_icons'; font-size: 12rem}
     input:checked + label:before {border-color: var(--efy_text2); background: transparent}
     :is([type=checkbox], [type=radio], label [type=color]) {opacity:0}
-    :is(p, label, button), [efy_tabs] [efy_tab], .efy_about a, [type=file] {margin: calc(var(--efy_gap0) / 2) var(--efy_gap0) calc(var(--efy_gap0) / 2) 0}
+    p, button, label:not([efy_tabs] [efy_tab] + label, :is([efy_content=mode], .efy_img_previews) label, [efy_select*="margin0"] label), .efy_about a, [type=file] {margin: calc(var(--efy_gap0) / 2) var(--efy_gap0) calc(var(--efy_gap0) / 2) 0}
     label:before, input:checked + label:after {vertical-align: middle; display: inline-flex}
 }
 
@@ -321,13 +322,13 @@ summary::-webkit-details-marker {display: none}
 }}
 
 [efy_tabs] {display: flex; flex-direction: column; gap: var(--efy_gap0);
-    [efy_tab][efy_active] {-webkit-text-fill-color: var(--efy_text2)}
-    [efy_tab] {min-width: var(--efy_size)}
+    :is([efy_tab], [efy_tab] + label)[efy_active] {-webkit-text-fill-color: var(--efy_text2)}
+    [efy_tab] + label {min-width: var(--efy_size); line-height: 1; height: var(--efy_size)}
     [efy_content] {opacity: 0; position: absolute; pointer-events: none; scale: .3; padding: calc(var(--efy_gap00) + 10rem);}
     [efy_content][efy_active] {opacity: 1; position: relative; pointer-events: all; scale: 1}
     [efy_content]:not([efy_active]) * {position: absolute; pointer-events: none; opacity: 0; display: none}
     .efy_tabs {display: flex; flex-wrap: wrap; gap: var(--efy_gap0);
-        :is(button, [efy_tab]:last-of-type) {margin: 0}
+        :is(button, [efy_tab] + label):last-of-type) {margin: 0}
 }}
 [efy_tabs=efyui_filters] :is([type=reset], [for=efy_trans_filter_menu], [for=efy_bg_size]) {margin: 0 var(--efy_gap0) 10rem 0}
 
@@ -339,6 +340,7 @@ summary::-webkit-details-marker {display: none}
 [efy_tabs] [efy_content][efy_active], [efy_card], [efy_search_input] {transition: calc(var(--efy_anim_status) * var(--efy_anim_speed) * .1s) linear}
 
 /*Sidebar*/ .efy_sidebar {background: var(--efy_bg); padding: var(--efy_gap) calc(var(--efy_gap) - 2rem) var(--efy_gap) var(--efy_gap); width: 100vw; max-width: var(--efy_sidebar_width); height: var(--efy_100vh); z-index: 9999; position: fixed; right: var(--efy_sidebar_width_n); top: 0; border-radius: var(--efy_radius2) 0 0 var(--efy_radius2); transition-property: left, right; transition-duration: calc(var(--efy_anim_status) * var(--efy_anim_speed) * .3s); overflow-y: auto;
+    &:not([efy_sidebar*=on] .efy_sidebar) * {display: none}
     > details:last-of-type {margin: 0}
     summary { display: flex; align-items: center;
         > mark {padding: 5px 7rem; line-height: 1; margin-left: 10rem}
@@ -585,7 +587,7 @@ i, :is([efy_start], [efy_reset], [efy_sidebar_btn], details > summary):before, [
 [efy_icon=heart]:before {content: "\e915"}
 [efy_icon=help]:before, [efy_help] summary:after {content: "\e901"}
 [efy_icon=key]:before {content: "\e918"}
-:is([efy_icon=menu], [efy_sidebar_btn=absolute]):before {content: "\e906"}
+[efy_icon=menu]:before {content: "\e906"}
 [efy_icon=menu2]:before {content: "\e903"}
 [efy_icon=microphone]:before {content: "\e920"}
 [efy_icon=notify]:before {content: "\e917"}

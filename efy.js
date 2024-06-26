@@ -1,4 +1,4 @@
-export let efy_version = '24.06.10A Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document),
+export let efy_version = '24.06.26 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document),
 $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
 /*Add: Selector, optional: {Attributes}, [Text, Children], Parent, Position*/
 $add =(tag, attrs = {}, children = [], parent = document.body, position = 'beforeend')=>{
@@ -102,7 +102,7 @@ $event(window.visualViewport, 'resize', $100vh); $event(window.visualViewport, '
         ['div', {efy_tabs: 'efy_theme'}, [['div', {class: 'efy_tabs'}]]]
     ]]
 ]);
-$add('button', {efy_sidebar_btn: 'absolute', title: 'menu'});
+$add('button', {efy_sidebar_btn: 'absolute', title: 'menu'}, [['i', {efy_icon: 'menu'}]]);
 $add('video', {class: 'efy_3d_bg', autoplay: '', loop: '', muted: '', playsinline: ''});
 
 /*Quick Shortcuts*/ if ($efy_module('efy_quick')){ let a = $('[efy_about]');
@@ -129,8 +129,10 @@ $add('video', {class: 'efy_3d_bg', autoplay: '', loop: '', muted: '', playsinlin
 /*Theme*/
 
 /*Tabs*/ ['mode', 'colors', 'size', 'menu'].map(a =>{
-    const tab = $add('button', {efy_tab: a, efy_lang: a}, [], $('[efy_tabs=efy_theme] .efy_tabs')),
+    const id = `efy_theme_${a}`, parent = [[], $('[efy_tabs=efy_theme] .efy_tabs')];
+    const tab = $add('input', {efy_tab: a, type: 'radio', id: id, name: 'efy_theme_tabs'}, ...parent),
     content = $add('div', {efy_content: a, efy_select: '', id: `efy_${a}`}, [], $('[efy_tabs=efy_theme]'));
+    $add('label', {efy_lang: a, for: id}, ...parent);
     if (a == 'mode'){ tab.setAttribute('efy_active', ''); content.setAttribute('efy_active', '')}
 });
 
@@ -282,9 +284,10 @@ $ready('[efy_color]', (a)=>{ const now = `colors_${Date.now()}${unique}`; unique
     }; let nr = names.length, last;
 
     /*Add Buttons: Add, Remove, Copy, Paste*/
-    const range_hide = (!range_status) ? ' efy_hide_i' : '', bg = 'background: linear-gradient(to right,';
+    const range_hide = (!range_status) ? ' efy_hide_i' : '', range_status_index = (!range_status) ? {tabindex: '-1'} : null;
+    bg = 'background: linear-gradient(to right,';
     [['add', 'plus'], ['remove', 'remove']].map(a =>{
-        $add('button', {class: `color_${a[0]}${range_hide}`}, [['i', {efy_icon: a[1]}]], previews);
+        $add('button', {class: `color_${a[0]}${range_hide}`, ...range_status_index}, [['i', {efy_icon: a[1]}]], previews);
     }); ['copy', 'paste'].map(a => $add('button', {class: `efy_${a}`, title: a}, [['i', {efy_icon: a}]], previews));
     const add = $$(a, '.color_add'), remove = $$(a, '.color_remove'), copy = $$(a, '.efy_copy'), paste = $$(a, '.efy_paste'),
     toggle_arcp =()=>{ if (range_status){
@@ -304,8 +307,8 @@ $ready('[efy_color]', (a)=>{ const now = `colors_${Date.now()}${unique}`; unique
             ['input', { class: p[1], type: 'range', min: 0, max: p[2], step: p[3], value: p[4], style: p[5] }]
         ]]}), id = ids[i] || `${now}_${j}`;
         const content = $add('div', {efy_content: j}, [...inputs], a);
-        $add('input', {id: id, type: 'radio', name: now}, [], add, 'beforebegin');
-        $add('label', {for: id, efy_tab: j, style: `background: ${color}`}, names[i] || nr, add, 'beforebegin');
+        $add('input', {id: id, efy_tab: j, type: 'radio', name: now}, [], add, 'beforebegin');
+        $add('label', {for: id, style: `background: ${color}`}, names[i] || nr, add, 'beforebegin');
 
         /*Add Shadows*/ ['button', 'trans'].map(type =>{ if (a.classList.contains(`efy_shadows_${type}`)){
             let [inset, x, y, blur, spread] = [false, 0, 0, 0, 0]; const inset_id = `efy_shadow_${type}_inset${i}`, begin = [[], content, 'afterbegin'];
@@ -360,23 +363,35 @@ $ready('[efy_color]', (a)=>{ const now = `colors_${Date.now()}${unique}`; unique
         }
     });
 
-    $event(a, 'input', (d)=>{ if (d.target.getAttribute('type') == 'range'){
-        const active = $$(a, '[efy_content][efy_active]'), current = active.getAttribute('efy_content'),
+    $event(a, 'input', (d)=>{ /*if (d.target.getAttribute('type') == 'range'){*/
+        let active = $$(a, '[efy_content]'); const target = d.target;
+
+        if (target.matches('[efy_tab]')){
+            $$all(a, '[efy_tab]').forEach(x => x.removeAttribute('efy_active'));
+            $$all(a, '[efy_content]').forEach(x => x.removeAttribute('efy_active'));
+            target.setAttribute('efy_active', '');
+            $$(a, `[efy_content="${target.getAttribute('efy_tab')}"]`).setAttribute('efy_active', '');
+        }
+
+        if ($$(a, '[efy_content][efy_active]')){ active = $$(a, '[efy_content][efy_active]')}
+        else { ['tab', 'content'].map(x => $$(a, `[efy_${x}]`).setAttribute('efy_active', ''))}
+
+        const current = active.getAttribute('efy_content'), current_tab = $$(a, `[efy_tab="${current}"] + label`),
         l = $$(active, '.lightness').value, c = $$(active, '.chroma').value, h = $$(active, '.hue').value,
         alpha = $$(active, '.alpha').value, ok = `${l} ${c} ${h}`,
         style = [`.5 0 0), oklch(${l} ${c} ${h}))`, `0 0 0), oklch(.5 ${c} ${h}), oklch(1 0 0))`, `0 0 0 / 0), oklch(${l} ${c} ${h}))`];
 
-        /*Update Design*/ ['.chroma', '.lightness', '.alpha'].map((b,i)=>{
-            $$(active, b).style.background = 'linear-gradient(to right, oklch(' + style[i]
-        }); $$(a, `[efy_tab="${current}"]`).style.background = `oklch(${ok} / ${alpha})`;
+        /*Update Design*/ ['.chroma', '.lightness', '.alpha'].map((x,i)=>{
+            $$(active, x).style.background = 'linear-gradient(to right, oklch(' + style[i]
+        }); current_tab.style.background = `oklch(${ok} / ${alpha})`;
 
         [lightnesses[current-1], chromas[current-1], hues[current-1], alphas[current-1]] = [l, c, h, alpha];
 
         ['text', 'bgcol', 'bordercol', 'buttoncol'].map(x =>{
-            if ($$(a, `[efy_tab="${current}"]`).getAttribute('for') == `efy_color_${x}`){
+            if (current_tab.getAttribute('for') == `efy_color_${x}`){
                 $css_prop(`--efy_color_${x}_var`, ok); efy[x] = ok; $save()
         }});
-    }});
+    /*}*/});
 
 });
 
@@ -816,12 +831,13 @@ $all("[name=efy_sidebar_align]").forEach(x =>{ const y = x.id.replace('efy_sideb
             if ($root.hasAttribute('efy_sidebar')){
                 let d = $root.getAttribute('efy_sidebar'), e = '';
                 if (['left', 'right'].some(s => d.includes(s))) e = d.replace('on_', '');
-                final = d.includes('on') ? e : 'on_' + e; $('.efy_sidebar [efy_sidebar_btn="close"]').focus();
+                final = d.includes('on') ? e : 'on_' + e;
+                $('.efy_sidebar [efy_sidebar_btn="close"]').focus();
             }; $root.setAttribute('efy_sidebar', final)
         }
-        if (x.matches('[efy_sidebar_btn*=close]')){
-            $('body [efy_sidebar_btn]:not(.efy_sidebar button)').focus();
+        if (x.matches('.efy_sidebar [efy_sidebar_btn*=close]')){
             if (sd_btn.includes('on') || efy.sidebar_btn_status === 'on') a.classList.toggle('efy_hide_i');
+            $wait(1, ()=> $('body [efy_sidebar_btn]:not(.efy_sidebar [efy_sidebar_btn])').focus());
         }
     })
 })()
@@ -860,10 +876,12 @@ const effects = [['brightness', 'blur', 'saturate', 'contrast', 'hue-rotate', 's
 
 /*Tabs & Form*/ 'bg content trans front back button'.split(' ').map(a=>{
     const lang = (a == 'bg') ? 'background' : a,
-    tab = $add('button', {efy_tab: a, efy_lang: lang}, [], $('[efy_tabs=efyui_filters] .efy_tabs'));
+    id = `efy_vf_${a}`, parent = [[], $('[efy_tabs=efyui_filters] .efy_tabs')],
+    tab = $add('input', {efy_tab: a, type: 'radio', id: id, name: 'efy_vf_tabs'}, ...parent);
+    $add('label', {efy_lang: lang, for: id}, ...parent);
 
-    /*Temporary*/ if (a == 'button'){ $add('div', {efy_card: '', efy_lang: 'coming_soon', efy_content: a, style: 'margin: 0'}, [], $('[efy_tabs=efyui_filters]'))} else {
-
+    /*Temporary*/ if (a == 'button'){ $add('div', {efy_card: '', efy_lang: 'coming_soon', efy_content: a, style: 'margin: 0'}, [], $('[efy_tabs=efyui_filters]'))}
+    else {
         const content = $add('form', {efy_content: a, efy_select: '', class: `efy_${a}_filter`, onsubmit: 'return false'}, [
             ['button', {type: 'reset', efy_lang: 'reset'}, [['i', {efy_icon: 'reload'}]]]
         ], $('[efy_tabs=efyui_filters]'));
@@ -873,7 +891,6 @@ const effects = [['brightness', 'blur', 'saturate', 'contrast', 'hue-rotate', 's
                 ['input', {class: `efy_${a}_${effects[0][i]}`, type: 'range', min: effects[1][i], max: effects[2][i], value: effects[3][i], step: effects[4][i]}]
             ], content);
         });
-
         /*Active*/ if (a == 'bg'){ [tab, content].map(b => b.setAttribute('efy_active', ''))}
     }
 });
@@ -1199,14 +1216,16 @@ read.readAsText(file)});
 /*Reset localStorage*/ $all(".efy_localstorage_reset").forEach(x =>{ $event(x, 'click', ()=>{ localStorage.removeItem('efy'); location.reload() })});
 
 
-/*Tabs*/ $ready('[efy_tabs]', a => $event(a, 'click', event =>{ const tab = event.target;
-    if (!tab.matches(`[efy_tab]`)) return; event.stopPropagation();
-    const name = `[efy_tabs="${tab.closest('[efy_tabs]').getAttribute('efy_tabs')}"]`, active = tab.hasAttribute('efy_active'),
-    tabs = `:is(${name}, ${name} > div, ${name} > div > div) >`, content = $(`${tabs} [efy_content="${tab.getAttribute('efy_tab')}"]`),
-    toggle =(a,b)=> a[b ? 'removeAttribute' : 'setAttribute']('efy_active', '');
-    $all(`${tabs} :is([efy_tab], [efy_content])[efy_active]`).forEach(x => toggle(x, true));
-    [tab, content].forEach(x=> toggle(x, active))
-}));
+/*Tabs*/ $ready('[efy_tabs]', (a)=>{
+    $event(a, 'click', event =>{ const tab = event.target;
+        if (!tab.matches(`[efy_tab]`)) return; event.stopPropagation();
+        const name = `[efy_tabs="${tab.closest('[efy_tabs]').getAttribute('efy_tabs')}"]`, active = tab.hasAttribute('efy_active'),
+        tabs = `:is(${name}, ${name} > div, ${name} > div > div) >`, content = $(`${tabs} [efy_content="${tab.getAttribute('efy_tab')}"]`),
+        toggle =(a,b)=> a[b ? 'removeAttribute' : 'setAttribute']('efy_active', '');
+        $all(`${tabs} :is([efy_tab], [efy_content])[efy_active]`).forEach(x => toggle(x, true));
+        [tab, content].forEach(x=> toggle(x, active))
+    })
+});
 
 /*Code*/ $ready('[efy_code]', (a)=>{ let b = a.getAttribute('efy_code').split(','), chars = a.getAttribute('efy_code').length + 2;
     $add('div', {class: 'efy_bar'}, [ ['mark', {}, b[0]], ['div', {}, [
@@ -1325,4 +1344,15 @@ $event($body, 'pointerup', ()=>{ let a = event.target;
         const lang = ['', $('[efy_lang]')], n = `--${a}_notify`; $notify('short', $css_prop(n, ...lang), $css_prop(`${n}_text`, ...lang))
     }})});
 
-}}
+}
+
+$event(document, 'keydown', (event)=>{
+    const key = event.key, active = document.activeElement;
+    if ((key === ' ') || (key === 'Enter')){
+        if (active.matches('[efy_tabs] input[efy_tab]')){
+            active.dispatchEvent(new Event('click', {'bubbles': true}));
+        }
+    }
+});
+
+}
