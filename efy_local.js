@@ -1,4 +1,4 @@
-let efy_version = '24.06.26 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document),
+let efy_version = '24.07.07 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document),
 $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
 /*Add: Selector, optional: {Attributes}, [Text, Children], Parent, Position*/
 $add =(tag, attrs = {}, children = [], parent = document.body, position = 'beforeend')=>{
@@ -351,7 +351,8 @@ $ready('[efy_color]', (a)=>{ const now = `colors_${Date.now()}${unique}`; unique
             [l.value, c.value, h.value, alpha.value] = ok.split(' ');
             h.dispatchEvent(new Event('input', { 'bubbles': true }))
         }).catch()}
-        else if (match.remove && (nr > min)){ $$all(a, `[efy_tab], [efy_content], input[type=radio]`).forEach(x => x.remove());
+        else if (match.remove && (nr > min)){
+            $$all(a, `[efy_tab], [efy_content], input[type=radio][name*=colors], input[type=radio][name*=colors] + label`).forEach(x => x.remove());
             [lightnesses, chromas, hues, alphas].map(x => x.splice(current, 1));
             nr--; last = nr - 1; names = []; for (let i =  1; i <=  nr; i++) { names.push(String(i))}
             add_color(0, nr);
@@ -363,7 +364,7 @@ $ready('[efy_color]', (a)=>{ const now = `colors_${Date.now()}${unique}`; unique
         }
     });
 
-    $event(a, 'input', (d)=>{ /*if (d.target.getAttribute('type') == 'range'){*/
+    $event(a, 'input', (d)=>{
         let active = $$(a, '[efy_content]'); const target = d.target;
 
         if (target.matches('[efy_tab]')){
@@ -391,7 +392,7 @@ $ready('[efy_color]', (a)=>{ const now = `colors_${Date.now()}${unique}`; unique
             if (current_tab.getAttribute('for') == `efy_color_${x}`){
                 $css_prop(`--efy_color_${x}_var`, ok); efy[x] = ok; $save()
         }});
-    /*}*/});
+    });
 
 });
 
@@ -415,6 +416,10 @@ $ready('[efy_color]', (a)=>{ const now = `colors_${Date.now()}${unique}`; unique
     $add('input', {type: 'radio', name: 'efy_mode', id}, ...content);
     $add('label', {for: id, efy_lang: a}, ...content);
 });
+
+/*Temporary Until System Themes are Fixed*/
+$('#efy_mode_system').disabled = true;
+$('[for=efy_mode_system]').style.display = 'none';
 
 $add('div', {class: 'efy_hr_div'}, [
     ['details', {efy_help: 'type', class: 'efy_hide_i'}, [

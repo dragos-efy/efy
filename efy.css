@@ -564,8 +564,15 @@ summary::-webkit-details-marker {display: none}
         [efy_alerts*=right] {right: var(--efy_gap); left: unset}
     }
 }
-/*EFY Icons*/ @font-face {font-family: 'efy_icons'; src: url('efy_icons.woff2') format('truetype'); font-weight: normal; font-style: normal; font-display: block}
-i, :is([efy_start], [efy_reset], [efy_sidebar_btn], details > summary):before, [efy_help] summary:after,  [type=checkbox]:checked:after {font-family: 'efy_icons' !important; speak: never; font-style: normal; font-weight: normal; font-variant: normal; text-transform: none; vertical-align: middle; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale} i {margin-right: 8rem}
+/*EFY Icons*/ @font-face {font-family: 'efy_icons'; src: url('./fonts/efy_icons.woff2') format('woff2');
+    font-weight: normal; font-style: normal; unicode-range: U+00E950-00E920;
+} @font-face {font-family: 'efy_icons'; src: url('../efy/fonts/efy_weather.woff2') format('woff2');
+    font-weight: normal; font-style: normal; unicode-range: U+00E950-00E955;
+}
+i, :is([efy_start], [efy_reset], [efy_sidebar_btn], details > summary):before, [efy_help] summary:after,  [type=checkbox]:checked:after {
+    font-family: 'efy_icons' !important; speak: never; font-style: normal; font-weight: normal; font-variant: normal;
+    text-transform: none; vertical-align: middle; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+} i {margin-right: 8rem}
 
 [efy_icon] {align-items: center; place-content: center;
     &, &:before {display: inline-flex}
@@ -577,9 +584,11 @@ i, :is([efy_start], [efy_reset], [efy_sidebar_btn], details > summary):before, [
 [efy_icon=check]:before, [efy_select] [type=checkbox]:checked + label:after, [type=checkbox]:checked:after {content: "\e914"}
 [efy_icon*=chevron]:before, details:not([efy_help]) > summary:before {content: "\e907"}
 [efy_icon=circle]:before {content: "\e91c"}
+[efy_icon=cloud]:before {content: "\e954"}
 [efy_icon=copy]:before {content: "\e919"}
 [efy_icon=dots]:before {content: "\e902"}
 [efy_icon=edit]:before {content: "\e91b"}
+[efy_icon=flash]:before {content: "\e952"}
 :is([efy_icon=fullscreen], [efy_icon=move]):before {content: "\e90c"}
 [efy_icon=github]:before {content: "\e91d"}
 [efy_icon=globe]:before {content: "\e90f"}
@@ -590,17 +599,21 @@ i, :is([efy_start], [efy_reset], [efy_sidebar_btn], details > summary):before, [
 [efy_icon=menu]:before {content: "\e906"}
 [efy_icon=menu2]:before {content: "\e903"}
 [efy_icon=microphone]:before {content: "\e920"}
+[efy_icon=moon]:before {content: "\e955"}
 [efy_icon=notify]:before {content: "\e917"}
 [efy_icon=notify_active]:before {content: "\e916"}
 [efy_icon=paste]:before {content: "\e91a"}
 :is([efy_icon=pause], [efy_timer] [efy_start][efy_active]):before {content: "\e90b"}
 :is([efy_icon=play], [efy_timer] [efy_start]):before {content: "\e90a"}
 [efy_icon=plus]:before {	font-size: 12rem}
+[efy_icon=rain]:before {content: "\e951"}
 :is([efy_icon=reload], [efy_reset]):before {content: "\e90d"}
 :is([efy_icon=remove], [efy_icon=plus]):before {content: "\e909"}
 [efy_icon=screen]:before {content: "\e91e"}
-[efy_icon=star]:before {content: "\e904"}
 [efy_icon=search]:before {content: "\e908"}
+[efy_icon=snow]:before {content: "\e953"}
+[efy_icon=star]:before {content: "\e904"}
+[efy_icon=sun]:before {content: "\e950"}
 [efy_icon=user]:before {content: "\e913"}
 [efy_icon=zoom_in]:before {content: "\e912"}
 [efy_icon=zoom_out]:before {content: "\e911"}
