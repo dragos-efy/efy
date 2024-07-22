@@ -2,7 +2,7 @@ $ready('#efy_sbtheme', ()=>{
 
 /*Keyboard*/ let current_input;
 
-$add('details', {id: 'efy_keyboard', efy_select: ''}, [['summary', {}, [ ['p', {efy_lang: 'virtual_keyboard'}], ['mark', {efy_lang: 'alpha'}] ]],
+$add('details', {id: 'efy_keyboard', efy_select: ''}, [['summary', [ ['p', {efy_lang: 'virtual_keyboard'}], ['mark', {efy_lang: 'alpha'}] ]],
      ['input', {type: 'checkbox', name: 'efy_keyboard', id: 'efy_keyboard_status'}],
      ['label', {for: 'efy_keyboard_status', efy_lang: 'active'}],
      ['div', {efy_lang: 'max_width', efy_range_text: 'Max Width KB'}, [

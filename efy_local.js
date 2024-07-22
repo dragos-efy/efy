@@ -1,19 +1,25 @@
-let efy_version = '24.07.07 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document),
+let efy_version = '24.07.22 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document),
 $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
 /*Add: Selector, optional: {Attributes}, [Text, Children], Parent, Position*/
 $add =(tag, attrs = {}, children = [], parent = document.body, position = 'beforeend')=>{
     const element = document.createElement(tag);
-    Object.entries(attrs).forEach(([attr, value])=>{
-        if (element.getAttribute(attr) !== value){ element.setAttribute(attr, value)}
-    }); if (!Array.isArray(children)){ children = [children]}
+    if (typeof attrs === 'string' || Array.isArray(attrs)){
+        if (parent !== document.body){ const type = typeof parent;
+            if (type === 'string') position = parent;
+            if (['string', 'object'].includes(type)) parent = children;
+        }; [children, attrs] = [attrs, {}];
+    }
+    Object.entries(attrs).forEach(a => element.setAttribute(...a));
+    if (!Array.isArray(children)) children = [children];
     children.forEach(child =>{
-        if (Array.isArray(child)){ const [tag, attrs, content] = child,
-            childElement = $add(tag, attrs, content, element);
-            element.appendChild(childElement);
+        if (Array.isArray(child)){ let [a,b,c] = child;
+            if (typeof b === 'string' || Array.isArray(b)) [c,b] = [b,{}];
+            element.appendChild($add(a, b, c, element));
         } else if (typeof child === 'string'){ element.textContent += child}
         else if (child instanceof Node){ element.appendChild(child)}
     }); parent.insertAdjacentElement(position, element); return element;
 },
+
 /*Text: Selector, Text, Position (optional)*/ $text = (a, b, c) =>{ c ? a.insertAdjacentText(c,b) : a.textContent = b},
 $css_prop =(prop, value, position = $root)=>{ if (value){ position.style.setProperty(prop, value)}
     else { let value = getComputedStyle(position).getPropertyValue(prop);
@@ -42,7 +48,7 @@ $css_prop =(prop, value, position = $root)=>{ if (value){ position.style.setProp
     ['[efy_alerts]', '.efy_quick_notify_content'].map(e =>{
         const time_left = (e == '[efy_alerts]') ? ['div', {class: 'time_left'}, String(seconds)] : '';
         selectors.push( $add('div', {efy_alert: '', class: id}, [
-            ['div', {}, [['h6', {}, title], ['p', {}, info]]], ['div', {class: 'remove_timer'}, [
+            ['div', [['h6', title], ['p', info]]], ['div', {class: 'remove_timer'}, [
                 time_left, ['button', {efy_btn_square: '', class: 'remove'}, [['i', {efy_icon: 'remove'}]]]
         ]]], $(e)) );
     }); icon_fn();
@@ -81,7 +87,7 @@ $event(window.visualViewport, 'resize', $100vh); $event(window.visualViewport, '
 /*Sidebar Modules*/ $add('div', {id: 'efy_sidebar', class: 'efy_sidebar', efy_search: 'details:not(.efy_quick_shortcuts, [efy_logo]), .efy_sidebar [efy_tabs] > *'}, [
     ['div', {efy_about: ''}, [
         ['div', {class: 'efy_flex'}, [
-            ['button', {class: 'efy_about', efy_toggle: '.efy_about_div', efy_logo: ''}, [ ['p', {}, 'EFY'], ['p', {}, ' UI'] ]],
+            ['button', {class: 'efy_about', efy_toggle: '.efy_about_div', efy_logo: ''}, [ ['p', 'EFY'], ['p', ' UI'] ]],
             ['button', {class: 'efy_quick_notify efy_square_btn', efy_toggle: '.efy_quick_notify_content', title: 'Notifications'}, [['i', {efy_icon: 'notify'}]]],
             ['button', {class: 'efy_quick_search efy_square_btn', efy_toggle: '#efy_sidebar [efy_search_input]', title: 'Search'}, [['i', {efy_icon: 'search'}]]],
             ['button', {id: 'efy_quick_toggle', efy_toggle: '#efy_quick', class: 'efy_square_btn', title: 'Quick shortcuts'}, [['i', {efy_icon: 'star'}]]]
@@ -178,7 +184,7 @@ $event(container, 'click', (e)=>{ const x = e.target;
 });
 
 $add('div', {class: 'efy_hr_div'}, [ ['details', {efy_help: 'custom_colors'}, [
-    ['summary', {}, [['p', {efy_lang: 'custom_colors'}], ['hr']]], ['div', {efy_lang: 'custom_colors_help'}]
+    ['summary', [['p', {efy_lang: 'custom_colors'}], ['hr']]], ['div', {efy_lang: 'custom_colors_help'}]
 ]]], b);
 
 
@@ -224,9 +230,7 @@ $ready(`[for=efy_color_buttoncol]`, ()=>{
     if (efy[key]){ efy_shadow.push(type);
         efy[key].map((a,i)=> colors.push(`${i+1} ${a.lightness} ${a.chroma} ${a.hue} ${a.alpha}`))
     }
-    // $add('p', {}, `Shadows: ${type.charAt(0).toUpperCase() + type.slice(1)}`, efy_shadows);
-    $add('div', {class: 'efy_hr_div'}, [['p', {}, `Shadows: ${type.charAt(0).toUpperCase() + type.slice(1)}`], ['hr']], efy_shadows);
-
+    $add('div', {class: 'efy_hr_div'}, [['p', `Shadows: ${type.charAt(0).toUpperCase() + type.slice(1)}`], ['hr']], efy_shadows);
     $add('div', {class: `efy_shadows_${type}`, efy_color: `${(colors.length === 0) ? '' : `${colors}, `}range:0-10`}, [], efy_shadows);
 
     $ready(`${shadows} .alpha`, ()=>{
@@ -423,7 +427,7 @@ $('[for=efy_mode_system]').style.display = 'none';
 
 $add('div', {class: 'efy_hr_div'}, [
     ['details', {efy_help: 'type', class: 'efy_hide_i'}, [
-        ['summary', {}, [['p', {efy_lang: 'type'}], ['hr']]],
+        ['summary', [['p', {efy_lang: 'type'}], ['hr']]],
         ['div', {efy_lang: 'sidebar_transparency_help'}]
     ]]
 ], $('#efy_sbtheme [efy_content=mode] .efy_mode_div'), 'afterend');
@@ -462,7 +466,7 @@ $add('div', {class: 'trans_window_div efy_hide_i'}, [
 
 /*Images*/ $add('div', {id: 'efy_images_bg'}, [
     ['div', {class: 'efy_hr_div'}, [ ['details', {efy_help: 'images'}, [
-        ['summary', {}, [['p', {efy_lang: 'images'}], ['hr']]], ['div', {efy_lang: 'sidebar_images_warning_help'}]
+        ['summary', [['p', {efy_lang: 'images'}], ['hr']]], ['div', {efy_lang: 'sidebar_images_warning_help'}]
     ]]]],
     ['div', {class: 'efy_img_previews'}, [
         ['input', {id: 'idb_addimg_bg', type: 'file', accept: 'image/*, video/*', style: 'display: none'}],
@@ -486,9 +490,9 @@ $add('details', {id: 'efy_themes'}, [
         ['input', {type: 'text', class: 'name efy_square_btn efy_hide_i', placeholder: 'Theme Name...', name: 'efy_themes_name'}]
     ]],
     ['hr'],
-    ['p', {}, [
+    ['p', [
         'Find & Share more themes at ',
-        ['a', {href: 'https://efy.ooo/themes'}, 'efy.ooo/themes']
+        ['a', {href: 'https://efy.ooo#themes'}, 'efy.ooo#themes']
     ]]
 ], selector);
 
@@ -849,7 +853,7 @@ $all("[name=efy_sidebar_align]").forEach(x =>{ const y = x.id.replace('efy_sideb
 
  /*EFY Notifications*/ $add('details', {id: 'efy_notifications', efy_select: ''}, [
     ['summary', {efy_lang: 'notifications'}, [['mark', {efy_lang: 'alpha'}]]],
-    ['div', {id: 'efy_notify_status'}], ['p', {}, 'Position'], ['div', {id: 'efy_notify_align'}]
+    ['div', {id: 'efy_notify_status'}], ['p', 'Position'], ['div', {id: 'efy_notify_align'}]
 ], $('#efy_sbtheme [efy_content=menu]'));
 
 'Offline Clipboard'.split(' ').map(a =>{
@@ -1030,7 +1034,7 @@ $all('.efy_text_accessibility input').forEach(x => $event(x, 'input', ()=>{ $tex
 }
 
 /*Audio*/ if ($efy_module('efy_audio')){ $add('details', {efy_select: '', id: 'efy_audio'}, [
-    ['summary', {}, [ ['i', {efy_icon: 'audio'}], ['p', {efy_lang: 'audio_effects'}], ['mark', {efy_lang: 'alpha'}]]],
+    ['summary', [ ['i', {efy_icon: 'audio'}], ['p', {efy_lang: 'audio_effects'}], ['mark', {efy_lang: 'alpha'}]]],
     ['div', {efy_lang: 'efy_volume', efy_range_text: 'EFY Volume'}, [ ['input', {class: 'efy_audio_volume', type: 'range', min: '0', max: '1', value: '1', step: '0.01'}] ]],
     ['div', {efy_lang: 'page_volume', efy_range_text: 'Page Volume'}, [ ['input', {class: 'efy_audio_volume_page', type: 'range', min: '0', max: '1', value: '1', step: '0.01'}] ]],
     ['p', {efy_lang: 'sidebar_audio_text'}]
@@ -1232,8 +1236,8 @@ read.readAsText(file)});
     })
 });
 
-/*Code*/ $ready('[efy_code]', (a)=>{ let b = a.getAttribute('efy_code').split(','), chars = a.getAttribute('efy_code').length + 2;
-    $add('div', {class: 'efy_bar'}, [ ['mark', {}, b[0]], ['div', {}, [
+/*Code*/ $ready('[efy_code]', (a)=>{ let b = a.getAttribute('efy_code').split(',');
+    $add('div', {class: 'efy_bar'}, [ ['mark', b[0]], ['div', [
         ['button', {class: 'efy_code_trans'}, 'transparent'],
         ['button', {class: 'efy_fs'}, [ ['i', {efy_icon: 'fullscreen'}] ]],
         ['button', {class: 'efy_copy'}, [ ['i', {efy_icon: 'copy'}] ]]
@@ -1243,8 +1247,8 @@ read.readAsText(file)});
         if (x.matches('.efy_fs')){ document.fullscreenElement ? document.exitFullscreen() : a.requestFullscreen()}
         else if (x.matches('.efy_code_trans')){ $body.classList.toggle('efy_code_trans_on')}
         else if (x.matches('.efy_copy')){
-            let c = a.innerText, d = c.substring(c.indexOf('copy') + chars); navigator.clipboard.writeText(d);
-            if (efy.notify_clipboard != false){ $notify('short', 'Copied to clipboard', d)}
+            let c = a.textContent.replace($$(a, '.efy_bar').textContent, ''); navigator.clipboard.writeText(c);
+            if (efy.notify_clipboard != false){ $notify('short', 'Copied to clipboard', c)}
         }
     });
 });
@@ -1288,10 +1292,10 @@ $ready('[efy_clock]', (x)=>{ 'hour s1 minute s2 second format'.split(' ').map(a 
 
 /*Search Filter */ $ready('[efy_search]', (sc)=>{
     let a = sc, search = a.getAttribute('efy_search'), container = `#${a.id}[efy_search="${search}"]`, z = $(container +' [efy_search_input]');
-    $event(z, 'keyup', ()=>{ let val = z.value.toLowerCase();
+    $event(z, 'input', ()=>{ let val = z.value.toLowerCase();
         $all(container +' '+ search).forEach(x =>{
-            if (x.textContent.toLowerCase().includes(val) == 0){x.classList.add('efy_hide_i')}
-            else {x.classList.remove('efy_hide_i')}
+            if ((x.textContent.toLowerCase().includes(val)) || (x.title.toLowerCase().includes(val))){ x.classList.remove('efy_hide_i')}
+            else {x.classList.add('efy_hide_i')}
 })})});
 
 /*EFY Toggle*/ $ready('[efy_toggle]', (a)=>{
@@ -1338,7 +1342,7 @@ $event($body, 'pointerup', ()=>{ let a = event.target;
     }); observer.observe(document.body, { childList: true, subtree: true });
 
     /*Alpha*/ ['"Max Width"'].map(a=>{ $add('mark', {efy_lang: 'alpha'}, [], $(`[efy_content=size] [efy_range_text*=${a}] .efy_range_text_p`), 'afterend') });
-    /*No Notifications*/ $add('style', {}, [`.efy_quick_notify_content:empty:before {content: '${efy_lang.no_notifications}'}`], $head);
+    /*No Notifications*/ $add('style', `.efy_quick_notify_content:empty:before {content: '${efy_lang.no_notifications}'}`, $head);
     /*Extra Modules*/ ['extra'].map(a=>{
         if ($efy_module(`efy_${a}`)){ $add('link', {href: `${efy.folder}/${a}.css`, rel: 'stylesheet'}, [], $head);
             if ($css_prop('--efy_protocol') == 'http'){ $add('script', {src: `${efy.folder}/${a}.js`, type: 'module'}, [], $head)}
