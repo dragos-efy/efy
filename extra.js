@@ -48,7 +48,7 @@ addKeyboardButtons =(i, keys)=>{
     });
 
     keys[1].split(' ').forEach(key => {
-        $add('button', {efy_key: key, class: 'efy_hide'}, [key], parent);
+        $add('button', {efy_key: key, tabindex: '-1', class: 'efy_hide'}, [key], parent);
         $event($(`[efy_key="${key}"]`), 'click', (x) => {
             if (x.target.getAttribute('efy_key') === `''`) key = `"`;
             current_input.value += key; set_focus();
@@ -85,7 +85,10 @@ $event($(`[efy_key="space"]`), 'click', ()=>{ current_input.value += ' ' });
 let backspace =()=>{ let a = current_input.value; current_input.value = a.slice(0, -1) }, intv;
 
 $event($(`[efy_key="caps"]`), 'click', ()=>{
-    $all('[efy_key]:not(.efy_show)').forEach(a =>{ a.classList.toggle('efy_hide') })
+    $all('[efy_key]:not(.efy_show)').forEach(a =>{
+        a.classList.toggle('efy_hide');
+        a.setAttribute('tabindex', (a.getAttribute('tabindex') === '-1') ? '0' : '-1');
+    })
 });
 $event($(`[efy_key="enter"]`), 'click', ()=>{
     current_input.value += '\n';
@@ -150,19 +153,19 @@ const kb_width_inputs = $all('#efy_kb_width, #efy_kb_width_rem');
 
 kb_width_inputs.forEach(x=>{ $event(x, 'input', ()=>{
     efy.kb_width = x.value + $('#efy_kb_unit').value; $save();
-    $css_prop('--efy_kb_width', efy.kb_width);
+    $css_prop('---kb_width', efy.kb_width);
 })});
 
 $event($('#efy_kb_unit'), 'change', (x)=>{ x = x.target.value;
     kb_width_inputs.forEach(a => a.classList.toggle('efy_hide'));
-    $css_prop('--efy_kb_width', kb_width_inputs[(x === '%') ? 0 : 1].value + x);
+    $css_prop('---kb_width', kb_width_inputs[(x === '%') ? 0 : 1].value + x);
 });
 
 $event($('#efy_kb_height'), 'input', (x)=>{
     efy.kb_height = x.target.value + 'rem'; $save();
-    $css_prop('--efy_kb_height', efy.kb_height);
+    $css_prop('---kb_height', efy.kb_height);
 });
 
-['width', 'height'].map(a=>{ if (efy[`kb_${a}`]) $css_prop(`--efy_kb_${a}`, efy[`kb_${a}`]) });
+['width', 'height'].map(a=>{ if (efy[`kb_${a}`]) $css_prop(`---kb_${a}`, efy[`kb_${a}`]) });
 
 }, 1);

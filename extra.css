@@ -1,9 +1,9 @@
-:root {--efy_kb_width: 80%; --efy_kb_height: 50rem}
+:root {---kb_width: 80%; ---kb_height: 50rem}
 
-/*Keyboard*/ [efy_keyboard] {display: none; gap: var(--efy_gap0); flex-wrap: wrap; flex-direction: column; padding: var(--efy_gap0); margin: 0 auto var(--efy_gap) auto;
-  border: var(--efy_border); border-radius: var(--efy_radius2); box-shadow: 0 0 20rem #0003; max-width: var(--efy_kb_width);
-  .row {display: flex; gap: var(--efy_gap0)}
-  [efy_key] {background: var(--efy_bg1); -webkit-text-fill-color: var(--efy_text); width: var(--efy_kb_key_size); height: var(--efy_kb_height); margin: 0; user-select: none;
+/*Keyboard*/ [efy_keyboard] {display: none; gap: var(---gap0); flex-wrap: wrap; flex-direction: column; padding: var(---gap0); margin: 0 auto var(---gap) auto;
+  border: var(---border); border-radius: var(---radius2); box-shadow: 0 0 20rem #0003; max-width: var(---kb_width);
+  .row {display: flex; gap: var(---gap0)}
+  [efy_key] {background: var(---bg1); -webkit-text-fill-color: var(---text); width: var(---kb_key_size); height: var(---kb_height); margin: 0; user-select: none;
     gap: 8rem; flex: 1;
     &:not(.efy_hide) {display: flex}
     * {pointer-events: none}
@@ -12,7 +12,7 @@
   [efy_key="backspace"], [efy_key="delete"], [efy_key="enter"], [efy_key="caps"] {flex: 2}
   [efy_key=space] {flex: 6.5}
   [efy_key="ctrl"], [efy_key="alt"], [efy_key="super"], [efy_key="shortcuts"], [efy_key="up"], [efy_key="down"] {opacity: 0.2; pointer-events: none}
-  [efy_key="caps"].efy_active { &, &:focus {background: var(--efy_color); background-origin: border-box; -webkit-text-fill-color: var(--efy_text2)}}
+  [efy_key="caps"].efy_active { &, &:focus {background: var(---color); background-origin: border-box; -webkit-text-fill-color: var(---text2)}}
 }
 
 [efy_kb] [efy_keyboard] {display: flex}
