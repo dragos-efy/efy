@@ -1,0 +1,77 @@
+[efy_icon*=gamepad_] {margin: 0; height: calc(var(---size0)* 0.75); padding: 0 6rem; font-family: 'nunito'!important;
+    font-weight: bold; display: flex; align-items: center; place-content: center; min-width: calc(var(---size0) * 0.75);
+}
+[efy_icon=gamepad_a]:before {content: 'A'; font-size: 115%; font-weight: bold; height: 14rem}
+[efy_icon=gamepad_b]:before {content: 'B'; font-size: 115%; font-weight: bold; height: 13rem}
+[efy_icon=gamepad_x]:before {content: '\e909'; font-size: 80%; font-weight: bold; height: 10rem; font-family: 'efy_icons'}
+[efy_icon=gamepad_y]:before {content: 'Y'; font-size: 115%; font-weight: bold; height: 13rem}
+[efy_icon=gamepad_1]:before {content: '1'; font-size: 105%; font-weight: bold}
+[efy_icon=gamepad_2]:before {content: '2'; font-size: 105%; font-weight: bold}
+[efy_icon=gamepad_circle]:before {content: '\e974'; font-family: efy_icons!important; font-weight: normal; height: 13rem}
+[efy_icon=gamepad_square]:before {content: '\e975'; font-family: efy_icons!important; font-size: 90%; font-weight: normal; height: 11rem}
+[efy_icon=gamepad_triangle]:before {content: '\e973'; font-family: efy_icons!important; font-weight: normal}
+[efy_icon=gamepad_minus]:before {content: '-'; font-size: 150%; font-weight: bold}
+[efy_icon=gamepad_plus]:before {content: '+'; font-size: 150%; font-weight: bold; height: 22rem}
+[efy_icon=gamepad_extra_xbox]:before {content: '\e919'; font-size: 90%; height: 10rem; font-family: 'efy_icons'; scale: 1.2 -1; rotate: 180deg}
+
+[efy_icon=gamepad_up]:before {content: '\e900'; font-size: 90%; font-family: 'efy_icons'; rotate: -90deg; width: 13rem; height: 11rem}
+[efy_icon=gamepad_down]:before {content: '\e900'; font-size: 90%; font-family: 'efy_icons'; rotate: 90deg; width: 13rem; height: 11rem}
+[efy_icon=gamepad_left]:before {content: '\e900'; font-size: 90%; font-family: 'efy_icons'; rotate: 180deg}
+[efy_icon=gamepad_right]:before {content: '\e900'; font-size: 90%; font-family: 'efy_icons'}
+[efy_icon=gamepad_home]:before {content: '\e971'; font-size: 90%; font-family: 'efy_icons'}
+[efy_icon=gamepad_menu]:before {content: '\e906'; font-size: 90%; font-family: 'efy_icons'; height: 12rem}
+[efy_icon=gamepad_menu3]:before {content: '\e976'; font-size: 90%; font-family: 'efy_icons'; height: 12rem}
+
+[efy_icon=gamepad_stick_l], [efy_icon=gamepad_stick_r] {border-radius: 50%!important;
+    &:before {font-size: 105%; font-weight: bold}
+}
+[efy_icon=gamepad_l], [efy_icon=gamepad_lb], [efy_icon=gamepad_l1], [efy_icon=gamepad_r], [efy_icon=gamepad_rb], [efy_icon=gamepad_r1] {border-radius: 50% 50% var(---radius00) var(---radius00)!important;
+    &:before {font-size: 105%; font-weight: bold}
+}
+[efy_icon=gamepad_zl], [efy_icon=gamepad_lt], [efy_icon=gamepad_l2], [efy_icon=gamepad_zr], [efy_icon=gamepad_rt], [efy_icon=gamepad_r2] {border-radius: var(---radius00) var(---radius00) 50% 50%!important;
+    &:before {font-size: 105%; font-weight: bold}
+}
+
+:is([efy_icon=gamepad_l], [efy_icon=gamepad_stick_l]):before {content: 'L'}
+:is([efy_icon=gamepad_r], [efy_icon=gamepad_stick_r]):before {content: 'R'; margin-bottom: -1rem}
+
+[efy_icon=gamepad_l1]:before {content: 'L1'}
+[efy_icon=gamepad_l2]:before {content: 'L2'}
+[efy_icon=gamepad_r1]:before {content: 'R1'}
+[efy_icon=gamepad_r2]:before {content: 'R2'}
+[efy_icon=gamepad_zl]:before {content: 'ZL'}
+[efy_icon=gamepad_zr]:before {content: 'ZR'}
+[efy_icon=gamepad_lb]:before {content: 'LB'}
+[efy_icon=gamepad_rb]:before {content: 'RB'}
+[efy_icon=gamepad_rt]:before {content: 'RT'}
+[efy_icon=gamepad_lt]:before {content: 'LT'}
+
+[efy_icon=gamepad_l_ok], [efy_icon=gamepad_r_ok] {scale: 0.8 0.8; translate: 0rem 4rem; position: relative; border-radius: 50%!important;
+    &:before {margin-bottom: -1rem; font-size: 120%; font-weight: bold}
+    &:after {content: "\e900"; position: absolute; top: -12rem; color: var(---text); left: -9rem; width: 100%; height: 100%;
+        font-size: 10rem; font-weight: bold; font-family: 'efy_icons'; rotate: 90deg;
+    }
+}
+[efy_icon=gamepad_r_ok]:before {content: 'R'}
+[efy_icon=gamepad_l_ok]:before {content: 'L'}
+
+
+.gamepads_bar.borders [efy_icon*=gamepad_] {background: var(---text); color: var(---bg); box-shadow: inset 0 0 0 2rem var(---text)}
+
+.gamepads_on, body, .efy_sidebar, .gamepad_scroll, .gamepad_scroll_force {scroll-behavior: auto}
+
+.gamepads_bar {width: 100%; height: var(---size); border-top: var(---border); position: absolute; bottom: 0; left: 0; backdrop-filter: blur(50rem);
+    display: flex; gap: var(---gap); align-items: center; place-content: space-between; padding: var(---gap0); z-index: 9999999;
+    > div {display: flex; gap: var(---gap2)}
+    [gp_btn] {display: flex; gap: 8rem; align-items: center; place-content: center;
+        p {display: flex; align-items: center; place-content: center; margin: 0; font-weight: bold}
+        i {height: calc(var(---size0) * 0.75); padding: 0 6rem; border-radius: var(---radius0); font-size: 14rem;
+            background: var(---text); color: var(---bg);
+        }
+    }
+}
+
+[efy_content=mappings] .map i {height: calc(var(---size0) * 0.75); padding: 0 6rem; border-radius: var(---radius0); font-size: 14rem;
+            background: var(---text); color: var(---bg);}
+
+body:has(.gamepads_bar) {&, & .efy_sidebar {height: calc(var(---100vh) - var(---size))}}

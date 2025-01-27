@@ -7,7 +7,8 @@
 ---bg1: oklch(var(---bg_var) / .07); ---bg2: oklch(var(---bg_var) / .13);
 ---text: oklch(var(---bg_var)); ---text_trans: oklch(var(---bg_var) / .3); ---text_trans2: oklch(var(---bg_var) / .45); ---text2: var(---bg);
 ---border_alpha: .07; ---border: var(---border_size) solid oklch(var(---bg_var) / var(---border_alpha)); ---border_size2: calc(2 * var(---border_size));
----anim_status: 1; ---anim_state: running; ---anim_speed: 1;
+---anim_status: 1; ---anim_state: running; ---anim_speed: 1; ---animation: var(---anim_status) * var(---anim_speed);
+---anim_0_3: calc(var(---animation) * .3s);
 ---100vh: 100vh; ---sidebar_width: 450rem; ---sidebar_width_n: calc(-1 * var(---sidebar_width)); ---bg_width: 100vw;
 ---size: calc(36rem + var(---border_size2)); ---size0: calc(30.5rem + var(---border_size2));
 }
@@ -117,10 +118,10 @@ html[efy_mode], html[efy_mode*=trans].trans_window body, html.trans_window .efy_
 
 /*Animations*/
 /*None*/ [efy_tabs] :is([efy_tab], [efy_tab] + label):active {-webkit-animation: none; animation: none}
-/*Hide*/ .efy_anim_remove {animation: remove calc(var(---anim_status) * var(---anim_speed) * .05s) ease-in-out backwards; animation-play-state: var(---anim_state)}
-/*In Out*/ .efy_anim_in_out {animation: remove2 calc(var(---anim_status) * var(---anim_speed) * .2s); animation-play-state: var(---anim_state)}
-/*Pulse*/ :is(button, [efy_tab], [efy_tab] + label, [efy_bg_nr], .efy_anim_pulse):not([disabled]):active {scale: .9; transition: calc(var(---anim_status) * var(---anim_speed) * .1s)}
-/*Pulse2*/ :is(details, input, textarea, select, a, label, [efy_timer], [efy_clock], [efy_card], [efy_alert], .efy_anim_pulse2):not([disabled]):active {scale: .98; transition: calc(var(---anim_status) * var(---anim_speed) * .1s)}
+/*Hide*/ .efy_anim_remove {animation: remove calc(var(---animation) * .05s) ease-in-out backwards; animation-play-state: var(---anim_state)}
+/*In Out*/ .efy_anim_in_out {animation: remove2 calc(var(---animation) * .2s); animation-play-state: var(---anim_state)}
+/*Pulse*/ :is(button, [efy_tab], [efy_tab] + label, [efy_bg_nr], .efy_anim_pulse):not([disabled]):active {scale: .9; transition: calc(var(---animation) * .1s)}
+/*Pulse2*/ :is(details, input, textarea, select, a, label, [efy_timer], [efy_clock], [efy_card], [efy_alert], .efy_anim_pulse2):not([disabled]):active {scale: .98; transition: calc(var(---animation) * .1s)}
 /*Remove*/ @keyframes remove {0% {scale: .98} 30% {scale: 1} 100% {scale: .8; box-shadow: none}}
 /*Remove2*/ @keyframes remove2 {0% {scale: 1} 50% {scale: 0} 100% {scale: 1; box-shadow: none}}
 /*No Animations*/ [efy_animations*=off] :is(details, input, textarea, select, a, label, [efy_timer], [efy_clock], [efy_card], [efy_alert], button, [efy_tab], [efy_bg_nr], .efy_anim_pulse, .efy_anim_pulse2):not([disabled]):active {scale: 1; transition: unset}
@@ -130,10 +131,15 @@ html {font-size: var(---font_size)!important; font-size: var(---font_size)!impor
     :is(.efy_3d_bg, .efy_3d_front, .efy_3d_back) {position: fixed; inset: 0; z-index: -1; object-fit: cover; width: 100vw; height: var(---100vh); border-radius: 0!important; background-position: var(---bg_x) var(---bg_y)!important; pointer-events: none}
     .efy_3d_front {z-index: 9998} html .efy_3d_back {z-index: -1}
 }
-body {width: 100vw; padding: var(---body_padding); line-height: 1.5; min-height: var(---100vh); max-width: var(---body_width); overflow: overlay; transition: background calc(var(---anim_status) * var(---anim_speed) * .3s), color calc(var(---anim_status) * var(---anim_speed) * .3s); scroll-behavior: smooth; -webkit-tap-highlight-color: transparent;
+body {width: 100vw; padding: var(---body_padding); line-height: 1.5; min-height: var(---100vh);
+    max-width: var(---body_width); overflow: overlay; margin-left: 0;
+    transition:
+        background var(---anim_0_3), color var(---anim_0_3), width var(---anim_0_3);
+    scroll-behavior: smooth; -webkit-tap-highlight-color: transparent;
     * {font-size: 16rem}
 }
 
+/*Text*/ h1, h2, h3, h4, h5, h6, p {transition: font-size var(---anim_0_3)}
 /*Headings*/ h1 {font-size: 45rem} h2 {font-size: 40rem} h3 {font-size: 35rem} h4 {font-size: 30rem} h5 {font-size: 25rem} h6 {font-size: 20rem}
 
 /*Links & buttons*/ a, a:visited {font-size: inherit}
@@ -267,7 +273,7 @@ progress, meter {height: 15rem; border: 0; background: var(---color_trans); bord
 /*Details*/ details, summary {list-style: none; position: relative}
 :is(details, [efy_content=menu], [efy_content=mode], .efy_mode_type_div) > details {padding: .6rem 0 0 15rem}
 details { margin-bottom: var(---gap);
-    &:not([efy_help]) summary:before {position: absolute; right: 8rem; transition: transform calc(var(---anim_status) * var(---anim_speed) * .1s) ease}
+    &:not([efy_help]) summary:before {position: absolute; right: 8rem; transition: transform calc(var(---animation) * .1s) ease}
     details {margin-top: var(---gap)} details details:not([efy_help]) > summary:before {right: -6rem}
 }
 details[open] { padding: .6rem  15rem 15rem  15rem;
@@ -339,9 +345,14 @@ summary::-webkit-details-marker {display: none}
 
 [efy_card], [efy_tabs] [efy_content] {border-radius: var(---radius); background: var(---bg1); border: var(---border)}
 
-[efy_tabs] [efy_content][efy_active], [efy_card], [efy_search_input] {transition: calc(var(---anim_status) * var(---anim_speed) * .1s) linear}
+[efy_tabs] [efy_content][efy_active], [efy_card], [efy_search_input] {transition: calc(var(---animation) * .1s) linear}
 
-/*Sidebar*/ .efy_sidebar {background: var(---bg); padding: var(---gap) calc(var(---gap) - 2rem) var(---gap) var(---gap); width: 100vw; max-width: var(---sidebar_width); height: var(---100vh); z-index: 9999; position: fixed; right: var(---sidebar_width_n); top: 0; border-radius: var(---radius2) 0 0 var(---radius2); transition-property: left, right; transition-duration: calc(var(---anim_status) * var(---anim_speed) * .3s); overflow-y: auto;
+/*Sidebar*/ .efy_sidebar {
+    background: var(---bg); padding: var(---gap) calc(var(---gap) - 2rem) var(---gap) var(---gap);
+    width: 100vw; max-width: var(---sidebar_width); height: var(---100vh); z-index: 9999; position: fixed;
+    right: var(---sidebar_width_n); top: 0; border-radius: var(---radius2) 0 0 var(---radius2);
+    transition: all calc(var(---animation) * .3s);
+    overflow-y: auto;
     &:not([efy_sidebar*=on] .efy_sidebar) * {display: none}
     > details:last-of-type {margin: 0}
     summary { display: flex; align-items: center;
@@ -401,7 +412,7 @@ summary::-webkit-details-marker {display: none}
 [efy_sidebar*=on] {
     &:not([efy_sidebar*=left]) :is(body, .efy_sidebar_width)::-webkit-scrollbar {width: 0}
     :is(body, .efy_sidebar_width) {---bg_width: calc(100vw - var(---sidebar_width)); width: var(---bg_width); margin-right: var(---sidebar_width); margin-left: 0; ---body_width: 100%}
-    .efy_sidebar {right: 0; box-shadow: 0 0 30rem #0005}
+    .efy_sidebar {box-shadow: 0 0 30rem #0005; translate: var(---sidebar_width_n) 0;}
 }
 [efy_sidebar*=left] .efy_sidebar {right: unset; left: var(---sidebar_width_n); border-radius: 0 var(---radius2) var(---radius2) 0}
 [efy_sidebar*=on_left] {
@@ -476,6 +487,8 @@ summary::-webkit-details-marker {display: none}
         i {font-size: 22rem}
     }
 }
+
+#efy_modules_menu label:before, #efy_modules_menu label:after {display: none!important}
 
 [efy_timer], [efy_clock] {padding: 10rem; display: inline-flex; flex-wrap: wrap; align-items: center}
 [efy_timer] {gap: var(---gap0)}
@@ -592,6 +605,7 @@ i, :is([efy_start], [efy_reset], [efy_sidebar_btn], details > summary):before, [
 [efy_icon*=arrow]:before {content: "\e900"}
 [efy_icon=audio]:before {content: "\e905"}
 [efy_icon=camera]:before {content: "\e91f"}
+[efy_icon=car]:before {content: "\e979"}
 [efy_icon=check]:before, [efy_select] [type=checkbox]:checked + label:after, [type=checkbox]:checked:after {content: "\e914"}
 [efy_icon*=chevron]:before, details:not([efy_help]) > summary:before {content: "\e907"}
 [efy_icon=circle]:before {content: "\e91c"}

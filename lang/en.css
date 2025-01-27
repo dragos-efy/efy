@@ -5,7 +5,6 @@
 --type:Type;
 --solid:Solid;
 --system:System;
---visual_filters:Visual Filters;
 --backup:Backup;
 --efy_language:EFY Language;
 --accessibility:Accessibility;
@@ -109,7 +108,6 @@
 --coming_soon:Coming soon...;
 --sidebar_search_placeholder:Search through menu;
 --sidebar_about_text:User Customizable CSS / JS framework. Private, modular & convergent apps;
---join_future:The future of design is YOU;
 --try_it:Try it;
 --sidebar_transparency_help:If your operating system or window manager supports transparency, the background becomes transparent. Otherwise just import your own images and turn this on;
 --sidebar_images_warning:Warning. Bigger = Slower;
@@ -135,4 +133,11 @@
 --stable:Stable;
 --copy:Copy;
 --paste:Paste;
+--modules:Modules;
+--join_future:Design by YOU;
+--quick:Quick;
+--filters:Filters;
+--languages:Languages;
+--gamepads:Gamepads;
+--click_effects:Click Effects;
 }

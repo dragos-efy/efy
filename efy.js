@@ -1,5 +1,5 @@
-export let efy_version = '24.09.29 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document),
-$head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{},
+extra let efy_version = '25.01.27 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document),
+$head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{}, $100vh, open_idb, efy_css = {},
 /*Add: Selector, optional: {Attributes}, [Text, Children], Parent, Position*/
 $add =(tag, attrs = {}, children = [], parent = document.body, position = 'beforeend')=>{
     const element = document.createElement(tag);
@@ -80,8 +80,9 @@ $notify =(seconds, title, info, lang, icon, callback)=>{ let selectors = [];
     const h = Math.floor(a / 3600).toString().padStart(2,'0'), m = Math.floor(a % 3600 / 60).toString().padStart(2,'0'), s = Math.floor(a % 60).toString().padStart(2,'0'); return `${h}:${m}:${s}`
 };
 
-/*After Page Loads*/ window.onload = async ()=>{ $root = $(":root"), $head = document.head, $body = document.body; let modules_array = $css_prop('---modules').replaceAll(' ', '').split(',');
-    $efy_module = (a) =>{ let b = modules_array.includes(a) ? true : false; return b}; let a, b;
+/*After Page Loads*/ window.onload = async ()=>{ $root = $(":root"), $head = document.head, $body = document.body;
+    if (!efy.modules) efy.modules = $css_prop('---modules').replaceAll(' ', '').split(',');
+    $efy_module = (a) =>{ let b = efy.modules.includes(a) ? true : false; return b}; let a, b;
 
 /*Check LocalStorage*/ try { if (localStorage.efy){ efy = JSON.parse(localStorage.efy)} $save =()=>{ localStorage.efy = JSON.stringify(efy)}
 } catch { $wait(2, ()=>{
@@ -92,7 +93,7 @@ $notify =(seconds, title, info, lang, icon, callback)=>{ let selectors = [];
 $add('link', {href: `${efy.folder}/lang/${efy.lang_code}.css`, rel: 'stylesheet', efy_lang: ''}, [], $head);
 $add('link', {href: `${$css_prop('---lang_folder')}/${efy.lang_code}.css`, rel: 'stylesheet', efy_lang: '', class: 'efy_lang_app_file'}, [], $head);
 
-/*Responsive 100vh*/ const $100vh =()=>{
+/*Responsive 100vh*/ $100vh =()=>{
     const text = efy.text_zoom || 1;
     $css_prop(`---100vh`, ((visualViewport.height * visualViewport.scale).toFixed(2) / text) + 'rem')
 }; $100vh();
@@ -101,11 +102,10 @@ $event(window.visualViewport, 'orientationchange', $100vh);
 
 /*Sidebar Modules*/ $add('div', {id: 'efy_sidebar', class: 'efy_sidebar', efy_search: 'details:not(.efy_quick_shortcuts, [efy_logo]), .efy_sidebar [efy_tabs] > *'}, [
     ['div', {efy_about: ''}, [
-        ['div', {class: 'efy_flex'}, [
+        ['div', {class: 'efy_flex efy_sidebar_top_buttons'}, [
             ['button', {class: 'efy_about', efy_toggle: '.efy_about_div', efy_logo: ''}, [ ['p', 'EFY'], ['p', ' UI'] ]],
             ['button', {class: 'efy_quick_notify efy_square_btn', efy_toggle: '.efy_quick_notify_content', title: 'Notifications'}, [['i', {efy_icon: 'notify'}]]],
-            ['button', {class: 'efy_quick_search efy_square_btn', efy_toggle: '#efy_sidebar [efy_search_input]', title: 'Search'}, [['i', {efy_icon: 'search'}]]],
-            ['button', {id: 'efy_quick_toggle', efy_toggle: '#efy_quick', class: 'efy_square_btn', title: 'Quick shortcuts'}, [['i', {efy_icon: 'star'}]]]
+            ['button', {class: 'efy_quick_search efy_square_btn', efy_toggle: '#efy_sidebar [efy_search_input]', title: 'Search'}, [['i', {efy_icon: 'search'}]]]
         ]],
         ['button', {efy_sidebar_btn: 'close', class: 'efy_square_btn', title: 'close'}, [['i',{efy_icon: 'remove'}]]],
     ]],
@@ -121,31 +121,41 @@ $event(window.visualViewport, 'orientationchange', $100vh);
     ['details', {id: 'efy_sbtheme', efy_select: ''}, [
         ['summary', {efy_lang: 'theme'}, [['i', {efy_icon: 'star'}]]],
         ['div', {efy_tabs: 'efy_theme'}, [['div', {class: 'efy_tabs'}]]]
+    ]],
+    ['details', {id: 'efy_modules_menu', efy_select: ''}, [
+        ['summary', {efy_lang: 'modules'}, [['i', {efy_icon: 'group'}]]],
+        ['div', {id: 'efy_modules_menu_div'}, [
+            ['div', {class: 'efy_modules_menu_reload efy_hide_i', efy_card: ''}, [
+                ['p','Refresh the page to see the changes'],
+                ['button', {efy_lang: 'reset', onClick: 'location.reload();'}, [['i', {efy_icon: 'reload'}]]]
+            ]]
+        ]]
     ]]
 ]);
 $add('button', {efy_sidebar_btn: 'absolute', title: 'menu'}, [['i', {efy_icon: 'menu'}]]);
 $add('video', {class: 'efy_3d_bg', autoplay: '', loop: '', muted: '', playsinline: ''});
 
-/*Quick Shortcuts*/ if ($efy_module('efy_quick')){ let a = $('[efy_about]');
-    $add('input', {type: 'text', efy_search_input: '', class: 'efy_hide_i', tabindex: '-1', placeholder: 'Search through menu...', name: 'efy_name'}, [], a, 'afterend');
-    $add('div', {class: 'efy_quick_notify_content efy_hide_i', efy_card: ''}, [], a, 'afterend');
+['quick', 'filters', 'backup', 'accessibility', 'languages', 'audio', 'virtual_keyboard', 'gamepads', 'click_effects'].map(x =>{
+    const name = 'efy_module_toggles', id = `${name}_efy_${x}`, end = [[], $('#efy_modules_menu_div')];
+    $add('input', {id: id, type: 'checkbox', name: 'efy_module_toggles'}, ...end);
+    $add('label', {for: id, efy_lang: x}, ...end);
+});
 
-    $add('div', {id: 'efy_quick', class: 'efy_quick_shortcuts efy_hide_i', efy_card: ''}, [
-        ['div', {class: 'efy_quick_buttons efy_flex'}, [ ['div', {efy_clock: ''}] ]]
-    ], a, 'afterend');
+efy.modules.map(x => $(`#efy_module_toggles_${x}`).checked = true);
 
-    ['back', 'forward', 'reload', 'fullscreen'].forEach((a, i) => { let b = ['chevron', 'chevron', 'reload', 'fullscreen'][i];
-    $add('button', {'class': `efy_quick_${a} efy_square_btn`}, [['i', {efy_icon: b}]], $('.efy_quick_buttons'));
-    });
+$event($body, 'change', ()=>{ const x = event.target;
+    if (x.matches('#efy_modules_menu_div input')){
+        efy.modules = Array.from($all('#efy_modules_menu_div input:checked'))
+            .map(y => y.id.replace('efy_module_toggles_', ''));
+        $save();
+        $('.efy_modules_menu_reload').classList.remove('efy_hide_i');
+    }
+});
 
-    $event($(".efy_quick_reload"), 'click', ()=> location.reload());
-
-    $ready('.efy_quick_fullscreen', (x)=>{
-        $event(x, 'click', ()=> document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen());
-    });
-
-    ['back', 'forward'].map(a =>{ $event($(`.efy_quick_${a}`), 'click', ()=> window.history.go(a === 'back' ? -1 : 1)) });
-}
+// Quick Module
+let about = $('[efy_about]');
+$add('input', {type: 'text', efy_search_input: '', class: 'efy_hide_i', tabindex: '-1', placeholder: 'Search through menu...', name: 'efy_name'}, [], about, 'afterend');
+$add('div', {class: 'efy_quick_notify_content efy_hide_i', efy_card: ''}, [], about, 'afterend');
 
 /*Theme*/
 
@@ -213,13 +223,12 @@ $ready(`[for=efy_color_buttoncol]`, ()=>{
         if (efy[a] !== undefined) $css_prop(`---color_${a}_var`, efy[a]);
     });
 
-    /*Checkbox Toggles*/  'audio_status audio_click audio_hover outline text_status bgcol_status bordercol_status buttoncol_status trans_filter_menu'.split(' ').forEach(x =>{
+    /*Checkbox Toggles*/  'text_status bgcol_status bordercol_status buttoncol_status'.split(' ').forEach(x =>{
         if (efy[x]){ $(`#efy_${x}`).setAttribute('checked', '')}
         $event($(`#efy_${x}`), 'click', ()=>{
             efy[x] ? delete efy[x] : efy[x] = true; $save()
         })
     });
-    /*Focus Outline*/ if (efy.outline){ $root.setAttribute('efy_outline', '')} $('#efy_outline').onchange =()=>{ $root.toggleAttribute('efy_outline')}
     /*Custom Text Color*/ if (efy.text_status){ $root.setAttribute('efy_color_text', '')} $('#efy_text_status').onchange =()=>{ $root.toggleAttribute('efy_color_text')}
     /*Custom BG Color*/ if (efy.bgcol_status){ $root.setAttribute('efy_color_bgcol', '')} $('#efy_bgcol_status').onchange =()=>{ $root.toggleAttribute('efy_color_bgcol')}
     /*Custom BG Color*/ if (efy.bordercol_status){ $root.setAttribute('efy_color_bordercol', '')} $('#efy_bordercol_status').onchange =()=>{ $root.toggleAttribute('efy_color_bordercol')}
@@ -511,7 +520,7 @@ $add('details', {id: 'efy_themes'}, [
 
 /*IndexedDB*/ let themes_load_nr = 0, efy_idb = '', idb_themes = '', idb_themes_system = '';
 
-let open_idb =(name = 'efy')=>{
+open_idb =(name = 'efy')=>{
     return new Promise((resolve, reject)=>{
         const request = indexedDB.open(name);
         request.onerror = e => reject("efy: Can't open db");
@@ -825,7 +834,7 @@ $all("[name=efy_sidebar_align]").forEach(x =>{ const y = x.id.replace('efy_sideb
     if (a == 'middle_middle') input.setAttribute('disabled','');
 });
 
-(()=>{
+$wait(.1, ()=>{ // Temporary fix, Make it work without a timeout
     let sd_btn = $css_prop('---sidebar_button').replaceAll(' ', '').split(','),
     a = 'efy_sidebar_btn_hide', c = $('#efy_btn_align'), d = 'beforeend', e = $('[efy_sidebar_btn*=absolute]');
 
@@ -861,7 +870,7 @@ $all("[name=efy_sidebar_align]").forEach(x =>{ const y = x.id.replace('efy_sideb
             $wait(1, ()=> $('body [efy_sidebar_btn]:not(.efy_sidebar [efy_sidebar_btn])').focus());
         }
     })
-})()
+});
 
  /*EFY Notifications*/ $add('details', {id: 'efy_notifications', efy_select: ''}, [
     ['summary', {efy_lang: 'notifications'}, [['mark', {efy_lang: 'alpha'}]]],
@@ -887,212 +896,29 @@ $ready('[efy_alerts]', ()=>{ let b = $('[efy_alerts]'), c = $('#efy_notify_align
     let d = (efy.notify_align) ? $$(c, `#notify_${efy.notify_align}`) : $$(c, '#notify_left_top'); d.checked = true;
 }, 1);
 
-/*Visual Filters*/ if ($efy_module('efy_filters')){ $add('details', {id: 'efy_vfilters', efy_select: ''}, [
-    ['summary', {efy_lang: 'visual_filters'}, [['i', {efy_icon: 'dots'}]]],
-    ['div', {efy_tabs: 'efyui_filters'}, [['div', {class: 'efy_tabs'}]]]
-], $('.efy_sidebar'));
 
-const effects = [['brightness', 'blur', 'saturate', 'contrast', 'hue-rotate', 'sepia', 'invert'], ['0', '0', '0', '0.1', '0', '0', '0'],
-['4', '150', '4', '4', '360', '1', '1'], ['1', '0', '1', '1', '0', '0', '0'], ['0.05', '1', '0.05', '0.05', '1', '0.05', '0.05']];
-
-/*Tabs & Form*/ 'bg content trans front back button'.split(' ').map(a=>{
-    const lang = (a == 'bg') ? 'background' : a,
-    id = `efy_vf_${a}`, parent = [[], $('[efy_tabs=efyui_filters] .efy_tabs')],
-    tab = $add('input', {efy_tab: a, type: 'radio', id: id, name: 'efy_vf_tabs'}, ...parent);
-    $add('label', {efy_lang: lang, for: id}, ...parent);
-
-    /*Temporary*/ if (a == 'button'){ $add('div', {efy_card: '', efy_lang: 'coming_soon', efy_content: a, style: 'margin: 0'}, [], $('[efy_tabs=efyui_filters]'))}
-    else {
-        const content = $add('form', {efy_content: a, efy_select: '', class: `efy_${a}_filter`, onsubmit: 'return false'}, [
-            ['button', {type: 'reset', efy_lang: 'reset'}, [['i', {efy_icon: 'reload'}]]]
-        ], $('[efy_tabs=efyui_filters]'));
-
-        'brightness blur saturation contrast hue sepia invert'.split(' ').map((item, i)=>{
-            $add('div', {efy_lang: item, efy_range_text: item}, [
-                ['input', {class: `efy_${a}_${effects[0][i]}`, type: 'range', min: effects[1][i], max: effects[2][i], value: effects[3][i], step: effects[4][i]}]
-            ], content);
-        });
-        /*Active*/ if (a == 'bg'){ [tab, content].map(b => b.setAttribute('efy_active', ''))}
-    }
-});
-
-/*Trans Menu*/ a = $('[efy_tabs=efyui_filters] [efy_content=trans] [type=reset]'), b = 'efy_trans_filter_menu';
-$add('label', {for: b, efy_lang: 'menu'}, [], a, 'afterend'); $add('input', {id: b, type: 'checkbox'}, [], a, 'afterend');
-
-/*BG Size & Position*/ a = $('[efy_tabs=efyui_filters] [efy_content=bg] [type=reset]'), b = 'efy_bg_size'; let c = 'afterend';
-$add('div', {efy_lang: 'size', efy_range_text: 'bg_size', class: 'efy_hide_i'}, [['input', {class: `efy_bg_size`, type: 'range', min: 10, max: 3000, value: 300, step: 10}]], a, c);
-$add('div', {efy_lang: 'left', efy_range_text: 'bg_position_x', class: 'efy_hide_i'},  [['input', {class: `bg_position_x`, type: 'range', min: -3000, max: 3000, value: 0, step: 1}]], a, c);
-$add('div', {efy_lang: 'up', efy_range_text: 'bg_position_y', class: 'efy_hide_i'}, [['input', {class: `bg_position_y`, type: 'range', min: -3000, max: 3000, value: 0, step: 1}]], a, c);
-
-$add('label', {for: b, efy_lang: 'size'}, [], a, c); $add('input', {id: b, type: 'checkbox', efy_toggle: '[efy_range_text=bg_size], [efy_range_text=bg_position_x], [efy_range_text=bg_position_y]'}, [], a, c);
-
-$event($('.'+b), 'input', (a)=> $css_prop(`---bg_size`, `${a.target.value}rem`))
-$event($('.bg_position_x'), 'input', (a)=> $css_prop(`---bg_x`, `${a.target.value}rem`))
-$event($('.bg_position_y'), 'input', (a)=> $css_prop(`---bg_y`, `${a.target.value}rem`))
-
-for (let a = ['bg', 'content', 'trans', 'front', 'back'], j = [
-    '[efy_mode*=trans] .efy_3d_bg {filter: ',
-    'img, video:not(.efy_3d_bg, .efy_3d_front, .efy_3d_back) {filter: ',
-    ':is(details:not([efy_help]), select, input, textarea, blockquote, pre, article, table, audio, button, [efy_card], [efy_tabs] [efy_content], [efy_timer], [efy_clock], [efy_tabs] [efy_tab], [efy_keyboard], [efy_sidebar_btn*=absolute], [efy_select] label, .efy_trans_filter, .efy_btn_trans, .efy_trans):not(.efy_trans_filter_off, .efy_trans_filter_off_all, .efy_trans_filter_off_all *, .efy_sidebar *, [efy_range_text] input){backdrop-filter: ',
-    '.efy_3d_front {filter: ',
-    '.efy_3d_back {filter: '
-], k = ['!important}', '!important}', '!important; -webkit-backdrop-filter: ', '!important}', '!important}'], l = ['', '', '!important}', '', ''], i = 0; i < a.length; i++){
-
-$add('style', {class: `efy_css_${a[i]}_filter`}, [], $head); let css = $(`.efy_css_${a[i]}_filter`), f = {}, g = `${a[i]}_filter`, h = `${g}_css`,  fn = async ()=>{
-    ['blur','brightness','saturate','contrast','hue-rotate','sepia','invert'].forEach(x =>{ f[x] = $(`.efy_${a[i]}_${x}`).value; if (x == 'blur'){ f[x] = f[x] + 'px' } else if (x == 'hue-rotate'){ f[x] = f[x] + 'deg' }});
-
-    let string = ''; Object.keys(f).forEach(x =>{ string = string + ` ${x}(${f[x]})` });
-    let y; if (a[i] == 'trans'){ let m = ''; if ($('#efy_trans_filter_menu').checked){ m = ', .efy_sidebar'; efy.trans_filter_menu = true} y = j[i] + string + k[i] + string + l[i] + ' ::-webkit-progress-bar, ::-webkit-meter-bar' + m + '{backdrop-filter: ' + string + k[i] + string + l[i]} else {y= y = j[i] + string + k[i]; delete efy.trans_filter_menu}
-    $text(css, y); efy[g] = JSON.stringify(f); efy[h] = y; $save() };
-
-if (efy[g]){ $text(css, efy[h]); let f = JSON.parse(efy[g]); Object.keys(f).forEach(x => $(`.efy_${a[i]}_${x}`).value = f[x].replace('px','').replace('deg','') ) }
-$all(`.efy_${a[i]}_filter input`).forEach(x =>{ $event(x, 'input', fn)});
-$all(`.efy_${a[i]}_filter [type=reset]`).forEach(x =>{ $event(x, 'pointerup', ()=>{ delete efy[g]; delete efy[h]; $save(); $text(css, ''); x.click() }) })
-}}
-
-/*Backup*/ if ($efy_module('efy_backup')){
-    $add('details', {id: 'efy_backup'}, [ ['summary', {efy_lang: 'backup'}, [['i', {efy_icon: 'arrow_down'}]]] ], $('.efy_sidebar'));
-    for (let a = ['localstorage', 'idb'], b = ['theme', 'efy_database'], c = '#efy_backup', i = 0; i < a.length; i++){
-        let aa = `efy_${a[i]}`;
-        $add('p', {efy_lang: b[i]}, [], $(c));
-        $add('div', {class: 'efy_backup_div'}, [
-            ['a', {href: '#', class: `${aa}_export`, download: `${b[i]}.json`, role: 'button', efy_lang: 'save'}, [ ['i', {efy_icon: 'arrow_down'}]]],
-            ['button', {type: 'reset', class: `${aa}_reset`, efy_lang: 'reset'}, [['i', {efy_icon: 'reload'}]]],
-            ['label', {efy_upload: `${aa}_import, .json`}]
-        ], $(c))
-    }
-    $event($('.efy_idb_reset'), 'click', ()=>{ indexedDB.deleteDatabase('efy'); location.reload()});
-}
-
-/*Language*/ if ($efy_module('efy_language')){
-    let a = 'en id ro ru de pl sv'.split(' '), b = 'English Indonesia Română Русский Deutsch Polski Svenska'.split(' ');
-    $add('details', {id: 'efy_language'}, [
-        ['summary', {efy_lang: 'efy_language'}, [ ['i', {efy_icon: 'globe'}]]],
-        ['div', {efy_select: ''}, [
-            ['p', {efy_lang: 'lang_info'}, [['a', {href: 'https://translate.codeberg.org/projects/efy'}, ' Weblate']]]
-    ]]], $('.efy_sidebar'));
-
-    let c = $('#efy_language > div'); a.map((a,i) =>{ let d = `efy_language_${a}`;
-        $add('input', {type: 'radio', name: 'efy_language', id: d}, [], c); $add('label', {for: d}, [b[i]], c);
-        $event($('#' + d), 'click', ()=>{ efy.lang_code = a; $save(); location.reload()})
+/*3D Layer Input*/
+['bg', 'front', 'back'].map(a =>{ let b = `efy_css_${a}`;
+    $add('style', {class: b}, [], $head); efy_css[a] = $('.' + b);
+    $event($body, 'change', (x) =>{
+        if (x.target.matches(`#idb_addimg_${a}`)) efy_add_bgimg(a, x)
     });
-    if (efy.lang_code){ $(`#efy_language_${efy.lang_code}`).setAttribute('checked', '')} else {$('#efy_language_en').setAttribute('checked', '')}
-}
-
-/*Accessibility*/ if ($efy_module('efy_accessibility')){
-    $add('details', {id: 'efy_accessibility', efy_select: ''}, [
-        ['summary', {efy_lang: 'accessibility'}, [['i', {efy_icon: 'accessibility'}]]],
-        ['details', {id: 'efy_accessibility_outline', efy_select: ''}, [
-            ['summary', {efy_lang: 'outline'}],
-            ['p', {efy_lang: 'sidebar_outline_text'}],
-            ['input', {id: 'efy_outline', type: 'checkbox', name: 'efy_accessibility'}],
-            ['label', {for: 'efy_outline', efy_lang: 'focus_outline'}]
-        ]],
-        ['details', {id: 'efy_accessibility_animations', efy_select: ''}, [
-            ['summary', {efy_lang: 'animations'}],
-            ['div', {efy_lang: 'speed', efy_range_text: 'Speed'}, [ ['input', {class: 'efy_anim_speed', type: 'range', min: '0', max: '20', value: '1', step: '0.1'}] ]]
-        ]],
-        ['details', {id: 'efy_accessibility_text', efy_select: ''}, [
-            ['summary', {efy_lang: 'text_size'}],
-            ['form', {class: 'efy_text_accessibility'}, [
-                ['div', {efy_lang: 'zoom', efy_range_text: 'Zoom'}, [ ['input', {class: 'efy_ui_zoom', type: 'range', min: '0.75', max: '2', value: '1', step: '0.05'}] ]],
-                ['div', {efy_lang: 'text_spacing', efy_range_text: 'Text Spacing'}, [ ['input', {class: 'efy_text_spacing', type: 'range', min: '0', max: '15', value: '0', step: '1'}] ]]
-            ]]
-        ]],
-    ['details', {id: 'efy_accessibility_cursor', efy_select: ''}, [
-        ['summary', {efy_lang: 'cursor'}], ['div', {efy_lang: 'sidebar_cursor_text'}]
-    ]]
-], $('.efy_sidebar'));
-
-for (let a = ['efy_cursor_default', 'efy_cursor_custom', 'efy_cursor_none'], b = ['default', 'custom', 'hide'], c = $('#efy_accessibility_cursor'), i = 0; i < a.length; i++){
-  $add('input', {type: 'radio', name: 'efy_accessibility_cursor', id: a[i]}, [], c);
-  $add('label', {for: a[i], efy_lang: b[i]}, [], c);
-} $('#efy_cursor_default').setAttribute('checked', '');
-
-/*Cursor*/ $add('div', {efy_cursor: ''});
-
-const switch_cursor =(type)=>{ const cursor = `efy_cursor_${type}`;
-    $root.setAttribute(cursor, ''); $(`#${cursor}`).setAttribute('checked','');
-    if (type == 'custom') $event(document, 'pointermove', cursor_fn); efy.cursor = type;
-};
-if (['custom', 'none'].includes(efy.cursor)) switch_cursor(efy.cursor);
-
-['default', 'custom', 'none'].map(type =>{ const option = $(`#efy_cursor_${type}`);
-   $event(option, 'change', ()=>{ if (option.checked){
-        if (type == 'default'){
-            $root.removeAttribute('efy_cursor_custom'); $root.removeAttribute('efy_cursor_none');
-            $event_rm(document, 'pointermove', cursor_fn); delete efy.cursor;
-        } else { switch_cursor(type)} $save();
-    }});
 });
 
 
-/*Animations*/ (()=>{ let status = '---anim_status', state = '---anim_state', input = $('.efy_anim_speed');
-    $add('style', {class: 'efy_anim_accessibility'}, [], $head);
-    if (efy.anim_speed){ let speed = efy.anim_speed; input.value = speed;
-        $text($('.efy_anim_accessibility'), `:root {---anim_speed: ${speed}!important}`);
-        if (speed == '0'){ $body.style.setProperty(status, '0'); $body.style.setProperty(state, 'paused'); $body.setAttribute('efy_animations', 'off')}
-    }
-    $event(input, 'change', ()=>{ let speed = input.value; efy.anim_speed = speed; $save();
-        if (speed == '0'){ $body.style.setProperty(status, '0'); $body.style.setProperty(state, 'paused'); $body.setAttribute('efy_animations', 'off')}
-        else { $body.style.setProperty(status, '1'); $body.style.setProperty(state, 'running'); $body.removeAttribute('efy_animations')}
-        $text($('.efy_anim_accessibility'), `:root {---anim_speed: ${speed}!important}`)
-}) })();
-
-/* Text Size*/ $add('style', {class: 'efy_text_accessibility'}, [], $head);
-if (efy.text_zoom){
-    $text($('.efy_text_accessibility'), `:root {---font_size: ${efy.text_zoom}px!important} html {letter-spacing: ${efy.text_spacing}px!important}`)
-    $('.efy_ui_zoom').value = efy.text_zoom;
-    $('.efy_text_spacing').value = efy.text_spacing;
-}
-$all('.efy_text_accessibility input').forEach(x => $event(x, 'input', ()=>{
-    $text($('.efy_text_accessibility'), `:root {---font_size: ${$('.efy_ui_zoom').value}px!important} html {letter-spacing: ${$('.efy_text_spacing').value}px!important}`);
-    efy.text_zoom = $('.efy_ui_zoom').value;
-    efy.text_spacing = $('.efy_text_spacing').value;
-    $save(); $100vh();
-}));
-
-}
-
-/*Audio*/ if ($efy_module('efy_audio')){ $add('details', {efy_select: '', id: 'efy_audio'}, [
-    ['summary', [ ['i', {efy_icon: 'audio'}], ['p', {efy_lang: 'audio_effects'}], ['mark', {efy_lang: 'alpha'}]]],
-    ['div', {efy_lang: 'efy_volume', efy_range_text: 'EFY Volume'}, [ ['input', {class: 'efy_audio_volume', type: 'range', min: '0', max: '1', value: '1', step: '0.01'}] ]],
-    ['div', {efy_lang: 'page_volume', efy_range_text: 'Page Volume'}, [ ['input', {class: 'efy_audio_volume_page', type: 'range', min: '0', max: '1', value: '1', step: '0.01'}] ]],
-    ['p', {efy_lang: 'sidebar_audio_text'}]
-], $('.efy_sidebar'));
-for (let a = ['status', 'click', 'hover'], b = ['active', 'click_tap', 'mouse_hover'], c = '#efy_audio > summary', d = 'beforebegin', i = 0; i < a.length; i++){
-    const id = `efy_audio_${a[i]}`;
-    $add('input', {type: 'checkbox', name: 'efy_audio', id: id}, [], $(c), d);
-    $add('label', {for: id, efy_lang: b[i]}, [], $(c), d)
-}}
-
-/*Effects*/ if (efy.audio_status){ efy_audio.folder = $css_prop('---audio_folder');
-    'pop ok ok2 ok3 hover slide step error disabled call wind'.split(' ').forEach(x =>{
-        efy_audio[x] = new Audio(`${efy_audio.folder}/${x}.webm`); efy_audio[x].volume = efy_audio.volume
-    });
-    if (efy.audio_click){[ // Sound, Event, Selectors
-        ['ok, pointerup', 'button:not([disabled], [type=submit], [type=reset], [efy_tab], [efy_sidebar_btn], [efy_toggle], [efy_keyboard] [efy_key], .efy_quick_fullscreen, [tabindex="-1"], [efy_audio_mute*=ok])'],
-        ['ok', 'change', 'input, textarea'],
-        ['ok2', 'pointerup', '.efy_img_previews [efy_bg_nr]'],
-        ['ok3', 'pointerup', '[type=submit]'],
-        ['pop', 'pointerup', 'summary, [efy_toggle], select:not([multiple], [disabled]), [efy_tabs] [efy_tab], [efy_alert], [efy_alert] *'],
-        ['slide', 'pointerup', '[efy_sidebar_btn]'],
-        ['error', 'pointerup', '[type=reset]'],
-        ['disabled', 'pointerup', '[disabled]'],
-        ['step', 'pointerdown', 'input:not([type=radio], [type=checkbox], [type=reset], [disabled]), textarea:not([disabled]), [efy_keyboard] [efy_key]'],
-        ['step', 'input', 'input:not([type=radio], [type=checkbox], [type=reset], [disabled]), textarea:not([disabled])'],
-        ['wind', 'click', '.efy_quick_fullscreen']
-    ].map(x =>{ $event($body, x[1], ()=>{ if (event.target.matches(x[2])) $audio_play(efy_audio[x[0]]) })})}
-    if (efy.audio_hover){ $event($body, 'mouseenter', (event)=>{
-        if (event.target.matches('summary, select:not([multiple], [disabled]), [type=submit], [type=reset], [efy_sidebar_btn]')){
-            $audio_play(efy_audio.hover)
+/*Load Modules*/ ['quick', 'filters', 'audio', ['accessibility', ['virtual_keyboard', 'click_effects']], 'languages', 'backup', 'gamepads'].map(x =>{
+    let [module, submodules] = Array.isArray(x) ? x : [x, false];
+    if (efy.modules.includes(`efy_${module}`)){
+        $add('script', {src: `${efy.folder}/module_${module}.js`}, [], $head);
+        if (module === 'gamepads'){
+            $add('link', {href: `${efy.folder}/module_${module}.css`, rel: 'stylesheet'}, [], $head);
         }
-    })}
-    /*Volume*/ $all('.efy_audio_volume').forEach(a => a.oninput =()=>{
-        for (let b = Object.keys(efy_audio), i = 0; i < b.length; i++){ efy_audio[b[i]].volume = a.value }
-    });
-    $all('.efy_audio_volume_page').forEach(a => a.oninput =()=>{ $all('audio, video').forEach(b => b.volume = a.value) })
-}
+    }
+    if (submodules){ submodules.map(submodule =>{ if (efy.modules.includes(`efy_${submodule}`)){
+        $add('link', {href: `${efy.folder}/module_${submodule}.css`, rel: 'stylesheet'}, [], $head);
+        $add('script', {src: `${efy.folder}/module_${submodule}.js`}, [], $head);
+    }})}
+});
 
 /*Sidebar Modules - End*/
 
@@ -1103,23 +929,6 @@ for (let a = ['status', 'click', 'hover'], b = ['active', 'click_tap', 'mouse_ho
     a.setAttribute('role', 'button'); $add('input', {type: 'file', id: b[0], accept: accept}, [], a); $add('i', {efy_icon: c}, [], a);
     if (b[3] == 'multiple'){ $all(`#${b[0]}`).forEach(a=>{ a.setAttribute('multiple', '')})}
 });
-
-/*3D Layers*/ ['front', 'back'].map(a =>{
-  $add('video', {class: `efy_3d_${a}`, autoplay: '', loop: '', muted: '', playsinline: ''});
-
-  $add('div', {id: `efy_images_${a}`, style: 'display: grid'}, [
-    ['div', {class: 'efy_img_previews'}, [
-        ['input', {id: `idb_addimg_${a}`, type: 'file', accept: 'image/*, video/*', style: 'display: none'}],
-        ['label', {for: `idb_addimg_${a}`, title: 'Add file', class: 'efy_color', type:'button', role: 'button'}, [ ['i', {efy_icon: 'plus'}] ]],
-        ['button', {class: `idb_reset_${a}`, title: 'reset'}, [['i', {efy_icon: 'reload'}]]]
-  ]], ['hr']], $(`[efy_tabs=efyui_filters] [efy_content=${a}]`), 'afterbegin')
-});
-
-/*3D Layer Input*/ let efy_css = {}; $ready('#idb_addimg_back', ()=>{
-    ['bg', 'front', 'back'].map(a=>{ let b = `efy_css_${a}`;
-        $add('style', {class: b}, [], $head); efy_css[a] = $('.' + b);
-        $event($(`#idb_addimg_${a}`), 'change', x => efy_add_bgimg(a, x));
-})}, 1);
 
 
 /*Add Images*/ const efy_add_bgimg = async (type, e)=>{ let db = await open_idb(), read = new FileReader();
@@ -1201,55 +1010,14 @@ $event(img_previews, 'click', (e)=>{
     }
 });
 
-/*Run Functions*/ (async ()=>{ await count_images('bg'); await count_images('front'); count_images('back') })();
+/*Run Functions*/ (async ()=>{
+    await count_images('bg');
+    if (efy.modules.includes('efy_filters')){
+        await count_images('front'); count_images('back')
+    }
+})();
 
-/*Export iDB*/ (async ()=>{ try { let db = await open_idb(),
-    json = await new Promise((resolve, reject)=>{ let export_object = {};
-        let transaction = db.transaction(db.objectStoreNames, "readonly");
-        $event(transaction, 'error', reject);
 
-        for (let store_name of db.objectStoreNames){ let objects = [];
-            $event(transaction.objectStore(store_name).openCursor(), 'success', event =>{
-            let cursor = event.target.result;
-            if (cursor){ objects.push(cursor.value); cursor.continue()}
-            else { export_object[store_name] = objects;
-                if (db.objectStoreNames.length === Object.keys(export_object).length){
-                    resolve(JSON.stringify(export_object))
-        }}})}})
-
-        $event($('.efy_idb_export'), 'click', async ()=>{ let e = event.target; $audio_play(efy_audio.ok3);
-            e.href = URL.createObjectURL(new Blob([json], {type: 'application/json'}));
-            e.setAttribute('download', 'efy_database.json');
-        })
-} catch (err){ console.error(err)}})();
-
-/*Import IndexedDB*/ $event($('#efy_idb_import'), 'change', async (e)=>{
-    let file = e.target.files[0], read = new FileReader();
-    read.onload = async ()=>{ $audio_play(efy_audio.ok3);
-        let data = JSON.parse(read.result), keys = Object.keys(data),
-        importIDB = async (data)=>{
-            let db = await open_idb(), transaction = db.transaction(keys, "readwrite");
-            transaction.oncomplete =()=> location.reload();
-            for (let name of keys){
-                let store = transaction.objectStore(name);
-                for (let obj of data[name]){ store.put(obj)}
-        }}; await importIDB(data);
-}; read.readAsText(file)});
-
-/*Export localStorage*/ $event($('.efy_localstorage_export'), 'click', (e)=>{
-    if (localStorage.efy){ efy.version = efy_version; $save();
-        let result = JSON.stringify(JSON.parse(localStorage.efy), null, 2), x = e.target;
-        x.href = URL.createObjectURL(new Blob([result], {type: 'application/json'}));
-        x.download = 'efy_settings.json'; $audio_play(efy_audio.ok3)}
-    else { $notify('short', 'Nothing to export', "You're using default settings")}
-});
-
-/*Import localStorage*/ $event($('#efy_localstorage_import'), 'change', (e)=>{
-    let file = e.target.files[0], read = new FileReader();
-	read.onload =()=>{ localStorage.efy = read.result.replaceAll(',\n"', ',"').replaceAll('{\n"', '{"').replaceAll('"\n}', '"}'); location.reload()};
-read.readAsText(file)});
-
-/*Reset localStorage*/ $all(".efy_localstorage_reset").forEach(x =>{ $event(x, 'click', ()=>{ localStorage.removeItem('efy'); location.reload() })});
 
 
 /*Tabs*/ $ready('[efy_tabs]', (a)=>{
@@ -1370,11 +1138,6 @@ $event($body, 'pointerup', ()=>{ let a = event.target;
 
     /*Alpha*/ ['"Max Width"'].map(a=>{ $add('mark', {efy_lang: 'alpha'}, [], $(`[efy_content=size] [efy_range_text*=${a}] .efy_range_text_p`), 'afterend') });
     /*No Notifications*/ $add('style', `.efy_quick_notify_content:empty:before {content: '${efy_lang.no_notifications}'}`, $head);
-    /*Extra Modules*/ ['extra'].map(a=>{
-        if ($efy_module(`efy_${a}`)){ $add('link', {href: `${efy.folder}/${a}.css`, rel: 'stylesheet'}, [], $head);
-            if ($css_prop('---protocol') == 'http'){ $add('script', {src: `${efy.folder}/${a}.js`, type: 'module'}, [], $head)}
-            else { $add('script', {src: `${efy.folder}/${a}_local.js`}, [], $head)}
-    }});
 
     /*Online Status*/ ['offline', 'online'].map((a,i)=>{ $event(window, a, ()=>{ if (efy.notify_offline !== false){
         const lang = ['', $('[efy_lang]')], n = `--${a}_notify`; $notify('short', $css_prop(n, ...lang), $css_prop(`${n}_text`, ...lang))

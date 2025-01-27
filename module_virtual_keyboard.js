@@ -1,4 +1,4 @@
-$ready('#efy_sbtheme', ()=>{
+(()=>{
 
 /*Keyboard*/ let current_input;
 
@@ -98,12 +98,19 @@ $event(c, 'pointerdown', ()=>{ intv = setInterval(backspace, 100) });
 $event(c, 'pointerup', ()=> clearInterval(intv) );
 $event(c, 'pointerleave', ()=> clearInterval(intv) );
 
-$all('input:not([type="color"], [type="range"], [type="file"], [type="radio"], [type="checkbox"]), textarea').forEach(input =>{
-    $event(input, 'focus', ()=>{
-        $('body').setAttribute('efy_kb', '');
-        current_input = input;
-    });
-});
+$wait(1, ()=>{
+    $all('input:not([type="color"], [type="range"], [type="file"], [type="radio"], [type="checkbox"]), textarea').forEach(input =>{
+        $event(input, 'focus', ()=>{ $('body').setAttribute('efy_kb', ''); current_input = input});
+})});
+
+// $wait(3, ()=>{
+//     $event(document, 'focus', ()=>{ alert('focus'); const x = event.target;
+//         if (x.matches('input:not([type="color"], [type="range"], [type="file"], [type="radio"], [type="checkbox"])') || x.matches('textarea')){
+//             $('body').setAttribute('efy_kb', '');
+//             current_input = x;
+//         }
+//     });
+// });
 
 $all('[efy_keyboard] [efy_key="close"]').forEach(a =>{ $event(a, 'click', ()=>{ $('body').removeAttribute('efy_kb')})});
 
@@ -166,4 +173,4 @@ $event($('#efy_kb_height'), 'input', (x)=>{
 
 ['width', 'height'].map(a=>{ if (efy[`kb_${a}`]) $css_prop(`---kb_${a}`, efy[`kb_${a}`]) });
 
-}, 1);
+})();
