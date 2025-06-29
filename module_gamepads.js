@@ -99,6 +99,10 @@ const gamepad_maps_reset_functions =()=>{
   gamepad_maps.back[2] =()=>{ window.history.go(-1)};
   gamepad_maps.ok[2] =()=>{ document.activeElement.click(); update_focus()};
   gamepad_maps.yes[2] =()=>{};
+  gamepad_maps.l1[2] =()=>{};
+  gamepad_maps.l2[2] =()=>{};
+  gamepad_maps.r1[2] =()=>{};
+  gamepad_maps.r2[2] =()=>{};
 
   const d = ['up', 'down', 'left', 'right'];
   d.forEach(d =>{ gamepad_maps[d][2] =()=> {}});
@@ -141,7 +145,7 @@ $root.classList.add('gamepads_on');
 const process_buttons =(info)=>{
   const {gamepad} = info, buttons = gamepad.buttons;
   if (buttons.length){
-    ['ok', 'yes', 'back', 'up', 'down', 'left', 'right'].map(x=>{
+    ['ok', 'yes', 'back', 'up', 'down', 'left', 'right', 'l1', 'l2', 'r1', 'r2'].map(x=>{
       if (buttons[gamepad_maps[x][0]].pressed){
         gamepad_maps.global_before(); gamepad_maps[x][2](); gamepad_maps.global_after();
       }
@@ -186,18 +190,26 @@ process_stick_left =(info)=>{
         try { for (let i = 0; i < ZL; i++){ dispatch(dom_focus[focus_index], 'down')}} catch {}
     }
   }
-  else {
-    /*Left*/ if (gamepad.axes[0] < -0.3){
-        gamepad_maps.global_before(); gamepad_maps.l_left(); gamepad_maps.global_after();
+  else { let directions = [];
+    /*Left*/ if (gamepad.axes[0] < -0.3){ directions.push('left')}
+    /*Right*/ if (gamepad.axes[0] > 0.3) {directions.push('right')}
+    /*Up*/ if (gamepad.axes[1] < -0.3){ directions.push('up')}
+    /*Down*/ if (gamepad.axes[1] > 0.3){ directions.push('down')}
+
+    /*Left + Up*/ if (['left', 'up'].every(x => directions.includes(x))){
+      gamepad_maps.global_before(); gamepad_maps.l_left_up(); gamepad_maps.global_after();
     }
-    /*Right*/ if (gamepad.axes[0] > 0.3){
-        gamepad_maps.global_before(); gamepad_maps.l_right(); gamepad_maps.global_after();
+    /*Right + Up*/ else if (['right', 'up'].every(x => directions.includes(x))){
+      gamepad_maps.global_before(); gamepad_maps.l_right_up(); gamepad_maps.global_after();
     }
-    /*Up*/ if (gamepad.axes[1] < -0.3){
-        gamepad_maps.global_before(); gamepad_maps.l_up(); gamepad_maps.global_after();
+    /*Left + Down*/ else if (['left', 'down'].every(x => directions.includes(x))){
+      gamepad_maps.global_before(); gamepad_maps.l_left_down(); gamepad_maps.global_after();
     }
-    /*Down*/ if (gamepad.axes[1] > 0.3){
-        gamepad_maps.global_before(); gamepad_maps.l_down(); gamepad_maps.global_after();
+    /*Right + Down*/ else if (['right', 'down'].every(x => directions.includes(x))){
+      gamepad_maps.global_before(); gamepad_maps.l_right_down(); gamepad_maps.global_after();
+    }
+    /*Left / Right / Up / Down - Separately*/ else if (directions[0]){
+      gamepad_maps.global_before(); gamepad_maps[`l_${directions[0]}`](); gamepad_maps.global_after();
     }
   }
 
@@ -212,10 +224,18 @@ process_stick_right =(info)=>{ const {gamepad} = info;
     /*Left*/ if (gamepad.axes[2] < -0.3) scroll.scrollBy(size2, 0);
     /*Right*/ if (gamepad.axes[2] > 0.3) scroll.scrollBy(size, 0);
   } else {
-    /*Up*/ if (gamepad.axes[3] < -0.3) gamepad_maps.r_up();
-    /*Down*/ if (gamepad.axes[3] > 0.3) gamepad_maps.r_down();
-    /*Left*/ if (gamepad.axes[2] < -0.3) gamepad_maps.r_left();
-    /*Right*/ if (gamepad.axes[2] > 0.3) gamepad_maps.r_right();
+    /*Up*/ if (gamepad.axes[3] < -0.3){
+      gamepad_maps.global_before(); gamepad_maps.r_up(); gamepad_maps.global_after();
+    }
+    /*Down*/ if (gamepad.axes[3] > 0.3){
+      gamepad_maps.global_before(); gamepad_maps.r_down(); gamepad_maps.global_after();
+    }
+    /*Left*/ if (gamepad.axes[2] < -0.3){
+      gamepad_maps.global_before(); gamepad_maps.r_left(); gamepad_maps.global_after();
+    }
+    /*Right*/ if (gamepad.axes[2] > 0.3){
+      gamepad_maps.global_before(); gamepad_maps.r_right(); gamepad_maps.global_after();
+    }
   }
 }
 

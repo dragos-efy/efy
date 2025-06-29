@@ -95,8 +95,6 @@
 --donate:Wspomóż;
 --lang_info:If your language misses words, you will see the English version. Translate it here: ;
 --sidebar_search_placeholder:Wyszukaj przez menu;
---sidebar_about_text:User Customizable CSS / JS framework. Private, modular & convergent apps;
---join_future:The future of design is YOU;
 --sidebar_transparency_help:If your operating system or window manager supports transparency, the background becomes transparent. Otherwise just import your own images and turn this on;
 --sidebar_images_warning:Uwaga. Większe = Wolniejsze;
 --sidebar_images_warning_help:Utrzymuj je poniżej 1 MB na obraz, chyba, że twoje urządzenia ma wydajny procesor / kartę graficzną. Możesz także przekonwertować png, jpg itd do formatu webp, any zmniejszyć rozmiar;
@@ -114,7 +112,6 @@
 --border:Obramowanie;
 --window:Window;
 --coming_soon:Coming soon...;
---try_it:Try it;
 --shadows:Shadows;
 --inset:Inset;
 --x:X;
@@ -143,4 +140,10 @@
 --languages:Languages;
 --gamepads:Gamepads;
 --click_effects:Click Effects;
+--sidebar_about_text:User modified CSS + JS design. Private & modular apps;
+--modify:Modify;
+--translate:Translate;
+--on:On;
+--off:Off;
+--auto:Auto;
 }

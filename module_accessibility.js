@@ -19,15 +19,18 @@ $add('details', {id: 'efy_accessibility', efy_select: ''}, [
     ]],
     ['details', {id: 'efy_accessibility_cursor', efy_select: ''}, [
         ['summary', {efy_lang: 'cursor'}], ['div', {efy_lang: 'sidebar_cursor_text'}]
+    ]],
+    ['details', {id: 'efy_accessibility_scrollbar', efy_select: ''}, [
+        ['summary', {}, 'Scrollbar']
     ]]
 ], $('.efy_sidebar'));
+
+/*Cursor*/ $add('div', {efy_cursor: ''});
 
 for (let a = ['efy_cursor_default', 'efy_cursor_custom', 'efy_cursor_none'], b = ['default', 'custom', 'hide'], c = $('#efy_accessibility_cursor'), i = 0; i < a.length; i++){
   $add('input', {type: 'radio', name: 'efy_accessibility_cursor', id: a[i]}, [], c);
   $add('label', {for: a[i], efy_lang: b[i]}, [], c);
 } $('#efy_cursor_default').setAttribute('checked', '');
-
-/*Cursor*/ $add('div', {efy_cursor: ''});
 
 const switch_cursor =(type)=>{ const cursor = `efy_cursor_${type}`;
     $root.setAttribute(cursor, ''); $(`#${cursor}`).setAttribute('checked','');
@@ -44,6 +47,36 @@ if (['custom', 'none'].includes(efy.cursor)) switch_cursor(efy.cursor);
     }});
 });
 
+
+/*Scrollbar*/
+const scrollbar_container = $('#efy_accessibility_scrollbar');
+
+['on', 'auto', 'off'].map(type =>{
+    const id = `efy_scrollbar_${type}`;
+    $add('input', {type: 'radio', name: 'efy_accessibility_scrollbar', id: id}, [], scrollbar_container);
+    $add('label', {for: id, efy_lang: type}, [], scrollbar_container);
+
+    const option = $(`#efy_scrollbar_${type}`);
+    $event(option, 'change', ()=>{ if (option.checked){
+        if (type == 'on'){
+            $root.removeAttribute('efy-scrollbar');
+            delete efy.scrollbar;
+        }
+        else {
+            $root.setAttribute('efy-scrollbar', type);
+            efy.scrollbar = type;
+        }
+        $save();
+    }});
+});
+
+if (['auto', 'off'].includes(efy.scrollbar)){
+    const type = efy.scrollbar;
+    $(`#efy_scrollbar_${type}`).setAttribute('checked', '');
+    $root.setAttribute('efy-scrollbar', type);
+    efy.scrollbar = type;
+}
+else { $('#efy_scrollbar_on').setAttribute('checked', '')}
 
 /*Animations*/ (()=>{ let status = '---anim_status', state = '---anim_state', input = $('.efy_anim_speed');
     $add('style', {class: 'efy_anim_accessibility'}, [], $head);

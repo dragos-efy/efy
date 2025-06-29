@@ -84,7 +84,6 @@
 --add_file:Adaugă Fișier;
 --no_notifications:Nicio notificare încă...;
 --sidebar_search_placeholder:Caută prin meniu;
---sidebar_about_text:Framework CSS / JS customizabil. Aplicații private, modulare & convergente;
 --sidebar_transparency_help:Dacă sistemul tău de operare sau window manager-ul suportă transparență, fundalul devine transparent. Dacă nu, importă propriile tale imagini și activează setarea asta;
 --sidebar_images_warning:ATENȚIE. Mai mare = mai lent;
 --sidebar_images_warning_help:Păstrează-le sub 1MB per imagine dacă nu ai un device cu CPU / GPU puternic. Poți și să convertești png, jpg etc în webp ca să reduci mărimea;
@@ -99,7 +98,6 @@
 --localstorage_off:Browser-ul tău blochează LocalStorage;
 --localstorage_off_text:Nu poṭi salva preferinţele, iar unele beneficii nu vor merge până când nu le activezi. Nicio grijă, datele efy rămân doar în acest dispozitiv.;
 --website:Website;
---translations:Traduceri;
 --donate:Donează;
 --lang_info:Dacă în limba ta lipsesc cuvinte, vei vedea versiunea în engleză. Tradu-o aici: ;
 --up:Sus;
@@ -113,12 +111,10 @@
 --stop:Oprește;
 --pause:Pauză;
 --notifications:Notificări;
---join_future:TU ești viitorul designului;
 --columns:Coloane;
 --border:Bordură;
 --window:Fereastră;
 --coming_soon:În curând...;
---try_it:Încearcă;
 --shadows:Umbre;
 --inset:Interior;
 --x:X;
@@ -139,10 +135,16 @@
 --copy:Copiază;
 --paste:Lipește;
 --modules:Module;
---join_future:Design-ul TĂU;
 --quick:Rapid;
 --filters:Filtre;
 --languages:Limbi;
 --gamepads:Controlere;
 --click_effects:Efecte Click;
+--join_future:Design-ul TĂU;
+--sidebar_about_text:Design CSS + JS modificat de user. Aplicații private & modulare;
+--modify:Modifică;
+--translate:Tradu;
+--on:Pornit;
+--off:Oprit;
+--auto:Auto;
 }

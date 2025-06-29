@@ -1,5 +1,5 @@
 particle {
-    background: var(---color); border-radius: var(---radius0);
+    background: var(---color); border-radius: var(---radius-x);
     position: absolute; inset: 0; z-index: 99999999;
     pointer-events: none; opacity: 0;
     &.input {background: var(---text)}

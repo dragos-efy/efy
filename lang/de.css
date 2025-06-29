@@ -81,7 +81,6 @@
 --add_file:Füge Datei hinzu;
 --no_notifications:Bis jetzt keine Benachrichtigungen ...;
 --sidebar_search_placeholder:Search through menu;
---sidebar_about_text:User Customizable CSS / JS framework. Private, modular & convergent apps;
 --sidebar_transparency_help:Falls ihr Betriebssystem oder Fenstermanager Transparenz unterstützt, wird der Hintergrund durchsichtig werden. Ansonsten fügen sie ihr eigenes Bild ein und aktivieren sie es.;
 --sidebar_images_warning:Warnung. größer = langsamer;
 --sidebar_images_warning_help:Keep them bellow 1MB per image, unless your device has a powerful CPU / GPU. You can also convert png, jpg etc to webp to reduce the size;
@@ -110,12 +109,10 @@
 --stop:Stop;
 --pause:Pause;
 --notifications:Notificări;
---join_future:The future of design is YOU;
 --columns:Columns;
 --border:Border;
 --window:Window;
 --coming_soon:Coming soon...;
---try_it:Try it;
 --shadows:Shadows;
 --inset:Inset;
 --x:X;
@@ -145,4 +142,10 @@
 --languages:Languages;
 --gamepads:Gamepads;
 --click_effects:Click Effects;
+--sidebar_about_text:User modified CSS + JS design. Private & modular apps;
+--modify:Modify;
+--translate:Translate;
+--on:On;
+--off:Off;
+--auto:Auto;
 }

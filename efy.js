@@ -1,4 +1,4 @@
-extra let efy_version = '25.01.27 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document),
+export let efy_version = '25.06.29 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document),
 $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{}, $100vh, open_idb, efy_css = {},
 /*Add: Selector, optional: {Attributes}, [Text, Children], Parent, Position*/
 $add =(tag, attrs = {}, children = [], parent = document.body, position = 'beforeend')=>{
@@ -115,7 +115,7 @@ $event(window.visualViewport, 'orientationchange', $100vh);
             ['a', {href: 'https://efy.ooo', role: 'button', efy_lang: 'website'}],
             ['a', {href: 'https://github.com/dragos-efy/efy', role: 'button'}, 'Github'],
             ['a', {href: 'https://matrix.to/#/#efy_ui:matrix.org', role: 'button'}, 'Matrix'],
-            ['a', {href: 'https://translate.codeberg.org/projects/efy', role: 'button', efy_lang: 'translations'}]
+            ['a', {href: 'https://translate.codeberg.org/projects/efy', role: 'button', efy_lang: 'translate'}]
         ]]
     ]], ['div', {id: 'efy_modules'}],
     ['details', {id: 'efy_sbtheme', efy_select: ''}, [
@@ -179,8 +179,6 @@ $add('div', {efy_lang: 'angle', efy_range_text: 'Angle'}, [
 
 const update_color =(angle)=>{ let [alpha, gradient, gradient_trans, gradients, colors] = [[],[],[],[],[]];
     const contents = $$all(container, '[efy_content]');
-    if (!angle){ angle = $('.efy_color_angle_input').value + 'deg'}
-
     contents.forEach((form, i)=>{ alpha.push($$(form, `.alpha`).value);
         const ok = `${$$(form, '.lightness').value} ${$$(form, '.chroma').value} ${$$(form, '.hue').value}`;
         colors.push(`${i+1} ${ok} ${alpha[i]}`);
@@ -190,16 +188,15 @@ const update_color =(angle)=>{ let [alpha, gradient, gradient_trans, gradients, 
 
     gradients = (contents.length > 1) ? [gradient, gradient_trans] : [`${gradient}, ${gradient}`, `${gradient_trans}, ${gradient_trans}`];
     efy.colors = colors; $save();
-    ['', '_trans'].map((a,i)=> $css_prop(`---color${a}`, `linear-gradient(${angle}, ${gradients[i]})` ));
+    ['', '_trans'].map((a,i)=> $css_prop(`---color${a}`, `linear-gradient(var(---color_angle), ${gradients[i]})` ));
 };
 
 /*Restore Gradient*/ if (efy.colors){ let gradient = [[],[]];
-    const angle = efy.color_angle || `${$('.efy_color_angle_input').value}deg`;
     efy.colors.forEach(a=>{ a = a.split(' '); for (let i = 0; i < 2; i++){
         gradient[i].push(`oklch(${a[1]} ${a[2]} ${a[3]} / ${i === 0 ? a[4] : (a[4] / 3).toFixed(2)})`)
         if (efy.colors.length < 2) gradient[i].push(...gradient[i]);
     }});
-    ['', '_trans'].map((a,i)=> $css_prop(`---color${a}`, `linear-gradient(${angle}, ${gradient[i]})`));
+    ['', '_trans'].map((a,i)=> $css_prop(`---color${a}`, `linear-gradient(var(---color_angle), ${gradient[i]})`));
 } else { $ready('#efy_gradient .alpha', update_color, 1)}
 
 $event($('.efy_color_angle_input'), 'input', ()=> update_color());
@@ -213,26 +210,27 @@ $add('div', {class: 'efy_hr_div'}, [ ['details', {efy_help: 'custom_colors'}, [
 ]]], b);
 
 
-$add('div', {class: 'efy_custom_colors', efy_color: `Text 0.5 0.2 0 1 efy_color_text, Background 0.7 0.2 100 1 efy_color_bgcol, Border 0.7 0.2 100 1 efy_color_bordercol, Button 0.7 0.2 100 1 efy_color_buttoncol`}, [], b);
+$add('div', {class: 'efy_custom_colors', efy_color: `Text 0.5 0.2 0 1 efy_color_text, Background 0.7 0.2 100 1 efy_color_bg, Border 0.7 0.2 100 1 efy_color_border, Card 0.7 0.2 100 1 efy_color_card, Button 0.7 0.2 100 1 efy_color_button`}, [], b);
 
-$ready(`[for=efy_color_buttoncol]`, ()=>{
+$ready(`[for=efy_color_button]`, ()=>{
 
-    ['text', 'bgcol', 'bordercol', 'buttoncol'].map((a,i)=>{
+    ['text', 'bg', 'border', 'card', 'button'].map((a,i)=>{
         const j = i + 1, id = `efy_${a}_status`, begin = [[], $(`.efy_custom_colors [efy_content="${j}"]`), 'afterbegin'];
         $add('label', {for: id, efy_lang: 'active'}, ...begin); $add('input', {id: id, type: 'checkbox'}, ...begin);
-        if (efy[a] !== undefined) $css_prop(`---color_${a}_var`, efy[a]);
+        if (efy[a] !== undefined) $css_prop(`---color_${a}`, efy[a]);
     });
 
-    /*Checkbox Toggles*/  'text_status bgcol_status bordercol_status buttoncol_status'.split(' ').forEach(x =>{
+    /*Checkbox Toggles*/  'text_status bg_status border_status card_status button_status'.split(' ').forEach(x =>{
         if (efy[x]){ $(`#efy_${x}`).setAttribute('checked', '')}
         $event($(`#efy_${x}`), 'click', ()=>{
             efy[x] ? delete efy[x] : efy[x] = true; $save()
         })
     });
     /*Custom Text Color*/ if (efy.text_status){ $root.setAttribute('efy_color_text', '')} $('#efy_text_status').onchange =()=>{ $root.toggleAttribute('efy_color_text')}
-    /*Custom BG Color*/ if (efy.bgcol_status){ $root.setAttribute('efy_color_bgcol', '')} $('#efy_bgcol_status').onchange =()=>{ $root.toggleAttribute('efy_color_bgcol')}
-    /*Custom BG Color*/ if (efy.bordercol_status){ $root.setAttribute('efy_color_bordercol', '')} $('#efy_bordercol_status').onchange =()=>{ $root.toggleAttribute('efy_color_bordercol')}
-    /*Custom Button Color*/ if (efy.buttoncol_status){ $root.setAttribute('efy_color_buttoncol', '')} $('#efy_buttoncol_status').onchange =()=>{ $root.toggleAttribute('efy_color_buttoncol')}
+    /*Custom BG Color*/ if (efy.bg_status){ $root.setAttribute('efy_color_bg', '')} $('#efy_bg_status').onchange =()=>{ $root.toggleAttribute('efy_color_bg')}
+    /*Custom BG Color*/ if (efy.border_status){ $root.setAttribute('efy_color_border', '')} $('#efy_border_status').onchange =()=>{ $root.toggleAttribute('efy_color_border')}
+    /*Custom Card Color*/ if (efy.card_status){ $root.setAttribute('efy_color_card', '')} $('#efy_card_status').onchange =()=>{ $root.toggleAttribute('efy_color_card')}
+    /*Custom Button Color*/ if (efy.button_status){ $root.setAttribute('efy_color_button', '')} $('#efy_button_status').onchange =()=>{ $root.toggleAttribute('efy_color_button')}
 
     /*Keyboard Accessibility*/
     $event($('.efy_custom_colors .efy_tabs'), 'keydown', (event)=>{
@@ -416,9 +414,9 @@ $ready('[efy_color]', (a)=>{ const now = `colors_${Date.now()}${unique}`; unique
 
         [lightnesses[current-1], chromas[current-1], hues[current-1], alphas[current-1]] = [l, c, h, alpha];
 
-        ['text', 'bgcol', 'bordercol', 'buttoncol'].map(x =>{
+        ['text', 'bg', 'border', 'card', 'button'].map(x =>{
             if (current_tab.getAttribute('for') == `efy_color_${x}`){
-                $css_prop(`---color_${x}_var`, ok); efy[x] = ok; $save()
+                $css_prop(`---color_${x}`, ok); efy[x] = ok; $save()
         }});
     });
 
@@ -947,13 +945,13 @@ $ready('[efy_alerts]', ()=>{ let b = $('[efy_alerts]'), c = $('#efy_notify_align
         get_cursor.onsuccess = e =>{ let cursor = e.target.result;
             if (cursor){ count_img++; cursor.continue()}
             else { /*Set bgimg nr*/ efy[`nr_${type}`] = count_img; $save(); const previews = `#efy_images_${type} .efy_img_previews`;
-                /*Restore Background*/ $text(efy_css[type], `.efy_3d_${type} {background: url(${file})!important; background-size: var(---bg_size)!important} html {background: var(---text2)!important}`);
+                /*Restore Background*/ $text(efy_css[type], `.efy_3d_${type} {background: url(${file})}`);
                 /*Add Preview*/ $add('button', {efy_bg_nr: count_img, style: `background: url(${thumbnail})`}, [], $(previews));
                 const preview = $(`${previews} [efy_bg_nr="${count_img}"]`);
                 $all(`${previews} [efy_bg_nr]`).forEach(a => a.removeAttribute('efy_active'));
                 preview.setAttribute('efy_active','');
                 /*Preview Click*/ $event(preview, 'click', ()=>{
-                    $text(efy_css[type], `.efy_3d_${type} {background: url(${file})!important; background-size: var(---bg_size)!important} html {background: var(---text2)!important}`);
+                    $text(efy_css[type], `.efy_3d_${type} {background: url(${file})}`);
                     efy[`nr_${type}`] = count_img; $save();
                     $all(`${previews} [efy_bg_nr]`).forEach(a => a.removeAttribute('efy_active')); preview.setAttribute('efy_active','')
                 })
@@ -974,7 +972,7 @@ $ready('[efy_alerts]', ()=>{ let b = $('[efy_alerts]'), c = $('#efy_notify_align
 
             /*Preview Click*/ $add('button', {efy_bg_nr: x.id, style: `background: url(${x.thumbnail})`, efy_audio_mute: 'ok'}, [], $(previews));
             $event($(`${previews} [efy_bg_nr="${x.id}"]`), 'click', (y) =>{
-                $text(efy_css[type], `.efy_3d_${type} {background: url(${x.image})!important; background-size: var(---bg_size)!important} html {background: var(---text2)!important; background-size: cover!important}`);
+                $text(efy_css[type], `.efy_3d_${type} {background: url(${x.image})!important; background-size: var(---bg_size)!important} html {background: var(---bg)!important; background-size: cover!important}`);
                 efy[`nr_${type}`] = current; $save();
                 $all(`${previews} [efy_bg_nr]`).forEach(a => a.removeAttribute('efy_active')); y.target.setAttribute('efy_active', '')
             });
@@ -1050,11 +1048,24 @@ $event(img_previews, 'click', (e)=>{
 
 /*EFY Range Text*/ $ready('[efy_range_text]', (a)=>{
     const c = $$(a, 'input[type=range]'),
-    p = $add('input', {class: 'efy_range_text_p', type: 'number', value: c.value, step: c.step, min: c.min, max: c.max, name: 'efy_name'}, [], a, 'afterbegin');
+    [name, lang] = [a.getAttribute('efy_range_text'), a.getAttribute('efy_lang')],
+    p = $add('input', {
+        class: 'efy_range_text_p', type: 'number', name: 'efy_name',
+        value: c.value, step: c.step, min: c.min, max: c.max
+    }, [], a, 'afterbegin');
     c.setAttribute('aria-hidden', ''); c.setAttribute('tabindex', '-1');
-    $event(p, 'input', (x)=>{ c.value = x.target.value; c.dispatchEvent(new Event('input', {'bubbles': true }))});
+
+    if (!lang){ a.insertAdjacentText(
+        $$(a, '[efy_icon]') ? 'beforeend' : 'afterbegin', `${name}:`
+    )}
+
+    $event(p, 'input', (x)=>{
+        c.value = x.target.value; c.dispatchEvent(new Event('input', {'bubbles': true }));
+    });
     $event(c, 'input', (x)=> p.value = x.target.value);
-}); $all('form[class*=efy]').forEach(x =>{ $event(x,'reset', ()=>{
+});
+
+$all('form[class*=efy]').forEach(x =>{ $event(x,'reset', ()=>{
         $$all(x, '[efy_range_text]').forEach(y =>{
             $$(y, '.efy_range_text_p').value = $$(y, 'input').value
         })
@@ -1120,20 +1131,20 @@ $event($body, 'pointerup', ()=>{ let a = event.target;
     /*Translations*/ const processed = new WeakSet(),
     observer = new MutationObserver(mutations =>{
         for (let mutation of mutations){ if (mutation.type === 'childList'){
-                $$all(mutation.target, '[efy_lang]').forEach(element =>{
-                    if (!processed.has(element)){
-                        const string = getComputedStyle($('[efy_lang]')).getPropertyValue(`--${element.getAttribute('efy_lang')}`);
-                        element.insertAdjacentText(
-                            $$(element, '[efy_icon]') ? 'beforeend' : 'afterbegin',
-                            element.hasAttribute('efy_range_text') ? `${string}:` : string
-                        );
-                        processed.add(element);
-                    }
-                });
-                mutation.removedNodes.forEach(node =>{
-                    if (node.nodeType === 1) processed.delete(node);
-                });
-            }}
+            $$all(mutation.target, '[efy_lang]').forEach(element =>{
+                if (!processed.has(element)){
+                    const string = getComputedStyle($('[efy_lang]')).getPropertyValue(`--${element.getAttribute('efy_lang')}`);
+                    element.insertAdjacentText(
+                        $$(element, '[efy_icon]') ? 'beforeend' : 'afterbegin',
+                        element.hasAttribute('efy_range_text') ? `${string}:` : string
+                    );
+                    processed.add(element);
+                }
+            });
+            mutation.removedNodes.forEach(node =>{
+                if (node.nodeType === 1) processed.delete(node);
+            });
+        }}
     }); observer.observe(document.body, { childList: true, subtree: true });
 
     /*Alpha*/ ['"Max Width"'].map(a=>{ $add('mark', {efy_lang: 'alpha'}, [], $(`[efy_content=size] [efy_range_text*=${a}] .efy_range_text_p`), 'afterend') });
@@ -1145,19 +1156,38 @@ $event($body, 'pointerup', ()=>{ let a = event.target;
 
 }
 
-// ASSET Navigation
+// ASSET Navigation (Arrows, Space, Shift, Enter, Tab)
 
 $event(document, 'keydown', ()=>{
-  const x = event.target, key = event.key, up_left = key === 'ArrowUp' || key === 'ArrowLeft';
-  if ((x.matches('input[type="radio"]') || x.matches('input[type="checkbox"]'))
-  && (up_left || key === 'ArrowDown' || key === 'ArrowRight')){
-    event.preventDefault();
-    const inputs = Array.from($all(`[name="${x.name}"]`));
-    let i = inputs.indexOf(x) + (up_left ? -1 : 1);
-    if (i < 0) i = inputs.length - 1;
-    if (i >= inputs.length) i = 0;
-    inputs[i].focus();
-  }
+    const x = event.target, key = event.key,
+    up_left = key === 'ArrowUp' || key === 'ArrowLeft';
+    if ((x.matches('input:is([type=radio], [type=checkbox]):not(.efy_asset_off input)'))
+    && (up_left || key === 'ArrowDown' || key === 'ArrowRight')){
+        event.preventDefault();
+        const inputs = Array.from($all(`[name="${x.name}"]`));
+        let i = inputs.indexOf(x) + (up_left ? -1 : 1);
+        if (i < 0) i = inputs.length - 1;
+        else if (i >= inputs.length) i = 0;
+        inputs[i].focus();
+    }
+
+    if ((x.matches('.efy_asset_off input'))
+        && (up_left || key === 'ArrowDown' || key === 'ArrowRight')){
+        const inputs = Array.from($all(`[name="${x.name}"]`));
+        let i = inputs.indexOf(x) + (up_left ? -1 : 1);
+        if (i < 0) i = inputs.length - 1;
+        else if (i >= inputs.length) i = 0;
+
+        if (inputs[i].matches('.efy_asset')){
+            console.log('test');
+            event.preventDefault();
+            inputs[i].focus();
+        }
+        else {
+            event.preventDefault();
+            inputs[i].focus();
+        }
+    }
 }, false);
 
 $event(document, 'keyup', ()=>{
