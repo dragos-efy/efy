@@ -141,10 +141,24 @@
 --gamepads:Controlere;
 --click_effects:Efecte Click;
 --join_future:Design-ul TĂU;
---sidebar_about_text:Design CSS + JS modificat de user. Aplicații private & modulare;
 --modify:Modifică;
 --translate:Tradu;
 --on:Pornit;
 --off:Oprit;
 --auto:Auto;
+--svg_filters:Filtre SVG;
+--quick_info:Scurtături utile deasupra meniului;
+--filters_info:Efecte vizuale;
+--svg_filters_info:Efecte extra. Doar browsere Chromium;
+--languages_info:Traduceri Meniu + Aplicații;
+--gamepads_info:Controlează EFY cu gamepad-uri;
+--backup_info:Salvează & restituie datele;
+--accessibility_info:Animații, mărimi, scurtături, etc;
+--audio_info:Efecte sonore, control volum;
+--virtual_keyboard_info:Pentru touchscreen sau mouse;
+--click_effects_info:Feedback vizual pe elementele selectate;
+--sidebar_about_text:Framework CSS & JS customizabil. Aplicații private & modulare;
+--card:Card;
+--files:Fișiere;
+--customize:Customizează;
 }

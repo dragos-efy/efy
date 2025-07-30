@@ -114,7 +114,7 @@ const gamepad_maps_reset_functions =()=>{
 }; gamepad_maps_reset_functions();
 
 if (efy.gamepads_bar){
-  $add('div', {class: 'gamepads_bar efy_trans_filter'}, [
+  $add('div', {class: 'gamepads_bar efy_card_filter'}, [
     ['div', [
       ['div', {gp_btn: 'Home'}, [['i', {efy_icon: 'home'}], ['p', 'Menu']]]
     ]],

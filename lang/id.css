@@ -141,10 +141,24 @@
 --languages:Languages;
 --gamepads:Gamepads;
 --click_effects:Click Effects;
---sidebar_about_text:User modified CSS + JS design. Private & modular apps;
 --modify:Modify;
 --translate:Translate;
 --on:On;
 --off:Off;
 --auto:Auto;
+--svg_filters:SVG Filters;
+--quick_info:Useful top sidebar shortcuts;
+--filters_info:Visual effects;
+--svg_filters_info:Extra effects. Chromium browsers only;
+--languages_info:Menu + App Translations;
+--gamepads_info:Control EFY with your gamepads;
+--backup_info:Save & restore data;
+--accessibility_info:Animations, sizes, shortcuts & more;
+--audio_info:Sound effects, volume control;
+--virtual_keyboard_info:For touchscreen or mouse;
+--click_effects_info:Visual feedback on selected elements;
+--sidebar_about_text:User customizable CSS & JS framework. Private & modular apps;
+--card:Card;
+--files:Files;
+--customize:Customize;
 }

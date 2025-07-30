@@ -12,7 +12,7 @@ $add('details', {id: 'efy_vfilters', efy_select: ''}, [
     ['div', {efy_tabs: 'efyui_filters'}, [['div', {class: 'efy_tabs'}]]]
 ], $('.efy_sidebar'));
 
-/*Tabs & Form*/ 'bg content trans front back button'.split(' ').map(a=>{
+/*Tabs & Form*/ 'bg content card front back button'.split(' ').map(a=>{
     const lang = (a == 'bg') ? 'background' : a,
     id = `efy_vf_${a}`, parent = [[], $('[efy_tabs=efyui_filters] .efy_tabs')],
     tab = $add('input', {efy_tab: a, type: 'radio', id: id, name: 'efy_vf_tabs'}, ...parent);
@@ -31,7 +31,7 @@ $add('details', {id: 'efy_vfilters', efy_select: ''}, [
     }
 });
 
-/*Trans Menu*/ a = $('[efy_tabs=efyui_filters] [efy_content=trans] [type=reset]'), b = 'efy_trans_filter_menu';
+/*Card Menu*/ a = $('[efy_tabs=efyui_filters] [efy_content=card] [type=reset]'), b = 'efy_card_filter_menu';
 $add('label', {for: b, efy_lang: 'menu'}, [], a, 'afterend'); $add('input', {id: b, type: 'checkbox'}, [], a, 'afterend');
 
 
@@ -53,10 +53,10 @@ $event($('.' + b), 'input', (a)=> $css_prop(`---bg_size`, `${a.target.value}rem`
 $event($('.bg_position_x'), 'input', (a)=> $css_prop(`---bg_x`, `${a.target.value}rem`))
 $event($('.bg_position_y'), 'input', (a)=> $css_prop(`---bg_y`, `${a.target.value}rem`))
 
-for (let a = ['bg', 'content', 'trans', 'front', 'back'], j = [
+for (let a = ['bg', 'content', 'card', 'front', 'back'], j = [
     '[efy_mode*=trans] .efy_3d_bg {filter: ',
     'img, video:not(.efy_3d_bg, .efy_3d_front, .efy_3d_back) {filter: ',
-    ':is(.efy-card-back, details:not([efy_help]), select, input, textarea, blockquote, pre, article, table, audio, button, [efy_card], [efy_tabs] [efy_content], [efy_timer], [efy_clock], [efy_tabs] [efy_tab], [efy_keyboard], [efy_sidebar_btn*=absolute], [efy_select] label, .efy_trans_filter, .efy_btn_trans, .efy_trans):not(html.svg_filters .efy-glass, .efy_trans_filter_off, .efy_trans_filter_off_all, .efy_trans_filter_off_all *, .efy_sidebar *, [efy_range_text] input, html.svg_filters [efy_card]), html.svg_filters .efy_sidebar .efy-card-back {backdrop-filter: ',
+    ':is(.efy-card-back, details:not([efy_help]), select, input, textarea, blockquote, pre, article, table, audio, button, [efy_card], [efy_tabs] [efy_content], [efy_timer], [efy_clock], [efy_tabs] [efy_tab], [efy_keyboard], [efy_sidebar_btn*=absolute], [efy_select] label, .efy_card_filter, .efy_btn_trans, .efy_card):not(html.svg_filters .efy-glass, .efy_card_filter_off, .efy_card_filter_off_all, .efy_card_filter_off_all *, .efy_sidebar *, [efy_range_text] input, html.svg_filters [efy_card]), html.svg_filters .efy_sidebar .efy-card-back {backdrop-filter: ',
     '.efy_3d_front {filter: ',
     '.efy_3d_back {filter: '
 ], k = '!important}', i = 0; i < a.length; i++){
@@ -74,10 +74,10 @@ for (let a = ['bg', 'content', 'trans', 'front', 'back'], j = [
 
         Object.keys(f).forEach(x =>{ string += ` ${x}(${f[x]})` });
         let y = j[i] + string + k;
-        if (a[i] == 'trans'){ let m = '';
-            if ($('#efy_trans_filter_menu').checked){ m = ', .efy_sidebar'; efy.trans_filter_menu = true}
+        if (a[i] == 'card'){ let m = '';
+            if ($('#efy_card_filter_menu').checked){ m = ', .efy_sidebar'; efy.card_filter_menu = true}
             y += string + ' ::-webkit-progress-bar, ::-webkit-meter-bar' + m + '{backdrop-filter: ' + string + k;
-        } else { delete efy.trans_filter_menu}
+        } else { delete efy.card_filter_menu}
         $text(css, y); efy[g] = JSON.stringify(f); efy[h] = y; $save()
     };
 
@@ -102,65 +102,17 @@ for (let a = ['bg', 'content', 'trans', 'front', 'back'], j = [
 
   $add('div', {id: `efy_images_${a}`, style: 'display: grid'}, [
     ['div', {class: 'efy_img_previews'}, [
-        ['input', {id: `idb_addimg_${a}`, type: 'file', accept: 'image/*, video/*', style: 'display: none'}],
+        ['input', {id: `idb_addimg_${a}`, type: 'file', accept: 'image/*, video/*', style: 'display: none', multiple: ''}],
         ['label', {for: `idb_addimg_${a}`, title: 'Add file', class: 'efy_color', type:'button', role: 'button'}, [ ['i', {efy_icon: 'plus'}] ]],
         ['button', {class: `idb_reset_${a}`, title: 'reset'}, [['i', {efy_icon: 'reload'}]]]
   ]], ['hr']], $(`[efy_tabs=efyui_filters] [efy_content=${a}]`), 'afterbegin')
 });
 
-/*Checkbox Toggles*/  ['trans_filter_menu'].forEach(x =>{
+/*Checkbox Toggles*/  ['card_filter_menu'].forEach(x =>{
     if (efy[x]){ $(`#efy_${x}`).setAttribute('checked', '')}
     $event($(`#efy_${x}`), 'click', ()=>{
         efy[x] ? delete efy[x] : efy[x] = true; $save()
     })
 });
-
-if (efy.distortion){
-    $root.classList.add('svg_filters');
-    $add('div', {class: 'efy-filters-dom'}, [
-        $ns('svg', {xmlns: 'http://www.w3.org/2000/svg', style: 'display: none'}, [
-            $ns('filter', {id: 'lensFilter', x: '0%', y: '0%', width: '100%', height: '100%', filterUnits: 'objectBoundingBox'}, [
-                $ns('feComponentTransfer', {in: 'SourceAlpha', result: 'alpha'}, [
-                    $ns('feFuncA', {type: 'identity'})
-                ]),
-                $ns('feGaussianBlur', {in: 'alpha', stdDeviation: '50', result: 'blur'}),
-                $ns('feDisplacementMap', {in: 'SourceGraphic', in2: 'blur', scale: '100', xChannelSelector: 'A', yChannelSelector: 'A'})
-            ]),
-            $ns('filter', {id: 'noiseFilter', x: '0%', y: '0%', width: '100%', height: '100%'}, [
-                $ns('feTurbulence', {type: 'fractalNoise', baseFrequency: '0.8'}),
-                $ns('feColorMatrix', {type: 'saturate', values: '0'}),
-                $ns('feBlend', {mode: 'multiply', in: 'SourceGraphic'})
-            ]),
-            $ns('filter', {id: 'noiseFilter2', x: '0%', y: '0%', width: '100%', height: '100%'}, [
-                $ns('feTurbulence', {type: 'fractalNoise', baseFrequency: '0.8'}),
-                $ns('feColorMatrix', {type: 'saturate', values: '0'}),
-                $ns('feBlend', {mode: 'overlay', in: 'SourceGraphic'})
-            ]),
-            $ns('filter', {id: 'chromatic_abberation', x: '0%', y: '0%', width: '100%', height: '100%', filterUnits: 'objectBoundingBox'}, [
-                $ns('feColorMatrix', {type: 'matrix', in: 'SourceGraphic', result: 'red_', values: `1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0`}),
-                $ns('feColorMatrix', {type: 'matrix', in: 'SourceGraphic', result: 'green_', values: `0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 0`}),
-                $ns('feColorMatrix', {type: 'matrix', in: 'SourceGraphic', result: 'blue_', values: `0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 0`}),
-
-                $ns('feOffset', {in: 'red_', dx: '0', dy: '1', result: 'red'}),
-                $ns('feOffset', {in: 'green_', dx: '-1', dy: '1', result: 'green'}),
-                $ns('feOffset', {in: 'blue_', dx: '2.5', dy: '-3', result: 'blue'}),
-
-                $ns('feBlend', {mode: 'screen', in: 'SourceGraphic', in2: 'red'}),
-                $ns('feBlend', {mode: 'screen', in: 'green'}),
-                $ns('feBlend', {mode: 'screen', in: 'blue'}),
-            ])
-        ]),
-    ]);
-    $ready(':is(.efy-glass, .efy_sidebar, [efy_card], details:not([efy_help])):not(.efy_sidebar *, .efy-glass-off)', (x)=>{
-        $add('div', {class: 'efy-card-back'}, null, x);
-    });
-    $add('div', {class: 'efy-card-back'}, null, $('.efy_sidebar'));
-
-    $ready('[efy_tabs=efyui_filters] [efy_content=trans]', (menu)=>{
-        $add('div', {class: 'svg_filters', style: 'border-top: var(---border); margin-top: 10rem'}, [
-            ['p', {}, 'SVG Filters']
-        ], $('[efy_tabs=efyui_filters] [efy_content=trans]'));
-    }, 1);
-}
 
 })();
