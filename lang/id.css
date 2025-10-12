@@ -161,4 +161,8 @@
 --card:Card;
 --files:Files;
 --customize:Customize;
+--corner_shape:Corner Shape;
+--corner_shape_info:Experiment. Chromium browsers only;
+--lights:Lights;
+--lights_info:Experiment;
 }

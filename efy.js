@@ -1,4 +1,4 @@
-export let efy_version = '25.07.31 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document),
+export let efy_version = '25.10.12 Beta', $ = document.querySelector.bind(document), $all = document.querySelectorAll.bind(document),
 $head, $body, $root, $efy_module, efy = {}, efy_lang = {}, efy_audio = {volume: 1}, $save =()=>{}, $100vh, open_idb, efy_css = {},
 /*Add: Selector, optional: {Attributes}, [Text, Children], Parent, Position*/
 $add =(tag, attrs = {}, children = [], parent = document.body, position = 'beforeend')=>{
@@ -34,7 +34,6 @@ $event =(a,b,c,d)=>{ d ? a.addEventListener(b,c,d) : a.addEventListener(b,c) },
             for (let a of e){ if (!a.$ready){ a.$ready = true; fn(a,a)}}
     }}; if (!o){ o = new MutationObserver(check).observe(d, {childList: true, subtree: true})} check()
 }},
-cursor_fn =(e)=>{let x = $('[efy_cursor]'); x.style.left = e.pageX + 'px'; x.style.top = e.pageY + 'px'},
 $audio_play = async (a,b)=>{ try { if (document.hasFocus()){
     a.pause(); a.currentTime = 0; a.play();
     if (b == 'loop'){ $event(a, 'ended', ()=>{ a.pause(); a.currentTime = 0; a.play()}, false)}
@@ -132,10 +131,11 @@ $event(window.visualViewport, 'orientationchange', $100vh);
         ]]
     ]]
 ]);
+$add('div', {class: 'efy_sidebar_back'});
 $add('button', {efy_sidebar_btn: 'absolute', title: 'menu'}, [['i', {efy_icon: 'menu'}]]);
 $add('video', {class: 'efy_3d_bg', autoplay: '', loop: '', muted: '', playsinline: ''});
 
-['accessibility', 'virtual_keyboard', 'audio', 'backup', 'click_effects', 'filters', 'svg_filters', 'gamepads', 'languages', 'quick'].map(x => {
+['accessibility', 'virtual_keyboard', 'audio', 'backup', 'click_effects', 'corner_shape', 'lights', 'filters', 'svg_filters', 'gamepads', 'languages', 'quick'].map(x => {
     const name = 'efy_module_toggles', id = `${name}_efy_${x}`;
     // hide = (x === 'virtual_keyboard' || x === 'svg_filters') ? {disabled: ''} : null;
     $add('input', {id: id, type: 'checkbox', name: 'efy_module_toggles', /*...hide*/}, [], $('#efy_modules_menu_div'));
@@ -920,11 +920,15 @@ $ready('[efy_alerts]', ()=>{ let b = $('[efy_alerts]'), c = $('#efy_notify_align
 });
 
 
-/*Load Modules*/ ['quick', ['filters', ['svg_filters']], 'audio', ['accessibility', ['virtual_keyboard', 'click_effects', 'css']], 'languages', 'backup', 'gamepads'].map(x =>{
+/*Load Modules*/ [
+    'quick', ['filters', ['svg_filters']], 'audio',
+    ['accessibility', ['virtual_keyboard', 'click_effects', 'css']],
+    'languages', 'backup', 'gamepads', 'corner_shape', 'lights'
+].map(x =>{
     let [module, submodules] = Array.isArray(x) ? x : [x, false];
     if (efy.modules.includes(`efy_${module}`)){
         $add('script', {src: `${efy.folder}/module_${module}.js`}, [], $head);
-        if (module === 'gamepads'){
+        if (module === 'gamepads' || module === 'corner_shape' || module === 'lights'){
             $add('link', {href: `${efy.folder}/module_${module}.css`, rel: 'stylesheet'}, [], $head);
         }
     }
@@ -1261,12 +1265,14 @@ $event($body, 'pointerup', ()=>{ let a = event.target;
         for (let mutation of mutations){ if (mutation.type === 'childList'){
             $$all(mutation.target, '[efy_lang]').forEach(element =>{
                 if (!processed.has(element)){
-                    const string = getComputedStyle($('[efy_lang]')).getPropertyValue(`--${element.getAttribute('efy_lang')}`);
+                    const name = element.getAttribute('efy_lang');
+                    const value = getComputedStyle($('[efy_lang]')).getPropertyValue(`--${name}`);
                     element.insertAdjacentText(
                         $$(element, '[efy_icon]') ? 'beforeend' : 'afterbegin',
-                        element.hasAttribute('efy_range_text') ? `${string}:` : string
+                        element.hasAttribute('efy_range_text') ? `${value}:` : value
                     );
                     processed.add(element);
+                    efy_lang[name] = value;
                 }
             });
             mutation.removedNodes.forEach(node =>{
@@ -1276,7 +1282,9 @@ $event($body, 'pointerup', ()=>{ let a = event.target;
     }); observer.observe(document.body, { childList: true, subtree: true });
 
     /*Alpha*/ ['"Max Width"'].map(a=>{ $add('mark', {efy_lang: 'alpha'}, [], $(`[efy_content=size] [efy_range_text*=${a}] .efy_range_text_p`), 'afterend') });
-    /*No Notifications*/ $add('style', `.efy_quick_notify_content:empty:before {content: '${efy_lang.no_notifications}'}`, $head);
+    /*No Notifications*/ $wait(1, ()=>{
+        $add('style', `.efy_quick_notify_content:empty:before {content: '${efy_lang.no_notifications}'}`, $head);
+    });
 
     /*Online Status*/ ['offline', 'online'].map((a,i)=>{ $event(window, a, ()=>{ if (efy.notify_offline !== false){
         const lang = ['', $('[efy_lang]')], n = `--${a}_notify`; $notify('short', $css_prop(n, ...lang), $css_prop(`${n}_text`, ...lang))

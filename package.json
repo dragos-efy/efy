@@ -1,10 +1,10 @@
 {
   "name": "efy",
-  "version": "25.07.31",
+  "version": "25.10.12",
   "description": "User Customizable CSS / JS framework. Private, modular & convergent apps",
   "keywords": ["efy", "ui", "ux", "design", "offline", "css", "javascript", "transparent", "framework", "touchscreen", "responsive"],
   "author": "efy.ooo",
-  "license": "AGPL-3.0",
+  "license": "MIT",
   "homepage": "https://efy.ooo",
   "repository": {
     "type": "git",

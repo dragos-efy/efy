@@ -1,0 +1,7 @@
+html *, html *:before, html *:after {corner-shape: var(---corner_shape)!important}
+
+::-webkit-slider-thumb {
+    corner-shape: var(---corner_shape)!important
+}
+
+[efy_range_text="Corner Shape"] {margin-top: 5rem}

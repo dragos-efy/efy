@@ -37,10 +37,9 @@ $add('div', {class: 'efy-filters-dom'}, [
         ])
     ]),
 ]);
-$ready(':is(.efy-glass, .efy_sidebar, [efy_card], details:not([efy_help])):not(.efy_sidebar *, .efy-glass-off)', (x)=>{
+$ready(':is(.efy-glass, .efy_sidebar_back, [efy_card], details:not([efy_help])):not(.efy_sidebar *, .efy-glass-off)', (x)=>{
     $add('div', {class: 'efy-card-back'}, null, x);
 });
-$add('div', {class: 'efy-card-back'}, null, $('.efy_sidebar'));
 
 $ready('[efy_tabs=efyui_filters] [efy_content=card]', (menu)=>{
     const container = $add('div', {class: 'svg_filters'}, [
