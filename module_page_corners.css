@@ -1,0 +1,5 @@
+html :is(.efy_3d_bg, .efy_3d_front, .efy_3d_back) {
+    border-radius: var(---radius)!important;
+    background-origin: border-box!important;
+}
+.efy_sidebar, .efy_sidebar_back, .efy_sidebar_back .efy-card-back {border-top-right-radius: var(---radius)!important; border-bottom-right-radius: var(---radius)!important}

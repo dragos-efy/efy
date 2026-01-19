@@ -7,9 +7,10 @@ color-scheme: var(---scheme); font-size: var(---font_size)!important;
 ---padding: 8rem  12rem; ---padding2: 3rem  6rem;
 ---text-x: oklch(from var(---text) l c h / .3); ---text-xx: oklch(from var(---text) l c h / .45); ---text-xxx: oklch(from var(---text) l c h / .14);
 ---card: oklch(from var(---bg_base) l c h / .07);
+---card-o: oklch(from var(---bg_base) l c h / .14);
 ---border-color: oklch(from var(---bg_base) l c h / var(---border_alpha));
 ---border-color-invert: oklch(from var(---bg_base) calc(1 + (-1 * l)) c h / .3);
----border_alpha: .1; ---border: var(---border_size) solid var(---border-color); ---border_size2: calc(2 * var(---border_size));
+---border_alpha: .11; ---border: var(---border_size) solid var(---border-color); ---border_size2: calc(2 * var(---border_size));
 ---anim_status: 1; ---anim_state: running; ---anim_speed: 1; ---animation: var(---anim_status) * var(---anim_speed);
 ---anim_0_3: calc(var(---animation) * .3s);
 ---100vh: 100vh; ---sidebar_width: 450rem; ---sidebar_width_n: calc(-1 * var(---sidebar_width)); ---bg_width: 100vw;
@@ -101,7 +102,7 @@ body {background: transparent!important}
 
 /*Shadow: Card*/ [efy_shadow*=card] :is(details:not([efy_help]), [efy_card], [efy_clock], [efy_timer], [efy_color_picker], select:not([disabled]), input:not([type="range"], [type=checkbox], [type=radio], [role=button], [type=button], [type=submit], [type=reset], [disabled]), textarea:not([disabled]), input[type=number], blockquote, pre, audio, table, [efy_code], [efy_tabs]:not(.efy_shadow_card_off) [efy_content], [efy_about] button:not([efy_sidebar_btn*=close]), .efy_sidebar, .efy_shadow_card):not(.efy_shadow_card_off, [efy_number] button:not(:focus), [efy_range_text] .efy_range_text_p:not(:focus)) {box-shadow: var(---shadow_card)}
 
-/*Radius*/ textarea, select, input, img, video, pre, details, summary, blockquote, article, aside, [type=range], button, [role=button], [type=submit], [type=reset],
+/*Radius*/ textarea, select, input, img, video, pre, details:not([efy_help]), summary, blockquote, article, aside, [type=range], button, [role=button], [type=submit], [type=reset],
 [type=button], img, video, audio, table, [efy_sidebar_btn=absolute], [efy_select] label, [efy_tabs] :is([efy_tab], [efy_tab] + label), .efy-radius {border-radius: var(---radius)}
 /*o*/ [efy_timer], [efy_clock], [efy_alert], .efy-radius-o {border-radius: var(---radius-o)}
 /*x*/ mark, kbd, [type=checkbox], [type=radio], [efy_outline] a:focus, .efy-radius-x {border-radius: var(---radius-x)}
@@ -143,12 +144,15 @@ body {background: transparent!important}
 ::-webkit-scrollbar-thumb:hover{box-shadow: inset 0 0 0 6rem var(---text)}
 ::-webkit-scrollbar-corner {background: transparent!important}
 
+/*Number*/ input[type="number"] {-moz-appearance: textfield}
+
 /*Animations*/
+body:not([efy_animations*=off]) {interpolate-size: allow-keywords}
 /*None*/ [efy_tabs] :is([efy_tab], [efy_tab] + label):active {-webkit-animation: none; animation: none}
 /*Hide*/ .efy_anim_remove {animation: remove calc(var(---animation) * .05s) ease-in-out backwards; animation-play-state: var(---anim_state)}
 /*In Out*/ .efy_anim_in_out {animation: remove2 calc(var(---animation) * .2s); animation-play-state: var(---anim_state)}
 /*Pulse*/ :is(button, [efy_tab], [efy_tab] + label, [efy_bg_nr], .efy_anim_pulse):not([disabled], .efy_animations_off):active {scale: .9; transition: calc(var(---animation) * .1s)}
-/*Pulse2*/ :is(details, input, textarea, select, a, label, [efy_timer], [efy_clock], [efy_card], [efy_alert], .efy_anim_pulse2):not([disabled], .efy_animations_off):active {scale: .98; transition: calc(var(---animation) * .1s)}
+/*Pulse2*/ :is(input, textarea, select, a, label, [efy_timer], [efy_clock], [efy_card], [efy_alert], .efy_anim_pulse2):not([disabled], .efy_animations_off):active {scale: .98; transition: calc(var(---animation) * .1s)}
 /*Remove*/ @keyframes remove {0% {scale: .98} 30% {scale: 1} 100% {scale: .8; box-shadow: none}}
 /*Remove2*/ @keyframes remove2 {0% {scale: 1} 50% {scale: 0} 100% {scale: 1; box-shadow: none}}
 /*No Animations*/ [efy_animations*=off] :is(details, input, textarea, select, a, label, [efy_timer], [efy_clock], [efy_card], [efy_alert], button, [efy_tab], [efy_bg_nr], .efy_anim_pulse, .efy_anim_pulse2):not([disabled]):active {scale: 1; transition: unset}
@@ -289,7 +293,7 @@ progress, meter {height: 15rem; border: 0; background: var(---color_trans); bord
 ::-webkit-progress-bar, ::-webkit-meter-bar {height: 15rem; background: var(---color_trans)}
 ::-webkit-progress-value, ::-webkit-meter-optimum-value {background: var(---color)}
 ::-webkit-progress-bar, ::-webkit-meter-bar, ::-webkit-progress-value, ::-webkit-meter-optimum-value {border-radius: var(---radius-x); border: 0}
-::-moz-progress-bar , ::-moz-meter-bar {height: 15rem; background: var(---color); border-radius: var(---radius-x); border: 0}
+::-moz-progress-bar, ::-moz-meter-bar {height: 15rem; background: var(---color); border-radius: var(---radius-x); border: 0}
 
 /*Audio & Video*/ audio::-webkit-media-controls-enclosure {background: var(---card); border-radius: var(---radius); border: var(---border)}
 ::-internal-media-controls-overflow-menu-list, ::-webkit-internal-media-controls-overflow-menu-list-item {appearance: none; background: var(---bg); border-radius: var(---radius)!important; border: var(---border)}
@@ -299,25 +303,36 @@ progress, meter {height: 15rem; border: 0; background: var(---color_trans); bord
 ::-moz-color-swatch, ::-moz-range-thumb, ::-moz-progress-bar , ::-moz-meter-bar {background-clip: border-box; background-origin: border-box}
 
 /*Details*/ details, summary {list-style: none; position: relative}
-:is(details, [efy_content=menu], [efy_content=mode], .efy_mode_type_div) > details {padding: .6rem 0 0 15rem}
-details { margin-bottom: var(---gap);
-    &:not([efy_help]) summary:before {position: absolute; right: 8rem; transition: transform calc(var(---animation) * .1s) ease}
-    details {margin-top: var(---gap)} details details:not([efy_help]) > summary:before {right: -6rem}
+details {
+    margin-bottom: var(---gap); height: var(---size); transition: height calc(var(---animation) * .1s) ease; overflow: hidden;
+    &:not([efy_help]) summary:before {position: absolute; right: 8rem; transition: all calc(var(---animation) * .15s) ease}
+    details {margin-top: var(---gap)}
+    details details:not([efy_help]) > summary:before {right: -6rem}
+    summary {display: flex; align-items: center}
+    &:not([efy_help]) > summary {
+        border: 0; border-bottom: var(---border_size) solid transparent; border-radius: 0;
+    }
 }
-details[open] { padding: .6rem  15rem 15rem  15rem;
-    &:not([efy_help]) > summary:before {rotate: 90deg; right: -2rem}
+details[open] {
+    padding: 15rem; height: auto;
+    &:not([efy_help]) > summary {margin: -15rem -15rem 15rem -15rem; border-color: var(---border-color)}
+    &:not([efy_help]) > summary:before {rotate: 90deg}
     summary + * {margin-top: 0}
-    summary {margin: 8rem 0; padding: 0}
     > *:last-child {margin-bottom: 0}
 }
 :is(summary, details[open] summary):not(.efy_hr_div summary) {padding-right: 20rem}
 summary::-webkit-details-marker {display: none}
 
-/*Help Box*/ [efy_help] {background: transparent; border: 0; padding: 0!important; margin: 0;
+/*Help Box*/ [efy_help] {
+    background: transparent; border: 0; margin: 10rem 0; height: 24rem;
     summary {pointer-events: none; margin-bottom: 0; padding: 0;
         &:after {margin-left: 8rem; opacity: .5; pointer-events: all}
-}}
-[efy_help][open] {padding: 0 0 10rem 0!important}
+    }
+    &[open] {
+        padding: 0!important;
+        > div {padding: 0 10rem 0 0!important}
+    }
+}
 
 /*Select Menu*/ [efy_select] {
     label:not([efy_upload]):before {width: 16rem; height: 16rem; margin-right: 8rem; margin-top: -.2rem; position: relative; border-radius: calc(var(---radius) / 1.5); border: 2.5rem solid transparent; background: var(---color) border-box; -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0); -webkit-mask-composite: source-out; mask-composite: exclude}
@@ -376,20 +391,28 @@ summary::-webkit-details-marker {display: none}
 [efy_tabs] [efy_content][efy_active], [efy_card], [efy_search_input] {transition: calc(var(---animation) * .1s) linear}
 
 /*Sidebar*/ .efy_sidebar {
-    background: var(---bg); padding: var(---gap) calc(var(---gap) - 2rem) var(---gap) var(---gap);
+    background: var(---bg); padding: 0 /*var(---gap) calc(var(---gap) - 2rem) var(---gap) var(---gap)*/;
     width: 100vw; max-width: var(---sidebar_width); height: var(---100vh); z-index: 9999; position: fixed!important;
     right: var(---sidebar_width_n); top: 0;
     transition: all calc(var(---animation) * .3s); overflow-y: auto;
     border-radius: var(---radius-o) 0 0 var(---radius-o)!important;
     &:not([efy_sidebar*=on] .efy_sidebar) * {display: none}
-    > details:last-of-type {margin: 0}
-    summary { display: flex; align-items: center;
+    details:not(.efy_sidebar details details) {
+        margin-bottom: 0; border-radius: 0; background: none; box-shadow: none !important;
+        border-left: 0; border-right: 0;
+        &:not(:first-of-type) {border-top: 0}
+        > summary {border-radius: 0}
+        &:not([open]):hover > summary {background: var(---card)}
+        &[open] > summary {background: var(---card); border-color: transparent!important}
+    }
+    summary {
         > mark {padding: 5px 7rem; line-height: 1; margin-left: 10rem}
         > p {margin: 0}
     }
     label:not([type=checkbox] + label) { &:before, &:after {display: none}}
-    [efy_search_input] {margin: 0 0 var(---gap) 0}
-    [efy_content=mode] {padding: 0; border: 0; background: unset;
+    [efy_search_input] {width: calc(100% - var(---gap-o)); margin: 0 var(---gap) var(---gap) var(---gap)}
+    [efy_content=mode] {
+        padding: 0; border: 0; background: unset;
         .current_mode {background: var(---card); padding-bottom: var(---gap); border: var(---border); border-radius: var(---radius);
             &:has(#efy_mode_default:checked) {padding: 0;
                 .efy_mode_div {padding: var(---gap-x)}
@@ -407,35 +430,39 @@ summary::-webkit-details-marker {display: none}
             }
         }
         &:has(.system_light:not(.efy_hide_i)) .efy_mode_type_div {margin-top: var(---gap)}
-        [efy_help=type], [efy_help=images] {margin: 0 0 0 var(---gap)}
+        [efy_help=type], [efy_help=images] {margin: 10rem 0 10rem var(---gap)}
         :is(.system_light, .system_dark) > div {display: flex; flex-wrap: wrap; gap: var(---gap-x)}
     }
-
-#efy_themes {margin: var(---gap) 0 0 0; padding: 0;
-    summary {padding: 0 32rem 0 12rem}
-    &[open] summary {margin-bottom: 7rem;
-        &:before {right: 10rem}
-    }
-    :is(button, input, label, .name) {margin: 0}
-    .name {width: 100%}
-    .themes, .buttons {padding: var(---gap); gap: var(---gap-x)}
-    .themes {display: flex; flex-wrap: wrap; width: 100%;
-        [type="checkbox"] {pointer-events: none}
-        label:before, label:after {display: none!important}
-        label i:before {background: var(---color); background-clip: text}
-    }
-    .themes {display: flex; flex-wrap: wrap;
-        [data-id] {
-            width: fit-content; min-width: unset; height: var(---size); background-clip: text, border-box!important; background-origin: border-box!important;
-            background: var(---color), var(---color_trans); -webkit-text-fill-color: transparent; font-weight: bold;
-            &[contenteditable=true] {border: var(---border_size) dashed var(---text-xx); text-decoration: none;
-                background: var(---card); -webkit-text-fill-color: var(---text); color: var(---text);
-                &:focus {border: var(---border); box-shadow: 0 0 0 var(---border_size) var(---text)}
-            }
+    .efy_sidebar_top_buttons {
+        gap: 0; background: var(---card); box-shadow: var(---shadow_card); border: var(---border);
+        border-radius: var(---radius); height: var(---size);
+        button {
+            border: 0; box-shadow: none!important;
+            &:not(:hover) {background: none!important}
+            &:not(:first-of-type) {margin-left: -10rem}
         }
     }
-    p {line-height: 1; margin: var(---gap)}
-}
+    #efy_themes {margin: var(---gap) 0 0 0;
+        :is(button, input, label, .name) {margin: 0}
+        .name {width: 100%}
+        .themes, .buttons {padding: var(---gap); gap: var(---gap-x)}
+        .themes {display: flex; flex-wrap: wrap; width: 100%;
+            [type="checkbox"] {pointer-events: none}
+            label:before, label:after {display: none!important}
+            label i:before {background: var(---color); background-clip: text}
+        }
+        .themes {display: flex; flex-wrap: wrap;
+            [data-id] {
+                width: fit-content; min-width: unset; height: var(---size); background-clip: text, border-box!important; background-origin: border-box!important;
+                background: var(---color), var(---color_trans); -webkit-text-fill-color: transparent; font-weight: bold;
+                &[contenteditable=true] {border: var(---border_size) dashed var(---text-xx); text-decoration: none;
+                    background: var(---card); -webkit-text-fill-color: var(---text); color: var(---text);
+                    &:focus {border: var(---border); box-shadow: 0 0 0 var(---border_size) var(---text)}
+                }
+            }
+        }
+        p {line-height: 1; margin: var(---gap)}
+    }
 }
 
 .efy_sidebar_back {
@@ -475,9 +502,11 @@ summary::-webkit-details-marker {display: none}
     [efy_help=custom_colors] p {font-weight: normal}
 }
 
-[efy_about], .efy_sidebar [efy_card] {margin-bottom: var(---gap)}
-.efy_about {padding: 0 10rem}
-[efy_about] {display: flex; gap: var(---gap); justify-content: space-between; align-items: start;
+.efy_sidebar [efy_card] {margin-bottom: var(---gap)}
+.efy_about {padding: 0 10rem; height: var(---size)}
+[efy_about] {
+    display: flex; gap: var(---gap); justify-content: space-between; align-items: start;
+    padding: var(---gap);
     button {margin: 0; display: flex; align-items: center; gap: 8rem;
         &:not([efy_sidebar_btn*=close]) {background: var(---card);
             i {-webkit-text-fill-color: var(---text)}
@@ -508,15 +537,15 @@ summary::-webkit-details-marker {display: none}
     [efy_bg_nr] {background-origin: border-box!important}
     &.efy_remove [efy_bg_nr], [efy_bg_nr]:is([efy_active], :focus) {box-shadow: inset 0 0 0 var(---border_size) var(---text)!important; border-color: var(---text)!important; z-index: 2}
     :is(label, button) {margin: 0; background-origin: border-box; background-clip: border-box; aspect-ratio: 1; cursor: pointer; position: relative; box-shadow: inset 0 0 20rem #0003, 0 0 20rem #0003; background-size: cover!important; background-repeat: no-repeat!important; background-position: center!important; border-radius: var(---radius); width: 100%}
-    :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back], [for=idb_remove_toggle], .efy_images_reset) {padding: 0; display: flex; align-items: center; place-content: center; box-shadow: unset}
-    :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back]) {background-color: var(---color)!important;
+    :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back], [for=idb_addimg_button], [for=idb_remove_toggle], .efy_images_reset) {padding: 0; display: flex; align-items: center; place-content: center; box-shadow: unset}
+    :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back], [for=idb_addimg_button]) {background-color: var(---color)!important;
          &:before {display: none}
          i:before {font-size: 20rem}
     }
-    :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back], button) {width: 100%; height: 100%}
-    [efy_shadow*=button] :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back]) {box-shadow: var(---shadow_button)!important}
+    :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back], [for=idb_addimg_button], button) {width: 100%; height: 100%}
+    [efy_shadow*=button] :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back], [for=idb_addimg_button]) {box-shadow: var(---shadow_button)!important}
     i {margin: 0}
-    :is(.efy_images_reset, .idb_reset_front, .idb_reset_back) i:before {font-size: 25rem}
+    :is(.efy_images_reset, .idb_reset_front, .idb_reset_back, .idb_reset_button) i:before {font-size: 25rem}
     [for=idb_remove_toggle] {
         &:not(#idb_remove_toggle:checked + label) {background: var(---color), var(---color_trans);
         background-clip: text, border-box; background-origin: border-box; border: var(---border); -webkit-text-fill-color: transparent}
@@ -565,7 +594,9 @@ summary::-webkit-details-marker {display: none}
 [efy_btn_square] {display: flex; align-items: center; padding: 10rem; height: fit-content; aspect-ratio: 1; margin: 0;
     [efy_icon] {margin:0}
 }
-.efy_quick_notify_content {display: grid; gap: var(---gap); grid-template-columns: 1fr;
+.efy_quick_notify_content {
+    display: grid; gap: var(---gap); grid-template-columns: 1fr;
+    width: calc(100% - var(---gap-o)); margin: 0 var(---gap);
     [efy_alert] {background: var(---card); box-shadow: none; border-radius: var(---radius)}
 }
 
@@ -573,7 +604,8 @@ summary::-webkit-details-marker {display: none}
     display: inline-flex; gap: 12rem; margin: 0; padding: 10rem; width: var(---size); height: var(---size); align-items: center; place-content: center;
     i {margin:0}
 }
-.efy_quick_shortcuts {gap: var(---gap); padding: var(---gap-x);
+.efy_quick_shortcuts {
+    width: calc(100% - var(---gap-o)); gap: var(---gap); padding: var(---gap-x); margin: 0 var(---gap);
     .efy_quick_back i {rotate: 180deg}
     [efy_clock] {margin: 0; height: var(---size); border-radius: var(---radius); padding: 0 8rem;
         p {font-size: 25rem}
@@ -582,6 +614,7 @@ summary::-webkit-details-marker {display: none}
 .efy_quick_buttons, .efy_about_div .efy_flex {gap: var(---gap-x)}
 .efy_quick_buttons button {margin: 0}
 .efy_about_div {
+    width: calc(100% - var(---gap-o)); margin: 0 var(---gap);
     .efy_flex {margin: var(---gap-x) 0 0 0;
         a {margin: 0}
     }
@@ -635,24 +668,30 @@ i, :is([efy_timer] button, details > summary):before, [efy_help] summary:after, 
     text-transform: none; vertical-align: middle; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
 } i {margin-right: 8rem}
 
-[efy_icon] {align-items: center; place-content: center;
+[efy_icon] {
+    align-items: center; place-content: center;
     &, &:before {display: inline-flex}
 }
 [efy_icon=accessibility]:before {content: "\e910"}
 [efy_icon*=arrow]:before {content: "\e900"}
 [efy_icon=audio]:before {content: "\e905"}
+[efy_icon=calendar]:before {content: "\e980"}
 [efy_icon=camera]:before {content: "\e91f"}
-[efy_icon=car]:before {content: "\e979"}
+[efy_icon=car]:before {content: "\e986"}
 [efy_icon=check]:before, [efy_select] [type=checkbox]:checked + label:after, [type=checkbox]:checked:after {content: "\e914"}
 [efy_icon*=chevron]:before, details:not([efy_help]) > summary:before {content: "\e907"}
 [efy_icon=circle]:before {content: "\e91c"}
 [efy_icon=circle2]:before {content: "\e974"}
 [efy_icon=circle3]:before {content: "\e977"}
 [efy_icon=circle4]:before {content: "\e978"}
+[efy_icon=clock]:before {content: "\e979"}
 [efy_icon=cloud]:before {content: "\e954"}
+[efy_icon=compress]:before {content: "\e983"}
 [efy_icon=copy]:before {content: "\e919"}
 [efy_icon=dots]:before {content: "\e902"}
 [efy_icon=edit]:before {content: "\e91b"}
+[efy_icon=email]:before {content: "\e984"}
+[efy_icon=enlarge]:before {content: "\e982"}
 [efy_icon=flash]:before {content: "\e952"}
 :is([efy_icon=fullscreen], [efy_icon=move]):before {content: "\e90c"}
 [efy_icon=gamepad]:before {content: "\e970"}
@@ -673,6 +712,7 @@ i, :is([efy_timer] button, details > summary):before, [efy_help] summary:after, 
 [efy_icon=notify_active]:before {content: "\e916"}
 [efy_icon=paste]:before {content: "\e91a"}
 :is([efy_icon=pause], [efy_timer] [efy_start][efy_active]):before {content: "\e90b"}
+[efy_icon=phone]:before {content: "\e985"}
 :is([efy_icon=play], [efy_timer] [efy_start]):before {content: "\e90a"}
 [efy_icon=plus]:before {font-size: 75%}
 [efy_icon=rain]:before {content: "\e951"}
@@ -685,6 +725,7 @@ i, :is([efy_timer] button, details > summary):before, [efy_help] summary:after, 
 [efy_icon=square]:before {content: "\e975"}
 [efy_icon=star]:before {content: "\e904"}
 [efy_icon=sun]:before {content: "\e950"}
+[efy_icon=trash]:before {content: "\e981"}
 [efy_icon=triangle]:before {content: "\e973"}
 [efy_icon=user]:before {content: "\e913"}
 [efy_icon=zoom_in]:before {content: "\e912"}
@@ -699,6 +740,11 @@ html.svg_filters :is(.efy-glass, .efy_sidebar, [efy_card], details:not([efy_help
     position: relative;
     &:before {z-index: 1; box-shadow: var(---shadow_card); pointer-events: none}
 }
+html.svg_filters details:not([efy_help], .efy-glass-off) {
+    &:not(.efy_sidebar *) {background: none!important}
+    &:not(.efy_sidebar > details, #efy_modules > details):before {background: var(---card)}
+}
+
 html.svg_filters :is(.efy-glass, .efy_sidebar, [efy_card], details:not([efy_help])):not(.efy-glass-off, .efy_sidebar *, [efy_lights] *) {
     box-shadow: none!important;
 }

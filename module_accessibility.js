@@ -1,6 +1,6 @@
 const cursor_fn =(e)=>{let x = $('[efy_cursor]'); x.style.left = e.pageX + 'px'; x.style.top = e.pageY + 'px'};
 
-$add('details', {id: 'efy_accessibility', efy_select: ''}, [
+$add('details', {id: 'efy_accessibility', efy_select: '', name: 'efy_sidebar_modules'}, [
     ['summary', {efy_lang: 'accessibility'}, [['i', {efy_icon: 'accessibility'}]]],
     ['details', {id: 'efy_accessibility_outline', efy_select: ''}, [
         ['summary', {efy_lang: 'outline'}],

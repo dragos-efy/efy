@@ -1,6 +1,6 @@
 const add_audio_range = {type: 'range', min: '0', max: '1', value: '1', step: '0.01'},
 
-efy_audio_menu = $add('details', {efy_select: '', id: 'efy_audio'}, [
+efy_audio_menu = $add('details', {efy_select: '', id: 'efy_audio', name: 'efy_sidebar_modules'}, [
     ['summary', [ ['i', {efy_icon: 'audio'}], ['p', {efy_lang: 'audio_effects'}], ['mark', {efy_lang: 'alpha'}]]],
     ['div', {efy_lang: 'efy_volume', efy_range_text: 'EFY Volume'}, [ ['input', {class: 'efy_audio_volume', ...add_audio_range}] ]],
     ['div', {efy_lang: 'page_volume', efy_range_text: 'Page Volume'}, [ ['input', {class: 'efy_audio_volume_page', ...add_audio_range}] ]],
@@ -8,10 +8,11 @@ efy_audio_menu = $add('details', {efy_select: '', id: 'efy_audio'}, [
 ], $('.efy_sidebar'));
 
 for (let a = [['status', 'active'], ['click', 'click_tap'], ['hover', 'mouse_hover']],
-b = [[], $('#efy_audio > summary'), 'beforebegin'], i = 0; i < a.length; i++){
-    const id = `efy_audio_${a[i][0]}`;
+b = [[], $('#efy_audio [efy_range_text="EFY Volume"]'), 'beforebegin'], i = 0; i < a.length; i++){
+    const id = `efy_audio_${a[i][0]}`,
+    margin = a[i][0] === 'hover' ? {style: 'margin: 0 0 15rem 0'} : null;
     $add('input', {type: 'checkbox', name: 'efy_audio', id: id}, ...b);
-    $add('label', {for: id, efy_lang: a[i][1]}, ...b);
+    $add('label', {for: id, efy_lang: a[i][1], ...margin}, ...b);
 }
 
 /*Effects*/ if (efy.audio_status){ efy_audio.folder = $css_prop('---audio_folder');

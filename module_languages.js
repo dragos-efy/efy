@@ -1,6 +1,6 @@
 (()=>{
     let a = 'en id ro ru de pl sv'.split(' '), b = 'English Indonesia Română Русский Deutsch Polski Svenska'.split(' ');
-    $add('details', {id: 'efy_language'}, [
+    $add('details', {id: 'efy_language', name: 'efy_sidebar_modules'}, [
         ['summary', {efy_lang: 'efy_language'}, [ ['i', {efy_icon: 'globe'}]]],
         ['div', {efy_select: ''}, [
             ['p', {efy_lang: 'lang_info'}, [['a', {href: 'https://translate.codeberg.org/projects/efy'}, ' Weblate']]]

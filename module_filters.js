@@ -7,7 +7,7 @@ const effects = [
     [4, 150, 4, 4, 360, 1, 1], [1, 0, 1, 1, 0, 0, 0], [.05, 1, .05, .05, 1, .05, .05]
 ];
 
-$add('details', {id: 'efy_vfilters', efy_select: ''}, [
+$add('details', {id: 'efy_vfilters', efy_select: '', name: 'efy_sidebar_modules'}, [
     ['summary', {efy_lang: 'filters'}, [['i', {efy_icon: 'dots'}]]],
     ['div', {efy_tabs: 'efyui_filters'}, [['div', {class: 'efy_tabs'}]]]
 ], $('.efy_sidebar'));
@@ -18,8 +18,7 @@ $add('details', {id: 'efy_vfilters', efy_select: ''}, [
     tab = $add('input', {efy_tab: a, type: 'radio', id: id, name: 'efy_vf_tabs'}, ...parent);
     $add('label', {efy_lang: lang, for: id}, ...parent);
 
-    /*Temporary*/ if (a == 'button'){ $add('div', {efy_card: '', efy_lang: 'coming_soon', efy_content: a, style: 'margin: 0'}, [], $('[efy_tabs=efyui_filters]'))}
-    else {
+    /*Temporary*/
         const content = $add('form', {efy_content: a, efy_select: '', class: `efy_${a}_filter`, onsubmit: 'return false'}, [
             ['button', {type: 'reset', efy_lang: 'reset'}, [['i', {efy_icon: 'reload'}]]]
         ], $('[efy_tabs=efyui_filters]'));
@@ -28,7 +27,6 @@ $add('details', {id: 'efy_vfilters', efy_select: ''}, [
             ['input', {class: `efy_${a}_${effects[1][i]}`, type: 'range', min: 0, max: effects[2][i], value: effects[3][i], step: effects[4][i]}]
         ], content)});
         /*Active*/ if (a == 'bg'){ [tab, content].map(b => b.setAttribute('efy_active', ''))}
-    }
 });
 
 /*Card Menu*/ a = $('[efy_tabs=efyui_filters] [efy_content=card] [type=reset]'), b = 'efy_card_filter_menu';
@@ -53,12 +51,13 @@ $event($('.' + b), 'input', (a)=> $css_prop(`---bg_size`, `${a.target.value}rem`
 $event($('.bg_position_x'), 'input', (a)=> $css_prop(`---bg_x`, `${a.target.value}rem`))
 $event($('.bg_position_y'), 'input', (a)=> $css_prop(`---bg_y`, `${a.target.value}rem`))
 
-for (let a = ['bg', 'content', 'card', 'front', 'back'], j = [
+for (let a = ['bg', 'content', 'card', 'front', 'back', 'button'], j = [
     '[efy_mode*=trans] .efy_3d_bg {filter: ',
     'img, video:not(.efy_3d_bg, .efy_3d_front, .efy_3d_back) {filter: ',
-    ':is(.efy-card-back, details:not([efy_help]), select, input, textarea, blockquote, pre, article, table, audio, button, [efy_card], [efy_tabs] [efy_content], [efy_timer], [efy_clock], [efy_tabs] [efy_tab], [efy_keyboard], [efy_sidebar_btn*=absolute], [efy_select] label, .efy_card_filter, .efy_btn_trans, .efy_card):not(html.svg_filters .efy-glass, .efy_card_filter_off, .efy_card_filter_off_all, .efy_card_filter_off_all *, .efy_sidebar *, [efy_range_text] input, html.svg_filters [efy_card]), html.svg_filters .efy_sidebar .efy-card-back {backdrop-filter: ',
+    ':is(.efy-card-back, details:not([efy_help]), select, input, textarea, blockquote, pre, article, table, audio, [efy_card], [efy_tabs] [efy_content], [efy_timer], [efy_clock], [efy_tabs] [efy_tab], [efy_keyboard], [efy_sidebar_btn*=absolute], [efy_select] label, .efy_card_filter, .efy_btn_trans, .efy_card):not(html.svg_filters .efy-glass, .efy_card_filter_off, .efy_card_filter_off_all, .efy_card_filter_off_all *, .efy_sidebar *, [efy_range_text] input, html.svg_filters [efy_card]), html.svg_filters .efy_sidebar .efy-card-back {backdrop-filter: ',
     '.efy_3d_front {filter: ',
-    '.efy_3d_back {filter: '
+    '.efy_3d_back {filter: ',
+    ':is(button):not(.efy_card_filter_off) {backdrop-filter: '
 ], k = '!important}', i = 0; i < a.length; i++){
 
     const parent = `.efy_${a[i]}_filter`;
@@ -77,6 +76,7 @@ for (let a = ['bg', 'content', 'card', 'front', 'back'], j = [
         if (a[i] == 'card'){ let m = '';
             if ($('#efy_card_filter_menu').checked){ m = ', .efy_sidebar'; efy.card_filter_menu = true}
             y += string + ' ::-webkit-progress-bar, ::-webkit-meter-bar' + m + '{backdrop-filter: ' + string + k;
+            if (f.blur) y += ` .efy_sidebar details:not(.efy_sidebar > details, #efy_modules details, [efy_help]), .efy_sidebar [efy_content] {backdrop-filter: blur(${f.blur})!important}`;
         } else { delete efy.card_filter_menu}
         $text(css, y); efy[g] = JSON.stringify(f); efy[h] = y; $save()
     };
@@ -97,8 +97,10 @@ for (let a = ['bg', 'content', 'card', 'front', 'back'], j = [
     })
 }
 
-/*3D Layers*/ ['front', 'back'].map(a =>{
-  $add('video', {class: `efy_3d_${a}`, autoplay: '', loop: '', muted: '', playsinline: ''});
+/*3D Layers*/ ['front', 'back', 'button'].map(a =>{
+  if (a !== 'button'){
+    $add('video', {class: `efy_3d_${a}`, autoplay: '', loop: '', muted: '', playsinline: ''});
+  }
 
   $add('div', {id: `efy_images_${a}`, style: 'display: grid'}, [
     ['div', {class: 'efy_img_previews'}, [

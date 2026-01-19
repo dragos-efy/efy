@@ -1,0 +1,1 @@
+$notify('short', 'Health Module ON');

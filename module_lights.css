@@ -3,3 +3,8 @@
   position: absolute; inset: 0;
   mix-blend-mode: overlay; pointer-events: none;
 }
+
+/* Digital Focus Effect
+&:not([open]) {opacity: 0.5; filter: blur(1px)}
+&:hover {opacity: 1!important; filter: none!important}
+*/

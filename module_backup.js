@@ -1,4 +1,6 @@
-$add('details', {id: 'efy_backup'}, [ ['summary', {efy_lang: 'backup'}, [['i', {efy_icon: 'arrow_down'}]]] ], $('.efy_sidebar'));
+$add('details', {id: 'efy_backup', name: 'efy_sidebar_modules'}, [
+    ['summary', {efy_lang: 'backup'}, [['i', {efy_icon: 'arrow_down'}]]],
+], $('.efy_sidebar'));
 for (let a = ['localstorage', 'idb'], b = ['theme', 'efy_database'], c = '#efy_backup', i = 0; i < a.length; i++){
     let aa = `efy_${a[i]}`;
     const copy_paste = (i === 1) ? [null] : [
@@ -7,10 +9,10 @@ for (let a = ['localstorage', 'idb'], b = ['theme', 'efy_database'], c = '#efy_b
     ];
     $add('p', {efy_lang: b[i]}, [], $(c));
     $add('div', {class: 'efy_backup_div'}, [
-        ['a', {href: '#', class: `${aa}_export`, download: `${b[i]}.json`, role: 'button', efy_lang: 'save'}, [ ['i', {efy_icon: 'arrow_down'}]]],
-        ...copy_paste,
+        ['a', {href: '#', class: `${aa}_export`, download: `${b[i]}.json`, role: 'button', efy_lang: 'export'}, [ ['i', {efy_icon: 'arrow_down'}]]],
+        ['label', {efy_upload: `${aa}_import, .json, import, null, arrow_up`}],
         ['button', {type: 'reset', class: `${aa}_reset`, efy_lang: 'reset'}, [['i', {efy_icon: 'reload'}]]],
-        ['label', {efy_upload: `${aa}_import, .json`}]
+        ...copy_paste
     ], $(c))
 }
 $event($('.efy_idb_reset'), 'click', ()=>{ indexedDB.deleteDatabase('efy'); location.reload()});
