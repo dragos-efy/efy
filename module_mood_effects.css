@@ -1,5 +1,0 @@
-#efy_confetti {
-  position: fixed; inset: 0; z-index: 99999; object-fit: cover; width: 100vw; height: 100svh;
-  border-radius: 0!important; background-position: var(---bg_x) var(---bg_y)!important; pointer-events: none;
-}
-[efy_scheme*=light] #efy_confetti {filter: invert(1)}
