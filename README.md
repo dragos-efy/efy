@@ -34,6 +34,8 @@ Yes, but you gotta keep it open source & consider donating if you can or want to
   - LiberaPay: https://liberapay.com/efy
 - Business: Do you wanna work with me on your graphic / ui / ux design, web dev projects or need consulting? Or know someone that does? Let me know.
 
+<b>Warning: This project migrated to [Codeberg](https://codeberg.org/efy/efy), please don't open new Pull Requests or Issues, for contribution go to Codeberg repo. </b>
+
 ## Top Contributors
 
 [Bnyro](https://github.com/Bnyro), [Kavin](https://github.com/FireMasterK), [ARBoyGo](https://github.com/ARBoyGo), [Linerly](https://github.com/Linerly), [DarkCat09](https://github.com/DarkCat09), Zucc (whatever.social), Diamond_AaronXG, IkelAtomig, Hiajen, Auge, ewm, tygyh
