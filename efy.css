@@ -1,63 +1,79 @@
 :root {
 color-scheme: var(---scheme); font-size: var(---font_size)!important;
 ---font_size: 1px; ---bg_size: cover; ---bg_x: 0; ---bg_y: 0;
----radius-x: calc(var(---radius) / 1.25); ---radius-o: calc(var(---radius) * 1.5); ---radius-xx: calc(var(---radius) / 3);
+---radius-o: calc(var(---radius) * 1.5); ---radius-x: calc(var(---radius) / 1.25);
+---radius-xx: calc(var(---radius) / 1.5); ---radius-xxx: calc(var(---radius) / 3);
 ---corner_shape: superellipse(0);
 ---gap-x: calc(var(---gap) / 1.5); ---gap-xx: calc(var(---gap-x) / 2); ---gap-o: calc(var(---gap) * 2); ---gap-oo: calc(var(---gap) * 4);
----padding: 8rem  12rem; ---padding2: 3rem  6rem;
----text-x: oklch(from var(---text) l c h / .3); ---text-xx: oklch(from var(---text) l c h / .45); ---text-xxx: oklch(from var(---text) l c h / .14);
----card: oklch(from var(---bg_base) l c h / .07);
----card-o: oklch(from var(---bg_base) l c h / .14);
----border-color: oklch(from var(---bg_base) l c h / var(---border_alpha));
----border-color-invert: oklch(from var(---bg_base) calc(1 + (-1 * l)) c h / .3);
----border_alpha: .11; ---border: var(---border_size) solid var(---border-color); ---border_size2: calc(2 * var(---border_size));
+---padding: 8rem  12rem; ---padding-x: 3rem  6rem;
+---text-x: oklch(from var(---text) l c h / .45);
+---text-xx: oklch(from var(---text) l c h / .3);
+---text-xxx: oklch(from var(---text) l c h / .14);
+---card-o: oklch(from var(---card) l c h / calc(alpha + .14));
+---border-color-invert: oklch(from var(---base) calc(1 + (-1 * l)) c h / .3);
+---border_alpha: .11; ---border: var(---border-size) solid var(---border-color); ---border-size-o: calc(2 * var(---border-size));
 ---anim_status: 1; ---anim_state: running; ---anim_speed: 1; ---animation: var(---anim_status) * var(---anim_speed);
 ---anim_0_3: calc(var(---animation) * .3s);
----100vh: 100vh; ---sidebar_width: 450rem; ---sidebar_width_n: calc(-1 * var(---sidebar_width)); ---bg_width: 100vw;
----size: calc(36rem + var(---border_size2)); ---size0: calc(30.5rem + var(---border_size2)); ---size-o: calc(72rem + var(---border_size2));
----color_text: 0 0 0; ---color_bg: 0.5 0 0; ---color_border: 0.5 0 0; ---color_button: 0.5 0 0;
----bg_base: light-dark(oklch(0 0 0), oklch(1 0 0));
----text: light-dark(oklch(0 0 0), oklch(1 0 0));
----bg: light-dark(oklch(1 0 0), oklch(0 0 0));
+---sidebar_width: 450rem; ---sidebar_width_n: calc(-1 * var(---sidebar_width)); ---bg_width: 100vw;
+---size: calc(36rem + var(---border-size-o)); ---size-x: calc(30.5rem + var(---border-size-o)); ---size-o: calc(72rem + var(---border-size-o));
+---base: light-dark(oklch(0 0 0), oklch(1 0 0));
+---base-x: light-dark(oklch(1 0 0 / .3), oklch(0 0 0 / .3));
 ---text-shadow: none; ---text-stroke: none;
+---accent-duo: var(---accent), var(---accent-x);
+---accent-duo-x: linear-gradient(var(---bg), var(---bg)), var(---accent);
 }
-/*No White Flash*/ html:not([efy_mode*=trans]) {background: #0f0f0f; margin: 0 auto}
+/*No White Flash*/ html:not([efy_mode=trans]) {background: #0f0f0f; margin: 0 auto}
 html, body {margin: 0 auto}
 html, html * {font-family: var(---font_family)}
-html.trans_window {&, body, .efy_3d_bg {background: transparent!important}}
+html[efy_mode=window] {&, body, .efy_3d_bg {background: transparent!important}}
 body {background: transparent!important}
 
-[efy_mode*=light] {---scheme: light} [efy_mode*=dark] {---scheme: dark}
-[efy_mode*=sepia] {---bg: oklch(.94 .03 89); ---text: oklch(.41 .04 59)}
-[efy_mode=dark] {---bg: oklch(.25 0 0); ---text: oklch(.9 0 0)}
-[efy_mode*=nord] {---bg: oklch(.28 .02 265); ---text: oklch(.85 .02 265)}
-[efy_mode*=black] {---text: oklch(.85 0 0)}
-[efy_mode="dark,trans"] {---bg: oklch(0 0 0)}
-
-/*Custom Text, Border & BG*/ [efy_color_bg] {---bg: oklch(var(---color_bg))}
-[efy_color_text] {---text: oklch(var(---color_text))}
-[efy_color_border] {---border_alpha: 1; ---border-color: oklch(var(---color_border))}
-[efy_color_button] {
-    :is(.efy_button_text, button:not(.efy_button_text_off :is([efy_tab], [efy_tab] + label)), [efy_tabs] :is([efy_tab], [efy_tab] + label)[efy_active], [type=button], [role=button], input:is([type=reset], [type=submit]), [efy_select] input:checked + label, option:checked):not(.efy_button_text_off, [efy_color_preview]) {color: oklch(var(---color_button)); -webkit-text-fill-color: oklch(var(---color_button))}
-    [efy_select] {
-        [type=radio]:checked + label:after {background: oklch(var(---color_button))!important}
-        input:checked + label:before, [type=checkbox]:checked + label:after {border-color: oklch(var(---color_button))!important}
-        label:not([efy_upload], .efy_color, [type=button]):before {background: oklch(var(---color_button) / .7)!important}
-        label:not([efy_upload], input:checked + label, .efy_color, [type=button], :is(.efy_custom_colors, #efy_colors) label) {background: linear-gradient(0deg, oklch(var(---color_button) / .7), oklch(var(---color_button) / .7)), var(---color_trans); background-clip: text, border-box!important; background-origin: border-box!important}
-    }
-    :is([efy_tabs] :is([efy_tab], [efy_tab] + label):not([efy_active], .efy_button_text_off :is([efy_tab], [efy_tab] + label))) {color: oklch(var(---color_button) / .7); -webkit-text-fill-color: oklch(var(---color_button) / .7)}
+html.efy_accent_duo {
+    ---accent-duo: linear-gradient(var(---bg), var(---bg)), var(---accent-x);
 }
-[efy_color_card] {---card: oklch(var(---color_card) / .1)}
+
+/*Custom Text, Border & BG*/
+[efy_color_accent_text] {
+    ---border-color-invert: oklch(from var(---accent-text) l c h / .5);
+    ---accent-duo-x: linear-gradient(var(---accent-text), var(---accent-text)), var(---accent);
+    :is(.efy_accent_text, button:not(.efy_accent_text_off :is([efy_tab], [efy_tab] + label)), [efy_tabs] :is([efy_tab], [efy_tab] + label)[efy_active], [type=button], [role=button], input:is([type=reset], [type=submit]), [efy_select] input:checked + label, option:checked, [efy_tabs] [efy_tab][efy_active] + label):not(.efy_accent_text_off, [efy_color_preview]) {color: var(---accent-text); -webkit-text-fill-color: var(---accent-text)}
+    [efy_select] {
+        [type=radio]:checked + label:after {background: var(---accent-text)!important}
+        input:checked + label:before, [type=checkbox]:checked + label:after {border-color: var(---accent-text)!important}
+        label:not([efy_upload], .efy_accent, [type=button]):before {background: var(---accent-text)!important}
+    }
+    :is([efy_tabs] :is([efy_tab], [efy_tab] + label):not([efy_active], .efy_accent_text_off :is([efy_tab], [efy_tab] + label))) {color: var(---accent-text); -webkit-text-fill-color: var(---accent-text)}
+}
+
+[efy_color_accent_text_x] {
+    ---accent-duo: linear-gradient(var(---accent-text-x), var(---accent-text-x)), var(---accent-x);
+    &.efy_accent_duo {
+        ---accent-duo: linear-gradient(var(---accent-text-x), var(---accent-text-x)), var(---accent-x);
+        [efy_select] label:not([efy_upload]):before {
+            background: linear-gradient(var(---accent-text-x), var(---accent-text-x)) border-box;
+        }
+    }
+    [efy_select] {
+        label:not([efy_upload], input:checked + label, .efy_accent, .quick_colors label, [type=button], [efy_tabs] [efy_tab][efy_active] + label, [efy_color] [efy_tab] + label, :is(.efy_custom_colors, #efy_colors) label) {background: linear-gradient(0deg, var(---accent-text-x), var(---accent-text-x)), var(---accent-x); background-clip: text, border-box!important; background-origin: border-box!important}
+        label:not([efy_upload], .efy_accent, [type=button]):before {background: var(---accent-text-x)!important}
+    }
+    :is([efy_tabs] :is([efy_tab], [efy_tab] + label):not([efy_active], [efy_active] + label, .efy_accent_textx_off :is([efy_tab], [efy_tab] + label))) {
+        color: var(---accent-text-x); -webkit-text-fill-color: var(---accent-text-x);
+    }
+}
+
+html:not([efy_color_accent_text]) {---accent-text: var(---bg)!important}
+html:not([efy_color_accent_text_x]) {---accent-text-x: var(---bg)!important}
 
 /* Text Shadow & Stroke*/
-:is(.efy_button_text, button:not(.efy_button_text_off :is([efy_tab], [efy_tab] + label)), [efy_tabs] :is([efy_tab], [efy_tab] + label)[efy_active], [type=button], [role=button], input:is([type=reset], [type=submit]), [efy_select] input:checked + label, option:checked):not(.efy_button_text_off, [efy_color_preview]) {text-shadow: var(---text-shadow); -webkit-text-stroke: var(---text-stroke)}
+:is(.efy_accent_text, button:not(.efy_accent_text_off :is([efy_tab], [efy_tab] + label)), [efy_tabs] :is([efy_tab], [efy_tab] + label)[efy_active], [type=button], [role=button], input:is([type=reset], [type=submit]), [efy_select] input:checked + label, option:checked):not(.efy_accent_text_off, [efy_color_preview]) {text-shadow: var(---text-shadow); -webkit-text-stroke: var(---text-stroke)}
 [efy_select] {
     [type=radio]:checked + label:after {text-shadow: var(---text-shadow); -webkit-text-stroke: var(---text-stroke)}
     input:checked + label:before, [type=checkbox]:checked + label:after {text-shadow: var(---text-shadow); -webkit-text-stroke: var(---text-stroke)}
-    label:not([efy_upload], .efy_color, [type=button]):before {text-shadow: var(---text-shadow); -webkit-text-stroke: var(---text-stroke)}
-    label:not([efy_upload], input:checked + label, .efy_color, [type=button], :is(.efy_custom_colors, #efy_colors) label) {text-shadow: var(---text-shadow); -webkit-text-stroke: var(---text-stroke)}
+    label:not([efy_upload], .efy_accent, [type=button]):before {text-shadow: var(---text-shadow); -webkit-text-stroke: var(---text-stroke)}
+    label:not([efy_upload], input:checked + label, .efy_accent, [type=button], :is(.efy_custom_colors, #efy_colors) label) {text-shadow: var(---text-shadow); -webkit-text-stroke: var(---text-stroke)}
 }
-:is([efy_tabs] :is([efy_tab], [efy_tab] + label):not([efy_active], .efy_button_text_off :is([efy_tab], [efy_tab] + label))) {text-shadow: var(---text-shadow); -webkit-text-stroke: var(---text-stroke)}
+:is([efy_tabs] :is([efy_tab], [efy_tab] + label):not([efy_active], .efy_accent_text_off :is([efy_tab], [efy_tab] + label))) {text-shadow: var(---text-shadow); -webkit-text-stroke: var(---text-stroke)}
 
 /*Display: Block*/ table, .efy_toggle_visible {display: block}
 /*Inline-Flex*/ header > nav :is(li, a, a:visited), [efy_tabs] :is([efy_tab], [efy_tab] + label), [efy_select] :is(label, label:before, input:checked + label:after):not(.efy_custom_colors *) {display: inline-flex; align-items: center; place-content: center}
@@ -67,17 +83,27 @@ body {background: transparent!important}
 
 /*Content: ''*/ [type=radio]:checked:after, [efy_select] label:before, [efy_select] [type=radio]:checked + label:after {content: ''}
 
-/*Background: Transparent*/ [efy_mode*=trans] .efy_sidebar {background: transparent!important; backdrop-filter: blur(50rem)}
-/*BG*/ html:not([efy_mode*=trans]) .efy_3d_bg, .efy_bg {background: var(---bg)!important}
+/*Background: Transparent*/ [efy_mode=trans] .efy_sidebar {background: transparent!important; backdrop-filter: blur(50rem)}
+/*BG*/ html[efy_mode=solid] .efy_3d_bg, .efy_bg {background: var(---bg)!important}
 /*Card*/ aside, th, [type=file], pre, textarea, select, input, details, blockquote, pre, article, tr:nth-child(even), [efy_alert], [efy_timer], [efy_clock], .efy_card {background: var(---card)}
 /*Text*/ mark, kbd, .efy_bg_text {background: var(---text)}
-/*Color*/ button, [type=button], [role=button], [type=submit], [type=reset], [efy_sidebar_btn=absolute]:hover, :is([type=checkbox], [type=radio], option):checked, [efy_select] input:checked + label, [efy_tabs] [efy_tab][efy_active] + label, :is(blockquote, .efy_img_previews [efy_bg_nr][efy_active]):before, .efy_color {background: var(---color); background-clip: border-box; background-origin: border-box; -webkit-text-fill-color: var(---bg); border: var(---border)}
-/*Color Trans*/ [type=range], [type=radio], [type=checkbox], [efy_sidebar_btn=absolute], [efy_select] label:not([efy_upload], [type=button]), [efy_tabs] [efy_tab]:not([efy_active]) + label, .efy_color_trans {background: var(---color), var(---color_trans); background-clip: text, border-box; background-origin: border-box; border: var(---border); -webkit-text-fill-color: transparent}
+/*Accent*/ button, [type=button], [role=button], [type=submit], [type=reset],
+:is([type=checkbox], [type=radio], option):checked, [efy_select] input:checked + label, [efy_tabs] [efy_tab][efy_active] + label,
+:is(blockquote, .efy_img_previews [efy_bg_nr][efy_active]):before, .efy_accent {
+    background: var(---accent); background-clip: border-box; background-origin: border-box;
+    -webkit-text-fill-color: var(---bg); border: var(---border);
+}
+/*Accent X*/ [type=range], [type=radio], [type=checkbox],
+[efy_select] label:not([efy_upload], [type=button]),
+[efy_tabs] [efy_tab]:not([efy_active]) + label, .efy_accent_x {
+    background: var(---accent-duo); background-clip: text, border-box;
+    background-origin: border-box; border: var(---border); -webkit-text-fill-color: transparent;
+}
 
 /*Color: Text*/ body, textarea, select, input, pre, pre code, header > nav :is(a, a:visited), [efy_sidebar_btn]:hover, .efy-text {color: var(---text)}
 /*BG*/ button, [type=button], [role=button], [type=submit], [type=reset], mark, kbd, option:checked, [efy_select] input:checked + label, .efy_color_bg {color: var(---bg)}
 /*Text xx*/ figcaption, cite, footer, .efy-text-xx {color: var(---text-xx)} ::-webkit-input-placeholder {color: var(---text-xx)}
-/*Color*/ :is(a, a:visited):not([role=button]), pre > code, code, samp, [efy_logo] p:nth-of-type(1), .efy-text-color {background: var(---color); background-clip: text; -webkit-text-fill-color: transparent}
+/*Color*/ :is(a, a:visited):not([role=button]), pre > code, code, samp, [efy_logo] p:nth-of-type(1), .efy-text-color {background: var(---accent); background-clip: text; -webkit-text-fill-color: transparent}
 /*Text-Decoration: None*/ a, a:visited {text-decoration: none}
 
 /*Border*/ textarea, select, input:not([type=color], [type=range]), button, [type=submit], [type=reset], [type=button], [role=button], details, pre, td, th, article, aside, blockquote, [type=file], .efy_sidebar, [efy_tabs] [efy_content], [efy_alert], [efy_timer], [efy_clock], .efy_border {border: var(---border)}
@@ -85,28 +111,34 @@ body {background: transparent!important}
 
 /*Outline: None*/ * {outline: none!important}
 /*Box-Shadow*/ :is(textarea, select, [type=file], input:not([type=checkbox], [type=radio], [role=button], [type=submit], [type=reset], [type=button], [type=color], [type=range])):focus,
-[efy_outline] :is(details:has(> summary:focus):not([efy_help])) {box-shadow: 0 0 0 calc(var(---border_size) + 2rem) var(---text)!important}
+[efy_outline] :is(details:has(> summary:focus):not([efy_help])) {box-shadow: 0 0 0 calc(var(---border-size) + 2rem) var(---text)!important}
 
 [efy_shadow*=card] :is(textarea, select, [type=file], input:not([type=checkbox], [type=radio], [role=button], [type=submit], [type=reset], [type=button], [type=color], [type=range])):focus,
-[efy_shadow*=card][efy_outline] :is(details:has(> summary:focus):not([efy_help])) {box-shadow: 0 0 0 calc(var(---border_size) + 2rem) var(---text), var(---shadow_trans)!important}
+[efy_shadow*=card][efy_outline] :is(details:has(> summary:focus):not([efy_help])) {box-shadow: 0 0 0 calc(var(---border-size) + 2rem) var(---text), var(---shadow_card)!important}
 
-/*Outline*/ [efy_outline] :is([type=radio], [type=checkbox], button, [role=button], [type=submit], [type=reset], [type=button], [type=range], [type=color], a):focus:not([tabindex='-1'], .efy_img_previews [efy_bg_nr]), [efy_outline] [efy_select] input:focus + label, [efy_outline] :is([efy_upload], [efy_help]):focus-within, [efy_outline] [efy_tabs] [efy_tab]:focus + label:not([tabindex='-1']) {outline: calc(var(---border_size) + 2rem) solid var(---text)!important; outline-offset: 4rem!important}
+/*Outline*/ [efy_outline] :is([type=radio], [type=checkbox], button, [role=button], [type=submit], [type=reset], [type=button], [type=range], [type=color], a):focus:not([tabindex='-1'], .efy_img_previews [efy_bg_nr]), [efy_outline] [efy_select] input:focus + label, [efy_outline] :is([efy_upload], [efy_help]):focus-within, [efy_outline] [efy_tabs] [efy_tab]:focus + label:not([tabindex='-1']) {outline: calc(var(---border-size) + 2rem) solid var(---text)!important; outline-offset: 4rem!important}
 
-/*Shadow: Button*/ [efy_shadow*=button] :is(button, [role=button], input:is([type=button], [type=submit], [type=reset]), :is([type=radio], [type=checkbox], option):checked, [efy_select] input:checked + label, .efy_shadow_button):not(.efy_shadow_button_off, .efy_card_filter, .efy_btn_trans, [efy_tab]:not([efy_active]), [efy_about] .efy_flex button, .efy_img_previews [efy_bg_nr], [efy_color_preview], [efy_card]) {box-shadow: var(---shadow_button)}
-[efy_shadow*=button] [type=range]:not(.hue, .sat, .lgt, .transparency)::-webkit-slider-thumb, [efy_shadow*=button] ::-webkit-progress-value, [efy_shadow*=button] ::-webkit-meter-optimum-value {box-shadow: var(---shadow_button)!important}
-[efy_shadow*=button] [type=range]:not(.hue, .sat, .lgt, .transparency)::-moz-range-thumb {box-shadow: var(---shadow_button)!important}
-[efy_shadow*=button] ::file-selector-button {box-shadow: var(---shadow_button)!important}
-/*Shadow: Button Trans*/ [efy_shadow*=button] :is([efy_tabs] :is([efy_tab], [efy_tab] + label), :is(button, [role=button]).efy_card_filter, [efy_select] label:not([efy_upload]), [type=range], .efy_btn_trans):not([efy_active], .efy_card_filter_off) {box-shadow: var(---shadow_button_card)}
-[efy_shadow*=button] :is([type=radio], [type=checkbox]):not(:checked) {box-shadow: var(---shadow_button_trans)!important}
-[efy_shadow*=button] ::-webkit-progress-bar, [efy_shadow*=button] ::-webkit-meter-bar {box-shadow: var(---shadow_button_trans)!important}
+/*Shadow: Accent*/ [efy_shadow*=accent] :is(button, [role=button], input:is([type=button], [type=submit], [type=reset]), :is([type=radio], [type=checkbox], option):checked, [efy_select] input:checked + label, .efy_shadow_accent):not(.efy_shadow_accent_off, .efy_card_filter, .efy_accent_x, [efy_tab]:not([efy_active]), [efy_about] .efy_flex button, .efy_img_previews [efy_bg_nr], [efy_color_preview], [efy_card]) {box-shadow: var(---shadow_accent)}
+[efy_shadow*=accent] [type=range]:not(.hue, .sat, .lgt, .transparency)::-webkit-slider-thumb, [efy_shadow*=accent] ::-webkit-progress-value, [efy_shadow*=accent] ::-webkit-meter-optimum-value {box-shadow: var(---shadow_accent)!important}
+[efy_shadow*=accent] [type=range]:not(.hue, .sat, .lgt, .transparency)::-moz-range-thumb {box-shadow: var(---shadow_accent)!important}
+[efy_shadow*=accent] ::file-selector-button {box-shadow: var(---shadow_accent)!important}
+
+/*Shadow: Accent X*/ [efy_shadow*=accent] :is([efy_tabs] :is([efy_tab], [efy_tab] + label), :is(button, [role=button]).efy_card_filter, [efy_select] label:not([efy_upload]), [type=range], .efy_accent_x):not([efy_active], .efy_card_filter_off, .efy_shadow_accent_x_off) {box-shadow: var(---shadow_accent_x)}
+[efy_shadow*=accent] :is([type=radio], [type=checkbox]):not(:checked) {box-shadow: var(---shadow_accent_x)!important}
+[efy_shadow*=accent] ::-webkit-progress-bar, [efy_shadow*=accent] ::-webkit-meter-bar {box-shadow: var(---shadow_accent_x)!important}
+
+html:not(.efy_accent_duo) {---shadow_accent_x: var(---shadow_accent)!important}
 
 /*Shadow: Card*/ [efy_shadow*=card] :is(details:not([efy_help]), [efy_card], [efy_clock], [efy_timer], [efy_color_picker], select:not([disabled]), input:not([type="range"], [type=checkbox], [type=radio], [role=button], [type=button], [type=submit], [type=reset], [disabled]), textarea:not([disabled]), input[type=number], blockquote, pre, audio, table, [efy_code], [efy_tabs]:not(.efy_shadow_card_off) [efy_content], [efy_about] button:not([efy_sidebar_btn*=close]), .efy_sidebar, .efy_shadow_card):not(.efy_shadow_card_off, [efy_number] button:not(:focus), [efy_range_text] .efy_range_text_p:not(:focus)) {box-shadow: var(---shadow_card)}
 
-/*Radius*/ textarea, select, input, img, video, pre, details:not([efy_help]), summary, blockquote, article, aside, [type=range], button, [role=button], [type=submit], [type=reset],
-[type=button], img, video, audio, table, [efy_sidebar_btn=absolute], [efy_select] label, [efy_tabs] :is([efy_tab], [efy_tab] + label), .efy-radius {border-radius: var(---radius)}
+/*Radius*/ textarea, select, input, img, video, pre, details:not([efy_help]), summary,
+blockquote, article, aside, [type=range], button, [role=button], [type=submit], [type=reset],
+[type=button], img, video, audio, table, [efy_select] label,
+[efy_tabs] :is([efy_tab], [efy_tab] + label), .efy-radius {border-radius: var(---radius)}
 /*o*/ [efy_timer], [efy_clock], [efy_alert], .efy-radius-o {border-radius: var(---radius-o)}
 /*x*/ mark, kbd, [type=checkbox], [type=radio], [efy_outline] a:focus, .efy-radius-x {border-radius: var(---radius-x)}
-/*xx*/ [type=radio]:checked:after, .efy-radius-xx {border-radius: var(---radius-xx)}
+/*xx*/ .efy-radius-xx {border-radius: var(---radius-xx)}
+/*xxx*/ [type=radio]:checked:after, .efy-radius-xxx {border-radius: var(---radius-xxx)}
 
 /*Position: Relative*/ [type=checkbox], [type=radio], [efy_select] label {position: relative}
 /*Absolute*/ [efy_select] :is([type=checkbox], [type=radio], label [type=color]), [efy_select] :is([type=checkbox], [type=radio]):checked + label:after {position: absolute}
@@ -114,19 +146,24 @@ body {background: transparent!important}
 /*Width: 100%*/ img, video, iframe, hr, textarea, select, input, [efy_card] {width: 100%}
 /*Max-Width: 100%*/ pre, img, video, iframe, table {max-width: 100%}
 
-/*Cursor: Pointer*/ :is(button, [role=button], [type=submit], [type=reset], [type=button]):focus, :is(button, [type=reset], [type=button], [type=submit]):enabled:hover, [role=button]:not([aria-disabled=true]):hover, summary, [type=range], [type=file], [efy_sidebar_btn], [efy_select] label, [efy_tab] + label {cursor: pointer}
+/*Cursor: Pointer*/ :is(button, [role=button], [type=submit], [type=reset], [type=button]):focus, :is(button, [type=reset], [type=button], [type=submit]):enabled:hover, [role=button]:not([aria-disabled=true]):hover, summary, [type=range], [type=file], [efy_sidebar_btn], [efy_select] label, [efy_tab] + label, [efy_alert] {cursor: pointer}
 /*Help*/ abbr {cursor: help}
 /*Normal*/ [tabindex='-1'] {cursor: default!important}
 /*None*/ [efy_cursor_none] *, [efy_cursor_custom], [efy_cursor_custom] * {cursor: none!important}
-/*Custom*/ [efy_cursor_custom] [efy_cursor] { height: 16rem; width: 16rem; margin-left: -8rem; margin-top: -8rem; position: absolute; background: var(---color); border-radius: var(---radius-x); pointer-events: none; box-shadow: 0 0 5rem #0003; z-index: 999999!important}
+/*Custom*/ [efy_cursor_custom] [efy_cursor] {
+    height: 16rem; width: 16rem; margin-left: -8rem; margin-top: -8rem;
+    position: absolute; background: var(---accent);
+    border-radius: var(---radius-x); pointer-events: none;
+    box-shadow: 0 0 5rem #0003; z-index: 999999!important;
+}
 /*Pointer Events: None*/ [efy_icon], [efy_alert] *, a > button, .efy_about p {pointer-events: none}
 
 /*Disabled*/ :is(input, textarea, select):disabled, [role=button][aria-disabled=true], :is([type=submit], [type=reset], [type=button], [type=checkbox], [type=radio], button, select)[disabled] {filter: saturate(0) brightness(.7); opacity: 1; cursor: not-allowed}
 
 /*Line-Height: 30rem*/ mark, kbd {line-height: 30rem}
 
-/*Padding1*/ button, [role=button], [type=submit], [type=reset], [type=button], summary, blockquote, pre, [efy_select] label, [efy_tabs] :is([efy_tab], [efy_tab] + label), .efy_padding {padding: var(---padding)}
-/*Padding2*/ kbd, .efy_padding2 {padding: var(---padding2)}
+/*Padding*/ button, [role=button], [type=submit], [type=reset], [type=button], summary, blockquote, pre, [efy_select] label, [efy_tabs] :is([efy_tab], [efy_tab] + label), .efy_padding {padding: var(---padding)}
+/*Padding-X*/ kbd, .efy_padding_x {padding: var(---padding-x)}
 /*Gap*/ .efy_gap {gap: var(---gap)}
 /*Gap 0*/ .efy_gap-x {gap: var(---gap-x)}
 
@@ -160,13 +197,13 @@ body:not([efy_animations*=off]) {interpolate-size: allow-keywords}
 /*Convergent body*/ * {margin: 0; padding: 0; box-sizing: border-box}
 html {
     :is(.efy_3d_bg, .efy_3d_front, .efy_3d_back) {
-        position: fixed; inset: 0; z-index: -1; object-fit: cover; width: 100vw; height: var(---100vh);
+        position: fixed; inset: 0; z-index: -1; object-fit: cover; width: 100vw; height: 100svh;
         border-radius: 0!important; background-position: var(---bg_x) var(---bg_y)!important;
         background-size: var(---bg_size); pointer-events: none;
     }
     .efy_3d_front {z-index: 9998} html .efy_3d_back {z-index: -1}
 }
-body {width: 100vw; padding: var(---body_padding); line-height: 1.5; min-height: var(---100vh);
+body {width: 100vw; padding: 0; line-height: 1.5; min-height: 100svh;
     max-width: var(---body_width); overflow: overlay; margin-left: 0;
     transition: background var(---anim_0_3), color var(---anim_0_3), width var(---anim_0_3);
     scroll-behavior: smooth; -webkit-tap-highlight-color: transparent;
@@ -188,8 +225,6 @@ header {text-align: center; padding: 0  8rem; grid-column: 1 / -1;
         a:last-child {margin-right: 0}
 }}
 
-[efy_content=menu] {padding: 0 var(---gap)!important}
-
 table {border-collapse: collapse; margin: 15rem 0; overflow: auto; width: fit-content;
     caption {margin-bottom: 8rem}
     td, th {text-align: left; padding: 8rem}
@@ -203,11 +238,11 @@ select {background-image: linear-gradient(45deg, transparent 49%, var(---text) 5
 option:not(option:checked), optgroup {background: var(---bg)}
 select[multiple] {background-image: none !important;
     option:not(option:checked), optgroup {background: transparent}
-    option {padding: var(---padding2); margin-top: 5rem; border-radius: var(---radius-x)}
+    option {padding: var(---padding-x); margin-top: 5rem; border-radius: var(---radius-x)}
 }
 
-/*Checkbox & Radio*/ [type=checkbox], [type=radio] {---size: calc(24rem + var(---border_size));
-    width: var(---size); height: var(---size); padding: calc(7rem - var(---border_size)); vertical-align: bottom; margin-bottom: 0; display: inline-flex; align-items: center; place-content: center
+/*Checkbox & Radio*/ [type=checkbox], [type=radio] {---size: calc(24rem + var(---border-size));
+    width: var(---size); height: var(---size); padding: calc(7rem - var(---border-size)); vertical-align: bottom; margin-bottom: 0; display: inline-flex; align-items: center; place-content: center
 }
 [type=radio]:checked:after {width: 100%; aspect-ratio: 1; background: var(---bg)}
 
@@ -233,9 +268,10 @@ pre {overflow: auto}
     input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {appearance: none; margin: 0}
 }
 
-/*Color Picker*/ [efy_color] {display: flex; flex-direction: column; padding: 0;
+/*Color Picker*/ [efy_color] {
+    display: flex; flex-direction: column; padding: 0;
     [efy_content] {padding: calc(var(---gap) - 5rem) var(---gap);
-        ---bs: 0 0 3rem oklch(0% 0 0 / .5), inset 0 0 0 calc(1.5rem + var(---border_size)) var(---bg_base), inset 0 0 6rem oklch(0% 0 0 / .5);
+        ---bs: 0 0 3rem oklch(0% 0 0 / .5), inset 0 0 0 calc(1.5rem + var(---border-size)) var(---base), inset 0 0 6rem oklch(0% 0 0 / .5);
         .hue {background: linear-gradient(to right in oklch longer hue, oklch(70% .3 0) 0%, oklch(70% .3 0) 100%) !important}
         [type=range]:not(.x, .y, .blur, .spread)::-webkit-slider-thumb {background: transparent; box-shadow: var(---bs) !important; border: 0}
         [type=range]:not(.x, .y, .blur, .spread)::-moz-range-thumb {background: transparent; box-shadow: var(---bs) !important; border: 0}
@@ -245,11 +281,13 @@ pre {overflow: auto}
             &, i {margin: 0!important}
             &:before, &:after {display: none}
         }
-        [efy_tab] + label:not([for=efy_color_bg]) {-webkit-text-fill-color: var(---bg)!important}
-        [for=efy_color_bg] {background: var(---bg)!important; -webkit-text-fill-color: var(---text)!important}
-        [for=efy_color_text] {background: var(---text)!important}
-        [for=efy_color_button] {background: oklch(var(---color_button))!important}
-        [for=efy_color_border] {background: oklch(var(---color_border)) !important}
+        [efy_tab] + label:not([for=efy_color_bg], [for=efy_color_text], [for=efy_color_border_color], [for=efy_color_accent_text], [for=efy_color_accent_text_x], [for=efy_color_card]) {-webkit-text-fill-color: var(---bg)!important}
+        [for=efy_color_bg] {-webkit-text-fill-color: oklch(from var(---bg) calc(1 - l) c h)!important}
+        [for=efy_color_text] {-webkit-text-fill-color: oklch(from var(---text) calc(1 - l) c h)!important}
+        [for=efy_color_border_color] {-webkit-text-fill-color: oklch(from var(---border-color) calc(1 - l) c h / 1)!important}
+        [for=efy_color_accent_text] {-webkit-text-fill-color: oklch(from var(---accent-text) calc(1 - l) c h)!important}
+        [for=efy_color_accent_text_x] {-webkit-text-fill-color: oklch(from var(---accent-text-x) calc(1 - l) c h)!important}
+        [for=efy_color_card] {background: oklch(var(---card))!important; -webkit-text-fill-color: oklch(from var(---card) calc(1 - l) c h / 1)!important}
         .color_add, .color_remove, .efy_copy, .efy_paste {width: var(---size)}
         [efy_tab]:not([efy_active]) + label {box-shadow: none}
         [efy_tab][efy_active] + label {box-shadow: inset 0 0 0 3rem var(---text); border: none}
@@ -258,18 +296,31 @@ pre {overflow: auto}
         .color_add i:before {font-size: 14rem}
     }
     [efy_range_text=Angle] {margin-top: 10rem}
+    .quick_colors {
+        .title {margin: 0 0 10rem 0}
+        #quick_colors {
+            display: flex; flex-wrap: wrap; gap: var(---gap-x); margin-bottom: 10rem;
+            label {
+                max-width: var(---size-x); height: var(---size-x); margin: 0;
+                width: calc(100% / 8 - var(---gap-x)); flex-grow: 1;
+                &:before, &:after {display: none}
+            }
+        }
+    }
 }
-#efy_colors {padding: var(---gap) 0;
-    > div:not(.efy_shadows, .efy_hr_div), .efy_shadows_button, .efy_shadows_card {padding: 0 var(---gap)}
+html #efy_gradient label {-webkit-text-fill-color: var(---bg)!important}
+#efy_colors, #efy_layout {
+    > div:not(.efy_shadows, .efy_hr_div, .efy_p0), .efy_shadows_accent, .efy_shadows_accent_x, .efy_shadows_card {padding: 0 var(---gap)}
     .efy_hr_div {padding: 0 0 0 var(---gap)}
     [efy_range_text="Angle"] {display: flex; flex-wrap: wrap; row-gap: 5rem;
-        .efy_color_angle_input {width: 100%; margin: 0}
+        .efy_accent_angle_input, .efy_accentx_angle_input {width: 100%; margin: 0}
     }
     #efy_gradient, .efy_custom_colors {margin-bottom: 5rem;
         [for*=status] {display: flex; margin: 0 0 7rem 0; width: fit-content; align-items: center; place-content: center}
     }
     .efy_shadows {display: flex; flex-direction: column; gap: 5rem}
 }
+#efy_colors {padding: 0 0 var(---gap) 0}
 
 /*Color input*/ [type=color] {&, &:focus {background: transparent; width: var(---size); height: var(---size); padding: 0}}
 ::-webkit-color-swatch-wrapper {background: transparent; width: 100%; height: 100%; padding: 0}
@@ -277,23 +328,23 @@ pre {overflow: auto}
 ::-moz-color-swatch {border-radius: var(---radius); border: var(---border)!important}
 
 /*Range input*/
-[type=range] {appearance:none; height: var(---size0); padding: 0; background: var(---color_trans)}
-::-moz-range-thumb {background: var(---color); border: var(---border); border-radius: var(---radius); height: var(---size0); width: var(---size0)}
+[type=range] {appearance:none; height: var(---size-x); padding: 0; background: var(---accent-x)}
+::-moz-range-thumb {background: var(---accent); border: var(---border); border-radius: var(---radius); height: var(---size-x); width: var(---size-x)}
 ::-moz-range-track {background: transparent}
 ::-webkit-slider-thumb {
-    appearance: none; width: var(---size0); height: var(---size0); border-radius: var(---radius);
-    background: var(---color); border: var(---border);
+    appearance: none; width: var(---size-x); height: var(---size-x); border-radius: var(---radius);
+    background: var(---accent); border: var(---border);
 }
 ::-webkit-slider-runnable-track {background: transparent}
 
-::file-selector-button {background: var(---color); color: var(---bg); border: var(---border); border-radius: var(---radius); padding: var(---padding); font-weight: bold; cursor: pointer; font-family: var(---font_family)!important; font-size: 16rem}
+::file-selector-button {background: var(---accent); color: var(---bg); border: var(---border); border-radius: var(---radius); padding: var(---padding); font-weight: bold; cursor: pointer; font-family: var(---font_family)!important; font-size: 16rem}
 ::-webkit-inner-spin-button {appearance: none; display: none}
 
-progress, meter {height: 15rem; border: 0; background: var(---color_trans); border-radius: var(---radius-x); border: 0}
-::-webkit-progress-bar, ::-webkit-meter-bar {height: 15rem; background: var(---color_trans)}
-::-webkit-progress-value, ::-webkit-meter-optimum-value {background: var(---color)}
+progress, meter {height: 15rem; border: 0; background: var(---accent-x); border-radius: var(---radius-x); border: 0}
+::-webkit-progress-bar, ::-webkit-meter-bar {height: 15rem; background: var(---accent-x)}
+::-webkit-progress-value, ::-webkit-meter-optimum-value {background: var(---accent)}
 ::-webkit-progress-bar, ::-webkit-meter-bar, ::-webkit-progress-value, ::-webkit-meter-optimum-value {border-radius: var(---radius-x); border: 0}
-::-moz-progress-bar, ::-moz-meter-bar {height: 15rem; background: var(---color); border-radius: var(---radius-x); border: 0}
+::-moz-progress-bar, ::-moz-meter-bar {height: 15rem; background: var(---accent); border-radius: var(---radius-x); border: 0}
 
 /*Audio & Video*/ audio::-webkit-media-controls-enclosure {background: var(---card); border-radius: var(---radius); border: var(---border)}
 ::-internal-media-controls-overflow-menu-list, ::-webkit-internal-media-controls-overflow-menu-list-item {appearance: none; background: var(---bg); border-radius: var(---radius)!important; border: var(---border)}
@@ -301,6 +352,14 @@ progress, meter {height: 15rem; border: 0; background: var(---color_trans); bord
 /*Background Origin*/ progress, meter, [type=range], [efy_cursor_custom] [efy_cursor], ::file-selector-button {background-clip: border-box; background-origin: border-box}
 ::-webkit-color-swatch, ::-webkit-slider-thumb, ::-webkit-progress-bar, ::-webkit-meter-bar, ::-webkit-progress-value, ::-webkit-meter-optimum-value {background-clip: border-box; background-origin: border-box}
 ::-moz-color-swatch, ::-moz-range-thumb, ::-moz-progress-bar , ::-moz-meter-bar {background-clip: border-box; background-origin: border-box}
+
+.efy_accent_duo {
+    ---max: max(1.5rem, var(---border-size));
+    ::-webkit-slider-thumb {box-shadow: 0 0 0 var(---max) var(---bg); border: 0}
+    ::-moz-range-thumb {box-shadow: 0 0 0 var(---max) var(---bg); border: 0}
+    ::-webkit-progress-value, ::-webkit-meter-optimum-value {box-shadow: max(2rem, var(---border-size)) 0 0 var(---bg)}
+    ::-moz-progress-bar, ::-moz-meter-bar {box-shadow: max(2rem, var(---border-size)) 0 0 var(---bg)}
+}
 
 /*Details*/ details, summary {list-style: none; position: relative}
 details {
@@ -310,7 +369,7 @@ details {
     details details:not([efy_help]) > summary:before {right: -6rem}
     summary {display: flex; align-items: center}
     &:not([efy_help]) > summary {
-        border: 0; border-bottom: var(---border_size) solid transparent; border-radius: 0;
+        border: 0; border-bottom: var(---border-size) solid transparent; border-radius: 0;
     }
 }
 details[open] {
@@ -326,23 +385,48 @@ summary::-webkit-details-marker {display: none}
 /*Help Box*/ [efy_help] {
     background: transparent; border: 0; margin: 10rem 0; height: 24rem;
     summary {pointer-events: none; margin-bottom: 0; padding: 0;
-        &:after {margin-left: 8rem; opacity: .5; pointer-events: all}
+        &:after {
+            margin-left: 8rem; opacity: .5; pointer-events: all;
+            transition: transform calc(var(---animation) * .3s);
+        }
+        &:after:hover, &:is([efy_help][open] &):after {
+            opacity: 1; background: var(---accent);
+            background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        &:after:hover {transform: scale(1.25)}
     }
     &[open] {
         padding: 0!important;
-        > div {padding: 0 10rem 0 0!important}
+        > div {padding: 5rem 10rem 0 0!important; white-space: pre-wrap}
     }
 }
 
 /*Select Menu*/ [efy_select] {
-    label:not([efy_upload]):before {width: 16rem; height: 16rem; margin-right: 8rem; margin-top: -.2rem; position: relative; border-radius: calc(var(---radius) / 1.5); border: 2.5rem solid transparent; background: var(---color) border-box; -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0); -webkit-mask-composite: source-out; mask-composite: exclude}
-    [type=radio]:checked + label:after {background: var(---bg); width: 9.6rem; height: 9.6rem; top: 8rem; left: 5.6rem; margin: var(---padding); border-radius: calc(var(---radius) / 3)}
-    [type=checkbox]:checked + label:after {top: 13.2rem; left: 16.5rem; font-family: 'efy_icons'; font-size: 12rem}
+    label:not([efy_upload]):before {
+        width: 16rem; height: 16rem; margin-right: 8rem; margin-top: -.2rem;
+        position: relative; border-radius: var(---radius-xx); border: 2.5rem solid transparent;
+        background: var(---accent) border-box;
+        mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+        mask-composite: exclude;
+    }
+    [type=radio]:checked + label:after {
+        background: var(---bg); width: 9.6rem; height: 9.6rem;
+        top: 8rem; left: 5.6rem; margin: var(---padding); border-radius: var(---radius-xxx);
+    }
+    [type=checkbox]:checked + label:after {
+        top: 13.2rem; left: 16.5rem; font-family: 'efy_icons'; font-size: 12rem;
+    }
     input:checked + label:before {border-color: var(---bg); background: transparent}
-    :is([type=checkbox], [type=radio], label [type=color]) {opacity:0}
-    p, button, label:not([efy_tabs] [efy_tab] + label, :is([efy_content=mode], .efy_img_previews) label, [efy_select*="margin0"] label), .efy_about a, [type=file] {margin: calc(var(---gap-x) / 2) var(---gap-x) calc(var(---gap-x) / 2) 0}
+    :is([type=checkbox], [type=radio], label [type=color]) {opacity:0; pointer-events: none}
+    p, button, label:not([efy_tabs] [efy_tab] + label, :is([efy_content=mode], .efy_img_previews) label, [efy_select*="margin0"] label), .efy_about a, [type=file] {
+        margin: calc(var(---gap-x) / 2) var(---gap-x) calc(var(---gap-x) / 2) 0;
+    }
     label:before, input:checked + label:after {vertical-align: middle; display: inline-flex}
 }
+.efy_accent_duo [efy_select] label:not([efy_upload]):before {background: linear-gradient(var(---bg), var(---bg)) border-box}
+[efy_select*="radio_hide"] :is([type=radio]:before, [type=radio]:after),
+[efy_select*="checkbox_hide"] :is([type=checkbox]:before, [type=checkbox]:after)
+{display: none!important}
 
 /*Upload Input*/ [efy_upload] {position: relative; width: fit-content; font-weight: bold;
     > input {position: absolute; inset: 0; margin: 0; padding: 0; border: 0; opacity: 0}
@@ -366,7 +450,7 @@ summary::-webkit-details-marker {display: none}
 [efy_range_text*="Max Width"] {
     .efy_range_text_p {width: 5ch}
     [type=range] {margin: 0}
-    select {height: var(---size0); line-height: 1; width: auto}
+    select {height: var(---size-x); line-height: 1; width: auto}
     .efy_max_width_div {display: flex; gap: var(---gap-x); justify-content: space-between; margin-top: 5rem;
         * {margin: 0}
         [efy_number] {width: 100%}
@@ -388,14 +472,16 @@ summary::-webkit-details-marker {display: none}
 
 [efy_card], [efy_tabs] [efy_content] {border-radius: var(---radius); background: var(---card); border: var(---border)}
 
-[efy_tabs] [efy_content][efy_active], [efy_card], [efy_search_input] {transition: calc(var(---animation) * .1s) linear}
+[efy_tabs] [efy_content][efy_active], [efy_card], [efy_search] {transition: calc(var(---animation) * .1s) linear}
 
 /*Sidebar*/ .efy_sidebar {
-    background: var(---bg); padding: 0 /*var(---gap) calc(var(---gap) - 2rem) var(---gap) var(---gap)*/;
-    width: 100vw; max-width: var(---sidebar_width); height: var(---100vh); z-index: 9999; position: fixed!important;
+    background: var(---bg); padding: 0;
+    width: 100vw; max-width: var(---sidebar_width); height: 100svh; z-index: 9999; position: fixed!important;
     right: var(---sidebar_width_n); top: 0;
     transition: all calc(var(---animation) * .3s); overflow-y: auto;
-    border-radius: var(---radius-o) 0 0 var(---radius-o)!important;
+    border-radius: var(---radius-o)!important;
+    border-top-right-radius: 0!important;
+    border-bottom-right-radius: 0!important;
     &:not([efy_sidebar*=on] .efy_sidebar) * {display: none}
     details:not(.efy_sidebar details details) {
         margin-bottom: 0; border-radius: 0; background: none; box-shadow: none !important;
@@ -410,28 +496,21 @@ summary::-webkit-details-marker {display: none}
         > p {margin: 0}
     }
     label:not([type=checkbox] + label) { &:before, &:after {display: none}}
-    [efy_search_input] {width: calc(100% - var(---gap-o)); margin: 0 var(---gap) var(---gap) var(---gap)}
-    [efy_content=mode] {
-        padding: 0; border: 0; background: unset;
-        .current_mode {background: var(---card); padding-bottom: var(---gap); border: var(---border); border-radius: var(---radius);
-            &:has(#efy_mode_default:checked) {padding: 0;
-                .efy_mode_div {padding: var(---gap-x)}
-            }
-        }
+    [efy_search] {width: calc(100% - var(---gap-o)); margin: 0 var(---gap) var(---gap) var(---gap)}
+    [efy_content=colors] {
         hr {margin: 0}
-        .efy_mode_div, .efy_mode_type_div {display: flex; flex-wrap: wrap; gap: var(---gap-x);
+        .efy_mode_div {
+            display: flex; flex-wrap: wrap; padding: 0 var(---gap);
+            /*padding: 0!important; border: 0; background: unset*/
             label {margin: 0}
         }
-        .efy_mode_div {padding: var(---gap) var(---gap) 0 var(---gap)}
-        .efy_mode_type_div {padding: 0 var(---gap)}
-        .efy_mode_type_div {
-            details {width: calc(50% - var(---gap-xx)); margin: 0;
-                &[open] {width: 100%}
-            }
+        [efy_help] {
+            margin: 10rem 0;
+            summary {font-weight: normal}
         }
-        &:has(.system_light:not(.efy_hide_i)) .efy_mode_type_div {margin-top: var(---gap)}
-        [efy_help=type], [efy_help=images] {margin: 10rem 0 10rem var(---gap)}
-        :is(.system_light, .system_dark) > div {display: flex; flex-wrap: wrap; gap: var(---gap-x)}
+        .efy_custom_colors :is(
+            [efy_content="1"], [efy_content="2"], [efy_content="5"], [efy_content="6"]
+        ) [efy_range_text="alpha"] {display: none}
     }
     .efy_sidebar_top_buttons {
         gap: 0; background: var(---card); box-shadow: var(---shadow_card); border: var(---border);
@@ -442,34 +521,83 @@ summary::-webkit-details-marker {display: none}
             &:not(:first-of-type) {margin-left: -10rem}
         }
     }
-    #efy_themes {margin: var(---gap) 0 0 0;
+    #efy_themes {
+        padding: 0; border: 0; background: none; backdrop-filter: none!important; border-radius: 0;
         :is(button, input, label, .name) {margin: 0}
         .name {width: 100%}
-        .themes, .buttons {padding: var(---gap); gap: var(---gap-x)}
-        .themes {display: flex; flex-wrap: wrap; width: 100%;
+        .buttons {padding: var(---gap); gap: var(---gap-x)}
+        .themes_actions, .themes [efy_theme] {backdrop-filter: blur(6px)}
+        .themes_actions {
+            display: flex; flex-direction: column; border: var(---border); background: var(---card);
+            margin-bottom: 15rem; border-radius: var(---radius);
+            .actions {
+                display: flex; flex-wrap: wrap; padding: var(---gap-x); gap: var(---gap-x);
+                [type="checkbox"] {pointer-events: none}
+                label:before, label:after {display: none!important}
+                :is(.add, .import) i:before {background: var(---accent-duo); background-clip: text}
+                label {flex: 1}
+            }
+            p {line-height: 1; padding: var(---gap); border-top: var(---border); margin: 0; width: 100%}
+        }
+        .themes {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(160rem, 1fr));
+            gap: var(---gap); width: 100%;
             [type="checkbox"] {pointer-events: none}
             label:before, label:after {display: none!important}
-            label i:before {background: var(---color); background-clip: text}
-        }
-        .themes {display: flex; flex-wrap: wrap;
-            [data-id] {
-                width: fit-content; min-width: unset; height: var(---size); background-clip: text, border-box!important; background-origin: border-box!important;
-                background: var(---color), var(---color_trans); -webkit-text-fill-color: transparent; font-weight: bold;
-                &[contenteditable=true] {border: var(---border_size) dashed var(---text-xx); text-decoration: none;
-                    background: var(---card); -webkit-text-fill-color: var(---text); color: var(---text);
-                    &:focus {border: var(---border); box-shadow: 0 0 0 var(---border_size) var(---text)}
+            label i:before {background: var(---accent); background-clip: text}
+            [efy_theme] {
+                display: flex; flex-direction: column; align-items: center; gap: var(---gap-x);
+                background: var(---card); transition: all var(---anim_0_3);
+                width: 100%; height: 220rem; overflow: hidden;
+                border: var(---border); border-radius: var(---radius);
+                .title {
+                    padding: var(---padding-x); line-height: 1; font-size: 15rem; text-align: center;
+                    transition: all var(---anim_0_3); width: calc(100% - var(---gap));
+                    border-radius: var(---radius-x);
+                    &:not(:hover) {background: transparent; border-color: transparent}
+                }
+                [efy_preview] {
+                    border-radius: var(---radius); min-height: 180rem; width: 100%; cursor: pointer;
+                    background-size: 100%; background-position: 50% 50%; background-color: var(---card);
+                    transition:
+                        background-size calc(var(---animation) * .2s),
+                        background-position calc(var(---animation) * .2s),
+                        transform var(---anim_0_3), min-height var(---anim_0_3), width var(---anim_0_3);
+                }
+                .actions {
+                    display: flex; flex-wrap: wrap; padding: var(---gap-x); gap: var(---gap-x);
+                    place-content: center; transition: all var(---anim_0_3);
+                    [type="checkbox"] {pointer-events: none}
+                    label:before, label:after {display: none!important}
+                    .add i:before {background: var(---accent-duo); background-clip: text}
+                    label {flex: 1}
+                }
+                &:not(:hover) {
+                    .actions {
+                        pointer-events: none; opacity: 0; transform: scale(0); filter: blur(50px); position: absolute;
+                        bottom: 0;
+                    }
+                    .title:not([efy_theme="default"] .title) {margin-top: -5rem}
+                }
+                &:hover:not([efy_theme="default"]) {
+                    padding-top: var(---gap-x);
+                    [efy_preview] {min-height: 100rem; width: calc(100% - 2 * var(---gap-x))}
+                    .actions {margin-top: calc(-1 * var(---gap-xx))}
                 }
             }
         }
-        p {line-height: 1; margin: var(---gap)}
     }
 }
 
 .efy_sidebar_back {
-    width: 100vw; max-width: var(---sidebar_width); height: var(---100vh); z-index: 9998; position: fixed!important;
+    width: 100vw; max-width: var(---sidebar_width); height: 100svh; z-index: 9998; position: fixed!important;
     right: var(---sidebar_width_n); top: 0;
     transition: all calc(var(---animation) * .3s);
-    &, & > .efy-card-back {border-radius: var(---radius-o) 0 0 var(---radius-o)!important}
+    &, & > .efy-card-back {
+        border-radius: var(---radius-o)!important;
+        border-top-right-radius: 0!important;
+        border-bottom-right-radius: 0!important;
+    }
 }
 
 [efy_sidebar*=on] {
@@ -481,16 +609,12 @@ summary::-webkit-details-marker {display: none}
 [efy_sidebar*=left] :is(.efy_sidebar, .efy_sidebar_back) {right: unset; left: var(---sidebar_width_n); border-radius: 0 var(---radius-o) var(---radius-o) 0}
 [efy_sidebar*=on_left] {
     :is(body, .efy_sidebar_width) {margin-left: var(---sidebar_width); margin-right: 0}
-    .efy_sidebar, .efy_sidebar_back {left: 0}
+    .efy_sidebar, .efy_sidebar_back {left: var(---sidebar_width)}
 }
 
 [efy_sidebar_btn*=close] {margin: 0 0 15rem 0; height: fit-content}
 [efy_sidebar_btn*=absolute] {z-index: 9999; font-size: 20rem; padding: 4rem 10rem; position: fixed; text-align: center; top: 15rem; right: 15rem}
 
-
-.trans_window_div {width: fit-content; display: inline-flex; flex-wrap: wrap; gap: var(---gap-x);
-    label {margin: 0}
-}
 .efy_flex {display: flex; gap: var(---gap); flex-wrap: wrap}
 .efy_hr_div {display: flex; align-items: center; place-content: center;
     details {width: 100%; margin-right: 0;}
@@ -516,38 +640,106 @@ summary::-webkit-details-marker {display: none}
     i {font-size: 16rem; margin: 0 -2rem 0 0; display: inline-block}
 }
 
-/*Button Align*/ :is(#efy_btn_align div, #efy_notify_align) {display: grid; gap: var(---gap); grid-template-columns: 1fr 1fr 1fr; width: fit-content;
-    input {position: relative; opacity: 1}
+#efy_layout {
+    padding: var(---gap-x) 0 var(---gap) 0;
+    [efy_range_text=menu_width] {margin-top: 10rem}
+    .efy_hr_div {
+        margin: 5rem 0;
+        &:first-of-type {margin-top: -5px}
+    }
 }
-#efy_btn_align {
-    div {margin-bottom: var(---gap-x)}
-    #middle_middle {opacity: 0!important; pointer-events: none}
+#efy_notify_status {
+    display: flex; flex-wrap: wrap; gap: var(---gap-x);
+    label {margin: 0;
+        &:before, &:after {display: none}
+    }
 }
-[efy_btn_align*=left] {left: 15rem; right: unset}
-[efy_btn_align*=right] {right: 15rem; left:unset}
-[efy_btn_align*=top] {top: 15rem; bottom: unset}
-[efy_btn_align*=bottom] {bottom: 15rem; top: unset}
-[efy_btn_align*=_middle] {top: 50vh}
-[efy_btn_align*=middle_] {left: calc(50vw - 20rem); right: unset}
+
+#efy_notify_align {
+    display: grid; gap: var(---gap); grid-template-columns: 1fr 1fr 1fr;
+    width: 100%; height: 200rem; background: var(---card); border: var(---border);
+    border-radius: var(---radius); align-items: center;
+    place-content: space-between; padding: var(---gap);
+    input {
+        position: relative; opacity: 1; width: 100%; max-width: 90rem; height: 30rem;
+        pointer-events: all; cursor: pointer; border-radius: var(---radius-xx);
+        &:not(:checked) {background: var(---card)}
+        &:hover {background: var(---card-o)}
+        &:checked:after {
+            content: "\e914" !important; background: none;
+            width: fit-content; border-radius: 0; font-family: 'efy_icons';
+        }
+    }
+    #notify_left_top, #notify_left_bottom {place-self: start}
+    #notify_center_top, #notify_center_bottom {place-self: center}
+    #notify_right_top, #notify_right_bottom {place-self: end}
+}
+#efy_sidebar_align > div {
+    display: grid; gap: var(---gap); grid-template-columns: 1fr 1fr;
+    * {margin: 0}
+    label {
+        display: flex; flex-wrap: wrap; padding: 0; overflow: hidden;
+        div {
+            display: flex; align-items: center; place-content: center;
+            height: 95rem; width: 30%;
+            background: repeating-linear-gradient(
+                0deg, var(---border-color) 0%,
+                var(---border-color) var(---border-size),
+                var(---card) 0%, var(---card) 16rem
+            );
+        }
+        p {
+            width: 70%; display: flex; align-items: center; place-content: center; gap: 8rem;
+            height: fit-content; line-height: 1; font-weight: normal;
+        }
+        &:not(input:checked + label) {
+            background: var(---card)!important; -webkit-text-fill-color: var(---text);
+            &:hover {background: var(---card-o)!important}
+            i {display: none}
+        }
+        &:is(input:checked + label) {
+            background: var(---accent-duo);
+            -webkit-text-fill-color: transparent;
+            background-clip: text, border-box;
+            background-origin: border-box;
+            div {background: repeating-linear-gradient(
+                0deg, var(---border-color-invert) 0%,
+                var(---border-color-invert) var(---border-size),
+                var(---card) 0%, var(---card) 16rem
+            ), var(---accent);
+                background-origin: border-box;
+            }
+        }
+    }
+    [for=efy_sidebar_align_left] {
+        div {border-right: var(---border)}
+    }
+    [for=efy_sidebar_align_right] {flex-direction: row-reverse;
+        div {border-left: var(---border)}
+    }
+}
 
 
-#efy_images_bg:not([efy_mode*=trans] #efy_images_bg) {display: none}
+#efy_images_bg {
+    padding: 0!important;
+    &:not([efy_mode=trans] &) {display: none}
+}
 .efy_img_previews {display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: var(---gap);
     &:not(#efy_vfilters .efy_img_previews) {padding: 0 var(---gap)}
     [efy_bg_nr] {background-origin: border-box!important}
-    &.efy_remove [efy_bg_nr], [efy_bg_nr]:is([efy_active], :focus) {box-shadow: inset 0 0 0 var(---border_size) var(---text)!important; border-color: var(---text)!important; z-index: 2}
+    &.efy_remove [efy_bg_nr], [efy_bg_nr]:is([efy_active], :focus) {box-shadow: inset 0 0 0 var(---border-size) var(---text)!important; border-color: var(---text)!important; z-index: 2}
     :is(label, button) {margin: 0; background-origin: border-box; background-clip: border-box; aspect-ratio: 1; cursor: pointer; position: relative; box-shadow: inset 0 0 20rem #0003, 0 0 20rem #0003; background-size: cover!important; background-repeat: no-repeat!important; background-position: center!important; border-radius: var(---radius); width: 100%}
     :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back], [for=idb_addimg_button], [for=idb_remove_toggle], .efy_images_reset) {padding: 0; display: flex; align-items: center; place-content: center; box-shadow: unset}
-    :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back], [for=idb_addimg_button]) {background-color: var(---color)!important;
+    :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back], [for=idb_addimg_button]) {background-color: var(---accent)!important;
          &:before {display: none}
          i:before {font-size: 20rem}
     }
     :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back], [for=idb_addimg_button], button) {width: 100%; height: 100%}
-    [efy_shadow*=button] :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back], [for=idb_addimg_button]) {box-shadow: var(---shadow_button)!important}
+    [efy_shadow*=accent] :is([for=idb_addimg_bg], [for=idb_addimg_front], [for=idb_addimg_back], [for=idb_addimg_button]) {box-shadow: var(---shadow_accent)!important}
     i {margin: 0}
     :is(.efy_images_reset, .idb_reset_front, .idb_reset_back, .idb_reset_button) i:before {font-size: 25rem}
     [for=idb_remove_toggle] {
-        &:not(#idb_remove_toggle:checked + label) {background: var(---color), var(---color_trans);
+        &:not(#idb_remove_toggle:checked + label) {background: var(---accent-duo);
         background-clip: text, border-box; background-origin: border-box; border: var(---border); -webkit-text-fill-color: transparent}
         &:before, &:after {display: none!important}
         i {font-size: 22rem}
@@ -569,7 +761,9 @@ summary::-webkit-details-marker {display: none}
 [efy_alerts*=right] {right: var(---gap); left: unset}
 [efy_alerts*=bottom] {bottom: var(---gap); top: unset}
 
-[efy_alert] {display: flex; flex-direction: column; box-shadow: 0 0 20px var(---text-x); background: var(---bg);
+[efy_alert] {
+    display: flex; flex-direction: column; box-shadow: 0 0 20px var(---text-x);
+    background: var(---bg);
     .nav, .info {padding: 10rem}
     .nav, .title {display: flex; align-items: center; gap: var(---gap-x)}
     .nav {place-content: space-between}
@@ -580,10 +774,14 @@ summary::-webkit-details-marker {display: none}
     .info {border-top: var(---border)}
     .remove_timer { display: flex; align-items: center; place-content: center; height: fit-content;
         > :is(button, div) {margin: 0; height: var(---size); min-width: var(---size)}
-        .time_left {display: flex; align-items: center; place-content: center; padding: 10rem; border-radius: var(---radius) 0 0 var(---radius);
-            font-weight: bold; border: var(---border); border-right: 0; background: var(---color), var(---color_trans);
+        .time_left {display: flex; align-items: center; place-content: center; padding: 10rem;
+            border-radius: var(---radius); border-top-right-radius: 0; border-bottom-right-radius: 0;
+            font-weight: bold; border: var(---border); border-right: 0; background: var(---accent-duo);
             background-clip: text, border-box; background-origin: border-box; -webkit-text-fill-color: transparent}
-        .remove:not(.efy_quick_notify_content .remove) {border-radius: 0 var(---radius) var(---radius) 0}
+        .remove:not(.efy_quick_notify_content .remove) {
+            border-radius: var(---radius);
+            border-top-left-radius: 0; border-bottom-left-radius: 0;
+        }
     }
     .answers {display: flex; gap: var(---gap-x);
         button {margin: 0;
@@ -597,11 +795,14 @@ summary::-webkit-details-marker {display: none}
 .efy_quick_notify_content {
     display: grid; gap: var(---gap); grid-template-columns: 1fr;
     width: calc(100% - var(---gap-o)); margin: 0 var(---gap);
-    [efy_alert] {background: var(---card); box-shadow: none; border-radius: var(---radius)}
+    [efy_alert] {
+        background: var(---card); box-shadow: none; border-radius: var(---radius);
+    }
 }
 
-/*Quick Shortcuts*/ .efy_square_btn, [efy_sidebar_btn=absolute], :is([efy_timer], [efy_color_picker] .copy_btn) button {
-    display: inline-flex; gap: 12rem; margin: 0; padding: 10rem; width: var(---size); height: var(---size); align-items: center; place-content: center;
+/*Quick Shortcuts*/ .efy_square_btn, :is([efy_timer], [efy_color_picker] .copy_btn) button {
+    display: inline-flex; gap: 12rem; margin: 0; padding: 10rem;
+    width: var(---size); height: var(---size); align-items: center; place-content: center;
     i {margin:0}
 }
 .efy_quick_shortcuts {
@@ -626,12 +827,17 @@ summary::-webkit-details-marker {display: none}
 }
 
 /*Translations*/ .efy_lang_text {display: inline; margin: 0!important; pointer-events: none!important; -webkit-text-fill-color: inherit; color: inherit}
-.efy_range_text_p {background: transparent; border-color: transparent!important; padding: 0 4rem; width: fit-content; border-radius: calc(var(---radius) / 1.5); margin: 0}
+.efy_range_text_p {
+    background: transparent; border-color: transparent!important;
+    padding: 0 4rem; width: fit-content;
+    border-radius: var(---radius-xx); margin: 0;
+    &:hover {background: var(---card); border: var(---border)}
+}
 
 /*Code*/ [efy_code] {position: relative; padding-top: calc(40rem + var(---gap-x)); white-space: pre-wrap;
     .efy_bar {position: absolute; top: 0; left: 0; width: 100%; padding: calc(var(---gap-x) / 1.5); display: flex; gap: calc(var(---gap-x) / 1.5); justify-content: space-between; border-bottom: var(---border);
         div {display: flex; gap: calc(var(---gap-x) / 1.5)}
-        button {margin: 0; padding: var(---padding2); border-radius: var(---radius-x)}
+        button {margin: 0; padding: var(---padding-x); border-radius: var(---radius-x)}
         :is(mark, button) {padding: 0 8rem; line-height: 1; display: flex; align-items: center; place-content: center; height: 28rem}
         :is(.efy_copy, .efy_fs) {width: 28rem}
         i {margin: 0 0 -1rem 0; font-size: 14rem}
@@ -735,22 +941,29 @@ i, :is([efy_timer] button, details > summary):before, [efy_help] summary:after, 
 :is([efy_icon=chevron_down], [efy_icon=arrow_down]):before {rotate: 90deg}
 :is([efy_icon=chevron_left], [efy_icon=arrow_left]):before {rotate: 180deg}
 
-html.svg_filters :is(.efy-glass, .efy_sidebar, [efy_card], details:not([efy_help])):not(.efy-glass-off, .efy_sidebar *) {
-    backdrop-filter: none !important;
-    position: relative;
-    &:before {z-index: 1; box-shadow: var(---shadow_card); pointer-events: none}
-}
-html.svg_filters details:not([efy_help], .efy-glass-off) {
-    &:not(.efy_sidebar *) {background: none!important}
-    &:not(.efy_sidebar > details, #efy_modules > details):before {background: var(---card)}
-}
-
-html.svg_filters :is(.efy-glass, .efy_sidebar, [efy_card], details:not([efy_help])):not(.efy-glass-off, .efy_sidebar *, [efy_lights] *) {
-    box-shadow: none!important;
+html.svg_filters {
+    :is(.efy-glass, .efy_sidebar, [efy_card], details:not([efy_help])):not(.efy-glass-off, .efy_sidebar *) {
+        backdrop-filter: none !important;
+        position: relative;
+        &:before {z-index: 1; pointer-events: none}
+    }
+    :is(.efy-glass, [efy_card], details:not([efy_help])):not(.efy-glass-off, .efy_sidebar *):before {
+        box-shadow: var(---shadow_card);
+    }
+    details:not([efy_help], .efy-glass-off) {
+        &:not(.efy_sidebar *) {background: none!important}
+        &:not(.efy_sidebar > details, #efy_modules > details):before {background: var(---card)}
+    }
+    :is(.efy-glass, .efy_sidebar, [efy_card], details:not([efy_help])):not(.efy-glass-off, .efy_sidebar *):before, .efy-card-back {
+        content: ''; position: absolute; inset: 0; width: 100%; height: 100%; border-radius: inherit;
+    }
 }
 .efy-card-back {z-index: -1; filter: url(#distortion_filter) url(#chromatic_abberation); backdrop-filter: contrast(1.2); pointer-events: none}
-html.svg_filters :is(.efy-glass, .efy_sidebar, [efy_card], details:not([efy_help])):not(.efy-glass-off, .efy_sidebar *):before, .efy-card-back {
-    content: ''; position: absolute; inset: 0; width: 100%; height: 100%; border-radius: inherit;
+html :is(
+    .efy-glass, .efy_sidebar:not([efy_sidebar*="on"] .efy_sidebar), .efy_shadows_off,
+    .efy_sidebar_back, .efy_sidebar:before, [efy_card], details:not([efy_help])
+):not(.efy-glass-off, .efy_sidebar *, [efy_lights] *, .efy_shadow_card, .efy_shadow_accent, .efy_shadow_accent_x, [efy_card]) {
+    box-shadow: none!important;
 }
 
 .efy_sidebar .efy_modules_menu_reload {
@@ -759,6 +972,11 @@ html.svg_filters :is(.efy-glass, .efy_sidebar, [efy_card], details:not([efy_help
 }
 #efy_modules_menu_div {
     display: flex; flex-direction: column; gap: var(---gap-x);
+    .efy_flex {
+        align-items: center; place-content: space-between;
+        button {padding: var(---padding-x); border-radius: var(---radius-x)}
+        p, button {margin: 0}
+    }
     .efy-module-label {
         display: flex !important; gap: 10rem; padding: var(---gap-x); align-items: center;
         place-content: start!important; line-height: 1; margin: 0;
@@ -777,11 +995,12 @@ html.svg_filters :is(.efy-glass, .efy_sidebar, [efy_card], details:not([efy_help
 }
 
 .efy_img_previews [efy_bg_nr] {
+    background: none;
     &[data-type=video]:before {
         content: "\e91f"; position: absolute; inset: 0; font-family: 'efy_icons'; font-size: 16rem;
         color: oklch(1 0 0); -webkit-text-fill-color: oklch(1 0 0); background: transparent;
         width: 100%; height: 100%; display: flex; align-items: center; place-content: center; margin-top: -6rem;
-        text-shadow: 0 0 5rem oklch(0 0 0); pointer-events: none;
+        text-shadow: 0 0 5rem oklch(0 0 0); pointer-events: none; border: 0;
     }
     .size {
         -webkit-text-fill-color: var(---text);
@@ -789,7 +1008,117 @@ html.svg_filters :is(.efy-glass, .efy_sidebar, [efy_card], details:not([efy_help
         position: absolute; bottom: 0; width: 100%; left: 0; border-radius: var(---radius);
         font-size: 13rem; text-shadow: 0 0 5rem black;
     }
+    .efy_preview {
+        z-index: -1; position: absolute; inset: 0; border-radius: inherit;
+        background-size: cover; background-position: center; background-repeat: no-repeat;
+        pointer-events: none;
+    }
 }
+
+#efy_radius_container {
+    margin-bottom: 8rem;
+}
+
+[efy_range_text="Radius"] {
+    line-height: 1; font-size: 0;
+    .efy_range_text_p {
+        position: absolute; top: var(---gap); right: var(---gap); text-align: end;
+    }
+}
+.efy_sidebar:not(:has(#efy_radius_corners:checked)) {
+    #efy_radius_corners_container {display: none}
+}
+.efy_sidebar:not(:has(#efy_radius_equal:checked)) {
+    #efy_radius_all_input {display: none}
+    [efy_range_text="Radius"] {display: none}
+}
+.efy_sidebar:not(:has(#efy_radius_custom_css:checked)) {
+    #efy_radius_custom_css_input {display: none}
+}
+.efy_sidebar:not(:has(#efy_radius_type:checked)) {
+    #efy_radius_types {display: none}
+}
+.efy_sidebar:has(#efy_radius_type:checked) {
+    #efy_radius_all_input, #efy_radius_corners_container,
+    #efy_radius_custom_css_input, [efy_range_text="Radius"] {display: none}
+}
+html [for="efy_radius_type"] {
+    &:not(input:checked + label) {
+        background: linear-gradient(transparent, transparent), linear-gradient(transparent, transparent)!important; border-color: transparent!important;
+        -webkit-text-fill-color: var(---text)!important;
+    }
+    display: flex; width: fit-content; gap: 6rem;
+    height: fit-content; padding: var(---padding-x); line-height: 1;
+    margin: 0 0 3rem -6rem!important; font-weight: normal;
+    &:before, &:after {display: none!important; pointer-events: none!important}
+    &:hover:not(input:checked + label) {background: var(---card)!important; border-color: var(---border_color);}
+    &:is(input:checked + label) i:before {
+        rotate: 90deg;
+    }
+    &:is(input:checked + label, &:hover) {margin: 0 0 3rem 0!important}
+    * {margin: 0}
+    &, *, i:before {transition: all calc(var(---animation) * .3s)}
+    p:first-of-type:after {content: ':'}
+    i {font-size: 12rem}
+}
+#efy_radius_types {
+    display: flex; gap: var(---gap-x); flex-wrap: wrap;
+    padding-bottom: 5rem; margin: 8rem 0;
+    label {
+        margin: 0; min-width: calc((100% / 3) - var(---gap-x) / 1.5);
+        &:before, &:after {display: none!important; pointer-events: none}
+    }
+}
+#efy_radius_corners_container {
+    display: grid; grid-template-columns: 1fr 1fr; gap: var(---gap);
+    border: var(---border); border-radius: var(---radius);
+    background: var(---card); padding: var(---gap-x) var(---gap);
+    margin-top: var(---gap-x); position: relative;
+    [type=range] {margin: 0}
+    [efy_range_text] {display: flex; gap: var(---gap-x); flex-direction: column}
+    [efy_range_text]:nth-child(1), [efy_range_text]:nth-child(2) {}
+    [efy_range_text]:nth-child(3), [efy_range_text]:nth-child(4) {flex-direction: column-reverse}
+    [efy_range_text]:nth-child(2), [efy_range_text]:nth-child(3) {
+        align-items: end;
+        .efy_range_text_p {text-align: end}
+    }
+    [efy_range_text]:nth-child(3) {order: 1}
+
+    [efy_range_text]:nth-child(1), [efy_range_text]:nth-child(4) {margin-left: -5rem;}
+    [efy_range_text]:nth-child(2), [efy_range_text]:nth-child(3) {margin-right: -5rem;}
+
+    [efy_corner] {
+        ---b: calc(-1 * var(---border-size));
+        position: absolute; width: var(---size); height: var(---size);
+        border-radius: var(---radius); pointer-events: none!important;
+        border: calc(var(---border-size) * 1.25) solid var(---text);
+    }
+    [efy_corner="1"] {top: var(---b); left: var(---b)}
+    [efy_corner="2"] {top: var(---b); right: var(---b)}
+    [efy_corner="3"] {bottom: var(---b); left: var(---b)}
+    [efy_corner="4"] {bottom: var(---b); right: var(---b)}
+
+    [efy_corner="1"], [efy_corner="2"] {border-bottom: 0}
+    [efy_corner="3"], [efy_corner="4"] {border-top: 0}
+    [efy_corner="1"], [efy_corner="3"] {border-right: 0}
+    [efy_corner="2"], [efy_corner="4"] {border-left: 0}
+
+    [efy_corner]:not([efy_corner="1"]) {border-top-left-radius: 0}
+    [efy_corner]:not([efy_corner="2"]) {border-top-right-radius: 0}
+    [efy_corner]:not([efy_corner="4"]) {border-bottom-right-radius: 0}
+    [efy_corner]:not([efy_corner="3"]) {border-bottom-left-radius: 0}
+}
+#efy_radius_custom_css_input {margin: 8rem 0 0 0}
 
 [efy-scrollbar=off] ::-webkit-scrollbar {display: none}
 [efy-scrollbar=auto] *:not(:hover, :active, :focus)::-webkit-scrollbar {display: none}
+
+html .efy_hide_pseudo {&:before, &:after {display: none!important; content: unset!important}}
+
+html [for=accent_duo_toggle] {
+    padding: 4rem 6rem; margin: 0!important; min-width: fit-content;
+    pointer-events: all!important; z-index: 99999;
+    border-radius: var(---radius-x); line-height: 1;
+}
+[efy_help=accent_gradient] {height: fit-content}
+[efy_help=accentx_gradient] summary:after {display: none!important}

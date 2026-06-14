@@ -1,5 +1,5 @@
-[efy_icon*=gamepad_] {margin: 0; height: calc(var(---size0)* 0.75); padding: 0 6rem; font-family: 'nunito'!important;
-    font-weight: bold; display: flex; align-items: center; place-content: center; min-width: calc(var(---size0) * 0.75);
+[efy_icon*=gamepad_] {margin: 0; height: calc(var(---size-x)* 0.75); padding: 0 6rem; font-family: 'nunito'!important;
+    font-weight: bold; display: flex; align-items: center; place-content: center; min-width: calc(var(---size-x) * 0.75);
 }
 [efy_icon=gamepad_a]:before {content: 'A'; font-size: 115%; font-weight: bold; height: 14rem}
 [efy_icon=gamepad_b]:before {content: 'B'; font-size: 115%; font-weight: bold; height: 13rem}
@@ -25,10 +25,10 @@
 [efy_icon=gamepad_stick_l], [efy_icon=gamepad_stick_r] {border-radius: 50%!important;
     &:before {font-size: 105%; font-weight: bold}
 }
-[efy_icon=gamepad_l], [efy_icon=gamepad_lb], [efy_icon=gamepad_l1], [efy_icon=gamepad_r], [efy_icon=gamepad_rb], [efy_icon=gamepad_r1] {border-radius: 50% 50% var(---radius-xx) var(---radius-xx)!important;
+[efy_icon=gamepad_l], [efy_icon=gamepad_lb], [efy_icon=gamepad_l1], [efy_icon=gamepad_r], [efy_icon=gamepad_rb], [efy_icon=gamepad_r1] {border-radius: 50% 50% var(---radius-xxx) var(---radius-xxx)!important;
     &:before {font-size: 105%; font-weight: bold}
 }
-[efy_icon=gamepad_zl], [efy_icon=gamepad_lt], [efy_icon=gamepad_l2], [efy_icon=gamepad_zr], [efy_icon=gamepad_rt], [efy_icon=gamepad_r2] {border-radius: var(---radius-xx) var(---radius-xx) 50% 50%!important;
+[efy_icon=gamepad_zl], [efy_icon=gamepad_lt], [efy_icon=gamepad_l2], [efy_icon=gamepad_zr], [efy_icon=gamepad_rt], [efy_icon=gamepad_r2] {border-radius: var(---radius-xxx) var(---radius-xxx) 50% 50%!important;
     &:before {font-size: 105%; font-weight: bold}
 }
 
@@ -66,7 +66,7 @@
     > div {display: flex; gap: var(---gap-o)}
     [gp_btn] {display: flex; gap: 8rem; align-items: center; place-content: center;
         p {display: flex; align-items: center; place-content: center; margin: 0; font-weight: bold}
-        i {height: calc(var(---size0) * 0.75); padding: 0 6rem; border-radius: var(---radius-x); font-size: 14rem;
+        i {height: calc(var(---size-x) * 0.75); padding: 0 6rem; border-radius: var(---radius-x); font-size: 14rem;
             background: var(---text); color: var(---bg);
         }
     }
@@ -74,7 +74,7 @@
     [efy_icon=gamepad_circle]:before {height: 20rem}
 }
 
-[efy_content=mappings] .map i {height: calc(var(---size0) * 0.75); padding: 0 6rem; border-radius: var(---radius-x); font-size: 14rem;
+[efy_content=mappings] .map i {height: calc(var(---size-x) * 0.75); padding: 0 6rem; border-radius: var(---radius-x); font-size: 14rem;
             background: var(---text); color: var(---bg);}
 
-body:has(.gamepads_bar) {&, & .efy_sidebar {height: calc(var(---100vh) - var(---size))}}
+body:has(.gamepads_bar) {&, & .efy_sidebar {height: calc(100svh - var(---size))}}

@@ -1,6 +1,6 @@
 let dom = [
   /*Body*/ ':is(a, button, input, select, textarea):not([disabled], [tabindex="-1"], .efy_hide_i, .efy_hide_i *, .efy_sidebar *, details *, [efy_content]:not([efy_active]) *, [efy_keyboard]:not([efy_kb] [efy_keyboard]) *), details[open] :is(a, button, input, select, textarea), summary:not(.efy_sidebar summary)',
-  /*Sidebar*/ '.efy_sidebar :is(:is([efy_about], #efy_quick, .efy_about_div, .efy_quick_notify_content) :is(a, button, input, select, textarea), [efy_search_input]):not([disabled], [tabindex="-1"], .efy_hide_i, .efy_hide_i *, [efy_content]:not([efy_active]) *), .efy_sidebar summary:not(.efy_sidebar details:not([open]) details summary), .efy_sidebar details[open] :is(a, button, input, select, textarea, summary):not(details:not([open]) *, [disabled], [tabindex="-1"], .efy_hide_i, .efy_hide_i *, [efy_content]:not([efy_active]) *)'
+  /*Sidebar*/ '.efy_sidebar :is(:is([efy_about], #efy_quick, .efy_about_div, .efy_quick_notify_content) :is(a, button, input, select, textarea), [efy_search]):not([disabled], [tabindex="-1"], .efy_hide_i, .efy_hide_i *, [efy_content]:not([efy_active]) *), .efy_sidebar summary:not(.efy_sidebar details:not([open]) details summary), .efy_sidebar details[open] :is(a, button, input, select, textarea, summary):not(details:not([open]) *, [disabled], [tabindex="-1"], .efy_hide_i, .efy_hide_i *, [efy_content]:not([efy_active]) *)'
 ],
 [focus_index, dom_focus_index, dom_focus] = [0, 0, []],
 vibration_fn =()=> {};
@@ -161,7 +161,7 @@ process_home =(info)=>{
 
 process_stick_left =(info)=>{
   const {gamepad} = info, buttons = gamepad.buttons,
-  hover =()=>{ if (efy.audio_status) $audio_play(efy_audio.hover)},
+  hover =()=>{ if ($efy_module('audio')) $audio_play(efy_audio.hover)},
   focus =(x)=>{ dom_focus[x].focus()},
   dispatch =(x, position)=>{
       position === 'up' ? x.stepUp() : x.stepDown();
@@ -290,7 +290,7 @@ $event(window, 'click', (event)=>{
     else {index = dom_focus_index}
     update_focus(); focus_index = index;
     $wait(0.3, ()=> dom_focus[index].focus());
-    if (efy.audio_status) $audio_play(efy_audio.slide);
+    if ($efy_module('audio')) $audio_play(efy_audio.slide);
   }
 });
 

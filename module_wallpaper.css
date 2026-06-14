@@ -1,0 +1,15 @@
+html .efy_3d_bg {
+  animation: efy_3d_bg_animate 10s ease-in-out infinite;
+}
+
+/*@keyframes efy_3d_bg_animate {
+  0%, 100% {background-position: 0 0}
+  25% {background-position: 250rem 0; scale: 1.5; rotate: 15deg}
+  50% {background-position: 250rem 250rem}
+  75% {background-position: 0 250rem; scale: 1.2; rotate: -5deg}
+}*/
+
+@keyframes efy_3d_bg_animate {
+  0%, 100% {background-position: 0rem 0rem}
+  50% {background-position: 250rem 0rem; scale: 1.1; rotate: 2deg}
+}

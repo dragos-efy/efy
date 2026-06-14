@@ -1,0 +1,15 @@
+{"name": "Avocado Pastel", "options": {
+  "version": "26.04.19 Beta",
+  "text": "1 .37 120",
+  "radius": "8rem 25rem 18rem 25rem",
+  "radius_type": "corners",
+  "border_color": "1 .37 120 / 0.11",
+  "border_size": "1.5rem",
+  "bg": ".25 .37 120",
+  "card": "1 .37 120 / 0.07",
+  "gap": "15rem",
+  "accent": ["1 .37 120 1"],
+  "accentx": ["1 .37 120 1"],
+  "accent_angle": "165deg",
+  "accentx_angle": "165deg"
+}}

@@ -83,23 +83,23 @@ else { $('#efy_scrollbar_on').setAttribute('checked', '')}
 /*Animations*/ (()=>{ let status = '---anim_status', state = '---anim_state', input = $('.efy_anim_speed');
     $add('style', {class: 'efy_anim_accessibility'}, [], $head);
     if (efy.anim_speed){ let speed = efy.anim_speed; input.value = speed;
-        $text($('.efy_anim_accessibility'), `:root {---anim_speed: ${speed}!important}`);
+        $('.efy_anim_accessibility').textContent = `:root {---anim_speed: ${speed}!important}`;
         if (speed == '0'){ $body.style.setProperty(status, '0'); $body.style.setProperty(state, 'paused'); $body.setAttribute('efy_animations', 'off')}
     }
     $event(input, 'change', ()=>{ let speed = input.value; efy.anim_speed = speed; $save();
         if (speed == '0'){ $body.style.setProperty(status, '0'); $body.style.setProperty(state, 'paused'); $body.setAttribute('efy_animations', 'off')}
         else { $body.style.setProperty(status, '1'); $body.style.setProperty(state, 'running'); $body.removeAttribute('efy_animations')}
-        $text($('.efy_anim_accessibility'), `:root {---anim_speed: ${speed}!important}`)
+        $('.efy_anim_accessibility').textContent = `:root {---anim_speed: ${speed}!important}`;
 }) })();
 
 /* Text Size*/ $add('style', {class: 'efy_text_accessibility'}, [], $head);
 if (efy.text_zoom){
-    $text($('.efy_text_accessibility'), `:root {---font_size: ${efy.text_zoom}px!important} html {letter-spacing: ${efy.text_spacing}px!important}`)
+    $('.efy_text_accessibility').textContent = `:root {---font_size: ${efy.text_zoom}px!important} html {letter-spacing: ${efy.text_spacing}px!important}`;
     $('.efy_ui_zoom').value = efy.text_zoom;
     $('.efy_text_spacing').value = efy.text_spacing;
 }
 $all('.efy_text_accessibility input').forEach(x => $event(x, 'input', ()=>{
-    $text($('.efy_text_accessibility'), `:root {---font_size: ${$('.efy_ui_zoom').value}px!important} html {letter-spacing: ${$('.efy_text_spacing').value}px!important}`);
+    $('.efy_text_accessibility').textContent = `:root {---font_size: ${$('.efy_ui_zoom').value}px!important} html {letter-spacing: ${$('.efy_text_spacing').value}px!important}`;
     efy.text_zoom = $('.efy_ui_zoom').value;
     efy.text_spacing = $('.efy_text_spacing').value;
     $save(); $100vh();

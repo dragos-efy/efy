@@ -7,7 +7,7 @@ efy_audio_menu = $add('details', {efy_select: '', id: 'efy_audio', name: 'efy_si
     ['p', {efy_lang: 'sidebar_audio_text'}]
 ], $('.efy_sidebar'));
 
-for (let a = [['status', 'active'], ['click', 'click_tap'], ['hover', 'mouse_hover']],
+for (let a = [['click', 'click_tap'], ['hover', 'mouse_hover']],
 b = [[], $('#efy_audio [efy_range_text="EFY Volume"]'), 'beforebegin'], i = 0; i < a.length; i++){
     const id = `efy_audio_${a[i][0]}`,
     margin = a[i][0] === 'hover' ? {style: 'margin: 0 0 15rem 0'} : null;
@@ -15,9 +15,9 @@ b = [[], $('#efy_audio [efy_range_text="EFY Volume"]'), 'beforebegin'], i = 0; i
     $add('label', {for: id, efy_lang: a[i][1], ...margin}, ...b);
 }
 
-/*Effects*/ if (efy.audio_status){ efy_audio.folder = $css_prop('---audio_folder');
+/*Effects*/ if ($efy_module('audio')){
     'pop ok ok2 ok3 hover slide step error disabled call wind'.split(' ').forEach(x =>{
-        efy_audio[x] = new Audio(`${efy_audio.folder}/${x}.webm`);
+        efy_audio[x] = new Audio(`${efy.audio_folder}/${x}.webm`);
         efy_audio[x].volume = efy_audio.volume;
     });
 
@@ -54,7 +54,7 @@ b = [[], $('#efy_audio [efy_range_text="EFY Volume"]'), 'beforebegin'], i = 0; i
     });
 }
 
-/*Checkbox Toggles*/  ['status', 'click', 'hover'].map(type =>{
+/*Checkbox Toggles*/  ['click', 'hover'].map(type =>{
     const x = `audio_${type}`, toggle = $(`#efy_${x}`);
     if (efy[x]) toggle.setAttribute('checked', '');
     $event(toggle, 'click', ()=>{ efy[x] ? delete efy[x] : efy[x] = true; $save()});

@@ -52,7 +52,7 @@ $event($('.bg_position_x'), 'input', (a)=> $css_prop(`---bg_x`, `${a.target.valu
 $event($('.bg_position_y'), 'input', (a)=> $css_prop(`---bg_y`, `${a.target.value}rem`))
 
 for (let a = ['bg', 'content', 'card', 'front', 'back', 'button'], j = [
-    '[efy_mode*=trans] .efy_3d_bg {filter: ',
+    '[efy_mode*=trans] :is(.efy_3d_bg, [efy_bg_nr] .efy_preview) {filter: ',
     'img, video:not(.efy_3d_bg, .efy_3d_front, .efy_3d_back) {filter: ',
     ':is(.efy-card-back, details:not([efy_help]), select, input, textarea, blockquote, pre, article, table, audio, [efy_card], [efy_tabs] [efy_content], [efy_timer], [efy_clock], [efy_tabs] [efy_tab], [efy_keyboard], [efy_sidebar_btn*=absolute], [efy_select] label, .efy_card_filter, .efy_btn_trans, .efy_card):not(html.svg_filters .efy-glass, .efy_card_filter_off, .efy_card_filter_off_all, .efy_card_filter_off_all *, .efy_sidebar *, [efy_range_text] input, html.svg_filters [efy_card]), html.svg_filters .efy_sidebar .efy-card-back {backdrop-filter: ',
     '.efy_3d_front {filter: ',
@@ -78,11 +78,11 @@ for (let a = ['bg', 'content', 'card', 'front', 'back', 'button'], j = [
             y += string + ' ::-webkit-progress-bar, ::-webkit-meter-bar' + m + '{backdrop-filter: ' + string + k;
             if (f.blur) y += ` .efy_sidebar details:not(.efy_sidebar > details, #efy_modules details, [efy_help]), .efy_sidebar [efy_content] {backdrop-filter: blur(${f.blur})!important}`;
         } else { delete efy.card_filter_menu}
-        $text(css, y); efy[g] = JSON.stringify(f); efy[h] = y; $save()
+        css.textContent = y; efy[g] = JSON.stringify(f); efy[h] = y; $save()
     };
 
     if (efy[g]){
-        $text(css, efy[h]); let f = JSON.parse(efy[g]);
+        css.textContent = efy[h]; let f = JSON.parse(efy[g]);
         Object.keys(f).forEach(x => $(`.efy_${a[i]}_${x}`).value = f[x].replace('px','').replace('deg',''));
     }
     $all(`${parent} input`).forEach(x =>{ $event(x, 'input', fn)});
@@ -92,7 +92,7 @@ for (let a = ['bg', 'content', 'card', 'front', 'back', 'button'], j = [
                 $all(`${parent} [efy_range_text=${y}] .efy_range_text_p`).forEach((z, i)=>{
                     z.value = effects[3][j]; z.dispatchEvent(new Event('input', {'bubbles': true }));
             })});
-            delete efy[g]; delete efy[h]; $save(); $text(css, '');
+            delete efy[g]; delete efy[h]; $save(); css.textContent = '';
         })
     })
 }
@@ -105,7 +105,7 @@ for (let a = ['bg', 'content', 'card', 'front', 'back', 'button'], j = [
   $add('div', {id: `efy_images_${a}`, style: 'display: grid'}, [
     ['div', {class: 'efy_img_previews'}, [
         ['input', {id: `idb_addimg_${a}`, type: 'file', accept: 'image/*, video/*', style: 'display: none', multiple: ''}],
-        ['label', {for: `idb_addimg_${a}`, title: 'Add file', class: 'efy_color', type:'button', role: 'button'}, [ ['i', {efy_icon: 'plus'}] ]],
+        ['label', {for: `idb_addimg_${a}`, title: 'Add file', class: 'efy_accent', type:'button', role: 'button'}, [ ['i', {efy_icon: 'plus'}] ]],
         ['button', {class: `idb_reset_${a}`, title: 'reset'}, [['i', {efy_icon: 'reload'}]]]
   ]], ['hr']], $(`[efy_tabs=efyui_filters] [efy_content=${a}]`), 'afterbegin')
 });

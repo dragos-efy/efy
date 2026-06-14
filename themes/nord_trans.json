@@ -1,0 +1,14 @@
+{"name": "Nord Trans", "options": {
+  "version": "26.04.19 Beta",
+  "text": "1 0 0",
+  "radius": "20rem",
+  "border_color": "1 0 0 / 0.11",
+  "border_size": "1.5rem",
+  "bg": ".07 .1 300",
+  "card": "1 0 0 / 0.07",
+  "gap": "15rem",
+  "accent": [".7 .3 200 1", ".7 .3 0 1"],
+  "accentx": [".7 .3 200 1", ".7 .3 0 1"],
+  "accent_angle": "165deg",
+  "accentx_angle": "165deg"
+}}

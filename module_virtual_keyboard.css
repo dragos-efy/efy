@@ -12,7 +12,7 @@
   [efy_key="backspace"], [efy_key="delete"], [efy_key="enter"], [efy_key="caps"] {flex: 2}
   [efy_key=space] {flex: 6.5}
   [efy_key="ctrl"], [efy_key="alt"], [efy_key="super"], [efy_key="shortcuts"], [efy_key="up"], [efy_key="down"] {opacity: 0.2; pointer-events: none}
-  [efy_key="caps"].efy_active { &, &:focus {background: var(---color); background-origin: border-box; -webkit-text-fill-color: var(---bg)}}
+  [efy_key="caps"].efy_active { &, &:focus {background: var(---accent); background-origin: border-box; -webkit-text-fill-color: var(---bg)}}
 }
 
 [efy_kb] [efy_keyboard] {display: flex}

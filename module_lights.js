@@ -8,7 +8,7 @@ selectorList = [
 ];
 
 const {lightness, chroma, hue} = (() => {
-    const [,l='0.5', c='0', h='0'] = efy.colors[0]?.split(' ') || [];
+    const [l='0.5', c='0', h='0'] = efy.accent[0]?.split(' ') || [];
     return {lightness: Number(l), chroma: Number(c), hue: h};
 })();
 

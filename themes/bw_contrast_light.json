@@ -1,0 +1,14 @@
+{"name": "BW Contrast Light", "options": {
+  "version": "26.04.19 Beta",
+  "text": "0 0 0",
+  "radius": "0",
+  "border_color": "0 0 0 / 1",
+  "border_size": "1.5rem",
+  "bg": "1 0 0",
+  "card": "0 0 0 / 0.07",
+  "gap": "15rem",
+  "accent": ["0 0 0 1"],
+  "accentx": [".9 .37 30 1"],
+  "accent_angle": "165deg",
+  "accentx_angle": "165deg"
+}}

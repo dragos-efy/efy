@@ -1,0 +1,19 @@
+{"name": "Teal Blue Duo", "options": {
+  "version": "26.04.19 Beta",
+  "text": "0 0 0",
+  "radius": "20rem",
+  "border_color": "0 0 0 / .11",
+  "border_size": "1.5rem",
+  "bg": "1 0 0",
+  "card": "0 0 0 / .07",
+  "accent_text": ".79 .37 170",
+  "accent_text_x": ".55 .37 254",
+  "accent_text_status": true,
+  "accent_text_x_status": true,
+  "gap": "15rem",
+  "accent": [".55 .37 254 1"],
+  "accentx": [".79 .37 170 1"],
+  "accent_angle": "165deg",
+  "accentx_angle": "165deg",
+  "accent_duo": true
+}}

@@ -1,5 +1,5 @@
 (()=>{ let output = [['div', {efy_clock: ''}]];
-    [['back', 'chevron'], ['forward', 'chevron'], ['reload', 'reload'], ['fullscreen', 'fullscreen']].map(x =>{
+    [['home', 'home'], ['back', 'chevron'], ['forward', 'chevron'], ['reload', 'reload'], ['fullscreen', 'fullscreen']].map(x =>{
         output.push(['button', {'class': `efy_quick_${x[0]} efy_square_btn`}, [['i', {efy_icon: x[1]}]]]);
     });
 
@@ -11,11 +11,14 @@
         ['div', {class: 'efy_quick_buttons efy_flex'}, output]
     ], $('[efy_about]'), 'afterend');
 
-    $event($(".efy_quick_reload"), 'click', ()=> location.reload());
-
-    $ready('.efy_quick_fullscreen', (x)=>{
-        $event(x, 'click', ()=> document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen());
+    $event($body, 'click', ()=>{
+        const x = event.target;
+        if (x.matches('.efy_quick_home')) window.location.replace(window.location.href.split('#')[0]);
+        else if (x.matches('.efy_quick_reload')) location.reload();
+        else if (x.matches('.efy_quick_back')) window.history.go(-1);
+        else if (x.matches('.efy_quick_forward')) window.history.go(1);
+        else if (x.matches('.efy_quick_fullscreen')){
+            document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+        }
     });
-
-    ['back', 'forward'].map(a =>{ $event($(`.efy_quick_${a}`), 'click', ()=> window.history.go(a === 'back' ? -1 : 1)) });
 })();
